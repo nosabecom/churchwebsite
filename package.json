@@ -15,5 +15,12 @@
     "@tailwindcss/vite": "^4.3.0",
     "astro": "7.0.0",
     "tailwindcss": "^4.3.0"
+  },
+  "private": true,
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.7.0"
+    }
   }
 }
