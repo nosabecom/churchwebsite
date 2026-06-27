@@ -7,10 +7,5 @@
   },
   "scripts": {},
   "private": true,
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "11.7.0"
-    }
-  }
+  "packageManager": "pnpm@10.24.0"
 }
