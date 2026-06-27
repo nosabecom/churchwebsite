@@ -1,7 +1,11 @@
+packages:
+  - apps/*
+  - packages/*
+
 allowBuilds:
   esbuild: true
   sharp: true
 
-packages:
-  - "apps/*"
-  - "packages/*"
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
