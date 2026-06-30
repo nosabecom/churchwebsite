@@ -2,8 +2,11 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "d": "astro dev",
     "dev": "astro dev",
+    "b": "astro build",
     "build": "astro build",
+    "p": "astro preview",
     "preview": "astro preview"
   },
   "dependencies": {
