@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css'
+import Favicon from '../assets/logo.png'
+import Logo from '../assets/logo.svg'
+import { Image } from 'astro:assets'
+const { title } = Astro.props
 ---
 
 <!doctype html>
@@ -8,9 +12,24 @@ import '../styles/global.css'
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Woman Excel</title>
+		<link rel="shortcut icon" href={Favicon.src} type="image/png">
+		<title>{title}</title>
 	</head>
-	<body class="">
+
+	<body class="bg-berry font-serif">
+		<nav class="main-gradient flex justify-around items-center gap-150">
+			<a href="/"><Image src={Logo} alt="" width="200"/></a>
+
+			<ul class="text-navy flex gap-6">
+				<li><a href="/">Home</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</nav>
+
         <slot/>
+
+		<footer class="bg-navy text-white flex justify-center py-3">
+			<p>© 2026 Woman Excel Conference</p>
+		</footer>
 	</body>
 </html>

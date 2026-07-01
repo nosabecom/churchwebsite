@@ -1,4 +1,27 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @import "tailwindcss";
+
+@theme {
+    /* Fonts */
+    --font-serif: "PT Serif", serif;
+
+    /* Colors */
+    --color-navy: #082A4E;
+    --color-pink: #E33379;
+    --color-fuchsia: #EF1170;
+    --color-magenta: #D2236A;
+    --color-berry: #933163;
+    --color-rose: #F25F9A;
+    --color-coral-pink: #FD9FA3;
+    --color-blush: #F4C2D0;
+
+}
+
+@utility main-gradient {
+    @apply bg-linear-to-r from-coral-pink via-rose via-50% via-fuchsia via-70% to-magenta 
+}
 
 html, body {
     margin: 0;
