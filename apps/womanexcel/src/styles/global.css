@@ -4,7 +4,19 @@
 @import "tailwindcss";
 
 @theme {
+    /* Fonts */
     --font-serif: "PT Serif", serif;
+
+    /* Colors */
+    --color-navy: #082A4E;
+    --color-pink: #E33379;
+    --color-fuchsia: #EF1170;
+    --color-magenta: #D2236A;
+    --color-berry: #933163;
+    --color-rose: #F25F9A;
+    --color-coral-pink: #FD9FA3;
+    --color-blush: #F4C2D0;
+    
 }
 
 html, body {
