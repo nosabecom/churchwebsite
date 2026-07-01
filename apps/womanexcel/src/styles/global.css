@@ -16,7 +16,11 @@
     --color-rose: #F25F9A;
     --color-coral-pink: #FD9FA3;
     --color-blush: #F4C2D0;
-    
+
+}
+
+@utility main-gradient {
+    @apply bg-linear-to-r from-coral-pink via-rose via-50% via-fuchsia via-70% to-magenta 
 }
 
 html, body {
