@@ -17,8 +17,8 @@ const { title } = Astro.props
 	</head>
 
 	<body class="main-gradient font-serif">
-		<nav class="flex justify-around items-center gap-150">
-			<a href="/"><Image src={Logo} alt="" width="200"/></a>
+		<nav class="flex justify-around items-center gap-0 md:gap-150">
+			<a href="/"><Image src={Logo} alt="" width="200" height="67"/></a>
 
 			<ul class="text-navy flex gap-6">
 				<li><a href="/">Home</a></li>
@@ -28,7 +28,7 @@ const { title } = Astro.props
 
         <slot/>
 
-		<footer class="bg-navy text-white flex justify-center py-3">
+		<footer class="bg-navy text-white flex justify-center py-3 fixed w-full bottom-0">
 			<p>© 2026 Woman Excel Conference</p>
 		</footer>
 	</body>
