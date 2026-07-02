@@ -20,7 +20,7 @@
 }
 
 @utility main-gradient {
-    @apply bg-linear-to-r from-coral-pink via-rose via-50% via-fuchsia via-70% to-magenta 
+    background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
 }
 
 html, body {
