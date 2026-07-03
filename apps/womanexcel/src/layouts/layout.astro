@@ -20,11 +20,41 @@ const { title } = Astro.props
 		<nav class="flex justify-between items-center px-4 py-2 md:px-10">
 			<a href="/" class="shrink-0"><Image src={Logo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/></a>
 
-			<ul class="text-navy flex gap-4 md:gap-6">
+			<ul class="text-navy hidden xs:flex gap-4 md:gap-6">
 				<li><a href="/">Home</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
+
+			<button
+				type="button"
+				aria-label="Open menu"
+				aria-expanded="false"
+				data-sidebar-open
+				class="xs:hidden text-navy cursor-pointer p-1"
+			>
+				<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+					<path d="M4 6h16M4 12h16M4 18h16" />
+				</svg>
+			</button>
 		</nav>
+
+		<div class="group xs:hidden" data-sidebar>
+			<div
+				class="fixed inset-0 z-30 bg-navy/50 opacity-0 pointer-events-none group-data-[open]:opacity-100 group-data-[open]:pointer-events-auto transition-opacity duration-300"
+				data-sidebar-backdrop
+			></div>
+			<aside class="fixed top-0 right-0 z-40 h-dvh w-60 bg-navy text-white flex flex-col p-6 translate-x-full group-data-[open]:translate-x-0 transition-transform duration-300 ease-in-out">
+				<button type="button" aria-label="Close menu" data-sidebar-close class="self-end cursor-pointer p-1">
+					<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+						<path d="M6 6l12 12M18 6L6 18" />
+					</svg>
+				</button>
+				<ul class="flex flex-col gap-2 text-xl mt-4">
+					<li><a class="block py-2" href="/">Home</a></li>
+					<li><a class="block py-2" href="#">Contact</a></li>
+				</ul>
+			</aside>
+		</div>
 
 		<main class="flex-1">
         	<slot/>
@@ -33,5 +63,31 @@ const { title } = Astro.props
 		<footer class="bg-navy text-white flex justify-center py-3">
 			<p>© 2026 Woman Excel Conference</p>
 		</footer>
+
+		<script>
+			const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
+			const openBtn = document.querySelector<HTMLElement>("[data-sidebar-open]");
+			if (sidebar && openBtn) {
+				const setOpen = (open: boolean) => {
+					sidebar.toggleAttribute("data-open", open);
+					openBtn.setAttribute("aria-expanded", String(open));
+					document.body.classList.toggle("overflow-hidden", open);
+				};
+
+				openBtn.addEventListener("click", () => setOpen(true));
+				sidebar.querySelectorAll("[data-sidebar-close], [data-sidebar-backdrop], a").forEach((el) => {
+					el.addEventListener("click", () => setOpen(false));
+				});
+				document.addEventListener("keydown", (e) => {
+					if (e.key === "Escape") setOpen(false);
+				});
+
+				// The sidebar is display:none above the xs breakpoint; drop the open
+				// state too so the scroll lock doesn't outlive it.
+				window.matchMedia("(min-width: 450px)").addEventListener("change", (e) => {
+					if (e.matches) setOpen(false);
+				});
+			}
+		</script>
 	</body>
 </html>
