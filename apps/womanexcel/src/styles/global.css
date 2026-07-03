@@ -56,9 +56,13 @@
     animation: var(--animate-hero-dot);
 }
 
-[data-slideshow]:hover [data-slide],
-[data-slideshow]:hover [data-dot] {
-    animation-play-state: paused;
+/* Hover-capable devices only: on touch, tapping leaves a sticky :hover that
+   would freeze the slideshow permanently */
+@media (hover: hover) {
+    [data-slideshow]:hover [data-slide],
+    [data-slideshow]:hover [data-dot] {
+        animation-play-state: paused;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,6 +88,6 @@
 }
 
 @utility speaker-nametag {
-    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-3xl absolute bottom-0 left-0 right-0 py-5
+    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-3 md:py-5 px-2
 }
 

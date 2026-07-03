@@ -10,17 +10,17 @@ const { title } = Astro.props
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="shortcut icon" href={Favicon.src} type="image/png">
 		<title>{title}</title>
 	</head>
 
 	<body class="main-gradient font-serif min-h-dvh flex flex-col">
-		<nav class="flex justify-around items-center gap-0 md:gap-150">
-			<a href="/"><Image src={Logo} alt="" width="200" height="67"/></a>
+		<nav class="flex justify-between items-center px-4 py-2 md:px-10">
+			<a href="/" class="shrink-0"><Image src={Logo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/></a>
 
-			<ul class="text-navy flex gap-6">
+			<ul class="text-navy flex gap-4 md:gap-6">
 				<li><a href="/">Home</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>

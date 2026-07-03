@@ -1,7 +1,7 @@
 <div class="flex items-center flex-col py-8">
-    <p class="border-none rounded-3xl bg-navy text-white text-4xl px-4 py-2.5 mb-8.5 md:mb-5.5 font-sans">Speakers</p>
-    <div class="overflow-hidden w-85 md:w-400 mask-x-from-87% mask-x-to-100%">
-        <div class="flex w-max animate-speaker-scroll hover:[animation-play-state:paused] motion-reduce:animate-none">
+    <p class="border-none rounded-3xl bg-navy text-white text-3xl md:text-4xl px-4 py-2.5 mb-8.5 md:mb-5.5 font-sans">Speakers</p>
+    <div class="overflow-hidden w-full max-w-400 mask-x-from-87% mask-x-to-100%">
+        <div class="flex w-max animate-speaker-scroll hover:[animation-play-state:paused] data-paused:[animation-play-state:paused] motion-reduce:animate-none" data-speaker-track>
             <div class="speaker-card">
                 <img class="speaker-image" src="/images/speakers/tosin-olayinka-ajibs.png" alt="Tosin Olayinka Ajibs">
                 <p class="speaker-nametag">Tosin Olayinka Ajibs</p>
@@ -72,3 +72,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Desktop pauses on hover; touch devices have no hover, so tap toggles the scroll.
+    document.querySelectorAll<HTMLElement>("[data-speaker-track]").forEach((track) => {
+        track.addEventListener("pointerdown", (e) => {
+            if (e.pointerType !== "mouse") track.toggleAttribute("data-paused");
+        });
+    });
+</script>

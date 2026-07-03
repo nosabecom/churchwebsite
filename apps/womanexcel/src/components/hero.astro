@@ -18,8 +18,8 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
 
     <div class="relative z-10 flex flex-col items-center mt-1.5 md:m-0 md:gap-6 pb-20 pt-10">
         <p class="border-none rounded-xl bg-navy text-white text-[13px] px-3 py-1.5 mb-8.5 md:mb-5.5 font-sans">Theme for this year</p>
-        <img class="max-w-85 md:max-w-350" src="/images/the-word.svg" alt="">
-        <div class="flex flex-col bg-berry text-white md:text-xl text-lg border-none rounded-xl px-12 py-6 m-6 md:m-0">
+        <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="">
+        <div class="flex flex-col bg-berry text-white md:text-xl text-lg border-none rounded-xl px-6 py-5 md:px-12 md:py-6 my-6 mx-8 md:m-0 max-w-[92%]">
             <img class="w-6 md:w-12 pb-0.5" src="/images/quotes/open.svg" alt="">
             <p>In the beginning was the Word, and the Word was with God, and the Word was God</p>
             <img class="w-6 md:w-12 self-end pt-0.5" src="/images/quotes/close.svg" alt="">
@@ -31,7 +31,7 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
         type="button"
         aria-label="Previous image"
         data-prev
-        class="absolute left-3 md:left-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-navy/60 text-white hover:bg-navy transition-opacity opacity-0 group-hover:opacity-100 focus-visible:opacity-100 cursor-pointer"
+        class="absolute left-3 md:left-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-navy/60 text-white hover:bg-navy transition-opacity opacity-0 group-hover:opacity-100 focus-visible:opacity-100 any-pointer-coarse:opacity-100 cursor-pointer"
     >
         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M15 18l-6-6 6-6" />
@@ -42,14 +42,14 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
         type="button"
         aria-label="Next image"
         data-next
-        class="absolute right-3 md:right-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-navy/60 text-white hover:bg-navy transition-opacity opacity-0 group-hover:opacity-100 focus-visible:opacity-100 cursor-pointer"
+        class="absolute right-3 md:right-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-navy/60 text-white hover:bg-navy transition-opacity opacity-0 group-hover:opacity-100 focus-visible:opacity-100 any-pointer-coarse:opacity-100 cursor-pointer"
     >
         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 18l6-6-6-6" />
         </svg>
     </button>
 
-    <div class="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity" data-dots>
+    <div class="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 any-pointer-coarse:opacity-100 transition-opacity" data-dots>
         {slides.map((_, i) => (
             <button
                 type="button"
@@ -57,7 +57,7 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
                 data-dot
                 style={`animation-delay: ${i * 8}s`}
                 class:list={[
-                    "h-2.5 w-2.5 rounded-full transition-colors cursor-pointer",
+                    "h-6 w-6 p-[7px] bg-clip-content rounded-full transition-colors cursor-pointer",
                     i === 0 ? "bg-white" : "bg-white/50 hover:bg-white/80",
                 ]}
             ></button>
