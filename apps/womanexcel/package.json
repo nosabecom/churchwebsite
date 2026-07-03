@@ -2,17 +2,17 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "d": "astro dev",
     "dev": "astro dev",
-    "b": "astro build",
+    "d": "astro dev",
     "build": "astro build",
-    "p": "astro preview",
-    "preview": "astro preview"
+    "b": "astro build",
+    "preview": "astro preview",
+    "p": "astro preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.1",
-    "astro": "7.0.0",
-    "sharp": "^0.35.2",
-    "tailwindcss": "^4.3.1"
+    "@tailwindcss/vite": "^4.3.2",
+    "astro": "7.0.6",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.3.2"
   }
 }
