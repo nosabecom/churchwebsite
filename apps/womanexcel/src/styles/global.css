@@ -91,6 +91,6 @@
 }
 
 @utility speaker-nametag {
-    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-3 md:py-5 px-2
+    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 md:py-5 md:px-2 px-0
 }
 
