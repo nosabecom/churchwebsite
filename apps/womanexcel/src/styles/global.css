@@ -25,8 +25,15 @@
     background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
 }
 
+@utility speaker-card {
+    @apply flex flex-col items-center relative
+}
+
+@utility speaker-nametag {
+    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-3xl absolute bottom-0 left-0 right-0 py-5
+}
+
 html, body {
     margin: 0;
     width: 100%;
-    height: 100%;
 }
