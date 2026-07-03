@@ -19,6 +19,9 @@
     --color-coral-pink: #FD9FA3;
     --color-blush: #F4C2D0;
 
+    /* Breakpoints */
+    --breakpoint-2xl: 1633px;
+
     /* Animations */
     --animate-speaker-scroll: speaker-scroll 50s linear infinite;
 

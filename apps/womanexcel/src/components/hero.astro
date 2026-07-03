@@ -2,7 +2,7 @@
 const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${i + 1}.jpg`);
 ---
 
-<div class="group relative overflow-hidden mt-6 mb-20 mx-auto max-w-400 rounded-3xl" data-slideshow>
+<div class="group relative overflow-hidden mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl" data-slideshow>
     {slides.map((src, i) => (
         <img
             src={src}
@@ -49,15 +49,15 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
         </svg>
     </button>
 
-    <div class="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 any-pointer-coarse:opacity-100 transition-opacity" data-dots>
+    <div class="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-1  opacity-0 group-hover:opacity-100 focus-within:opacity-100 any-pointer-coarse:opacity-100 transition-opacity" data-dots>
         {slides.map((_, i) => (
             <button
                 type="button"
                 aria-label={`Go to image ${i + 1}`}
                 data-dot
-                style={`animation-delay: ${i * 8}s`}
+                style={`animation-delay: ${i * 4}s`}
                 class:list={[
-                    "h-6 w-6 p-[7px] bg-clip-content rounded-full transition-colors cursor-pointer",
+                    "h-2 w-2 bg-clip-content rounded-full transition-colors cursor-pointer",
                     i === 0 ? "bg-white" : "bg-white/50 hover:bg-white/80",
                 ]}
             ></button>
