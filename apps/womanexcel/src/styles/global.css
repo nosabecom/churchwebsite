@@ -35,6 +35,10 @@
     @apply flex flex-col items-center relative shrink-0 mr-8
 }
 
+@utility speaker-image {
+    @apply w-3xs md:w-md
+}
+
 @utility speaker-nametag {
     @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-3xl absolute bottom-0 left-0 right-0 py-5
 }
