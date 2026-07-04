@@ -1,0 +1,83 @@
+<div class="flex justify-center px-4 py-10 font-sans">
+    <div class="w-full max-w-3xl bg-navy text-white rounded-2xl p-6 md:p-10">
+        <h1 class="text-4xl md:text-5xl mb-3">Contact Us</h1>
+        <p>Kindly fill the contact form.</p>
+        <p>For enquiries send an email: <a href="mailto:connect@rccgcornerstoneassembly.com" class="text-blush underline break-all hover:text-white">connect@rccgcornerstoneassembly.com</a></p>
+
+        <hr class="border-white/30 my-6">
+
+        <form method="POST" class="flex flex-col gap-5">
+            <fieldset>
+                <legend class="contact-label mb-2">What would you like to share?</legend>
+                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="category" value="Testimony" class="accent-pink" checked>
+                        Testimony
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="category" value="Prayer" class="accent-pink">
+                        Prayer
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="category" value="Suggestion" class="accent-pink">
+                        Suggestion
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="contact-field">
+                <label for="fullname" class="contact-label">Full Name</label>
+                <input id="fullname" name="fullname" type="text" autocomplete="name" required
+                    placeholder="e.g. Jane Doe" class="contact-input">
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5">
+                <div class="contact-field">
+                    <label for="email" class="contact-label">Email</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                        placeholder="you@example.com" class="contact-input">
+                </div>
+                <div class="contact-field">
+                    <label for="phone" class="contact-label">Phone</label>
+                    <input id="phone" name="phone" type="tel" autocomplete="tel"
+                        placeholder="(555) 123-4567" class="contact-input">
+                </div>
+            </div>
+
+            <div class="contact-field">
+                <label for="address" class="contact-label">Address</label>
+                <input id="address" name="address" type="text" autocomplete="street-address"
+                    placeholder="123 Main Street" class="contact-input">
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-5">
+                <div class="contact-field">
+                    <label for="city" class="contact-label">City</label>
+                    <input id="city" name="city" type="text" autocomplete="address-level2"
+                        placeholder="Toronto" class="contact-input">
+                </div>
+                <div class="contact-field">
+                    <label for="province" class="contact-label">Province</label>
+                    <input id="province" name="province" type="text" autocomplete="address-level1"
+                        placeholder="Ontario" class="contact-input">
+                </div>
+                <div class="contact-field">
+                    <label for="postalcode" class="contact-label">Postal Code</label>
+                    <input id="postalcode" name="postalcode" type="text" autocomplete="postal-code"
+                        placeholder="A1A 1A1" class="contact-input">
+                </div>
+            </div>
+
+            <div class="contact-field">
+                <label for="message" class="contact-label">Your Message</label>
+                <textarea id="message" name="message" rows="6" required
+                    placeholder="Type your feedback here" class="contact-input resize-y"></textarea>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-pink text-white text-xl border-none rounded-full py-2 hover:cursor-pointer hover:bg-pink/80">
+                Send
+            </button>
+        </form>
+    </div>
+</div>
