@@ -1,5 +1,8 @@
 ---
 const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${i + 1}.jpg`);
+// 8s per slide matches the 80s hero-fade cycle in global.css; the -4s offset
+// starts slide 1 at its fully-visible phase so the hero isn't blank on load.
+const slideDelay = (i: number) => `animation-delay: ${i * 8 - 4}s`;
 ---
 
 <div class="group relative overflow-hidden mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl" data-slideshow>
@@ -9,7 +12,7 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
             alt=""
             loading={i === 0 ? "eager" : "lazy"}
             data-slide
-            style={`animation-delay: ${i * 6}s`}
+            style={slideDelay(i)}
             class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
         />
     ))}
@@ -55,7 +58,7 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
                 type="button"
                 aria-label={`Go to image ${i + 1}`}
                 data-dot
-                style={`animation-delay: ${i * 6}s`}
+                style={slideDelay(i)}
                 class:list={[
                     "h-2 w-2 bg-clip-content rounded-full transition-colors cursor-pointer",
                     i === 0 ? "bg-white" : "bg-white/50 hover:bg-white/80",

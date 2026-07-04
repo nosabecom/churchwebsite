@@ -60,15 +60,6 @@
     animation: var(--animate-hero-dot);
 }
 
-/* Hover-capable devices only: on touch, tapping leaves a sticky :hover that
-   would freeze the slideshow permanently */
-@media (hover: hover) {
-    [data-slideshow]:hover [data-slide],
-    [data-slideshow]:hover [data-dot] {
-        animation-play-state: paused;
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     [data-slide],
     [data-dot] {
