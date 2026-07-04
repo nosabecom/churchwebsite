@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import Analytics from "@vercel/analytics/astro"
 import Favicon from '../assets/logo.png'
 import Logo from '../assets/logo.svg'
 import { Image } from 'astro:assets'
@@ -17,6 +18,8 @@ const { title } = Astro.props
 	</head>
 
 	<body class="main-gradient font-serif min-h-dvh flex flex-col">
+		<Analytics/>
+		
 		<nav class="flex justify-between items-center px-4 py-2 md:px-10">
 			<a href="/" class="shrink-0"><Image src={Logo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/></a>
 
