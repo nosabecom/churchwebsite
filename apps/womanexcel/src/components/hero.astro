@@ -9,7 +9,7 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
             alt=""
             loading={i === 0 ? "eager" : "lazy"}
             data-slide
-            style={`animation-delay: ${i * 8}s`}
+            style={`animation-delay: ${i * 6}s`}
             class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
         />
     ))}
@@ -55,7 +55,7 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
                 type="button"
                 aria-label={`Go to image ${i + 1}`}
                 data-dot
-                style={`animation-delay: ${i * 4}s`}
+                style={`animation-delay: ${i * 6}s`}
                 class:list={[
                     "h-2 w-2 bg-clip-content rounded-full transition-colors cursor-pointer",
                     i === 0 ? "bg-white" : "bg-white/50 hover:bg-white/80",
@@ -94,24 +94,30 @@ const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${
             return best;
         };
 
-        // Restart the shared animation with new delays so `index` is showing now
-        // and the auto-advance carries on from there.
+        // Re-phase the running animation so `index` is showing now and the
+        // auto-advance carries on from there. Shifting animation-delay against
+        // the animation's own clock (anim.currentTime) re-seats it without a
+        // restart — the old animation:none/reflow restart trick applied fresh
+        // delays to a stale clock when the restart silently failed (mobile),
+        // leaving every slide transparent until the cycle wrapped around.
         const seat = (index: number) => {
             const target = ((index % count) + count) % count;
-            const nodes = [...slides, ...dots];
-
-            nodes.forEach((node) => { node.style.animation = "none"; });
-            void root.offsetWidth; // force reflow so the animation restarts
 
             const reseat = (node: HTMLElement, i: number) => {
+                const anim = node.getAnimations().find((a) => a instanceof CSSAnimation);
+                if (!anim) return;
                 const step = (i - target + count) % count;
-                node.style.animation = "";
-                node.style.animationDelay = `${-visiblePhase + step * perSlide}s`;
+                const elapsed = Number(anim.currentTime ?? 0) / 1000;
+                // Desired point in the cycle right now; normalized to [0, duration)
+                // so it's always in the animation's active phase. The delay may go
+                // negative — that's fine, and required while the page is younger
+                // than visiblePhase.
+                const phase = visiblePhase - step * perSlide;
+                const at = ((phase % duration) + duration) % duration;
+                node.style.animationDelay = `${elapsed - at}s`;
             };
-            slides.forEach((slide, i) => {
-                reseat(slide, i);
-                slide.style.opacity = "";
-            });
+
+            slides.forEach(reseat);
             dots.forEach((dot, i) => {
                 reseat(dot, i);
                 dot.classList.remove("bg-white", "bg-white/50");

@@ -54,7 +54,7 @@
 [data-slide] {
     opacity: 0;
     animation: var(--animate-hero-fade);
-}
+} 
 
 [data-dot] {
     animation: var(--animate-hero-dot);
