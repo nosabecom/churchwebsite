@@ -1,0 +1,83 @@
+<div class="flex items-center flex-col py-8">
+    <p class="border-none rounded-3xl bg-navy text-white text-3xl md:text-4xl px-4 py-2.5 mb-8.5 md:mb-5.5 font-sans">Speakers</p>
+    <div class="overflow-hidden w-full max-w-400 mask-x-from-87% mask-x-to-100%">
+        <div class="flex w-max animate-speaker-scroll hover:[animation-play-state:paused] data-paused:[animation-play-state:paused] motion-reduce:animate-none" data-speaker-track>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/tosin-olayinka-ajibs.png" alt="Tosin Olayinka Ajibs">
+                <p class="speaker-nametag">Tosin Olayinka Ajibs</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/reuben-adeleye.png" alt="Pst. Reuben Adeleye">
+                <p class="speaker-nametag">Pst. Reuben Adeleye</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/toyin-adeleye.png" alt="Pst. Toyin Adeleye">
+                <p class="speaker-nametag">Pst. Toyin Adeleye</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/marina-esiri-iyeme-eteng.png" alt="Marina Esiri Iyeme-Eteng">
+                <p class="speaker-nametag">Marina Esiri Iyeme-Eteng</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/angela-hunter.png" alt="Angela Hunter">
+                <p class="speaker-nametag">Angela Hunter</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/dunni-esuturie.png" alt="Dunni Esuturie">
+                <p class="speaker-nametag">Dunni Esuturie</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/his-covenant-music.png" alt="His Covenant Music">
+                <p class="speaker-nametag">His Covenant Music</p>
+            </div>
+            <div class="speaker-card">
+                <img class="speaker-image" src="/images/speakers/tobie-hainstock.png" alt="Tobie Hainstock">
+                <p class="speaker-nametag">Tobie Hainstock</p>
+            </div>
+
+            <div class="contents" aria-hidden="true">
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/tosin-olayinka-ajibs.png" alt="">
+                    <p class="speaker-nametag">Tosin Olayinka Ajibs</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/reuben-adeleye.png" alt="">
+                    <p class="speaker-nametag">Pst. Reuben Adeleye</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/toyin-adeleye.png" alt="">
+                    <p class="speaker-nametag">Pst. Toyin Adeleye</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/marina-esiri-iyeme-eteng.png" alt="">
+                    <p class="speaker-nametag">Marina Esiri Iyeme-Eteng</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/angela-hunter.png" alt="">
+                    <p class="speaker-nametag">Angela Hunter</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/dunni-esuturie.png" alt="">
+                    <p class="speaker-nametag">Dunni Esuturie</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/his-covenant-music.png" alt="">
+                    <p class="speaker-nametag">His Covenant Music</p>
+                </div>
+                <div class="speaker-card">
+                    <img class="speaker-image" src="/images/speakers/tobie-hainstock.png" alt="">
+                    <p class="speaker-nametag">Tobie Hainstock</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Desktop pauses on hover; touch devices have no hover, so tap toggles the scroll.
+    document.querySelectorAll<HTMLElement>("[data-speaker-track]").forEach((track) => {
+        track.addEventListener("pointerdown", (e) => {
+            if (e.pointerType !== "mouse") track.toggleAttribute("data-paused");
+        });
+    });
+</script>

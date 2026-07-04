@@ -1,7 +1,97 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import "tailwindcss";
 
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+@theme {
+    /* Fonts */
+    --font-serif: "PT Serif", serif;
+    --font-sans: "Inter", sans-serif;
+
+    /* Colors */
+    --color-navy: #082A4E;
+    --color-pink: #E33379;
+    --color-fuchsia: #EF1170;
+    --color-magenta: #D2236A;
+    --color-berry: #933163;
+    --color-rose: #F25F9A;
+    --color-coral-pink: #FD9FA3;
+    --color-blush: #F4C2D0;
+
+    /* Breakpoints */
+    --breakpoint-xs: 450px;
+    --breakpoint-2xl: 1633px;
+
+    /* Animations */
+    --animate-speaker-scroll: speaker-scroll 50s linear infinite;
+
+    @keyframes speaker-scroll {
+        to { transform: translateX(-50%); }
+    }
+
+    /* Hero slideshow: 10 slides x 8s = 80s cycle */
+    --animate-hero-fade: hero-fade 80s infinite;
+    --animate-hero-dot: hero-dot 80s infinite;
+
+    @keyframes hero-fade {
+        0%   { opacity: 0; }
+        2%   { opacity: 1; }
+        10%  { opacity: 1; }
+        12%  { opacity: 0; }
+        100% { opacity: 0; }
+    }
+
+    @keyframes hero-dot {
+        0%   { background-color: #ffffff; }
+        10%  { background-color: #ffffff; }
+        12%  { background-color: rgba(255, 255, 255, 0.5); }
+        100% { background-color: rgba(255, 255, 255, 0.5); }
+    }
 }
+
+/* Hero slideshow: CSS drives the timing; the controls re-seat this same animation */
+[data-slide] {
+    opacity: 0;
+    animation: var(--animate-hero-fade);
+} 
+
+[data-dot] {
+    animation: var(--animate-hero-dot);
+}
+
+/* Hover-capable devices only: on touch, tapping leaves a sticky :hover that
+   would freeze the slideshow permanently */
+@media (hover: hover) {
+    [data-slideshow]:hover [data-slide],
+    [data-slideshow]:hover [data-dot] {
+        animation-play-state: paused;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-slide],
+    [data-dot] {
+        animation: none;
+    }
+    [data-slide]:first-child {
+        opacity: 1;
+    }
+}
+
+@utility main-gradient {
+    background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
+}
+
+@utility speaker-card {
+    @apply flex flex-col items-center relative shrink-0 mr-8
+}
+
+@utility speaker-image {
+    @apply w-3xs md:w-md
+}
+
+@utility speaker-nametag {
+    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 md:py-5 md:px-2 px-0
+}
+

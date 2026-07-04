@@ -1,16 +1,90 @@
 ---
 import '../styles/global.css'
+import Favicon from '../assets/logo.png'
+import Logo from '../assets/logo.svg'
+import { Image } from 'astro:assets'
+const { title } = Astro.props
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Woman Excel</title>
+		<link rel="shortcut icon" href={Favicon.src} type="image/png">
+		<title>{title} | Woman Excel Conference</title>
 	</head>
-	<body class="">
-        <slot/>
+
+	<body class="main-gradient font-serif min-h-dvh flex flex-col">
+		<nav class="flex justify-between items-center px-4 py-2 md:px-10">
+			<a href="/" class="shrink-0"><Image src={Logo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/></a>
+
+			<!-- One nav list. Above xs it renders inline here; below xs the
+			     container becomes the off-canvas sidebar panel. -->
+			<div class="group" data-sidebar>
+				<div
+					class="xs:hidden fixed inset-0 z-30 bg-navy/70 opacity-0 pointer-events-none group-data-open:opacity-100 group-data-open:pointer-events-auto transition-opacity duration-300"
+					data-sidebar-backdrop
+				></div>
+
+				<div class="max-xs:fixed max-xs:top-0 max-xs:right-0 max-xs:z-40 max-xs:h-dvh max-xs:w-60 max-xs:bg-navy max-xs:flex max-xs:flex-col max-xs:p-6 max-xs:translate-x-full max-xs:group-data-open:translate-x-0 max-xs:transition-transform max-xs:duration-300 max-xs:ease-in-out">
+					<button type="button" aria-label="Close menu" data-sidebar-close class="xs:hidden self-end text-white cursor-pointer p-1">
+						<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+							<path d="M6 6l12 12M18 6L6 18" />
+						</svg>
+					</button>
+					<ul class="flex text-navy gap-4 md:gap-6 max-xs:flex-col max-xs:gap-2 max-xs:mt-4 max-xs:text-white max-xs:text-xl">
+						<li><a class="max-xs:block max-xs:py-2" href="/">Home</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<button
+				type="button"
+				aria-label="Open menu"
+				aria-expanded="false"
+				data-sidebar-open
+				class="xs:hidden text-navy cursor-pointer p-1"
+			>
+				<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+					<path d="M4 6h16M4 12h16M4 18h16" />
+				</svg>
+			</button>
+		</nav>
+
+		<main class="flex-1">
+        	<slot/>
+		</main>
+
+		<footer class="bg-navy text-white flex justify-center py-3">
+			<p>© 2026 Woman Excel Conference</p>
+		</footer>
+
+		<script>
+			const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
+			const openBtn = document.querySelector<HTMLElement>("[data-sidebar-open]");
+			if (sidebar && openBtn) {
+				const setOpen = (open: boolean) => {
+					sidebar.toggleAttribute("data-open", open);
+					openBtn.setAttribute("aria-expanded", String(open));
+					document.body.classList.toggle("overflow-hidden", open);
+				};
+
+				openBtn.addEventListener("click", () => setOpen(true));
+				sidebar.querySelectorAll("[data-sidebar-close], [data-sidebar-backdrop], a").forEach((el) => {
+					el.addEventListener("click", () => setOpen(false));
+				});
+				document.addEventListener("keydown", (e) => {
+					if (e.key === "Escape") setOpen(false);
+				});
+
+				// The sidebar is display:none above the xs breakpoint; drop the open
+				// state too so the scroll lock doesn't outlive it.
+				window.matchMedia("(min-width: 450px)").addEventListener("change", (e) => {
+					if (e.matches) setOpen(false);
+				});
+			}
+		</script>
 	</body>
 </html>

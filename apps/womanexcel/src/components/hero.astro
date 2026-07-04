@@ -1,0 +1,131 @@
+---
+const slides = Array.from({ length: 10 }, (_, i) => `/images/placeholds/photo-${i + 1}.jpg`);
+---
+
+<div class="group relative overflow-hidden mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl" data-slideshow>
+    {slides.map((src, i) => (
+        <img
+            src={src}
+            alt=""
+            loading={i === 0 ? "eager" : "lazy"}
+            data-slide
+            style={`animation-delay: ${i * 6}s`}
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
+        />
+    ))}
+
+    <div class="absolute inset-0 bg-navy/20"></div>
+
+    <div class="relative z-10 flex flex-col items-center mt-1.5 md:m-0 md:gap-6 pb-20 pt-10">
+        <p class="border-none rounded-xl bg-navy text-white text-[13px] px-3 py-1.5 mb-8.5 md:mb-5.5 font-sans">Theme for this year</p>
+        <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="">
+        <div class="flex flex-col bg-berry text-white md:text-xl text-lg border-none rounded-xl px-6 py-5 md:px-12 md:py-6 my-6 mx-8 md:m-0 max-w-[92%]">
+            <img class="w-6 md:w-12 pb-0.5" src="/images/quotes/open.svg" alt="">
+            <p>In the beginning was the Word, and the Word was with God, and the Word was God</p>
+            <img class="w-6 md:w-12 self-end pt-0.5" src="/images/quotes/close.svg" alt="">
+            <p class="italic">— John 1:1</p>
+        </div>
+    </div>
+
+    <button
+        type="button"
+        aria-label="Previous image"
+        data-prev
+        class="absolute left-1 md:left-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center w-5 h-7 md:w-12 md:h-12 rounded-full bg-navy/60 text-white hover:bg-navy transition-opacity opacity-0 group-hover:opacity-100 focus-visible:opacity-100 any-pointer-coarse:opacity-100 cursor-pointer"
+    >
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+        </svg>
+    </button>
+
+    <button
+        type="button"
+        aria-label="Next image"
+        data-next
+        class="absolute right-1 md:right-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center w-5 h-7 md:w-12 md:h-12 rounded-full bg-navy/60 text-white hover:bg-navy transition-opacity opacity-0 group-hover:opacity-100 focus-visible:opacity-100 any-pointer-coarse:opacity-100 cursor-pointer"
+    >
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+        </svg>
+    </button>
+
+    <div class="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-1  opacity-0 group-hover:opacity-100 focus-within:opacity-100 any-pointer-coarse:opacity-100 transition-opacity" data-dots>
+        {slides.map((_, i) => (
+            <button
+                type="button"
+                aria-label={`Go to image ${i + 1}`}
+                data-dot
+                style={`animation-delay: ${i * 6}s`}
+                class:list={[
+                    "h-2 w-2 bg-clip-content rounded-full transition-colors cursor-pointer",
+                    i === 0 ? "bg-white" : "bg-white/50 hover:bg-white/80",
+                ]}
+            ></button>
+        ))}
+    </div>
+</div>
+
+<script>
+    // Auto-advance timing lives in CSS (global.css: hero-fade / hero-dot).
+    // The controls re-seat that same animation so it keeps auto-playing from
+    // the slide you picked, instead of stopping.
+    document.querySelectorAll<HTMLElement>("[data-slideshow]").forEach((root) => {
+        const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-slide]"));
+        const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-dot]"));
+        const count = slides.length;
+        if (count === 0) return;
+
+        // Derive per-slide cadence from the CSS animation so this stays in sync
+        // if the duration in global.css changes.
+        const duration = parseFloat(getComputedStyle(slides[0]).animationDuration) || count;
+        const perSlide = duration / count;   // seconds each slide is on screen
+        const visiblePhase = duration * 0.05; // offset where a slide sits fully opaque
+
+        const currentIndex = () => {
+            let best = 0;
+            let bestOpacity = -1;
+            slides.forEach((slide, i) => {
+                const opacity = parseFloat(getComputedStyle(slide).opacity);
+                if (opacity > bestOpacity) {
+                    bestOpacity = opacity;
+                    best = i;
+                }
+            });
+            return best;
+        };
+
+        // Re-phase the running animation so `index` is showing now and the
+        // auto-advance carries on from there. Shifting animation-delay against
+        // the animation's own clock (anim.currentTime) re-seats it without a
+        // restart — the old animation:none/reflow restart trick applied fresh
+        // delays to a stale clock when the restart silently failed (mobile),
+        // leaving every slide transparent until the cycle wrapped around.
+        const seat = (index: number) => {
+            const target = ((index % count) + count) % count;
+
+            const reseat = (node: HTMLElement, i: number) => {
+                const anim = node.getAnimations().find((a) => a instanceof CSSAnimation);
+                if (!anim) return;
+                const step = (i - target + count) % count;
+                const elapsed = Number(anim.currentTime ?? 0) / 1000;
+                // Desired point in the cycle right now; normalized to [0, duration)
+                // so it's always in the animation's active phase. The delay may go
+                // negative — that's fine, and required while the page is younger
+                // than visiblePhase.
+                const phase = visiblePhase - step * perSlide;
+                const at = ((phase % duration) + duration) % duration;
+                node.style.animationDelay = `${elapsed - at}s`;
+            };
+
+            slides.forEach(reseat);
+            dots.forEach((dot, i) => {
+                reseat(dot, i);
+                dot.classList.remove("bg-white", "bg-white/50");
+            });
+        };
+
+        root.querySelector("[data-prev]")?.addEventListener("click", () => seat(currentIndex() - 1));
+        root.querySelector("[data-next]")?.addEventListener("click", () => seat(currentIndex() + 1));
+        dots.forEach((dot, i) => dot.addEventListener("click", () => seat(i)));
+    });
+</script>
