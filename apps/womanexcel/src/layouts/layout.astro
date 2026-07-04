@@ -13,17 +13,33 @@ const { title } = Astro.props
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="shortcut icon" href={Favicon.src} type="image/png">
-		<title>{title}</title>
+		<title>{title} | Woman Excel Conference</title>
 	</head>
 
 	<body class="main-gradient font-serif min-h-dvh flex flex-col">
 		<nav class="flex justify-between items-center px-4 py-2 md:px-10">
 			<a href="/" class="shrink-0"><Image src={Logo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/></a>
 
-			<ul class="text-navy hidden xs:flex gap-4 md:gap-6">
-				<li><a href="/">Home</a></li>
-				<li><a href="#">Contact</a></li>
-			</ul>
+			<!-- One nav list. Above xs it renders inline here; below xs the
+			     container becomes the off-canvas sidebar panel. -->
+			<div class="group" data-sidebar>
+				<div
+					class="xs:hidden fixed inset-0 z-30 bg-navy/50 opacity-0 pointer-events-none group-data-open:opacity-100 group-data-open:pointer-events-auto transition-opacity duration-300"
+					data-sidebar-backdrop
+				></div>
+
+				<div class="max-xs:fixed max-xs:top-0 max-xs:right-0 max-xs:z-40 max-xs:h-dvh max-xs:w-60 max-xs:bg-navy max-xs:flex max-xs:flex-col max-xs:p-6 max-xs:translate-x-full max-xs:group-data-open:translate-x-0 max-xs:transition-transform max-xs:duration-300 max-xs:ease-in-out">
+					<button type="button" aria-label="Close menu" data-sidebar-close class="xs:hidden self-end text-white cursor-pointer p-1">
+						<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+							<path d="M6 6l12 12M18 6L6 18" />
+						</svg>
+					</button>
+					<ul class="flex text-navy gap-4 md:gap-6 max-xs:flex-col max-xs:gap-2 max-xs:mt-4 max-xs:text-white max-xs:text-xl">
+						<li><a class="max-xs:block max-xs:py-2" href="/">Home</a></li>
+						<li><a class="max-xs:block max-xs:py-2" href="#">Contact</a></li>
+					</ul>
+				</div>
+			</div>
 
 			<button
 				type="button"
@@ -37,24 +53,6 @@ const { title } = Astro.props
 				</svg>
 			</button>
 		</nav>
-
-		<div class="group xs:hidden" data-sidebar>
-			<div
-				class="fixed inset-0 z-30 bg-navy/50 opacity-0 pointer-events-none group-data-[open]:opacity-100 group-data-[open]:pointer-events-auto transition-opacity duration-300"
-				data-sidebar-backdrop
-			></div>
-			<aside class="fixed top-0 right-0 z-40 h-dvh w-60 bg-navy text-white flex flex-col p-6 translate-x-full group-data-[open]:translate-x-0 transition-transform duration-300 ease-in-out">
-				<button type="button" aria-label="Close menu" data-sidebar-close class="self-end cursor-pointer p-1">
-					<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-						<path d="M6 6l12 12M18 6L6 18" />
-					</svg>
-				</button>
-				<ul class="flex flex-col gap-2 text-xl mt-4">
-					<li><a class="block py-2" href="/">Home</a></li>
-					<li><a class="block py-2" href="#">Contact</a></li>
-				</ul>
-			</aside>
-		</div>
 
 		<main class="flex-1">
         	<slot/>
