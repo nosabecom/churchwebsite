@@ -1,6 +1,6 @@
-# Church Website
+# RCCG Cornerstone Assembly websites
 
-This repository is a pnpm workspace containing multiple Astro sites for church-related web properties.
+This repository is a pnpm workspace containing multiple Astro websites for RCCG Cornerstone Assembly.
 
 ## Project Overview
 
@@ -66,32 +66,6 @@ Short aliases are also available:
 pnpm b
 pnpm b/c
 pnpm b/w
-```
-
-## Repository Structure
-
-```text
-.
-|-- apps/
-|   |-- churchmain/
-|   |   |-- public/
-|   |   `-- src/
-|   |       |-- assets/
-|   |       |-- components/
-|   |       |-- layouts/
-|   |       |-- pages/
-|   |       `-- styles/
-|   `-- womanexcel/
-|       |-- public/
-|       `-- src/
-|           |-- assets/
-|           |-- components/
-|           |-- layouts/
-|           |-- pages/
-|           `-- styles/
-|-- package.json
-|-- pnpm-lock.yaml
-`-- pnpm-workspace.yaml
 ```
 
 ## Contributing
