@@ -1,14 +1,21 @@
 {
   "name": "@churchwebsite",
+  "private": "true",
+  "type": "module",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
     "dev:churchmain": "pnpm --filter @churchwebsite/churchmain dev",
+    "d/c": "pnpm --filter @churchwebsite/churchmain dev",
     "dev:womanexcel": "pnpm --filter @churchwebsite/womanexcel dev",
+    "d/w": "pnpm --filter @churchwebsite/womanexcel dev",
     "build:churchmain": "pnpm --filter @churchwebsite/churchmain build",
+    "b/c": "pnpm --filter @churchwebsite/churchmain build",
     "build:womanexcel": "pnpm --filter @churchwebsite/womanexcel build",
-    "build": "pnpm -r build"
+    "b/w": "pnpm --filter @churchwebsite/womanexcel build",
+    "build": "pnpm -r build",
+    "b": "pnpm -r build"
   },
   
   "private": true,
