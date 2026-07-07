@@ -128,6 +128,7 @@ Then quickly check the changed pages locally with the matching dev command.
 ### Pull Requests
 
 - Describe what changed and why.
+- Check Linear for related open issues, duplicate work, or follow-up tasks, and link any relevant issues in the PR.
 - Include screenshots for visible UI changes.
 - Note which build command you ran.
 - Mention any content that still needs confirmation from church leadership or event organizers.
