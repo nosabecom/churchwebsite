@@ -28,6 +28,7 @@ if (slides.length === 0) {
 
 <section
     class:list={["slideshow", className]}
+    role="region"
     aria-roledescription="carousel"
     aria-label={label}
     data-shared-slideshow
@@ -66,7 +67,7 @@ if (slides.length === 0) {
                 </svg>
             </button>
 
-            <div class="dots" aria-label="Choose an image">
+            <div class="dots" role="group" aria-label="Choose an image">
                 {slides.map((_, index) => (
                     <button
                         type="button"
@@ -82,65 +83,108 @@ if (slides.length === 0) {
 
 <script>
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const slideshowCleanups = new Map<HTMLElement, () => void>();
 
-    document.querySelectorAll<HTMLElement>("[data-shared-slideshow]").forEach((root) => {
-        if (root.dataset.initialized === "true") return;
-        root.dataset.initialized = "true";
+    const initializeSlideshows = () => {
+        document.querySelectorAll<HTMLElement>("[data-shared-slideshow]").forEach((root) => {
+            if (root.dataset.initialized === "true") return;
+            root.dataset.initialized = "true";
 
-        const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-slide]"));
-        const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-dot]"));
-        const interval = Number(root.dataset.interval) || 8000;
-        let current = 0;
-        let timer: number | undefined;
+            const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-slide]"));
+            const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-dot]"));
+            const interval = Number(root.dataset.interval) || 8000;
+            let current = 0;
+            let timer: number | undefined;
+            let ignoreStickyInteraction = false;
+            const controller = new AbortController();
+            const { signal } = controller;
 
-        const show = (index: number) => {
-            current = (index + slides.length) % slides.length;
-            slides.forEach((slide, slideIndex) => {
-                const active = slideIndex === current;
-                slide.toggleAttribute("data-active", active);
-                slide.setAttribute("aria-hidden", String(!active));
+            const show = (index: number) => {
+                current = (index + slides.length) % slides.length;
+                slides.forEach((slide, slideIndex) => {
+                    const active = slideIndex === current;
+                    slide.toggleAttribute("data-active", active);
+                    slide.setAttribute("aria-hidden", String(!active));
+                });
+                dots.forEach((dot, dotIndex) => {
+                    dot.setAttribute("aria-current", String(dotIndex === current));
+                });
+            };
+
+            const stop = () => {
+                if (timer !== undefined) window.clearInterval(timer);
+                timer = undefined;
+            };
+
+            const start = () => {
+                stop();
+                const userIsInteracting = !ignoreStickyInteraction
+                    && (root.matches(":hover") || root.contains(document.activeElement));
+                if (slides.length > 1 && !reducedMotion.matches && !document.hidden && !userIsInteracting) {
+                    timer = window.setInterval(() => show(current + 1), interval);
+                }
+            };
+
+            root.addEventListener("pointerdown", (event) => {
+                // Touch and pen taps can leave sticky :hover and button focus
+                // behind. Those states should not permanently stop autoplay.
+                ignoreStickyInteraction = event.pointerType !== "mouse";
+            }, { signal });
+            root.addEventListener("pointerup", () => {
+                if (ignoreStickyInteraction) start();
+            }, { signal });
+            root.addEventListener("pointercancel", () => {
+                if (ignoreStickyInteraction) start();
+            }, { signal });
+            root.addEventListener("keydown", () => {
+                ignoreStickyInteraction = false;
+            }, { signal });
+            root.querySelector("[data-prev]")?.addEventListener("click", () => {
+                show(current - 1);
+                start();
+            }, { signal });
+            root.querySelector("[data-next]")?.addEventListener("click", () => {
+                show(current + 1);
+                start();
+            }, { signal });
+            dots.forEach((dot, index) => dot.addEventListener("click", () => {
+                show(index);
+                start();
+            }, { signal }));
+
+            root.addEventListener("mouseenter", stop, { signal });
+            root.addEventListener("mouseleave", start, { signal });
+            root.addEventListener("focusin", (event) => {
+                if (event.target instanceof Element && event.target.matches(":focus-visible")) {
+                    ignoreStickyInteraction = false;
+                }
+                stop();
+            }, { signal });
+            root.addEventListener("focusout", (event) => {
+                if (!root.contains(event.relatedTarget as Node | null)) {
+                    ignoreStickyInteraction = false;
+                    start();
+                }
+            }, { signal });
+            reducedMotion.addEventListener("change", start, { signal });
+            document.addEventListener("visibilitychange", start, { signal });
+            slideshowCleanups.set(root, () => {
+                stop();
+                controller.abort();
+                root.removeAttribute("data-initialized");
             });
-            dots.forEach((dot, dotIndex) => {
-                dot.setAttribute("aria-current", String(dotIndex === current));
-            });
-        };
-
-        const stop = () => {
-            if (timer !== undefined) window.clearInterval(timer);
-            timer = undefined;
-        };
-
-        const start = () => {
-            stop();
-            const userIsInteracting = root.matches(":hover") || root.contains(document.activeElement);
-            if (slides.length > 1 && !reducedMotion.matches && !document.hidden && !userIsInteracting) {
-                timer = window.setInterval(() => show(current + 1), interval);
-            }
-        };
-
-        root.querySelector("[data-prev]")?.addEventListener("click", () => {
-            show(current - 1);
             start();
         });
-        root.querySelector("[data-next]")?.addEventListener("click", () => {
-            show(current + 1);
-            start();
-        });
-        dots.forEach((dot, index) => dot.addEventListener("click", () => {
-            show(index);
-            start();
-        }));
+    };
 
-        root.addEventListener("mouseenter", stop);
-        root.addEventListener("mouseleave", start);
-        root.addEventListener("focusin", stop);
-        root.addEventListener("focusout", (event) => {
-            if (!root.contains(event.relatedTarget as Node | null)) start();
-        });
-        reducedMotion.addEventListener("change", start);
-        document.addEventListener("visibilitychange", start);
-        start();
-    });
+    const cleanupSlideshows = () => {
+        slideshowCleanups.forEach((cleanup) => cleanup());
+        slideshowCleanups.clear();
+    };
+
+    initializeSlideshows();
+    document.addEventListener("astro:page-load", initializeSlideshows);
+    document.addEventListener("astro:before-swap", cleanupSlideshows);
 </script>
 
 <style>
@@ -151,8 +195,7 @@ if (slides.length === 0) {
         aspect-ratio: var(--slideshow-aspect-ratio, auto);
     }
 
-    .slides,
-    .slides::after {
+    .slides {
         position: absolute;
         inset: 0;
     }
@@ -191,8 +234,8 @@ if (slides.length === 0) {
         width: 3rem;
         height: 3rem;
         padding: 0;
-        color: white;
-        background: rgb(8 42 78 / 60%);
+        color: var(--slideshow-control-color, white);
+        background: var(--slideshow-control-bg, rgb(0 0 0 / 50%));
         border: 0;
         border-radius: 9999px;
         cursor: pointer;
@@ -202,7 +245,7 @@ if (slides.length === 0) {
 
     .arrow:hover,
     .arrow:focus-visible {
-        background: rgb(8 42 78 / 90%);
+        background: var(--slideshow-control-bg-hover, rgb(0 0 0 / 75%));
     }
 
     .arrow svg {
@@ -230,7 +273,7 @@ if (slides.length === 0) {
         width: 0.5rem;
         height: 0.5rem;
         padding: 0;
-        background: rgb(255 255 255 / 50%);
+        background: var(--slideshow-dot-bg, rgb(255 255 255 / 50%));
         border: 0;
         border-radius: 9999px;
         cursor: pointer;
@@ -238,7 +281,7 @@ if (slides.length === 0) {
 
     .dots button:hover,
     .dots button[aria-current="true"] {
-        background: white;
+        background: var(--slideshow-dot-bg-active, white);
     }
 
     .slideshow:hover .arrow,

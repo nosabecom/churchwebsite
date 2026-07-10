@@ -90,6 +90,10 @@ const slides = [
 
 Keep the images in the consuming app's `public/` directory. This ensures each
 site deploys with its own content while the component behavior stays shared.
+The controls use neutral colors by default and can be themed from an app with
+the `--slideshow-control-bg`, `--slideshow-control-bg-hover`,
+`--slideshow-control-color`, `--slideshow-dot-bg`, and
+`--slideshow-dot-bg-active` custom properties.
 
 ## Contributing
 

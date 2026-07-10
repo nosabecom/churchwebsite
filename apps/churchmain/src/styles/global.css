@@ -6,6 +6,11 @@ html, body {
     height: 100%;
 }
 
+.churchmain-slideshow {
+    --slideshow-control-bg: rgb(12 74 110 / 65%);
+    --slideshow-control-bg-hover: rgb(12 74 110 / 90%);
+}
+
 @utility context-menu {
     @apply invisible absolute min-w-44 pt-2 opacity-0 space-y-1 rounded-lg bg-white p-2 shadow-lg ring-1 ring-black/10;
     transition-property: opacity, visibility;

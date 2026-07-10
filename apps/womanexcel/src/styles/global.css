@@ -36,6 +36,11 @@
     background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
 }
 
+.woman-excel-slideshow {
+    --slideshow-control-bg: rgb(8 42 78 / 60%);
+    --slideshow-control-bg-hover: rgb(8 42 78 / 90%);
+}
+
 @utility speaker-card {
     @apply flex flex-col items-center relative shrink-0 mr-8
 }
