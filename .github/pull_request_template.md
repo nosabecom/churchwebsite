@@ -2,16 +2,12 @@
 
 - [ ] `apps/churchmain` - RCCG Cornerstone Assembly
 - [ ] `apps/womanexcel` - Woman Excel
-- [ ] Shared workspace/configuration
+- [ ] Both
 - [ ] Documentation only
 
 ## Summary
 
 <!-- What changed, and why? -->
-
-## Verification
-
-<!-- List the commands you ran, such as pnpm build or an app-specific build. -->
 
 ## Linear
 
