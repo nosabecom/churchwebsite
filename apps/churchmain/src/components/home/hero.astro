@@ -1,6 +1,5 @@
 ---
-import Slideshow from "@churchwebsite/slideshow";
-import Quote from "@churchwebsite/quote";
+import { Quote, Slideshow } from "@churchwebsite/ui";
 
 // Add more church-owned images here as they are placed in public/images.
 const slides = [
@@ -17,12 +16,10 @@ const slides = [
     aspectRatio="16 / 9"
     class="churchmain-slideshow mx-4 my-8 min-h-96 max-w-400 rounded-2xl shadow-xl md:min-h-80 xl:mx-auto"
 >
-    <div class="absolute inset-0 bg-black/25"></div>
-
     <div class="absolute inset-0 z-10 flex items-end justify-center px-6 pt-6 pb-16 md:px-12 md:pt-12 md:pb-20">
         <Quote
-            quote="In the beginning was the Word, and the Word was with God, and the Word was God"
-            citation="John 1:1"
+            quote="The stone which the builders rejected has become the chief cornerstone."
+            citation="Mark 12:10"
             class="churchmain-quote max-w-3xl"
         />
     </div>

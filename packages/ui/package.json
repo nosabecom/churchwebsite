@@ -1,9 +1,9 @@
 {
-  "name": "@churchwebsite/quote",
+  "name": "@churchwebsite/ui",
   "type": "module",
   "private": true,
   "exports": {
-    ".": "./src/Quote.astro"
+    ".": "./src/index.ts"
   },
   "peerDependencies": {
     "astro": ">=5"

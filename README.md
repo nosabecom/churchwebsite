@@ -6,8 +6,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 - `apps/churchmain` is the main RCCG Cornerstone Assembly site.
 - `apps/womanexcel` is the Woman Excel site.
-- `packages/slideshow` contains the slideshow component shared by both sites.
-- `packages/quote` contains the themed quotation card shared by both sites.
+- `packages/ui` contains the UI components shared by both sites.
 - Shared dependency versions are managed from the root `pnpm-workspace.yaml` catalog.
 - Each app is an Astro project using Tailwind CSS through `@tailwindcss/vite`.
 - Static public assets live in each app's `public/` directory.
@@ -74,11 +73,11 @@ pnpm b/w
 
 The workspace already includes `packages/*`. Shared Astro components can be
 published from a package there and linked into an app with a `workspace:*`
-dependency. The slideshow follows this pattern:
+dependency. The shared UI package exposes both components:
 
 ```astro
 ---
-import Slideshow from "@churchwebsite/slideshow";
+import { Quote, Slideshow } from "@churchwebsite/ui";
 
 const slides = [
   { src: "/images/photo-1.jpg", alt: "People worshipping" },
@@ -87,6 +86,8 @@ const slides = [
 ---
 
 <Slideshow slides={slides} interval={8000} aspectRatio="16 / 9" />
+
+<Quote quote="In the beginning was the Word..." citation="John 1:1" />
 ```
 
 Keep the images in the consuming app's `public/` directory. This ensures each
@@ -96,17 +97,7 @@ the `--slideshow-control-bg`, `--slideshow-control-bg-hover`,
 `--slideshow-control-color`, `--slideshow-dot-bg`, and
 `--slideshow-dot-bg-active` custom properties.
 
-The shared quote card follows the same pattern:
-
-```astro
----
-import Quote from "@churchwebsite/quote";
----
-
-<Quote quote="In the beginning was the Word..." citation="John 1:1" />
-```
-
-Apps can theme it with the `--quote-bg`, `--quote-color`, `--quote-padding`,
+Apps can theme the quote card with the `--quote-bg`, `--quote-color`, `--quote-padding`,
 `--quote-font-size`, `--quote-radius`, and `--quote-mark-size` custom properties.
 
 ## Contributing
