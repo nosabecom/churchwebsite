@@ -17,19 +17,16 @@ html, body {
     @apply relative
 }
 
-.context-menu-trigger:hover > .context-menu,
-.context-menu-trigger:focus-within > .context-menu {
+.context-menu-trigger:hover > .context-menu {
     @apply visible opacity-100;
     transition-delay: 0ms;
 }
 
-.context-menu > .context-menu-trigger:hover > .context-menu,
-.context-menu > .context-menu-trigger:focus-within > .context-menu {
+.context-menu > .context-menu-trigger:hover > .context-menu {
     transition-duration: 0ms;
 }
 
-.context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu,
-.context-menu:has(> li:focus-within) > .context-menu-trigger:not(:focus-within) > .context-menu {
+.context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu {
     @apply invisible opacity-0;
     transition-duration: 0ms;
     transition-delay: 0ms;
@@ -48,7 +45,6 @@ html, body {
     @apply opacity-0 transition-opacity;
 }
 
-.context-menu > .context-menu-trigger:hover > .context-menu-item::after,
-.context-menu > .context-menu-trigger:focus-within > .context-menu-item::after {
+.context-menu > .context-menu-trigger:hover > .context-menu-item::after {
     @apply opacity-100;
 }
