@@ -2,7 +2,7 @@
 
 - [ ] `apps/churchmain` - RCCG Cornerstone Assembly
 - [ ] `apps/womanexcel` - Woman Excel
-- [ ] Shared workspace/configuration
+- [ ] Both
 - [ ] Documentation only
 
 ## Summary
