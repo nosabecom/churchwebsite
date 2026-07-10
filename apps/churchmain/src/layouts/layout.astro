@@ -13,7 +13,23 @@ import Logo from '../assets/logo.png'
         <link rel="shortcut icon" href={Logo.src} type="image/png">
 		<title>RCCG Cornerstone Assembly</title>
 	</head>
-	<body class="">
+	<body class="bg-sky-900 min-h-dvh flex flex-col">
+        <nav class="bg-white py-2.5 flex justify-around items-center">
+            <Image class="w-18 h-auto" src={Logo} alt="Logo" />
 
+            <ul class="text-bold">
+                <li><a href="/">Home</a></li>
+            </ul>
+
+            <a class="" href="#">Give</a>
+        </nav>
+
+        <main class="flex-1">
+            <slot/>
+        </main>
+
+        <footer class="bg-black">
+            <p>© RCCG Cornerstone Assembly</p>
+        </footer>
 	</body>
 </html>
