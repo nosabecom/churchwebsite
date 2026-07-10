@@ -6,6 +6,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 - `apps/churchmain` is the main RCCG Cornerstone Assembly site.
 - `apps/womanexcel` is the Woman Excel site.
+- `packages/slideshow` contains the slideshow component shared by both sites.
 - Shared dependency versions are managed from the root `pnpm-workspace.yaml` catalog.
 - Each app is an Astro project using Tailwind CSS through `@tailwindcss/vite`.
 - Static public assets live in each app's `public/` directory.
@@ -67,6 +68,28 @@ pnpm b
 pnpm b/c
 pnpm b/w
 ```
+
+## Shared components
+
+The workspace already includes `packages/*`. Shared Astro components can be
+published from a package there and linked into an app with a `workspace:*`
+dependency. The slideshow follows this pattern:
+
+```astro
+---
+import Slideshow from "@churchwebsite/slideshow";
+
+const slides = [
+  { src: "/images/photo-1.jpg", alt: "People worshipping" },
+  { src: "/images/photo-2.jpg", alt: "The church building" },
+];
+---
+
+<Slideshow slides={slides} interval={8000} aspectRatio="16 / 9" />
+```
+
+Keep the images in the consuming app's `public/` directory. This ensures each
+site deploys with its own content while the component behavior stays shared.
 
 ## Contributing
 

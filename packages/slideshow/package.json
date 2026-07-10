@@ -1,0 +1,11 @@
+{
+  "name": "@churchwebsite/slideshow",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/Slideshow.astro"
+  },
+  "peerDependencies": {
+    "astro": ">=5"
+  }
+}
