@@ -9,10 +9,6 @@
 
 <!-- What changed, and why? -->
 
-## Verification
-
-<!-- List the commands you ran, such as pnpm build or an app-specific build. -->
-
 ## Linear
 
 <!-- Check Linear for related open issues, duplicate work, or follow-up tasks. Link any relevant issues here. -->
