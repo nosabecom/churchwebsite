@@ -1,5 +1,6 @@
 ---
 import Slideshow from "@churchwebsite/slideshow";
+import Quote from "@churchwebsite/quote";
 
 const slides = Array.from({ length: 10 }, (_, index) => ({
     src: `/images/placeholds/photo-${index + 1}.jpg`,
@@ -17,11 +18,10 @@ const slides = Array.from({ length: 10 }, (_, index) => ({
     <div class="relative z-10 flex flex-col items-center mt-1.5 md:m-0 md:gap-6 pb-20 pt-10">
         <p class="border-none rounded-xl bg-navy text-white text-[13px] px-3 py-1.5 mb-8.5 md:mb-5.5 font-sans">Theme for this year</p>
         <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="The Word">
-        <div class="flex flex-col bg-berry text-white md:text-xl text-lg border-none rounded-xl px-6 py-5 md:px-12 md:py-6 my-6 mx-8 md:m-0 max-w-[92%]">
-            <img class="w-6 md:w-12 pb-0.5" src="/images/quotes/open.svg" alt="">
-            <p>In the beginning was the Word, and the Word was with God, and the Word was God</p>
-            <img class="w-6 md:w-12 self-end pt-0.5" src="/images/quotes/close.svg" alt="">
-            <p class="italic">— John 1:1</p>
-        </div>
+        <Quote
+            quote="In the beginning was the Word, and the Word was with God, and the Word was God"
+            citation="John 1:1"
+            class="woman-excel-quote my-6 mx-8 md:m-0 max-w-[92%]"
+        />
     </div>
 </Slideshow>

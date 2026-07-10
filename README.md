@@ -7,6 +7,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 - `apps/churchmain` is the main RCCG Cornerstone Assembly site.
 - `apps/womanexcel` is the Woman Excel site.
 - `packages/slideshow` contains the slideshow component shared by both sites.
+- `packages/quote` contains the themed quotation card shared by both sites.
 - Shared dependency versions are managed from the root `pnpm-workspace.yaml` catalog.
 - Each app is an Astro project using Tailwind CSS through `@tailwindcss/vite`.
 - Static public assets live in each app's `public/` directory.
@@ -94,6 +95,19 @@ The controls use neutral colors by default and can be themed from an app with
 the `--slideshow-control-bg`, `--slideshow-control-bg-hover`,
 `--slideshow-control-color`, `--slideshow-dot-bg`, and
 `--slideshow-dot-bg-active` custom properties.
+
+The shared quote card follows the same pattern:
+
+```astro
+---
+import Quote from "@churchwebsite/quote";
+---
+
+<Quote quote="In the beginning was the Word..." citation="John 1:1" />
+```
+
+Apps can theme it with the `--quote-bg`, `--quote-color`, `--quote-padding`,
+`--quote-font-size`, `--quote-radius`, and `--quote-mark-size` custom properties.
 
 ## Contributing
 

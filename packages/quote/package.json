@@ -1,0 +1,11 @@
+{
+  "name": "@churchwebsite/quote",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/Quote.astro"
+  },
+  "peerDependencies": {
+    "astro": ">=5"
+  }
+}

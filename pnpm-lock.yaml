@@ -28,6 +28,9 @@ importers:
 
   apps/churchmain:
     dependencies:
+      '@churchwebsite/quote':
+        specifier: workspace:*
+        version: link:../../packages/quote
       '@churchwebsite/slideshow':
         specifier: workspace:*
         version: link:../../packages/slideshow
@@ -49,6 +52,9 @@ importers:
 
   apps/womanexcel:
     dependencies:
+      '@churchwebsite/quote':
+        specifier: workspace:*
+        version: link:../../packages/quote
       '@churchwebsite/slideshow':
         specifier: workspace:*
         version: link:../../packages/slideshow
@@ -67,6 +73,12 @@ importers:
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.2
+
+  packages/quote:
+    dependencies:
+      astro:
+        specifier: '>=5'
+        version: 7.0.6(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)
 
   packages/slideshow:
     dependencies:

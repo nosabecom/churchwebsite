@@ -41,6 +41,20 @@
     --slideshow-control-bg-hover: rgb(8 42 78 / 90%);
 }
 
+.woman-excel-quote {
+    --quote-bg: var(--color-berry);
+    --quote-color: white;
+    --quote-font-size: 1.125rem;
+    --quote-padding: 1.25rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .woman-excel-quote {
+        --quote-font-size: 1.25rem;
+        --quote-padding: 1.5rem 3rem;
+    }
+}
+
 @utility speaker-card {
     @apply flex flex-col items-center relative shrink-0 mr-8
 }

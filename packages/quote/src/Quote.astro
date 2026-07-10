@@ -1,0 +1,68 @@
+---
+export interface Props {
+    quote: string;
+    citation: string;
+    class?: string;
+}
+
+const { quote, citation, class: className } = Astro.props;
+---
+
+<figure class:list={["quote", className]}>
+    <blockquote>
+        <svg class="quote-mark" aria-hidden="true" focusable="false" viewBox="0 0 310 310">
+            <path d="M70.62 54.59 20 155.84v101.25h101.25V155.84H70.62l50.63-101.25zM290 52.91h-50.62l-50.63 101.25v101.25H290V154.16h-50.62z" />
+        </svg>
+
+        <p>{quote}</p>
+
+        <svg class="quote-mark closing" aria-hidden="true" focusable="false" viewBox="0 0 310 310">
+            <path d="M70.62 54.59 20 155.84v101.25h101.25V155.84H70.62l50.63-101.25zM290 52.91h-50.62l-50.63 101.25v101.25H290V154.16h-50.62z" />
+        </svg>
+    </blockquote>
+
+    <figcaption>— <cite>{citation}</cite></figcaption>
+</figure>
+
+<style>
+    .quote {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        margin: 0;
+        padding: var(--quote-padding, 1.5rem 2rem);
+        color: var(--quote-color, white);
+        font-size: var(--quote-font-size, clamp(1.125rem, 2vw, 1.5rem));
+        background: var(--quote-bg, rgb(0 0 0 / 70%));
+        border-radius: var(--quote-radius, 0.75rem);
+    }
+
+    blockquote {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+    }
+
+    blockquote p {
+        margin: 0;
+    }
+
+    .quote-mark {
+        width: var(--quote-mark-size, clamp(1.5rem, 4vw, 3rem));
+        height: auto;
+        padding-bottom: 0.125rem;
+        fill: currentColor;
+    }
+
+    .quote-mark.closing {
+        align-self: flex-end;
+        padding-top: 0.125rem;
+        padding-bottom: 0;
+        transform: rotate(180deg);
+    }
+
+    figcaption {
+        margin-top: 0.125rem;
+        font-style: italic;
+    }
+</style>
