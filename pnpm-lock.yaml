@@ -31,6 +31,9 @@ importers:
       '@tailwindcss/vite':
         specifier: 'catalog:'
         version: 4.3.2(vite@8.1.3(esbuild@0.28.1)(jiti@2.7.0))
+      '@vercel/analytics':
+        specifier: 'catalog:'
+        version: 2.0.1
       astro:
         specifier: 'catalog:'
         version: 7.0.6(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(jiti@2.7.0)

@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { Image } from 'astro:assets'
+import Analytics from '@vercel/analytics/astro'
 import Logo from '../assets/logo.png'
 ---
 
@@ -14,6 +15,8 @@ import Logo from '../assets/logo.png'
 		<title>RCCG Cornerstone Assembly</title>
 	</head>
 	<body class="bg-sky-900 min-h-dvh flex flex-col">
+        <Analytics />
+
         <nav class="bg-white text-lg py-2.5 px-4 md:px-40 flex justify-between items-center">
             <a href="/"><Image class="w-18 h-auto" src={Logo} alt="Logo" /></a>
 

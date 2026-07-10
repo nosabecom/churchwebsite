@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:",
+    "@vercel/analytics": "catalog:",
     "astro": "catalog:",
     "sharp": "catalog:",
     "tailwindcss": "catalog:"
