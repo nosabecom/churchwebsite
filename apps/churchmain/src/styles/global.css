@@ -5,3 +5,29 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
+@utility context-menu {
+    @apply invisible absolute min-w-44 pt-2 opacity-0 space-y-1 rounded-lg bg-white p-2 shadow-lg ring-1 ring-black/10;
+    transition-property: opacity, visibility;
+    transition-duration: 150ms;
+    transition-delay: 200ms;
+}
+
+@utility context-menu-trigger {
+    @apply relative
+}
+
+.context-menu-trigger:hover > .context-menu,
+.context-menu-trigger:focus-within > .context-menu {
+    @apply visible opacity-100;
+    transition-delay: 0ms;
+}
+
+.context-menu .context-menu {
+    transition-duration: 0ms;
+    transition-delay: 0ms;
+}
+
+@utility context-menu-item {
+    @apply block rounded-md px-3 py-2 hover:bg-slate-100 focus:bg-slate-100
+}
