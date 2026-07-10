@@ -14,22 +14,26 @@ import Logo from '../assets/logo.png'
 		<title>RCCG Cornerstone Assembly</title>
 	</head>
 	<body class="bg-sky-900 min-h-dvh flex flex-col">
-        <nav class="bg-white py-2.5 flex justify-around items-center">
+        <nav class="bg-white py-2.5 md:px-100 flex justify-between items-center">
             <Image class="w-18 h-auto" src={Logo} alt="Logo" />
 
             <ul class="">
                 <li><a href="/">Home</a></li>
             </ul>
 
-            <a class="" href="#">Give</a>
+            <a class="bg-red-600 py-2 px-4 rounded-lg text-white" href="#">Give</a>
         </nav>
 
         <main class="flex-1">
             <slot/>
         </main>
 
-        <footer class="bg-black">
+        <footer class="bg-black text-white flex justify-center py-3">
             <p>© RCCG Cornerstone Assembly</p>
+
+            <div>
+                <Image src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/instagram/mono.svg" alt="logo" inferSize={true}/>
+            </div>
         </footer>
 	</body>
 </html>
