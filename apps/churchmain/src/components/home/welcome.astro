@@ -23,11 +23,6 @@ const gatherings = [
         aria-label="Church services"
         data-service-carousel
     >
-        <div class="service-photo" aria-hidden="true">
-            <img src="/images/placeholds/1.jpg" alt="" />
-            <div class="photo-wash"></div>
-        </div>
-
         <div class="service-details">
             <p class="eyebrow">Worship with us</p>
 
@@ -116,51 +111,31 @@ const gatherings = [
 
 <style>
     .service-section {
+        display: flex;
+        justify-content: center;
         padding: 2rem 1rem 5rem;
     }
 
     .service-carousel {
-        display: grid;
         width: 100%;
-        max-width: 64rem;
-        min-height: 31rem;
-        margin: 0 auto;
+        max-width: 34rem;
+        min-height: 34rem;
         overflow: hidden;
         background: #f8fafc;
+        border-top: 0.4rem solid #dc2626;
         border-radius: 1rem;
         box-shadow: 0 1.5rem 3.5rem rgb(3 22 35 / 25%);
-    }
-
-    .service-photo {
-        position: relative;
-        min-height: 12rem;
-        overflow: hidden;
-        background: #075985;
-    }
-
-    .service-photo img,
-    .photo-wash {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    .service-photo img {
-        object-fit: cover;
-        object-position: center;
-    }
-
-    .photo-wash {
-        background: linear-gradient(135deg, rgb(3 105 161 / 68%), rgb(12 74 110 / 25%));
     }
 
     .service-details {
         position: relative;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        min-height: 34rem;
         padding: clamp(2rem, 6vw, 4.5rem);
         color: #0f172a;
+        text-align: center;
     }
 
     .eyebrow {
@@ -174,6 +149,7 @@ const gatherings = [
 
     .slides {
         position: relative;
+        width: 100%;
         min-height: 9.5rem;
     }
 
@@ -182,7 +158,7 @@ const gatherings = [
         inset: 0;
         opacity: 0;
         pointer-events: none;
-        transform: translateY(0.5rem);
+        transform: translateX(1rem);
         transition: opacity 350ms ease, transform 350ms ease;
     }
 
@@ -201,7 +177,7 @@ const gatherings = [
 
     .service-slide p {
         max-width: 31rem;
-        margin: 0;
+        margin: 0 auto;
         color: #334155;
         font-size: clamp(1.05rem, 2.5vw, 1.3rem);
         line-height: 1.55;
@@ -218,7 +194,7 @@ const gatherings = [
     .map-link {
         display: inline-flex;
         align-items: center;
-        align-self: flex-start;
+        align-self: center;
         gap: 0.8rem;
         margin-top: 1.35rem;
         color: #dc2626;
@@ -297,18 +273,6 @@ const gatherings = [
     @media (min-width: 700px) {
         .service-section {
             padding-block: 3rem 6rem;
-        }
-
-        .service-carousel {
-            grid-template-columns: minmax(14rem, 32%) 1fr;
-        }
-
-        .service-photo {
-            min-height: 31rem;
-        }
-
-        .service-photo img {
-            object-position: 42% center;
         }
     }
 
