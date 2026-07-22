@@ -20,13 +20,13 @@ const gatherings = [
     aria-label="Service times and location"
 >
     <div
-        class="min-h-[34rem] w-full max-w-xl overflow-hidden rounded-2xl border-t-4 border-red-600 bg-slate-50 shadow-2xl shadow-sky-950/30"
+        class="min-h-136 w-full max-w-xl overflow-hidden rounded-2xl bg-slate-50 shadow-2xl shadow-sky-950/30"
         role="region"
         aria-roledescription="carousel"
         aria-label="Church services"
         data-service-carousel
     >
-        <div class="relative flex min-h-[34rem] flex-col items-center px-8 py-10 text-center text-slate-900 sm:p-12 md:p-16">
+        <div class="relative flex min-h-136 flex-col items-center px-8 py-10 text-center text-slate-900 sm:p-12 md:p-16">
             <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
                 Worship with us
             </p>
@@ -34,12 +34,12 @@ const gatherings = [
             <div class="relative min-h-40 w-full" aria-live="off">
                 {gatherings.map((gathering, index) => (
                     <article
-                        class="pointer-events-none absolute inset-0 translate-x-4 opacity-0 transition duration-[350ms] ease-in-out data-active:pointer-events-auto data-active:translate-x-0 data-active:opacity-100 motion-reduce:transition-none"
+                        class="pointer-events-none absolute inset-0 translate-x-4 opacity-0 transition duration-350 ease-in-out data-active:pointer-events-auto data-active:translate-x-0 data-active:opacity-100 motion-reduce:transition-none"
                         data-service-slide
                         data-active={index === 0 ? "" : undefined}
                         aria-hidden={index === 0 ? "false" : "true"}
                     >
-                        <h2 class="mb-4 text-4xl leading-tight font-bold text-sky-900 sm:text-5xl">
+                        <h2 class="mb-4 text-3xl leading-tight font-bold text-sky-900">
                             {gathering.title}
                         </h2>
                         <p class="mx-auto max-w-lg text-lg leading-relaxed text-slate-700 sm:text-xl">
@@ -114,18 +114,18 @@ const gatherings = [
 
         const start = () => {
             stop();
-            if (!reducedMotion.matches && !document.hidden && !carousel.matches(":hover") && !carousel.contains(document.activeElement)) {
-                timer = window.setInterval(() => show(current + 1), 8000);
+            if (!reducedMotion.matches && !document.hidden) {
+                timer = window.setInterval(() => show(current + 1), 6000);
             }
         };
 
-        carousel.querySelector("[data-service-prev]")?.addEventListener("click", () => show(current - 1));
-        carousel.querySelector("[data-service-next]")?.addEventListener("click", () => show(current + 1));
-        carousel.addEventListener("mouseenter", stop);
-        carousel.addEventListener("mouseleave", start);
-        carousel.addEventListener("focusin", stop);
-        carousel.addEventListener("focusout", (event) => {
-            if (!carousel.contains(event.relatedTarget as Node | null)) start();
+        carousel.querySelector("[data-service-prev]")?.addEventListener("click", () => {
+            show(current - 1);
+            start();
+        });
+        carousel.querySelector("[data-service-next]")?.addEventListener("click", () => {
+            show(current + 1);
+            start();
         });
         reducedMotion.addEventListener("change", start);
         document.addEventListener("visibilitychange", start);
