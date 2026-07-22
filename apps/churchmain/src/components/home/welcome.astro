@@ -1,0 +1,320 @@
+---
+const gatherings = [
+    {
+        title: "Sunday Service",
+        schedule: "We meet every Sunday at 9:00am. Come and join us.",
+    },
+    {
+        title: "Mid-week Service",
+        schedule: "We meet every Wednesday at 7:00pm for prayer and Bible study.",
+    },
+    {
+        title: "Power Night",
+        schedule: "Our monthly vigil is held on the last Friday of the month at 10:00pm.",
+    },
+];
+---
+
+<section class="service-section" aria-label="Service times and location">
+    <div
+        class="service-carousel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Church services"
+        data-service-carousel
+    >
+        <div class="service-photo" aria-hidden="true">
+            <img src="/images/placeholds/1.jpg" alt="" />
+            <div class="photo-wash"></div>
+        </div>
+
+        <div class="service-details">
+            <p class="eyebrow">Worship with us</p>
+
+            <div class="slides" aria-live="off">
+                {gatherings.map((gathering, index) => (
+                    <article
+                        class="service-slide"
+                        data-service-slide
+                        data-active={index === 0 ? "" : undefined}
+                        aria-hidden={index === 0 ? "false" : "true"}
+                    >
+                        <h2>{gathering.title}</h2>
+                        <p>{gathering.schedule}</p>
+                    </article>
+                ))}
+            </div>
+
+            <address>
+                70-3904 Millar Avenue<br />
+                Saskatoon, SK S7P 0B1
+            </address>
+
+            <a
+                class="map-link"
+                href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
+                target="_blank"
+                rel="noreferrer"
+            >
+                <span class="map-pin" aria-hidden="true"></span>
+                Find us on the map
+            </a>
+
+            <div class="carousel-controls">
+                <button type="button" aria-label="Previous service" data-service-prev>←</button>
+                <p aria-hidden="true"><span data-service-current>01</span> / 03</p>
+                <button type="button" aria-label="Next service" data-service-next>→</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    document.querySelectorAll<HTMLElement>("[data-service-carousel]").forEach((carousel) => {
+        const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-service-slide]"));
+        const counter = carousel.querySelector<HTMLElement>("[data-service-current]");
+        let current = 0;
+        let timer: number | undefined;
+
+        const show = (index: number) => {
+            current = (index + slides.length) % slides.length;
+            slides.forEach((slide, slideIndex) => {
+                const active = slideIndex === current;
+                slide.toggleAttribute("data-active", active);
+                slide.setAttribute("aria-hidden", String(!active));
+            });
+            if (counter) counter.textContent = String(current + 1).padStart(2, "0");
+        };
+
+        const stop = () => {
+            window.clearInterval(timer);
+            timer = undefined;
+        };
+
+        const start = () => {
+            stop();
+            if (!reducedMotion.matches && !document.hidden && !carousel.matches(":hover") && !carousel.contains(document.activeElement)) {
+                timer = window.setInterval(() => show(current + 1), 8000);
+            }
+        };
+
+        carousel.querySelector("[data-service-prev]")?.addEventListener("click", () => show(current - 1));
+        carousel.querySelector("[data-service-next]")?.addEventListener("click", () => show(current + 1));
+        carousel.addEventListener("mouseenter", stop);
+        carousel.addEventListener("mouseleave", start);
+        carousel.addEventListener("focusin", stop);
+        carousel.addEventListener("focusout", (event) => {
+            if (!carousel.contains(event.relatedTarget as Node | null)) start();
+        });
+        reducedMotion.addEventListener("change", start);
+        document.addEventListener("visibilitychange", start);
+        start();
+    });
+</script>
+
+<style>
+    .service-section {
+        padding: 2rem 1rem 5rem;
+    }
+
+    .service-carousel {
+        display: grid;
+        width: 100%;
+        max-width: 64rem;
+        min-height: 31rem;
+        margin: 0 auto;
+        overflow: hidden;
+        background: #f8fafc;
+        border-radius: 1rem;
+        box-shadow: 0 1.5rem 3.5rem rgb(3 22 35 / 25%);
+    }
+
+    .service-photo {
+        position: relative;
+        min-height: 12rem;
+        overflow: hidden;
+        background: #075985;
+    }
+
+    .service-photo img,
+    .photo-wash {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .service-photo img {
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .photo-wash {
+        background: linear-gradient(135deg, rgb(3 105 161 / 68%), rgb(12 74 110 / 25%));
+    }
+
+    .service-details {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(2rem, 6vw, 4.5rem);
+        color: #0f172a;
+    }
+
+    .eyebrow {
+        margin: 0 0 1rem;
+        color: #b91c1c;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+
+    .slides {
+        position: relative;
+        min-height: 9.5rem;
+    }
+
+    .service-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(0.5rem);
+        transition: opacity 350ms ease, transform 350ms ease;
+    }
+
+    .service-slide[data-active] {
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+    }
+
+    h2 {
+        margin: 0 0 1rem;
+        color: #0c4a6e;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        line-height: 1.05;
+    }
+
+    .service-slide p {
+        max-width: 31rem;
+        margin: 0;
+        color: #334155;
+        font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+        line-height: 1.55;
+    }
+
+    address {
+        margin-top: 1.5rem;
+        color: #334155;
+        font-size: 1.05rem;
+        font-style: normal;
+        line-height: 1.65;
+    }
+
+    .map-link {
+        display: inline-flex;
+        align-items: center;
+        align-self: flex-start;
+        gap: 0.8rem;
+        margin-top: 1.35rem;
+        color: #dc2626;
+        font-size: 1.05rem;
+        font-weight: 650;
+        text-decoration: none;
+    }
+
+    .map-link:hover,
+    .map-link:focus-visible {
+        text-decoration: underline;
+        text-underline-offset: 0.25rem;
+    }
+
+    .map-pin {
+        position: relative;
+        width: 1.35rem;
+        height: 1.35rem;
+        flex: 0 0 auto;
+        background: #dc2626;
+        border-radius: 999px 999px 999px 0;
+        transform: rotate(-45deg);
+    }
+
+    .map-pin::after {
+        position: absolute;
+        inset: 0.42rem;
+        content: "";
+        background: white;
+        border-radius: 999px;
+    }
+
+    .carousel-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: auto;
+        padding-top: 2rem;
+    }
+
+    .carousel-controls button {
+        display: grid;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0;
+        color: #0c4a6e;
+        background: transparent;
+        border: 1px solid #94a3b8;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 1.05rem;
+        place-items: center;
+    }
+
+    .carousel-controls button:hover,
+    .carousel-controls button:focus-visible {
+        color: white;
+        background: #0c4a6e;
+        border-color: #0c4a6e;
+    }
+
+    .carousel-controls p {
+        min-width: 3.5rem;
+        margin: 0;
+        color: #64748b;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-align: center;
+    }
+
+    .carousel-controls p span {
+        color: #0c4a6e;
+    }
+
+    @media (min-width: 700px) {
+        .service-section {
+            padding-block: 3rem 6rem;
+        }
+
+        .service-carousel {
+            grid-template-columns: minmax(14rem, 32%) 1fr;
+        }
+
+        .service-photo {
+            min-height: 31rem;
+        }
+
+        .service-photo img {
+            object-position: 42% center;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .service-slide {
+            transition: none;
+        }
+    }
+</style>
