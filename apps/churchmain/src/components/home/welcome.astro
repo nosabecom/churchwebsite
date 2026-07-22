@@ -16,7 +16,7 @@ const gatherings = [
 ---
 
 <section
-    class="flex justify-center px-4 pt-8 pb-20 md:pt-12 md:pb-24"
+    class="flex justify-center px-4 pt-12 pb-24"
     aria-label="Service times and location"
 >
     <div
@@ -26,7 +26,7 @@ const gatherings = [
         aria-label="Church services"
         data-service-carousel
     >
-        <div class="relative flex min-h-136 flex-col items-center px-8 py-10 text-center text-slate-900 sm:p-12 md:p-16">
+        <div class="relative flex min-h-136 flex-col items-center p-16 text-center text-slate-900">
             <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
                 Worship with us
             </p>
@@ -39,10 +39,10 @@ const gatherings = [
                         data-active={index === 0 ? "" : undefined}
                         aria-hidden={index === 0 ? "false" : "true"}
                     >
-                        <h2 class="mb-4 text-3xl leading-tight font-bold text-sky-900">
+                        <h2 class="mb-4 text-5xl leading-tight font-bold text-sky-900">
                             {gathering.title}
                         </h2>
-                        <p class="mx-auto max-w-lg text-lg leading-relaxed text-slate-700 sm:text-xl">
+                        <p class="mx-auto max-w-lg text-2xl leading-relaxed text-slate-700">
                             {gathering.schedule}
                         </p>
                     </article>
