@@ -1,0 +1,32 @@
+---
+import { Quote, Slideshow } from "@churchwebsite/ui";
+
+// Add more church-owned images here as they are placed in public/images.
+const slides = [
+    {
+        src: "/images/placeholds/1.jpg",
+        alt: "RCCG Cornerstone Assembly congregation",
+    },
+];
+---
+
+<Slideshow
+    slides={slides}
+    label="RCCG Cornerstone Assembly highlights"
+    aspectRatio="16 / 9"
+    class="churchmain-slideshow mx-4 my-8 min-h-96 max-w-400 rounded-2xl shadow-xl md:min-h-80 xl:mx-auto"
+>
+    <div class="absolute inset-0 z-10 flex flex-col items-center px-4 pt-4 pb-12 gap-20 md:px-12 md:pt-6 md:pb-16">
+        <img
+            src="/images/cornerstone-logo-horizontal-v2.png"
+            alt="RCCG Cornerstone Assembly"
+            class="h-auto w-full max-w-3xl drop-shadow-2xl"
+        />
+
+        <Quote
+            quote="The stone which the builders rejected has become the chief cornerstone."
+            citation="Mark 12:10"
+            class="churchmain-quote max-w-3xl"
+        />
+    </div>
+</Slideshow>

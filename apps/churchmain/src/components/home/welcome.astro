@@ -1,0 +1,134 @@
+---
+const gatherings = [
+    {
+        title: "Sunday Service",
+        schedule: "We meet every Sunday at 9:00am. Come and join us.",
+    },
+    {
+        title: "Mid-week Service",
+        schedule: "We meet every Wednesday at 7:00pm for prayer and Bible study.",
+    },
+    {
+        title: "Power Night",
+        schedule: "Our monthly vigil is held on the last Friday of the month at 10:00pm.",
+    },
+];
+---
+
+<section
+    class="flex justify-center px-4 pt-12 pb-24"
+    aria-label="Service times and location"
+>
+    <div
+        class="min-h-136 w-full max-w-xl overflow-hidden rounded-2xl bg-slate-50 shadow-2xl shadow-sky-950/30"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Church services"
+        data-service-carousel
+    >
+        <div class="relative flex min-h-136 flex-col items-center p-16 text-center text-slate-900">
+            <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
+                Worship with us
+            </p>
+
+            <div class="relative min-h-40 w-full" aria-live="off">
+                {gatherings.map((gathering, index) => (
+                    <article
+                        class="pointer-events-none absolute inset-0 translate-x-4 opacity-0 transition duration-350 ease-in-out data-active:pointer-events-auto data-active:translate-x-0 data-active:opacity-100 motion-reduce:transition-none"
+                        data-service-slide
+                        data-active={index === 0 ? "" : undefined}
+                        aria-hidden={index === 0 ? "false" : "true"}
+                    >
+                        <h2 class="mb-4 text-5xl leading-tight font-bold text-sky-900">
+                            {gathering.title}
+                        </h2>
+                        <p class="mx-auto max-w-lg text-2xl leading-relaxed text-slate-700">
+                            {gathering.schedule}
+                        </p>
+                    </article>
+                ))}
+            </div>
+
+            <address class="mt-6 text-lg leading-relaxed text-slate-700 not-italic">
+                70-3904 Millar Avenue<br />
+                Saskatoon, SK S7P 0B1
+            </address>
+
+            <a
+                class="mt-5 inline-flex items-center gap-3 self-center text-lg font-semibold text-red-600 no-underline underline-offset-4 hover:underline focus-visible:underline"
+                href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
+                target="_blank"
+                rel="noreferrer"
+            >
+                <span
+                    class="relative size-5 shrink-0 -rotate-45 rounded-[999px_999px_999px_0] bg-red-600 after:absolute after:inset-1.5 after:rounded-full after:bg-white"
+                    aria-hidden="true"
+                ></span>
+                Find us on the map
+            </a>
+
+            <div class="mt-auto flex items-center gap-3 pt-8">
+                <button
+                    class="grid size-10 cursor-pointer place-items-center rounded-full border border-slate-400 bg-transparent text-lg text-sky-900 transition-colors hover:border-sky-900 hover:bg-sky-900 hover:text-white focus-visible:border-sky-900 focus-visible:bg-sky-900 focus-visible:text-white"
+                    type="button"
+                    aria-label="Previous service"
+                    data-service-prev
+                >←</button>
+                <p class="m-0 min-w-14 text-center text-xs font-bold tracking-widest text-slate-500" aria-hidden="true">
+                    <span class="text-sky-900" data-service-current>01</span> / 03
+                </p>
+                <button
+                    class="grid size-10 cursor-pointer place-items-center rounded-full border border-slate-400 bg-transparent text-lg text-sky-900 transition-colors hover:border-sky-900 hover:bg-sky-900 hover:text-white focus-visible:border-sky-900 focus-visible:bg-sky-900 focus-visible:text-white"
+                    type="button"
+                    aria-label="Next service"
+                    data-service-next
+                >→</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    document.querySelectorAll<HTMLElement>("[data-service-carousel]").forEach((carousel) => {
+        const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-service-slide]"));
+        const counter = carousel.querySelector<HTMLElement>("[data-service-current]");
+        let current = 0;
+        let timer: number | undefined;
+
+        const show = (index: number) => {
+            current = (index + slides.length) % slides.length;
+            slides.forEach((slide, slideIndex) => {
+                const active = slideIndex === current;
+                slide.toggleAttribute("data-active", active);
+                slide.setAttribute("aria-hidden", String(!active));
+            });
+            if (counter) counter.textContent = String(current + 1).padStart(2, "0");
+        };
+
+        const stop = () => {
+            window.clearInterval(timer);
+            timer = undefined;
+        };
+
+        const start = () => {
+            stop();
+            if (!reducedMotion.matches && !document.hidden) {
+                timer = window.setInterval(() => show(current + 1), 6000);
+            }
+        };
+
+        carousel.querySelector("[data-service-prev]")?.addEventListener("click", () => {
+            show(current - 1);
+            start();
+        });
+        carousel.querySelector("[data-service-next]")?.addEventListener("click", () => {
+            show(current + 1);
+            start();
+        });
+        reducedMotion.addEventListener("change", start);
+        document.addEventListener("visibilitychange", start);
+        start();
+    });
+</script>
