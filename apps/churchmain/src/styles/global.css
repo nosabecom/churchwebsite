@@ -25,6 +25,15 @@ html, body {
     }
 }
 
+/* Joined to the announcement panel the hero is height-constrained, so the quote
+   stops scaling with the viewport and holds a fixed size. */
+@media (min-width: 1024px) {
+    .churchmain-quote {
+        --quote-font-size: 1.125rem;
+        --quote-padding: 1rem 1.5rem;
+    }
+}
+
 @utility context-menu {
     @apply invisible absolute min-w-44 pt-2 opacity-0 space-y-1 rounded-lg bg-white p-2 shadow-lg ring-1 ring-black/10;
     transition-property: opacity, visibility;
