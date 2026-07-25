@@ -91,19 +91,42 @@ const announcements = [
         ))}
     </div>
 
-    <div class="mt-10 flex items-center gap-3 border-t border-slate-200 pt-6">
+    <div class="mt-10 flex items-center gap-1.5 border-t border-slate-200 pt-6">
         <button
-            class="grid size-10 cursor-pointer place-items-center rounded-full border border-slate-400 bg-transparent text-lg text-sky-900 transition-colors hover:border-sky-900 hover:bg-sky-900 hover:text-white focus-visible:border-sky-900 focus-visible:bg-sky-900 focus-visible:text-white"
+            class="grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
             type="button"
             aria-label="Previous announcement"
             data-announcement-prev
-        >←</button>
+        >
+            <svg class="size-4.5 fill-none stroke-current stroke-[2.5] [stroke-linecap:round] [stroke-linejoin:round]" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m15 18-6-6 6-6" />
+            </svg>
+        </button>
         <button
-            class="grid size-10 cursor-pointer place-items-center rounded-full border border-slate-400 bg-transparent text-lg text-sky-900 transition-colors hover:border-sky-900 hover:bg-sky-900 hover:text-white focus-visible:border-sky-900 focus-visible:bg-sky-900 focus-visible:text-white"
+            class="grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
             type="button"
             aria-label="Next announcement"
             data-announcement-next
-        >→</button>
+        >
+            <svg class="size-4.5 fill-none stroke-current stroke-[2.5] [stroke-linecap:round] [stroke-linejoin:round]" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
+        </button>
+
+        <span
+            class="ml-2 block h-1 w-14 overflow-hidden rounded-full bg-slate-300 transition-opacity data-paused:opacity-45"
+            aria-hidden="true"
+            data-announcement-timer
+        >
+            <!-- Rests empty via transform, not `scale-x-0`: Tailwind's scale
+                 utilities set the independent `scale` property, which would
+                 multiply with the animated transform and pin the fill at zero. -->
+            <span
+                class="block h-full w-full origin-left rounded-full bg-red-600"
+                style="transform: scaleX(0)"
+                data-announcement-fill
+            ></span>
+        </span>
 
         <div class="ml-auto flex gap-2" role="group" aria-label="Choose an announcement">
             {announcements.map((announcement, index) => (
@@ -125,8 +148,9 @@ const announcements = [
     document.querySelectorAll<HTMLElement>("[data-announcements]").forEach((panel) => {
         const slides = Array.from(panel.querySelectorAll<HTMLElement>("[data-announcement]"));
         const dots = Array.from(panel.querySelectorAll<HTMLButtonElement>("[data-announcement-dot]"));
+        const timer = panel.querySelector<HTMLElement>("[data-announcement-timer]");
+        const fill = panel.querySelector<HTMLElement>("[data-announcement-fill]");
         let current = 0;
-        let timer: number | undefined;
 
         const show = (index: number) => {
             current = (index + slides.length) % slides.length;
@@ -141,44 +165,59 @@ const announcements = [
             });
         };
 
-        const stop = () => {
-            if (timer !== undefined) window.clearInterval(timer);
-            timer = undefined;
+        // The pill is the timer: the panel advances when the fill finishes, so the
+        // two cannot drift apart the way a separate interval and animation would.
+        const animation = fill?.animate(
+            [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+            { duration: 7000, easing: "linear", fill: "forwards" },
+        );
+
+        if (animation) {
+            animation.onfinish = () => {
+                show(current + 1);
+                reset();
+            };
+        }
+
+        // A mouse click leaves the arrow focused; only keyboard focus should hold
+        // autoplay, otherwise it would never resume after a click.
+        const isPaused = () => reducedMotion.matches
+            || document.hidden
+            || panel.matches(":hover")
+            || panel.querySelector(":focus-visible") !== null;
+
+        const sync = () => {
+            const paused = isPaused();
+            timer?.toggleAttribute("data-paused", paused);
+            if (paused) animation?.pause();
+            else animation?.play();
         };
 
-        const start = () => {
-            stop();
-            // A mouse click leaves the arrow focused; only keyboard focus should
-            // hold autoplay, otherwise it would never resume after a click.
-            const interacting = panel.matches(":hover") || panel.querySelector(":focus-visible") !== null;
-            if (!reducedMotion.matches && !document.hidden && !interacting) {
-                timer = window.setInterval(() => show(current + 1), 7000);
-            }
+        // Hovering freezes the fill where it stands; taking control empties it.
+        const reset = () => {
+            if (animation) animation.currentTime = 0;
+            sync();
         };
 
         panel.querySelector("[data-announcement-prev]")?.addEventListener("click", () => {
             show(current - 1);
-            start();
+            reset();
         });
         panel.querySelector("[data-announcement-next]")?.addEventListener("click", () => {
             show(current + 1);
-            start();
+            reset();
         });
         dots.forEach((dot, index) => dot.addEventListener("click", () => {
             show(index);
-            start();
+            reset();
         }));
 
-        panel.addEventListener("mouseenter", stop);
-        panel.addEventListener("mouseleave", start);
-        panel.addEventListener("focusin", (event) => {
-            if (event.target instanceof Element && event.target.matches(":focus-visible")) stop();
-        });
-        panel.addEventListener("focusout", (event) => {
-            if (!panel.contains(event.relatedTarget as Node | null)) start();
-        });
-        reducedMotion.addEventListener("change", start);
-        document.addEventListener("visibilitychange", start);
-        start();
+        panel.addEventListener("mouseenter", sync);
+        panel.addEventListener("mouseleave", sync);
+        panel.addEventListener("focusin", sync);
+        panel.addEventListener("focusout", sync);
+        reducedMotion.addEventListener("change", sync);
+        document.addEventListener("visibilitychange", sync);
+        reset();
     });
 </script>
