@@ -6,8 +6,9 @@ html, body {
     height: 100%;
 }
 
+/* No aspect ratio: joined to the announcement panel the slideshow takes the
+   row height, and stacked above it the logo and quote set the height. */
 .churchmain-slideshow {
-    width: calc(100% - 2rem);
     --slideshow-control-bg: rgb(12 74 110 / 65%);
     --slideshow-control-bg-hover: rgb(12 74 110 / 90%);
 }
