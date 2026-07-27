@@ -1,14 +1,15 @@
 ---
 import Layout from "../layouts/layout.astro";
-import Hero from "../components/home/hero.astro";
-import Speakers from "../components/home/speakers.astro";
-import Aboutus from "../components/home/aboutus.astro";
-import Mailinglist from "../components/home/mailinglist.astro"
 ---
 
+<!-- Holding page. The Women's Fellowship homepage gets built here; the
+     conference content it replaced now lives at /conference/2026. -->
 <Layout title="Home">
-    <Hero />
-    <Aboutus />
-    <Speakers />
-    <Mailinglist />
+    <div class="flex flex-col items-center justify-center text-center gap-6 px-4 py-24">
+        <img class="w-full max-w-xl" src="/images/logo-full.png" alt="Woman Excel">
+        <p class="text-navy text-lg md:text-2xl max-w-2xl">A new Women's Fellowship site is on the way.</p>
+        <a
+            class="border-none rounded-xl bg-navy text-white text-lg md:text-xl px-6 py-3 hover:bg-navy/70"
+            href="/conference/2026">View the 2026 Conference</a>
+    </div>
 </Layout>
