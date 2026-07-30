@@ -1,29 +1,18 @@
 ---
-// Welcome copy is a first draft and still needs sign-off from church leadership.
-const gatherings = [
-    {
-        title: "Sunday Service",
-        day: "Every Sunday",
-        time: "9:00 AM",
-        detail: "Worship, the Word, and children's church.",
-    },
-    {
-        title: "Mid-week Service",
-        day: "Every Wednesday",
-        time: "7:00 PM",
-        detail: "Prayer and Bible study together.",
-    },
-    {
-        title: "Power Night",
-        day: "Last Friday of the month",
-        time: "10:00 PM",
-        detail: "Our monthly vigil.",
-    },
+import { Image } from "astro:assets";
+import ReubenAdeleye from "../../assets/pastors/reuben-adeleye.png";
+import ToyinAdeleye from "../../assets/pastors/toyin-adeleye.png";
+
+// Headshots came across from the Woman Excel site. Their formal titles still
+// need confirming, so only the names are shown for now.
+const pastors = [
+    { name: "Pst. Reuben Adeleye", image: ReubenAdeleye },
+    { name: "Pst. Toyin Adeleye", image: ToyinAdeleye },
 ];
 ---
 
 <section class="px-4 py-16" aria-labelledby="welcome-heading">
-    <div class="mx-auto grid max-w-400 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <div class="mx-auto grid max-w-400 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-16 2xl:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
         <div>
             <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-400 uppercase">
                 Welcome
@@ -34,16 +23,18 @@ const gatherings = [
             </h2>
 
             <p class="mt-6 text-lg leading-relaxed text-sky-100">
-                Whether you have walked with God for years or you are only starting to ask
-                the questions, you are welcome exactly as you are. RCCG Cornerstone Assembly
-                is a family in Saskatoon built on Jesus &mdash; the stone the builders
-                rejected, who has become the cornerstone.
+                With joy in our hearts, we welcome you specially to RCCG Cornerstone
+                Assembly Saskatoon. A place of building people of purpose, power, and
+                praise. We are committed to raising role models patterned after Christ in
+                all spheres of life and endeavors. We seek to teach and preach the undiluted
+                word of faith capable of igniting a burning fire of the passion and love of
+                Jesus Christ in you and through you to your world.
             </p>
 
             <p class="mt-4 text-lg leading-relaxed text-sky-100">
-                When you visit you will find worship you can lose yourself in, teaching you
-                can build a life on, and people who will know your name before you leave.
-                Come early, stay after for coffee, and let us pray with you on your way out.
+                We trust God enough for your total turn-around and transformational change
+                as you explore all the resources available for you on this site. Welcome!
+                Joint heirs with Christ.
             </p>
 
             <a
@@ -58,42 +49,22 @@ const gatherings = [
             </a>
         </div>
 
-        <div class="overflow-hidden rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-2xl shadow-sky-950/30 md:p-12">
-            <p class="mb-6 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
-                Worship with us
-            </p>
+        <ul class="grid list-none grid-cols-2 gap-4 p-0 md:gap-6">
+            {pastors.map((pastor) => (
+                <li class="overflow-hidden rounded-2xl bg-linear-to-b from-sky-700/50 to-sky-950 shadow-2xl shadow-sky-950/40">
+                    <Image
+                        class="aspect-square w-full object-cover object-top"
+                        src={pastor.image}
+                        alt={pastor.name}
+                        widths={[300, 450, 600]}
+                        sizes="(min-width: 1024px) 17rem, (min-width: 640px) 40vw, 45vw"
+                    />
 
-            <ul class="list-none space-y-6 p-0">
-                {gatherings.map((gathering) => (
-                    <li class="border-b border-slate-200 pb-6 last:border-b-0 last:pb-0">
-                        <h3 class="text-2xl leading-snug font-bold text-sky-900">{gathering.title}</h3>
-                        <p class="mt-2 text-lg text-slate-700">
-                            {gathering.day}
-                            <span class="mx-2 text-slate-400" aria-hidden="true">•</span>
-                            <span class="font-semibold text-slate-900">{gathering.time}</span>
-                        </p>
-                        <p class="mt-1 text-base text-slate-600">{gathering.detail}</p>
-                    </li>
-                ))}
-            </ul>
-
-            <address class="mt-8 text-lg leading-relaxed text-slate-700 not-italic">
-                70-3904 Millar Avenue<br />
-                Saskatoon, SK S7P 0B1
-            </address>
-
-            <a
-                class="mt-4 inline-flex items-center gap-3 text-lg font-semibold text-red-600 no-underline underline-offset-4 hover:underline focus-visible:underline"
-                href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
-                target="_blank"
-                rel="noreferrer"
-            >
-                <span
-                    class="relative size-5 shrink-0 -rotate-45 rounded-[999px_999px_999px_0] bg-red-600 after:absolute after:inset-1.5 after:rounded-full after:bg-white"
-                    aria-hidden="true"
-                ></span>
-                Find us on the map
-            </a>
-        </div>
+                    <p class="border-t border-white/10 bg-sky-950/60 px-4 py-3 text-center text-base font-bold text-white md:text-lg">
+                        {pastor.name}
+                    </p>
+                </li>
+            ))}
+        </ul>
     </div>
 </section>
