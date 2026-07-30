@@ -1,0 +1,57 @@
+---
+// Variant D — Editorial Offset. Oversized flush-left headline, the verse set as
+// a vertical rail, and an asymmetric image pair that bleeds off the right edge.
+// The quietest and most typographic of the four.
+import Logo from '../../../assets/excellent-women-logo.jpg';
+import { Image } from 'astro:assets';
+---
+
+<section class="pt-10 md:pt-16 pb-16 md:pb-24 overflow-hidden">
+    <div class="mx-auto w-full max-w-6xl px-4 md:px-8">
+        <div class="flex gap-6 md:gap-10">
+            <!-- Vertical rail: the anchor verse, set sideways. Hidden on small
+                 screens where there is no room for it to breathe. -->
+            <div class="hidden md:flex flex-col items-center gap-4 shrink-0 pt-2">
+                <Image src={Logo} alt="Cornerstone Excellent Women" width="160" height="160" class="w-14 h-auto rounded-full" />
+                <span class="w-px flex-1 bg-sand"></span>
+                <p class="font-sans uppercase text-xs tracking-[0.3em] text-orchid-deep [writing-mode:vertical-rl] rotate-180">
+                    Proverbs 31:10
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-6 min-w-0">
+                <div class="md:hidden flex items-center gap-3">
+                    <span class="cew-rule"></span>
+                    <p class="cew-eyebrow">Proverbs 31:10</p>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl lg:text-8xl text-charcoal leading-[0.95] text-balance">
+                    Inspire,<br />empower,<br /><em class="text-orchid not-italic">excel.</em>
+                </h1>
+
+                <div class="grid md:grid-cols-2 gap-6 md:gap-10 items-end">
+                    <p class="cew-prose text-pretty">
+                        Cornerstone Excellent Women is the women’s fellowship of RCCG Cornerstone Assembly —
+                        a community growing together in the Word, in prayer, and in the calling God has
+                        placed on their lives.
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 md:gap-4 md:justify-end">
+                        <a class="cew-btn" href="/#mission">Our Mission</a>
+                        <a class="cew-btn-outline" href="/conference">Conference</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image pair runs past the container on the right for an off-page feel. -->
+    <div class="mt-10 md:mt-16 pl-4 md:pl-[max(2rem,calc((100vw-72rem)/2+2rem))]">
+        <div class="flex gap-4 md:gap-6">
+            <img src="/images/placeholds/photo-3.jpg" alt="" loading="eager"
+                class="h-64 md:h-96 w-2/3 md:w-3/5 object-cover rounded-2xl shrink-0" />
+            <img src="/images/placeholds/photo-7.jpg" alt="" loading="lazy"
+                class="h-64 md:h-96 w-2/3 md:w-3/5 object-cover rounded-2xl shrink-0" />
+        </div>
+    </div>
+</section>
