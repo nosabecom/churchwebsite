@@ -1,0 +1,109 @@
+---
+// No backend is wired up yet, so the form posts to itself and does nothing.
+// The email address below is the working fallback in the meantime.
+---
+
+<section class="px-4 py-16" aria-labelledby="prayer-heading">
+    <div class="mx-auto max-w-3xl rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-2xl shadow-sky-950/30 md:p-12">
+        <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
+            We would love to pray with you
+        </p>
+
+        <h2 class="text-4xl leading-tight font-bold text-sky-900" id="prayer-heading">
+            Send us a prayer request
+        </h2>
+
+        <p class="mt-4 text-lg leading-relaxed text-slate-700">
+            Nothing is too small to bring to God, and you do not have to carry it on your
+            own. Share what is on your heart and our prayer team will stand with you this
+            week. If you would rather speak to someone, email
+            <a
+                class="font-semibold text-red-600 underline-offset-4 hover:underline focus-visible:underline"
+                href="mailto:connect@rccgcornerstoneassembly.com"
+            >connect@rccgcornerstoneassembly.com</a>.
+        </p>
+
+        <hr class="my-8 border-slate-200" />
+
+        <form class="flex flex-col gap-5" method="POST">
+            <fieldset class="border-0 p-0">
+                <legend class="form-label mb-2">What can we pray about?</legend>
+                <div class="flex flex-wrap gap-x-6 gap-y-2 text-slate-700">
+                    <label class="flex items-center gap-2">
+                        <input class="accent-red-600" type="radio" name="kind" value="Prayer request" checked />
+                        Prayer request
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input class="accent-red-600" type="radio" name="kind" value="Praise report" />
+                        Praise report
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input class="accent-red-600" type="radio" name="kind" value="Salvation" />
+                        I want to give my life to Christ
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="form-field">
+                <label class="form-label" for="prayer-name">Your Name</label>
+                <input
+                    class="form-input"
+                    id="prayer-name"
+                    name="fullname"
+                    type="text"
+                    autocomplete="name"
+                    placeholder="Leave blank to stay anonymous"
+                />
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+                <div class="form-field">
+                    <label class="form-label" for="prayer-email">Email</label>
+                    <input
+                        class="form-input"
+                        id="prayer-email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="prayer-phone">Phone</label>
+                    <input
+                        class="form-input"
+                        id="prayer-phone"
+                        name="phone"
+                        type="tel"
+                        autocomplete="tel"
+                        placeholder="(555) 123-4567"
+                    />
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="prayer-request">Your Request</label>
+                <textarea
+                    class="form-input resize-y"
+                    id="prayer-request"
+                    name="request"
+                    rows="6"
+                    required
+                    placeholder="Tell us how we can pray for you"></textarea>
+            </div>
+
+            <div class="flex flex-col gap-2 text-slate-700">
+                <label class="flex items-start gap-2">
+                    <input class="mt-1 accent-red-600" type="checkbox" name="confidential" value="yes" />
+                    Keep this between me and the prayer team
+                </label>
+                <label class="flex items-start gap-2">
+                    <input class="mt-1 accent-red-600" type="checkbox" name="contactme" value="yes" />
+                    I would like a pastor to reach out to me
+                </label>
+            </div>
+
+            <button class="form-submit" type="submit">Send my request</button>
+        </form>
+    </div>
+</section>
