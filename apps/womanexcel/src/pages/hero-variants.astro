@@ -1,0 +1,53 @@
+---
+// Review-only route. Round two: four directions developed out of C and D,
+// the photo-led and editorial ends of the first set.
+// Delete this page and the unpicked variants once a direction is chosen.
+import Layout from "../layouts/layout.astro";
+import SplitCanvas from "../components/home/hero-variants/split-canvas.astro";
+import FramedOverlay from "../components/home/hero-variants/framed-overlay.astro";
+import TypeShelf from "../components/home/hero-variants/type-shelf.astro";
+import Collage from "../components/home/hero-variants/collage.astro";
+
+const variants = [
+    { id: "e", label: "Variant E — Split Canvas", parent: "from C", note: "Charcoal panel takes the type, the photograph keeps a clean half with no scrim over it." },
+    { id: "f", label: "Variant F — Framed Overlay", parent: "from C + D", note: "C's full-bleed photo, but type flush left inside an inset rule, like a printed poster." },
+    { id: "g", label: "Variant G — Type Shelf", parent: "from D", note: "Headline owns the top of the page on bare cream; a full-bleed photo shelf runs beneath it." },
+    { id: "h", label: "Variant H — Asymmetric Collage", parent: "from D", note: "Portrait crosses behind the headline, second image offset low-left, verse as a vertical caption." },
+];
+---
+
+<Layout title="Hero variants — round 2">
+    <div class="mx-auto w-full max-w-6xl px-4 md:px-8 pt-10">
+        <p class="cew-eyebrow">Internal review — round 2</p>
+        <h1 class="cew-heading mt-2">Homepage hero — four more directions</h1>
+        <p class="cew-prose mt-3 max-w-2xl text-pretty">
+            Developed out of C and D. Same copy throughout, so what differs is layout and tone.
+            E and F are photograph-led; G and H are typographic.
+        </p>
+        <ul class="flex flex-wrap gap-3 mt-5">
+            {variants.map((v) => (
+                <li><a class="cew-btn-outline" href={`#${v.id}`}>{v.label.split("—")[0].trim()}</a></li>
+            ))}
+        </ul>
+    </div>
+
+    {variants.map((v, i) => (
+        <>
+            <div id={v.id} class="scroll-mt-4 mx-auto w-full max-w-6xl px-4 md:px-8 mt-16 md:mt-24">
+                <div class="border-t border-sand pt-6">
+                    <div class="flex flex-wrap items-baseline gap-3">
+                        <p class="font-sans text-sm tracking-[0.25em] uppercase text-orchid-deep">{`0${i + 1}`}</p>
+                        <p class="font-sans text-xs uppercase tracking-[0.2em] text-charcoal/50">{v.parent}</p>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl text-charcoal mt-1">{v.label}</h2>
+                    <p class="text-charcoal/75 mt-1 text-pretty">{v.note}</p>
+                </div>
+            </div>
+
+            {v.id === "e" && <SplitCanvas />}
+            {v.id === "f" && <FramedOverlay />}
+            {v.id === "g" && <TypeShelf />}
+            {v.id === "h" && <Collage />}
+        </>
+    ))}
+</Layout>
