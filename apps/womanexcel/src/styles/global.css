@@ -9,7 +9,7 @@
     --font-serif: "PT Serif", serif;
     --font-sans: "Inter", sans-serif;
 
-    /* Colors */
+    /* Colors — Woman Excel Conference (/conference/*) */
     --color-navy: #082A4E;
     --color-pink: #E33379;
     --color-fuchsia: #EF1170;
@@ -18,6 +18,15 @@
     --color-rose: #F25F9A;
     --color-coral-pink: #FD9FA3;
     --color-blush: #F4C2D0;
+
+    /* Colors — Cornerstone Excellent Women (fellowship shell).
+       Sampled from the brand mark in src/assets/excellent-women-logo.jpg. */
+    --color-cream: #E9E1D4;
+    --color-cream-soft: #F3EEE6;
+    --color-sand: #D8CDBB;
+    --color-orchid: #C22F89;
+    --color-orchid-deep: #9C2470;
+    --color-charcoal: #4A4441;
 
     /* Breakpoints */
     --breakpoint-xs: 450px;
@@ -84,6 +93,43 @@
 
 @utility speaker-nametag {
     @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 md:py-5 md:px-2 px-0
+}
+
+/* Cornerstone Excellent Women — fellowship shell and homepage */
+
+/* orchid-deep, not orchid: the lighter magenta only reaches 3.98:1 on cream,
+   which fails AA at this text size. */
+@utility cew-eyebrow {
+    @apply font-sans uppercase text-xs md:text-sm tracking-[0.25em] text-orchid-deep
+}
+
+@utility cew-heading {
+    @apply text-3xl md:text-5xl text-charcoal
+}
+
+@utility cew-prose {
+    @apply text-lg md:text-xl text-charcoal/85
+}
+
+@utility cew-section {
+    @apply mx-auto w-full max-w-6xl px-4 md:px-8 py-16 md:py-24
+}
+
+/* The mark is a fixed-width rule flanking a label, as drawn in the logo. */
+@utility cew-rule {
+    @apply h-px w-10 md:w-16 bg-sand shrink-0
+}
+
+@utility cew-card {
+    @apply flex flex-col gap-3 rounded-2xl bg-cream-soft border border-sand p-6 md:p-8
+}
+
+@utility cew-btn {
+    @apply inline-block font-sans text-sm md:text-base rounded-full bg-orchid text-white px-7 py-3 transition-colors hover:bg-orchid-deep
+}
+
+@utility cew-btn-outline {
+    @apply inline-block font-sans text-sm md:text-base rounded-full border border-charcoal/30 text-charcoal px-7 py-3 transition-colors hover:border-orchid hover:text-orchid
 }
 
 @utility contact-field {

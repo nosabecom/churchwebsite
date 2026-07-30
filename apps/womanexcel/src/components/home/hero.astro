@@ -1,0 +1,45 @@
+---
+import Logo from '../../assets/excellent-women-logo.jpg';
+import { Image } from 'astro:assets';
+
+// Placeholder photography until the fellowship's own images are supplied.
+const strip = ["/images/placeholds/photo-2.jpg", "/images/placeholds/photo-5.jpg", "/images/placeholds/photo-8.jpg"];
+---
+
+<section class="cew-section pt-10 md:pt-16 flex flex-col items-center text-center gap-6">
+    <Image src={Logo} alt="Cornerstone Excellent Women" width="320" height="320" class="w-40 md:w-56 h-auto rounded-full" />
+
+    <div class="flex items-center gap-3 md:gap-4">
+        <span class="cew-rule"></span>
+        <p class="cew-eyebrow">Proverbs 31:10</p>
+        <span class="cew-rule"></span>
+    </div>
+
+    <h1 class="text-4xl md:text-6xl lg:text-7xl text-charcoal max-w-4xl text-balance leading-tight">
+        Inspire, empower, and support women to <em class="text-orchid not-italic">excel</em> in God’s purpose.
+    </h1>
+
+    <p class="cew-prose max-w-2xl text-pretty">
+        Cornerstone Excellent Women is the women’s fellowship of RCCG Cornerstone Assembly — a community
+        of women growing together in the Word, in prayer, and in the calling God has placed on their lives.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-3 md:gap-4 pt-2">
+        <a class="cew-btn" href="/#mission">Our Mission</a>
+        <a class="cew-btn-outline" href="/conference/2026">Woman Excel Conference</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full pt-8 md:pt-12">
+        {strip.map((src, i) => (
+            <img
+                src={src}
+                alt=""
+                loading={i === 0 ? "eager" : "lazy"}
+                class:list={[
+                    "h-56 md:h-72 w-full object-cover rounded-2xl",
+                    i === 1 && "sm:mt-8",
+                ]}
+            />
+        ))}
+    </div>
+</section>
