@@ -1,0 +1,68 @@
+---
+// Only 2026 has a page today. Themes and dates for 2025 and 2027 are not
+// recorded anywhere in this repo, so they are left as "to be confirmed"
+// rather than invented — see the notes on RCC-7.
+const conferences = [
+    {
+        year: "2027",
+        status: "Upcoming",
+        theme: null,
+        blurb: "Dates, theme and speakers are still to be announced. Get in touch to be told first.",
+        href: null,
+        cta: null,
+    },
+    {
+        year: "2026",
+        status: "This year",
+        theme: "The Word",
+        blurb: "Anchored in John 1:1. A full programme of Spirit-led worship and teaching on building a life on something unshakeable.",
+        href: "/conference/2026",
+        cta: "View the 2026 conference",
+    },
+    {
+        year: "2025",
+        status: "Past",
+        theme: null,
+        blurb: "An archive of this gathering is still being put together.",
+        href: null,
+        cta: null,
+    },
+];
+---
+
+<div class="px-4 md:px-8 pb-20 mx-auto w-full max-w-350">
+    <ul class="grid md:grid-cols-3 gap-5 md:gap-6">
+        {conferences.map((conference) => (
+            <li class="flex flex-col gap-4 bg-berry text-white rounded-2xl p-6 md:p-8">
+                <div class="flex items-center justify-between gap-3">
+                    <p class="text-5xl md:text-6xl leading-none">{conference.year}</p>
+                    <p class="border-none rounded-full bg-navy text-white font-sans text-xs px-3 py-1.5 shrink-0">
+                        {conference.status}
+                    </p>
+                </div>
+
+                <div class="h-px bg-white/25"></div>
+
+                {conference.theme ? (
+                    <p class="text-2xl md:text-3xl">{conference.theme}</p>
+                ) : (
+                    <p class="text-2xl md:text-3xl text-white/65">Theme to be confirmed</p>
+                )}
+
+                <p class="text-white/85 text-pretty flex-1">{conference.blurb}</p>
+
+                {conference.href ? (
+                    <a
+                        class="inline-block self-start font-sans text-sm md:text-base rounded-full bg-pink text-white px-6 py-2.5 transition-colors hover:bg-pink/80"
+                        href={conference.href}
+                    >{conference.cta}</a>
+                ) : (
+                    <a
+                        class="inline-block self-start font-sans text-sm md:text-base rounded-full border border-white/40 text-white px-6 py-2.5 transition-colors hover:border-white hover:bg-white/10"
+                        href="/contact"
+                    >Ask us about {conference.year}</a>
+                )}
+            </li>
+        ))}
+    </ul>
+</div>

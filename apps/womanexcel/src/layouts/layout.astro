@@ -19,17 +19,21 @@ const isConference = variant === "conference";
 const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
 const favicon = isConference ? ConferenceMark : FellowshipLogo;
 
-const links = isConference
-	? [
-		{ href: "/", label: "Home" },
-		{ href: "/conference/2026", label: "Conference" },
-		{ href: "/contact", label: "Contact Us" },
-	]
+const navLinks = [
+	{ href: "/", label: "Home" },
+	{ href: "/conference", label: "Conference" },
+	{ href: "/contact", label: "Contact Us" },
+];
+
+// The top nav stays short; the footer keeps the homepage section anchors so
+// those sections are still reachable from anywhere on the site.
+const footerLinks = isConference
+	? navLinks
 	: [
 		{ href: "/", label: "Home" },
 		{ href: "/#about", label: "About" },
 		{ href: "/#mission", label: "Our Mission" },
-		{ href: "/conference/2026", label: "Conference" },
+		{ href: "/conference", label: "Conference" },
 		{ href: "/contact", label: "Contact Us" },
 	];
 ---
@@ -86,7 +90,7 @@ const links = isConference
 						"flex gap-4 md:gap-6 max-xs:flex-col max-xs:gap-2 max-xs:mt-4 max-xs:text-white max-xs:text-xl",
 						isConference ? "text-navy" : "text-charcoal font-sans text-sm md:text-base",
 					]}>
-						{links.map((link) => (
+						{navLinks.map((link) => (
 							<li>
 								<a
 									class:list={["max-xs:block max-xs:py-2", !isConference && "transition-colors hover:text-orchid-deep max-xs:hover:text-blush"]}
@@ -130,7 +134,7 @@ const links = isConference
 						</div>
 
 						<nav class="flex flex-col gap-2 font-sans text-sm" aria-label="Footer">
-							{links.map((link) => (
+							{footerLinks.map((link) => (
 								<a class="text-cream/70 transition-colors hover:text-white" href={link.href}>{link.label}</a>
 							))}
 						</nav>

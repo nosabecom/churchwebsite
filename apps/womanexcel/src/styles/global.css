@@ -132,15 +132,17 @@
     @apply inline-block font-sans text-sm md:text-base rounded-full border border-charcoal/30 text-charcoal px-7 py-3 transition-colors hover:border-orchid hover:text-orchid
 }
 
+/* Contact form — Cornerstone Excellent Women palette, matching the shell. */
+
 @utility contact-field {
     @apply flex flex-col gap-1
 }
 
 @utility contact-label {
-    @apply text-rose
+    @apply font-sans text-sm text-orchid-deep
 }
 
 @utility contact-input {
-    @apply w-full rounded-md bg-white text-navy placeholder:text-gray-400 px-3 py-2 border-2 border-transparent focus:outline-none focus:border-rose user-invalid:border-red-500 user-valid:border-green-500
+    @apply w-full rounded-md bg-white text-charcoal placeholder:text-charcoal/40 px-3 py-2 border-2 border-sand focus:outline-none focus:border-orchid user-invalid:border-red-600 user-valid:border-green-700
 }
 
