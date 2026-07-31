@@ -30,48 +30,29 @@
         to { transform: translateX(-50%); }
     }
 
-    /* Hero slideshow: 10 slides x 8s = 80s cycle */
-    --animate-hero-fade: hero-fade 80s infinite;
-    --animate-hero-dot: hero-dot 80s infinite;
-
-    @keyframes hero-fade {
-        0%   { opacity: 0; }
-        2%   { opacity: 1; }
-        10%  { opacity: 1; }
-        12%  { opacity: 0; }
-        100% { opacity: 0; }
-    }
-
-    @keyframes hero-dot {
-        0%   { background-color: #ffffff; }
-        10%  { background-color: #ffffff; }
-        12%  { background-color: rgba(255, 255, 255, 0.5); }
-        100% { background-color: rgba(255, 255, 255, 0.5); }
-    }
-}
-
-/* Hero slideshow: CSS drives the timing; the controls re-seat this same animation */
-[data-slide] {
-    opacity: 0;
-    animation: var(--animate-hero-fade);
-} 
-
-[data-dot] {
-    animation: var(--animate-hero-dot);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    [data-slide],
-    [data-dot] {
-        animation: none;
-    }
-    [data-slide]:first-child {
-        opacity: 1;
-    }
 }
 
 @utility main-gradient {
     background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
+}
+
+.woman-excel-slideshow {
+    --slideshow-control-bg: rgb(8 42 78 / 60%);
+    --slideshow-control-bg-hover: rgb(8 42 78 / 90%);
+}
+
+.woman-excel-quote {
+    --quote-bg: var(--color-berry);
+    --quote-color: white;
+    --quote-font-size: 1.125rem;
+    --quote-padding: 1.25rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .woman-excel-quote {
+        --quote-font-size: 1.25rem;
+        --quote-padding: 1.5rem 3rem;
+    }
 }
 
 @utility speaker-card {

@@ -1,0 +1,105 @@
+---
+// No backend is wired up yet, so the form posts to itself and does nothing.
+// The email address below is the working fallback in the meantime.
+---
+
+<section class="px-4 py-16" aria-labelledby="contact-heading">
+    <div class="mx-auto max-w-3xl rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-2xl shadow-sky-950/30 md:p-12">
+        <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
+            We would love to hear from you
+        </p>
+
+        <h1 class="text-3xl leading-tight font-bold text-balance text-sky-900 sm:text-4xl" id="contact-heading">
+            Contact Us
+        </h1>
+
+        <p class="mt-4 text-lg leading-relaxed text-slate-700">
+            Whether you have a question, need prayer or pastoral support, want to share a
+            praise report, or are taking a step of faith, our team is here for you. Send us
+            a message below or email:
+            <a
+                class="font-semibold break-all text-red-600 underline-offset-4 hover:underline focus-visible:underline"
+                href="mailto:connect@rccgcornerstoneassembly.com"
+            > connect@rccgcornerstoneassembly.com</a>.
+        </p>
+
+        <hr class="my-8 border-slate-200" />
+
+        <form class="flex flex-col gap-5" method="POST">
+            <fieldset class="border-0 p-0">
+                <legend class="form-label mb-2">How can we help?</legend>
+                <div class="flex flex-wrap gap-x-6 gap-y-2 text-slate-700">
+                    <label class="flex items-center gap-2">
+                        <input class="accent-red-600" type="radio" name="kind" value="General inquiry" checked />
+                        General inquiry
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input class="accent-red-600" type="radio" name="kind" value="Prayer request" />
+                        Prayer request
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="form-field">
+                <label class="form-label" for="contact-name">Your name <span class="font-normal">(optional)</span></label>
+                <input
+                    class="form-input"
+                    id="contact-name"
+                    name="fullname"
+                    type="text"
+                    autocomplete="name"
+                    placeholder="Leave blank if you prefer to remain anonymous"
+                />
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+                <div class="form-field">
+                    <label class="form-label" for="contact-email">Email <span class="font-normal">(optional)</span></label>
+                    <input
+                        class="form-input"
+                        id="contact-email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="contact-phone">Phone <span class="font-normal">(optional)</span></label>
+                    <input
+                        class="form-input"
+                        id="contact-phone"
+                        name="phone"
+                        type="tel"
+                        autocomplete="tel"
+                        placeholder="(306) 555-0123"
+                    />
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="contact-message">Your message</label>
+                <textarea
+                    class="form-input resize-y"
+                    id="contact-message"
+                    name="message"
+                    rows="6"
+                    required
+                    placeholder="Tell us how we can help"></textarea>
+            </div>
+
+            <div class="flex flex-col gap-2 text-slate-700">
+                <label class="flex items-start gap-2">
+                    <input class="mt-1 accent-red-600" type="checkbox" name="confidential" value="yes" />
+                    Please keep my message confidential
+                </label>
+                <label class="flex items-start gap-2">
+                    <input class="mt-1 accent-red-600" type="checkbox" name="contactme" value="yes" />
+                    I would like a pastor to follow up with me
+                </label>
+            </div>
+
+            <button class="form-submit" type="submit">Send message</button>
+        </form>
+    </div>
+</section>

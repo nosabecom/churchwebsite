@@ -27,6 +27,10 @@ pnpm-debug.log*
 
 # codex shi
 output/
+tmp
 
 # claude shi
 .claude/
+
+# agent shi
+design/

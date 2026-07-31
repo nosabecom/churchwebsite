@@ -1,0 +1,11 @@
+{
+  "name": "@churchwebsite/ui",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "astro": ">=5"
+  }
+}

@@ -1,0 +1,223 @@
+---
+// Announcement panel that sits flush against the hero slideshow.
+const address = {
+    lines: ["70-3904 Millar Avenue", "Saskatoon, SK S7P 0B1"],
+    map: "https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1",
+};
+
+const announcements = [
+    {
+        kicker: "Worship with us",
+        title: "Sunday Service",
+        body: "We meet every Sunday at 9:00am for praise, the word and prayer. Come and join us.",
+        showAddress: true,
+    },
+    {
+        kicker: "Midweek",
+        title: "Bible Study & Prayer",
+        body: "Every Wednesday at 7:00pm we gather to study the scriptures and pray together.",
+        showAddress: true,
+    },
+    {
+        kicker: "Monthly vigil",
+        title: "Power Night",
+        body: "Our night of worship and intercession runs on the last Friday of every month from 10:00pm.",
+        showAddress: true,
+    },
+    {
+        kicker: "New here?",
+        title: "Plan your visit",
+        body: "Expect a warm welcome, a service of about two hours, and a team ready to pray with you.",
+        link: { href: "#", label: "What to expect" },
+    },
+];
+---
+
+<aside
+    class="flex flex-col bg-slate-50 p-6 text-slate-900 sm:p-8 lg:min-h-104 lg:p-9"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="Church announcements"
+    data-announcements
+>
+    <div class="grid flex-1 content-center" aria-live="off">
+        {announcements.map((announcement, index) => (
+            <article
+                class="col-start-1 row-start-1 translate-y-3 opacity-0 transition duration-350 ease-in-out data-active:translate-y-0 data-active:opacity-100 motion-reduce:transition-none"
+                data-announcement
+                data-active={index === 0 ? "" : undefined}
+                aria-hidden={index === 0 ? "false" : "true"}
+                inert={index === 0 ? undefined : true}
+            >
+                <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
+                    {announcement.kicker}
+                </p>
+
+                <h2 class="mb-4 text-4xl leading-tight font-bold text-sky-900 lg:text-3xl">
+                    {announcement.title}
+                </h2>
+
+                <p class="max-w-lg text-lg leading-relaxed text-slate-700 lg:text-base">
+                    {announcement.body}
+                </p>
+
+                {announcement.showAddress && (
+                    <address class="mt-6 text-base leading-relaxed text-slate-700 not-italic">
+                        {address.lines[0]}<br />
+                        {address.lines[1]}
+                    </address>
+                )}
+
+                <a
+                    class="group mt-5 inline-flex items-center gap-3 text-lg font-semibold text-red-600 no-underline underline-offset-4 hover:underline focus-visible:underline"
+                    href={announcement.link ? announcement.link.href : address.map}
+                    target={announcement.link ? undefined : "_blank"}
+                    rel={announcement.link ? undefined : "noreferrer"}
+                >
+                    {announcement.link ? (
+                        <span
+                            class="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
+                            aria-hidden="true"
+                        >→</span>
+                    ) : (
+                        <span
+                            class="relative size-5 shrink-0 -rotate-45 rounded-[999px_999px_999px_0] bg-red-600 after:absolute after:inset-1.5 after:rounded-full after:bg-white"
+                            aria-hidden="true"
+                        ></span>
+                    )}
+                    {announcement.link ? announcement.link.label : "Find us on the map"}
+                </a>
+            </article>
+        ))}
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center gap-x-1.5 gap-y-3 border-t border-slate-200 pt-6">
+        <button
+            class="grid size-11 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            type="button"
+            aria-label="Previous announcement"
+            data-announcement-prev
+        >
+            <svg class="size-4.5 fill-none stroke-current stroke-[2.5] [stroke-linecap:round] [stroke-linejoin:round]" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m15 18-6-6 6-6" />
+            </svg>
+        </button>
+        <button
+            class="grid size-11 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            type="button"
+            aria-label="Next announcement"
+            data-announcement-next
+        >
+            <svg class="size-4.5 fill-none stroke-current stroke-[2.5] [stroke-linecap:round] [stroke-linejoin:round]" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
+        </button>
+
+        <span
+            class="ml-2 block h-1 w-14 overflow-hidden rounded-full bg-slate-300 transition-opacity data-paused:opacity-45"
+            aria-hidden="true"
+            data-announcement-timer
+        >
+            <!-- Rests empty via transform, not `scale-x-0`: Tailwind's scale
+                 utilities set the independent `scale` property, which would
+                 multiply with the animated transform and pin the fill at zero. -->
+            <span
+                class="block h-full w-full origin-left rounded-full bg-red-600"
+                style="transform: scaleX(0)"
+                data-announcement-fill
+            ></span>
+        </span>
+
+        <div class="ml-auto flex gap-3" role="group" aria-label="Choose an announcement">
+            {announcements.map((announcement, index) => (
+                <button
+                    class="tap-target size-2.5 cursor-pointer rounded-full border-0 bg-slate-300 p-0 transition-colors hover:bg-slate-500 aria-current:bg-sky-900"
+                    type="button"
+                    aria-label={announcement.title}
+                    aria-current={index === 0 ? "true" : "false"}
+                    data-announcement-dot
+                ></button>
+            ))}
+        </div>
+    </div>
+</aside>
+
+<script>
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    document.querySelectorAll<HTMLElement>("[data-announcements]").forEach((panel) => {
+        const slides = Array.from(panel.querySelectorAll<HTMLElement>("[data-announcement]"));
+        const dots = Array.from(panel.querySelectorAll<HTMLButtonElement>("[data-announcement-dot]"));
+        const timer = panel.querySelector<HTMLElement>("[data-announcement-timer]");
+        const fill = panel.querySelector<HTMLElement>("[data-announcement-fill]");
+        let current = 0;
+
+        const show = (index: number) => {
+            current = (index + slides.length) % slides.length;
+            slides.forEach((slide, slideIndex) => {
+                const active = slideIndex === current;
+                slide.toggleAttribute("data-active", active);
+                slide.toggleAttribute("inert", !active);
+                slide.setAttribute("aria-hidden", String(!active));
+            });
+            dots.forEach((dot, dotIndex) => {
+                dot.setAttribute("aria-current", String(dotIndex === current));
+            });
+        };
+
+        // The pill is the timer: the panel advances when the fill finishes, so the
+        // two cannot drift apart the way a separate interval and animation would.
+        const animation = fill?.animate(
+            [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+            { duration: 7000, easing: "linear", fill: "forwards" },
+        );
+
+        if (animation) {
+            animation.onfinish = () => {
+                show(current + 1);
+                reset();
+            };
+        }
+
+        // A mouse click leaves the arrow focused; only keyboard focus should hold
+        // autoplay, otherwise it would never resume after a click.
+        const isPaused = () => reducedMotion.matches
+            || document.hidden
+            || panel.matches(":hover")
+            || panel.querySelector(":focus-visible") !== null;
+
+        const sync = () => {
+            const paused = isPaused();
+            timer?.toggleAttribute("data-paused", paused);
+            if (paused) animation?.pause();
+            else animation?.play();
+        };
+
+        // Hovering freezes the fill where it stands; taking control empties it.
+        const reset = () => {
+            if (animation) animation.currentTime = 0;
+            sync();
+        };
+
+        panel.querySelector("[data-announcement-prev]")?.addEventListener("click", () => {
+            show(current - 1);
+            reset();
+        });
+        panel.querySelector("[data-announcement-next]")?.addEventListener("click", () => {
+            show(current + 1);
+            reset();
+        });
+        dots.forEach((dot, index) => dot.addEventListener("click", () => {
+            show(index);
+            reset();
+        }));
+
+        panel.addEventListener("mouseenter", sync);
+        panel.addEventListener("mouseleave", sync);
+        panel.addEventListener("focusin", sync);
+        panel.addEventListener("focusout", sync);
+        reducedMotion.addEventListener("change", sync);
+        document.addEventListener("visibilitychange", sync);
+        reset();
+    });
+</script>

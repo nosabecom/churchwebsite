@@ -1,0 +1,49 @@
+---
+// No backend is wired up yet, so the form posts to itself and does nothing.
+---
+
+<section class="px-4 pb-16" aria-labelledby="newsletter-heading">
+    <div class="mx-auto grid max-w-400 items-center gap-8 rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-2xl shadow-sky-950/30 md:p-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+            <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">
+                Stay in the loop
+            </p>
+
+            <h2 class="text-3xl leading-tight font-bold text-sky-900 md:text-4xl" id="newsletter-heading">
+                Church news, straight to your inbox
+            </h2>
+
+            <p class="mt-4 text-lg leading-relaxed text-slate-700">
+                Announcements, upcoming events, and any changes to our service times &mdash;
+                so you never have to wonder what is happening this week.
+            </p>
+        </div>
+
+        <div>
+            <form class="flex flex-col gap-3 sm:flex-row" method="POST">
+                <div class="flex-1">
+                    <label class="sr-only" for="newsletter-email">Email address</label>
+                    <input
+                        class="form-input"
+                        id="newsletter-email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        required
+                        placeholder="you@example.com"
+                    />
+                </div>
+
+                <button
+                    class="shrink-0 rounded-full bg-red-600 px-8 py-2.5 text-xl text-white hover:cursor-pointer hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                    type="submit"
+                >Subscribe</button>
+            </form>
+
+            <p class="mt-3 text-sm text-slate-600">
+                We will only email you about the life of the church, and you can unsubscribe
+                whenever you like.
+            </p>
+        </div>
+    </div>
+</section>
