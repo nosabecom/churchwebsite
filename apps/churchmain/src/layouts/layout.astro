@@ -121,7 +121,7 @@ const primaryLinks = [
                 </ul>
 
                 <div class="flex shrink-0 items-center gap-1">
-                    <a class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700" href="#">Give</a>
+                    <a class="hidden rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 lg:inline-block" href="#">Give</a>
 
                     <button
                         class="grid size-11 cursor-pointer place-items-center rounded-lg text-sky-900 hover:bg-slate-100 lg:hidden"
@@ -199,6 +199,11 @@ const primaryLinks = [
                         <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={link.href}>{link.label}</a></li>
                     ))}
                 </ul>
+
+                <a
+                    class="mt-6 shrink-0 rounded-lg bg-red-600 px-4 py-3 text-center text-lg text-white hover:bg-red-700"
+                    href="#"
+                >Give</a>
             </div>
         </div>
 
