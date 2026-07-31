@@ -4,7 +4,16 @@
 // that set type on top of an image, since the real photography is still to be
 // shot and this one does not depend on it cooperating with the text.
 import Logo from '../../assets/excellent-women-logo.jpg';
+import Slideshow from '../slideshow.astro';
 import { Image } from 'astro:assets';
+
+// Placeholder photography until the fellowship's own images are supplied.
+const slides = [
+    "/images/placeholds/photo-10.jpg",
+    "/images/placeholds/photo-4.jpg",
+    "/images/placeholds/photo-7.jpg",
+    "/images/placeholds/photo-1.jpg",
+];
 ---
 
 <section class="grid lg:grid-cols-2 min-h-[38rem] md:min-h-[44rem]">
@@ -34,8 +43,12 @@ import { Image } from 'astro:assets';
         </div>
     </div>
 
-    <div class="relative min-h-80 lg:min-h-0 order-1 lg:order-2">
-        <img src="/images/placeholds/photo-10.jpg" alt="" loading="eager"
-            class="absolute inset-0 h-full w-full object-cover" />
-    </div>
+    <Slideshow
+        images={slides}
+        perSlide={6}
+        dots
+        theme="cream"
+        class="min-h-80 lg:min-h-0 order-1 lg:order-2"
+    />
+
 </section>
