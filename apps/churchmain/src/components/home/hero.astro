@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import { Quote, Slideshow } from "@churchwebsite/ui";
 import Welcome from "./welcome.astro";
+import Wordmark from "../../assets/cornerstone-logo-horizontal.png";
 
 // Add more church-owned images here as they are placed in public/images.
 const slides = [
@@ -19,10 +21,12 @@ const slides = [
             class="churchmain-slideshow h-full w-full min-h-96 md:min-h-80"
         >
             <div class="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-4 py-8 md:px-12 md:py-10 lg:gap-8 lg:py-7">
-                <img
-                    src="/images/cornerstone-logo-horizontal-v2.png"
+                <Image
+                    src={Wordmark}
                     alt="RCCG Cornerstone Assembly"
                     class="h-auto w-full max-w-3xl drop-shadow-2xl lg:max-w-lg"
+                    widths={[320, 640, 768]}
+                    sizes="(min-width: 1024px) 32rem, 90vw"
                 />
 
                 <Quote

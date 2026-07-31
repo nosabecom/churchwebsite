@@ -34,7 +34,7 @@ const announcements = [
 ---
 
 <aside
-    class="flex flex-col bg-slate-50 p-8 text-slate-900 lg:min-h-104 lg:p-9"
+    class="flex flex-col bg-slate-50 p-6 text-slate-900 sm:p-8 lg:min-h-104 lg:p-9"
     role="region"
     aria-roledescription="carousel"
     aria-label="Church announcements"
@@ -91,9 +91,9 @@ const announcements = [
         ))}
     </div>
 
-    <div class="mt-10 flex items-center gap-1.5 border-t border-slate-200 pt-6">
+    <div class="mt-10 flex flex-wrap items-center gap-x-1.5 gap-y-3 border-t border-slate-200 pt-6">
         <button
-            class="grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            class="grid size-11 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
             type="button"
             aria-label="Previous announcement"
             data-announcement-prev
@@ -103,7 +103,7 @@ const announcements = [
             </svg>
         </button>
         <button
-            class="grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            class="grid size-11 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-slate-600 transition-colors hover:bg-sky-900/10 hover:text-sky-900 focus-visible:bg-sky-900/10 focus-visible:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
             type="button"
             aria-label="Next announcement"
             data-announcement-next
@@ -128,10 +128,10 @@ const announcements = [
             ></span>
         </span>
 
-        <div class="ml-auto flex gap-2" role="group" aria-label="Choose an announcement">
+        <div class="ml-auto flex gap-3" role="group" aria-label="Choose an announcement">
             {announcements.map((announcement, index) => (
                 <button
-                    class="size-2.5 cursor-pointer rounded-full border-0 bg-slate-300 p-0 transition-colors hover:bg-slate-500 aria-current:bg-sky-900"
+                    class="tap-target size-2.5 cursor-pointer rounded-full border-0 bg-slate-300 p-0 transition-colors hover:bg-slate-500 aria-current:bg-sky-900"
                     type="button"
                     aria-label={announcement.title}
                     aria-current={index === 0 ? "true" : "false"}

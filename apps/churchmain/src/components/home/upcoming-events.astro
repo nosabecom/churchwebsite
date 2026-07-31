@@ -65,7 +65,7 @@ const events = [
     linkHref="#"
 >
     {events.map((event) => (
-        <li class="flex w-80 shrink-0 snap-start flex-col rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-xl shadow-sky-950/30 md:w-88">
+        <li class="flex w-[min(20rem,85vw)] shrink-0 snap-start flex-col rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-xl shadow-sky-950/30 md:w-88">
             <p class="mb-3 px-3 py-2 flex flex-col items-center self-start rounded-xl bg-sky-900 leading-none text-white">
                 <span class="text-2xl font-bold tracking-tight uppercase">{event.month} {event.day}</span>
             </p>

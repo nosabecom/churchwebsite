@@ -18,7 +18,7 @@ const pastors = [
                 Welcome
             </p>
 
-            <h2 class="text-4xl leading-tight font-bold text-white 2xl:text-5xl" id="welcome-heading">
+            <h2 class="text-3xl leading-tight font-bold text-balance text-white sm:text-4xl 2xl:text-5xl" id="welcome-heading">
                 There is a place for you at Cornerstone
             </h2>
 
@@ -49,7 +49,7 @@ const pastors = [
             </a>
         </div>
 
-        <ul class="grid list-none grid-cols-2 gap-4 p-0 md:gap-6">
+        <ul class="mx-auto grid w-full max-w-md list-none grid-cols-1 gap-4 p-0 min-[400px]:grid-cols-2 md:gap-6 lg:max-w-none">
             {pastors.map((pastor) => (
                 <li class="overflow-hidden rounded-2xl bg-linear-to-b from-sky-700/50 to-sky-950 shadow-2xl shadow-sky-950/40">
                     <Image
@@ -57,7 +57,7 @@ const pastors = [
                         src={pastor.image}
                         alt={pastor.name}
                         widths={[300, 450, 600]}
-                        sizes="(min-width: 1024px) 17rem, (min-width: 640px) 40vw, 45vw"
+                        sizes="(min-width: 1536px) 16rem, (min-width: 1024px) 13rem, (min-width: 400px) 45vw, 90vw"
                     />
 
                     <p class="border-t border-white/10 bg-sky-950/60 px-4 py-3 text-center text-base font-bold text-white md:text-lg">
