@@ -12,7 +12,7 @@ const pastors = [
 ---
 
 <section class="px-4 py-16" aria-labelledby="welcome-heading">
-    <div class="mx-auto grid max-w-400 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-16 2xl:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
+    <div class="mx-auto grid max-w-400 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-16 2xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         <div>
             <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-400 uppercase">
                 Welcome
@@ -49,18 +49,18 @@ const pastors = [
             </a>
         </div>
 
-        <ul class="mx-auto grid w-full max-w-md list-none grid-cols-1 gap-4 p-0 min-[400px]:grid-cols-2 md:gap-6 lg:max-w-none">
+        <ul class="mx-auto grid w-full max-w-xs list-none grid-cols-2 gap-3 p-0 sm:gap-4 lg:max-w-none">
             {pastors.map((pastor) => (
-                <li class="overflow-hidden rounded-2xl bg-linear-to-b from-sky-700/50 to-sky-950 shadow-2xl shadow-sky-950/40">
+                <li class="min-w-0 overflow-hidden rounded-xl bg-linear-to-b from-sky-700/50 to-sky-950 shadow-xl shadow-sky-950/40">
                     <Image
                         class="aspect-square w-full object-cover object-top"
                         src={pastor.image}
                         alt={pastor.name}
-                        widths={[300, 450, 600]}
-                        sizes="(min-width: 1536px) 16rem, (min-width: 1024px) 13rem, (min-width: 400px) 45vw, 90vw"
+                        widths={[160, 240, 320]}
+                        sizes="(min-width: 1024px) 10rem, (min-width: 352px) 9.5rem, 44vw"
                     />
 
-                    <p class="border-t border-white/10 bg-sky-950/60 px-4 py-3 text-center text-base font-bold text-white md:text-lg">
+                    <p class="border-t border-white/10 bg-sky-950/60 px-2 py-2 text-center text-xs leading-snug font-bold text-white sm:text-sm">
                         {pastor.name}
                     </p>
                 </li>
