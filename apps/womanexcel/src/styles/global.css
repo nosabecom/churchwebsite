@@ -39,12 +39,57 @@
         to { transform: translateX(-50%); }
     }
 
-    /* Slideshow timing is no longer global: it depends on how many slides an
-       instance has, so components/slideshow.astro emits its own keyframes. */
+    /* Slideshow timing is no longer defined here — it lives in the shared
+       @churchwebsite/ui Slideshow, themed per brand further down. */
 }
 
 @utility main-gradient {
     background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
+}
+
+.woman-excel-slideshow {
+    --slideshow-control-bg: rgb(8 42 78 / 60%);
+    --slideshow-control-bg-hover: rgb(8 42 78 / 90%);
+}
+
+/* Fellowship hero slideshow. The shared component always renders arrows
+   alongside the dots; this hero is dots-only, so the arrows are hidden here
+   rather than adding a prop upstream. They stay in the DOM and focusable, so
+   keyboard and screen reader users keep the same controls. */
+.cew-slideshow {
+    --slideshow-dot-bg: rgb(233 225 212 / 50%);
+    --slideshow-dot-bg-active: rgb(233 225 212);
+}
+
+.cew-slideshow .arrow {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.cew-slideshow .arrow:focus-visible {
+    width: 3rem;
+    height: 3rem;
+    overflow: visible;
+    clip-path: none;
+}
+
+.woman-excel-quote {
+    --quote-bg: var(--color-berry);
+    --quote-color: white;
+    --quote-font-size: 1.125rem;
+    --quote-padding: 1.25rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .woman-excel-quote {
+        --quote-font-size: 1.25rem;
+        --quote-padding: 1.5rem 3rem;
+    }
 }
 
 @utility speaker-card {

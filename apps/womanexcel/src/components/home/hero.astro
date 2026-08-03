@@ -4,15 +4,16 @@
 // that set type on top of an image, since the real photography is still to be
 // shot and this one does not depend on it cooperating with the text.
 import Logo from '../../assets/excellent-women-logo.jpg';
-import Slideshow from '../slideshow.astro';
+import { Slideshow } from '@churchwebsite/ui';
 import { Image } from 'astro:assets';
 
 // Placeholder photography until the fellowship's own images are supplied.
+// Empty alt throughout: these are decorative, the headline carries the meaning.
 const slides = [
-    "/images/placeholds/photo-10.jpg",
-    "/images/placeholds/photo-4.jpg",
-    "/images/placeholds/photo-7.jpg",
-    "/images/placeholds/photo-1.jpg",
+    { src: "/images/placeholds/photo-10.jpg", alt: "" },
+    { src: "/images/placeholds/photo-4.jpg", alt: "" },
+    { src: "/images/placeholds/photo-7.jpg", alt: "" },
+    { src: "/images/placeholds/photo-1.jpg", alt: "" },
 ];
 ---
 
@@ -44,11 +45,10 @@ const slides = [
     </div>
 
     <Slideshow
-        images={slides}
-        perSlide={6}
-        dots
-        theme="cream"
-        class="min-h-80 lg:min-h-0 order-1 lg:order-2"
+        slides={slides}
+        interval={6000}
+        label="Cornerstone Excellent Women"
+        class="cew-slideshow min-h-80 lg:min-h-0 order-1 lg:order-2"
     />
 
 </section>

@@ -3,7 +3,56 @@
 html, body {
     margin: 0;
     width: 100%;
-    height: 100%;
+}
+
+/* Safety net so an absolutely-positioned menu can never pan the page sideways.
+   `clip` rather than `hidden` so it does not trap the fixed drawer. */
+html {
+    overflow-x: clip;
+}
+
+/* No aspect ratio: joined to the announcement panel the slideshow takes the
+   row height, and stacked above it the logo and quote set the height. */
+.churchmain-slideshow {
+    --slideshow-control-bg: rgb(12 74 110 / 65%);
+    --slideshow-control-bg-hover: rgb(12 74 110 / 90%);
+}
+
+.churchmain-quote {
+    --quote-bg: rgb(12 74 110 / 85%);
+    --quote-color: white;
+    --quote-padding: 1rem 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .churchmain-quote {
+        --quote-padding: 1.5rem 2rem;
+    }
+}
+
+/* Joined to the announcement panel the hero is height-constrained, so the quote
+   stops scaling with the viewport and holds a fixed size. */
+@media (min-width: 1024px) {
+    .churchmain-quote {
+        --quote-font-size: 1.125rem;
+        --quote-padding: 1rem 1.5rem;
+    }
+}
+
+@utility form-field {
+    @apply flex flex-col gap-1
+}
+
+@utility form-label {
+    @apply text-sm font-semibold tracking-wide text-sky-900
+}
+
+@utility form-input {
+    @apply w-full rounded-md border-2 border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-sky-900 focus:outline-none user-invalid:border-red-600 user-valid:border-green-600
+}
+
+@utility form-submit {
+    @apply w-full rounded-full bg-red-600 px-6 py-2.5 text-xl text-white hover:cursor-pointer hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600
 }
 
 @utility context-menu {
@@ -17,18 +66,27 @@ html, body {
     @apply relative
 }
 
-.context-menu-trigger:hover > .context-menu {
+/* Hover is an enhancement for mice only. Touch devices have no hover, so the
+   click toggle in layout.astro is the mechanism that actually opens these. */
+@media (hover: hover) and (pointer: fine) {
+    .context-menu-trigger:hover > .context-menu {
+        @apply visible opacity-100;
+        transition-delay: 0ms;
+    }
+
+    .context-menu > .context-menu-trigger:hover > .context-menu {
+        transition-duration: 0ms;
+    }
+
+    .context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu {
+        @apply invisible opacity-0;
+        transition-duration: 0ms;
+        transition-delay: 0ms;
+    }
+}
+
+.context-menu-trigger[data-open] > .context-menu {
     @apply visible opacity-100;
-    transition-delay: 0ms;
-}
-
-.context-menu > .context-menu-trigger:hover > .context-menu {
-    transition-duration: 0ms;
-}
-
-.context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu {
-    @apply invisible opacity-0;
-    transition-duration: 0ms;
     transition-delay: 0ms;
 }
 
@@ -45,6 +103,37 @@ html, body {
     @apply opacity-0 transition-opacity;
 }
 
-.context-menu > .context-menu-trigger:hover > .context-menu-item::after {
+.context-menu > .context-menu-trigger:hover > .context-menu-item::after,
+.context-menu > .context-menu-trigger[data-open] > .context-menu-item::after {
     @apply opacity-100;
+}
+
+/* Grows a small control's touch area without growing its layout box, so a
+   row of dots stays narrow enough for a 320px screen. */
+@utility tap-target {
+    position: relative;
+}
+
+.tap-target::after {
+    content: "";
+    position: absolute;
+    inset: -17px -6px;
+}
+
+/* Mobile drawer accordions. */
+@utility drawer-summary {
+    @apply flex cursor-pointer items-center justify-between rounded-md py-2.5 marker:content-none
+}
+
+.drawer-summary::-webkit-details-marker {
+    display: none;
+}
+
+.drawer-summary::after {
+    content: "›";
+    @apply rotate-90 text-xl transition-transform;
+}
+
+.drawer-group[open] > .drawer-summary::after {
+    @apply -rotate-90;
 }

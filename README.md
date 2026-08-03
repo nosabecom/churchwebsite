@@ -6,6 +6,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 - `apps/churchmain` is the main RCCG Cornerstone Assembly site.
 - `apps/womanexcel` is the Woman Excel site.
+- `packages/ui` contains the UI components shared by both sites.
 - Shared dependency versions are managed from the root `pnpm-workspace.yaml` catalog.
 - Each app is an Astro project using Tailwind CSS through `@tailwindcss/vite`.
 - Static public assets live in each app's `public/` directory.
@@ -67,6 +68,37 @@ pnpm b
 pnpm b/c
 pnpm b/w
 ```
+
+## Shared components
+
+The workspace already includes `packages/*`. Shared Astro components can be
+published from a package there and linked into an app with a `workspace:*`
+dependency. The shared UI package exposes both components:
+
+```astro
+---
+import { Quote, Slideshow } from "@churchwebsite/ui";
+
+const slides = [
+  { src: "/images/photo-1.jpg", alt: "People worshipping" },
+  { src: "/images/photo-2.jpg", alt: "The church building" },
+];
+---
+
+<Slideshow slides={slides} interval={8000} aspectRatio="16 / 9" />
+
+<Quote quote="In the beginning was the Word..." citation="John 1:1" />
+```
+
+Keep the images in the consuming app's `public/` directory. This ensures each
+site deploys with its own content while the component behavior stays shared.
+The controls use neutral colors by default and can be themed from an app with
+the `--slideshow-control-bg`, `--slideshow-control-bg-hover`,
+`--slideshow-control-color`, `--slideshow-dot-bg`, and
+`--slideshow-dot-bg-active` custom properties.
+
+Apps can theme the quote card with the `--quote-bg`, `--quote-color`, `--quote-padding`,
+`--quote-font-size`, `--quote-radius`, and `--quote-mark-size` custom properties.
 
 ## Contributing
 

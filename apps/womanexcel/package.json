@@ -8,6 +8,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@churchwebsite/ui": "workspace:*",
     "@tailwindcss/vite": "catalog:",
     "@vercel/analytics": "catalog:",
     "astro": "catalog:",
