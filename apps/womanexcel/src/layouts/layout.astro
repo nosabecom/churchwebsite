@@ -25,18 +25,6 @@ const navLinks = [
 	{ href: "/contact", label: "Contact Us" },
 ];
 
-// The top nav stays short; the footer keeps the homepage section anchors so
-// those sections are still reachable from anywhere on the site.
-const footerLinks = isConference
-	? navLinks
-	: [
-		{ href: "/", label: "Home" },
-		{ href: "/#about", label: "About" },
-		{ href: "/#mission", label: "Our Mission" },
-		{ href: "/conference", label: "Conference" },
-		{ href: "/contact", label: "Contact Us" },
-	];
-
 // Both shells render the same footer; only palette and wording differ. The
 // conference tagline is lifted from its own "Who are we?" section rather than
 // written fresh.
@@ -156,7 +144,7 @@ const footerTheme = isConference
 					</div>
 
 					<nav class="flex flex-col gap-2 font-sans text-sm" aria-label="Footer">
-						{footerLinks.map((link) => (
+						{navLinks.map((link) => (
 							<a class:list={["transition-colors hover:text-white", footerTheme.muted]} href={link.href}>{link.label}</a>
 						))}
 					</nav>
