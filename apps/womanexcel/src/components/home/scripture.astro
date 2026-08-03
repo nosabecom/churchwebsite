@@ -1,0 +1,30 @@
+---
+// The fellowship's anchor verse — it appears on the brand mark itself.
+//
+// This deliberately does not use the shared @churchwebsite/ui Quote: that one
+// is a card (background, padding, citation under a left/right mark pair) and
+// this is a full-bleed band with everything centred. The glyph below is the
+// one Quote draws, inlined — the standalone open/close SVGs this used to load
+// were deleted from public/ when Quote replaced them.
+---
+
+<section class="bg-charcoal text-cream">
+    <div class="cew-section flex flex-col items-center text-center gap-6">
+        <svg class="w-8 md:w-12 fill-cream" viewBox="0 0 310 310" aria-hidden="true" focusable="false">
+            <path d="M70.62 54.59 20 155.84v101.25h101.25V155.84H70.62l50.63-101.25zM290 52.91h-50.62l-50.63 101.25v101.25H290V154.16h-50.62z" />
+        </svg>
+
+        <blockquote class="text-2xl md:text-4xl leading-snug max-w-4xl text-balance">
+            An excellent woman [one who is spiritual, capable, intelligent, and virtuous], who is he who can
+            find her? Her value is more precious than jewels and her worth is far above rubies or pearls.
+        </blockquote>
+
+        <svg class="w-8 md:w-12 fill-cream rotate-180" viewBox="0 0 310 310" aria-hidden="true" focusable="false">
+            <path d="M70.62 54.59 20 155.84v101.25h101.25V155.84H70.62l50.63-101.25zM290 52.91h-50.62l-50.63 101.25v101.25H290V154.16h-50.62z" />
+        </svg>
+
+        <cite class="not-italic font-sans text-sm tracking-[0.25em] uppercase text-cream/60">
+            Proverbs 31:10 (AMP)
+        </cite>
+    </div>
+</section>

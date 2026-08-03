@@ -1,10 +1,56 @@
 ---
 import '../styles/global.css'
 import Analytics from "@vercel/analytics/astro"
-import Favicon from '../assets/logo.png'
-import Logo from '../assets/logo.svg'
+import ConferenceMark from '../assets/logo.png'
+import ConferenceLogo from '../assets/logo.svg'
+import FellowshipLogo from '../assets/excellent-women-logo.jpg'
 import { Image } from 'astro:assets'
-const { title } = Astro.props
+
+interface Props {
+	title: string;
+	/** "fellowship" is the Cornerstone Excellent Women shell used across the
+	    site; "conference" keeps the Woman Excel identity for /conference/*. */
+	variant?: "fellowship" | "conference";
+}
+
+const { title, variant = "fellowship" } = Astro.props as Props;
+const isConference = variant === "conference";
+
+const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
+const favicon = isConference ? ConferenceMark : FellowshipLogo;
+
+const navLinks = [
+	{ href: "/", label: "Home" },
+	{ href: "/conference", label: "Conference" },
+	{ href: "/contact", label: "Contact Us" },
+];
+
+// Both shells render the same footer; only palette and wording differ. The
+// conference tagline is lifted from its own "Who are we?" section rather than
+// written fresh.
+const footerTheme = isConference
+	? {
+		wrap: "bg-navy text-white",
+		muted: "text-white/70",
+		faint: "text-white/60",
+		rule: "bg-white/15",
+		icon: "fill-white/70 hover:fill-white",
+		name: "The Woman Excel Conference",
+		tagline: "A gathering of women who refuse to settle for ordinary.",
+		parent: "A ministry of RCCG Cornerstone Assembly.",
+		copyright: "© 2026 Woman Excel Conference",
+	}
+	: {
+		wrap: "bg-charcoal text-cream",
+		muted: "text-cream/70",
+		faint: "text-cream/60",
+		rule: "bg-cream/15",
+		icon: "fill-cream/70 hover:fill-white",
+		name: "Cornerstone Excellent Women",
+		tagline: "Inspire, empower, and support women to excel in God’s purpose.",
+		parent: "A ministry of RCCG Cornerstone Assembly.",
+		copyright: "© 2026 RCCG Cornerstone Assembly",
+	};
 ---
 
 <!doctype html>
@@ -13,34 +59,60 @@ const { title } = Astro.props
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<link rel="shortcut icon" href={Favicon.src} type="image/png">
-		<title>{title} | Woman Excel Conference</title>
+		<link rel="shortcut icon" href={favicon.src} type={isConference ? "image/png" : "image/jpeg"}>
+		<title>{title} | {siteName}</title>
 	</head>
 
-	<body class="main-gradient font-serif min-h-dvh flex flex-col">
+	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream"]}>
 		<Analytics/>
-		
-		<nav class="flex justify-between items-center px-4 py-2 md:px-10">
-			<a href="/" class="shrink-0"><Image src={Logo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/></a>
+
+		<nav class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
+			<a href="/" class="shrink-0 flex items-center gap-3">
+				{isConference
+					? <Image src={ConferenceLogo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/>
+					: <>
+						<Image src={FellowshipLogo} alt="Cornerstone Excellent Women" width="120" height="120" class="w-12 md:w-16 h-auto rounded-full"/>
+						{/* The mark's own lettering is unreadable at nav size, so the
+						    name is set in type beside it once there's room. */}
+						<span class="hidden sm:flex flex-col leading-tight">
+							<span class="font-sans uppercase text-[0.65rem] tracking-[0.3em] text-orchid-deep">Cornerstone</span>
+							<span class="text-lg md:text-xl text-charcoal">Excellent Women</span>
+						</span>
+					</>}
+			</a>
 
 			<!-- One nav list. Above xs it renders inline here; below xs the
 			     container becomes the off-canvas sidebar panel. -->
 			<div class="group" data-sidebar>
 				<div
-					class="xs:hidden fixed inset-0 z-30 bg-navy/70 opacity-0 pointer-events-none group-data-open:opacity-100 group-data-open:pointer-events-auto transition-opacity duration-300"
+					class:list={[
+						"xs:hidden fixed inset-0 z-30 opacity-0 pointer-events-none group-data-open:opacity-100 group-data-open:pointer-events-auto transition-opacity duration-300",
+						isConference ? "bg-navy/70" : "bg-charcoal/70",
+					]}
 					data-sidebar-backdrop
 				></div>
 
-				<div class="max-xs:fixed max-xs:top-0 max-xs:right-0 max-xs:z-40 max-xs:h-dvh max-xs:w-60 max-xs:bg-navy max-xs:flex max-xs:flex-col max-xs:p-6 max-xs:translate-x-full max-xs:group-data-open:translate-x-0 max-xs:transition-transform max-xs:duration-300 max-xs:ease-in-out">
+				<div class:list={[
+					"max-xs:fixed max-xs:top-0 max-xs:right-0 max-xs:z-40 max-xs:h-dvh max-xs:w-60 max-xs:flex max-xs:flex-col max-xs:p-6 max-xs:translate-x-full max-xs:group-data-open:translate-x-0 max-xs:transition-transform max-xs:duration-300 max-xs:ease-in-out",
+					isConference ? "max-xs:bg-navy" : "max-xs:bg-charcoal",
+				]}>
 					<button type="button" aria-label="Close menu" data-sidebar-close class="xs:hidden self-end text-white cursor-pointer p-1">
 						<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
 							<path d="M6 6l12 12M18 6L6 18" />
 						</svg>
 					</button>
-					<ul class="flex text-navy gap-4 md:gap-6 max-xs:flex-col max-xs:gap-2 max-xs:mt-4 max-xs:text-white max-xs:text-xl">
-						<li><a class="max-xs:block max-xs:py-2" href="/">Home</a></li>
-						<li><a class="max-xs:block max-xs:py-2" href="/conference/2026">Conference</a></li>
-						<li><a class="max-xs:block max-xs:py-2" href="/contact">Contact Us</a></li>
+					<ul class:list={[
+						"flex gap-4 md:gap-6 max-xs:flex-col max-xs:gap-2 max-xs:mt-4 max-xs:text-white max-xs:text-xl",
+						isConference ? "text-navy" : "text-charcoal font-sans text-sm md:text-base",
+					]}>
+						{navLinks.map((link) => (
+							<li>
+								<a
+									class:list={["max-xs:block max-xs:py-2", !isConference && "transition-colors hover:text-orchid-deep max-xs:hover:text-blush"]}
+									href={link.href}
+								>{link.label}</a>
+							</li>
+						))}
 					</ul>
 				</div>
 			</div>
@@ -50,7 +122,7 @@ const { title } = Astro.props
 				aria-label="Open menu"
 				aria-expanded="false"
 				data-sidebar-open
-				class="xs:hidden text-navy cursor-pointer p-1"
+				class:list={["xs:hidden cursor-pointer p-1", isConference ? "text-navy" : "text-charcoal"]}
 			>
 				<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
 					<path d="M4 6h16M4 12h16M4 18h16" />
@@ -62,8 +134,46 @@ const { title } = Astro.props
         	<slot/>
 		</main>
 
-		<footer class="bg-navy text-white flex justify-center py-3">
-			<p>© 2026 Woman Excel Conference</p>
+		<footer class:list={[footerTheme.wrap]}>
+			<div class="mx-auto w-full max-w-6xl px-4 md:px-8 py-12 flex flex-col gap-8">
+				<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+					<div class="max-w-md flex flex-col gap-3">
+						<p class="text-2xl md:text-3xl">{footerTheme.name}</p>
+						<p class={footerTheme.muted}>{footerTheme.tagline}</p>
+						<p class:list={["font-sans text-sm", footerTheme.faint]}>{footerTheme.parent}</p>
+					</div>
+
+					<nav class="flex flex-col gap-2 font-sans text-sm" aria-label="Footer">
+						{navLinks.map((link) => (
+							<a class:list={["transition-colors hover:text-white", footerTheme.muted]} href={link.href}>{link.label}</a>
+						))}
+					</nav>
+				</div>
+
+				<div class:list={["h-px", footerTheme.rule]}></div>
+
+				<div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4">
+					<p class:list={["font-sans text-sm", footerTheme.faint]}>{footerTheme.copyright}</p>
+
+					<div class="flex items-center gap-4">
+							<a href="https://www.instagram.com/rccg.cornerstonesk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+								<svg class:list={["transition-colors w-6", footerTheme.icon]} role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.5524 1.2773.0563 1.6884.0688 4.9462.0626 3.2578-.0062 3.668-.0207 4.9478-.0814 1.2797-.0607 2.1469-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.0563-1.2809.0698-1.6898.0636-4.9486-.0063-3.2588-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1482-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.0056 11.977.0006 8.718.0069 8.31.0212 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.4229-.1651 1.0574-.3614 2.2267-.4171 1.2655-.0596 1.6447-.0719 4.848-.079 3.2033-.007 3.5837.0053 4.8495.0608 1.169.0508 1.8053.2445 2.2277.408.5608.216.96.4757 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0738 1.645.0796 4.848.0058 3.203-.0055 3.5836-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0592-1.6448.0719-4.8493.079-3.2045.007-3.5825-.006-4.8479-.0607M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.1565 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/>
+								</svg>
+							</a>
+							<a href="https://www.facebook.com/rccg.cornerstonesk/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+								<svg class:list={["transition-colors w-6", footerTheme.icon]} role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/>
+								</svg>
+							</a>
+							<a href="mailto:connect@rccgcornerstoneassembly.com" aria-label="Email">
+								<svg class:list={["transition-colors w-6", footerTheme.icon]} role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+								</svg>
+							</a>
+					</div>
+				</div>
+			</div>
 		</footer>
 
 		<script>
