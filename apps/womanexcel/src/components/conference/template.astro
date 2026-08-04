@@ -1,0 +1,281 @@
+---
+import { Quote, Slideshow } from "@churchwebsite/ui";
+import Layout from "../../layouts/layout.astro";
+
+export interface ImageDetails {
+    src: string;
+    alt: string;
+}
+
+export interface LinkDetails {
+    href: string;
+    label: string;
+}
+
+export interface ScheduleItem {
+    day: string;
+    time?: string;
+    title: string;
+    description?: string;
+}
+
+export interface Guest {
+    name: string;
+    role?: string;
+    image: ImageDetails;
+}
+
+export interface GalleryItem extends ImageDetails {
+    caption?: string;
+    href?: string;
+}
+
+export interface Props {
+    year: string | number;
+    theme: {
+        name: string;
+        artwork?: ImageDetails;
+        scripture?: {
+            quote: string;
+            citation: string;
+        };
+    };
+    heroSlides: ImageDetails[];
+    introduction: {
+        heading?: string;
+        paragraphs: string[];
+        image?: ImageDetails;
+    };
+    schedule?: ScheduleItem[];
+    guests?: Guest[];
+    registration?: LinkDetails;
+    donation?: LinkDetails;
+    gallery?: {
+        heading?: string;
+        items: GalleryItem[];
+    };
+    recap?: {
+        heading?: string;
+        paragraphs: string[];
+        media?: GalleryItem[];
+        cta?: LinkDetails;
+    };
+}
+
+/**
+ * Reusable Woman Excel conference-year page shell.
+ *
+ * Keep year-specific copy and asset paths in the route that imports this
+ * component. Placing the shared shell under components (rather than pages)
+ * ensures it never becomes a public route on its own.
+ */
+const {
+    year,
+    theme,
+    heroSlides,
+    introduction,
+    schedule = [],
+    guests = [],
+    registration,
+    donation,
+    gallery,
+    recap,
+} = Astro.props as Props;
+
+const pageTitle = `${year}: ${theme.name}`;
+const introductionHeading = introduction.heading ?? "Who are we?";
+---
+
+<Layout title={pageTitle} variant="conference">
+    <Slideshow
+        slides={heroSlides}
+        label={`Woman Excel ${year} conference highlights`}
+        class="woman-excel-slideshow mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl"
+    >
+        <div class="absolute inset-0 bg-navy/20"></div>
+
+        <div class="relative z-10 flex flex-col items-center gap-5 px-4 pb-20 pt-10 md:gap-6">
+            <p class="rounded-xl bg-navy px-3 py-1.5 font-sans text-[13px] text-white">
+                Theme for {year}
+            </p>
+
+            {theme.artwork ? (
+                <img
+                    class="w-[85%] max-w-350"
+                    src={theme.artwork.src}
+                    alt={theme.artwork.alt}
+                />
+            ) : (
+                <h1 class="max-w-5xl text-center text-5xl leading-tight text-white drop-shadow-lg md:text-8xl">
+                    {theme.name}
+                </h1>
+            )}
+
+            {theme.scripture && (
+                <Quote
+                    quote={theme.scripture.quote}
+                    citation={theme.scripture.citation}
+                    class="woman-excel-quote mx-4 my-2 max-w-[92%] md:mx-0"
+                />
+            )}
+        </div>
+    </Slideshow>
+
+    <section class="relative flex items-center justify-center px-4 pb-20 md:px-8" aria-labelledby={`conference-${year}-intro`}>
+        <div class="absolute inset-x-0 top-1/2 h-70 -translate-y-1/2 bg-pink blur-3xl"></div>
+        <div class="relative mx-auto flex w-full max-w-312 flex-col items-center gap-6 rounded-2xl bg-berry p-4 md:p-6 lg:flex-row lg:gap-12">
+            {introduction.image && (
+                <img
+                    class="w-full max-w-xl lg:w-1/2"
+                    src={introduction.image.src}
+                    alt={introduction.image.alt}
+                />
+            )}
+
+            <div class:list={["flex w-full flex-col items-center text-white", introduction.image && "lg:w-1/2"]}>
+                <h2 id={`conference-${year}-intro`} class="mb-3 rounded-xl bg-navy px-5.5 py-3 text-3xl md:text-5xl">
+                    {introductionHeading}
+                </h2>
+                {introduction.paragraphs.map((paragraph) => (
+                    <p class="mb-2 text-lg last:mb-0 md:text-2xl">{paragraph}</p>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    {schedule.length > 0 && (
+        <section class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8 md:py-24" aria-labelledby={`conference-${year}-schedule`}>
+            <div class="mb-8 flex items-center justify-center gap-3">
+                <div class="h-px flex-1 bg-navy/25"></div>
+                <h2 id={`conference-${year}-schedule`} class="rounded-full bg-navy px-5 py-2 text-3xl text-white md:text-4xl">
+                    Schedule
+                </h2>
+                <div class="h-px flex-1 bg-navy/25"></div>
+            </div>
+
+            <ol class="grid gap-5 md:grid-cols-2">
+                {schedule.map((item) => (
+                    <li class="flex flex-col gap-2 rounded-2xl bg-berry p-6 text-white md:p-8">
+                        <div class="flex flex-wrap items-baseline justify-between gap-2 font-sans">
+                            <p class="text-sm font-semibold uppercase tracking-[0.2em]">{item.day}</p>
+                            {item.time && <p class="text-sm text-white/80">{item.time}</p>}
+                        </div>
+                        <h3 class="text-2xl md:text-3xl">{item.title}</h3>
+                        {item.description && <p class="text-white/85">{item.description}</p>}
+                    </li>
+                ))}
+            </ol>
+        </section>
+    )}
+
+    {guests.length > 0 && (
+        <section class="flex flex-col items-center py-16" aria-labelledby={`conference-${year}-guests`}>
+            <h2 id={`conference-${year}-guests`} class="mb-8 rounded-3xl bg-navy px-5 py-2.5 text-3xl text-white md:text-4xl">
+                Speakers &amp; Guests
+            </h2>
+
+            <ul class="mx-auto grid w-full max-w-7xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:px-8">
+                {guests.map((guest) => (
+                    <li class="relative overflow-hidden rounded-2xl bg-berry text-white">
+                        <img class="aspect-[4/5] w-full object-cover" src={guest.image.src} alt={guest.image.alt} />
+                        <div class="absolute inset-x-0 bottom-0 bg-navy/95 p-4 text-center">
+                            <h3 class="text-xl md:text-2xl">{guest.name}</h3>
+                            {guest.role && <p class="font-sans text-sm text-white/80">{guest.role}</p>}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </section>
+    )}
+
+    {(registration || donation) && (
+        <section class="px-4 py-16 md:px-8" aria-label={`${year} conference actions`}>
+            <div class="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 rounded-3xl bg-navy px-6 py-12 text-center text-white md:px-12">
+                <div>
+                    <p class="font-sans text-sm uppercase tracking-[0.25em] text-white/70">Woman Excel {year}</p>
+                    <h2 class="mt-2 text-3xl md:text-5xl">Join us for the conference</h2>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3 font-sans">
+                    {registration && (
+                        <a class="rounded-full bg-pink px-7 py-3 text-white transition-colors hover:bg-pink/80" href={registration.href}>
+                            {registration.label}
+                        </a>
+                    )}
+                    {donation && (
+                        <a class="rounded-full border border-white/50 px-7 py-3 text-white transition-colors hover:border-white hover:bg-white/10" href={donation.href}>
+                            {donation.label}
+                        </a>
+                    )}
+                </div>
+            </div>
+        </section>
+    )}
+
+    {gallery && gallery.items.length > 0 && (
+        <section class="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24" aria-labelledby={`conference-${year}-gallery`}>
+            <h2 id={`conference-${year}-gallery`} class="mb-8 text-center text-4xl text-navy md:text-6xl">
+                {gallery.heading ?? "Gallery & Media"}
+            </h2>
+
+            <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {gallery.items.map((item) => (
+                    <li class="overflow-hidden rounded-2xl bg-berry text-white">
+                        {item.href ? (
+                            <a class="group block" href={item.href}>
+                                <img class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105" src={item.src} alt={item.alt} />
+                                {item.caption && <p class="p-4">{item.caption}</p>}
+                            </a>
+                        ) : (
+                            <>
+                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                {item.caption && <p class="p-4">{item.caption}</p>}
+                            </>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </section>
+    )}
+
+    {recap && (
+        <section class="px-4 py-16 md:px-8 md:py-24" aria-labelledby={`conference-${year}-recap`}>
+            <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 rounded-3xl bg-berry p-6 text-white md:p-10">
+                <div class="max-w-3xl">
+                    <p class="font-sans text-sm uppercase tracking-[0.25em] text-white/70">Looking back</p>
+                    <h2 id={`conference-${year}-recap`} class="mt-2 text-4xl md:text-6xl">
+                        {recap.heading ?? `${year} Recap`}
+                    </h2>
+                    {recap.paragraphs.map((paragraph) => (
+                        <p class="mt-4 text-lg text-white/90 md:text-xl">{paragraph}</p>
+                    ))}
+                    {recap.cta && (
+                        <a class="mt-6 inline-block rounded-full bg-navy px-7 py-3 font-sans text-white transition-colors hover:bg-navy/80" href={recap.cta.href}>
+                            {recap.cta.label}
+                        </a>
+                    )}
+                </div>
+
+                {recap.media && recap.media.length > 0 && (
+                    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {recap.media.map((item) => (
+                            <li class="overflow-hidden rounded-xl bg-navy/30">
+                                {item.href ? (
+                                    <a class="block" href={item.href}>
+                                        <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                        {item.caption && <p class="p-3">{item.caption}</p>}
+                                    </a>
+                                ) : (
+                                    <>
+                                        <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                        {item.caption && <p class="p-3">{item.caption}</p>}
+                                    </>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+        </section>
+    )}
+</Layout>
