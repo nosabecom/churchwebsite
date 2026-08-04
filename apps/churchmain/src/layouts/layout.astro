@@ -5,6 +5,16 @@ import Analytics from '@vercel/analytics/astro'
 import Logo from '../assets/logo.png'
 import Wordmark from '../assets/cornerstone-logo-horizontal.png'
 
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "RCCG Cornerstone Assembly",
+    description = "RCCG Cornerstone Assembly in Saskatoon, Saskatchewan.",
+} = Astro.props;
+
 const year = new Date().getFullYear();
 
 const services = [
@@ -17,7 +27,7 @@ const services = [
 const explore = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "#" },
-    { label: "New to Church?", href: "#" },
+    { label: "New to Church?", href: "/new-to-church" },
     { label: "Events", href: "#" },
     { label: "Sermons", href: "#" },
     { label: "Contact Us", href: "/contact" },
@@ -50,7 +60,7 @@ const departments = [
 ];
 
 const primaryLinks = [
-    { label: "New to Church?", href: "#" },
+    { label: "New to Church?", href: "/new-to-church" },
     { label: "Events", href: "#" },
     { label: "Sermons", href: "#" },
     { label: "Contact Us", href: "/contact" },
@@ -64,7 +74,8 @@ const primaryLinks = [
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
         <link rel="shortcut icon" href={Logo.src} type="image/png">
-		<title>RCCG Cornerstone Assembly</title>
+		<title>{title}</title>
+        <meta name="description" content={description} />
 	</head>
 	<body class="bg-sky-900 min-h-dvh flex flex-col">
         <Analytics />
