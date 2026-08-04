@@ -109,4 +109,47 @@ const directoryPath = isMinistry ? "/ministries" : "/departments";
             </div>
         </div>
     </section>
+
+    <section class="px-4 py-14 sm:py-16" aria-labelledby="organization-pictures-heading">
+        <div class="mx-auto max-w-400">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <p class="text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">Gallery</p>
+                    <h2 class="mt-2 text-3xl leading-tight font-extrabold text-sky-900 sm:text-4xl" id="organization-pictures-heading">
+                        Pictures
+                    </h2>
+                </div>
+                <p class="max-w-xl text-slate-600">A look at life in the {organization.name}.</p>
+            </div>
+
+            {organization.pictures.length > 0 ? (
+                <ul class="mt-8 grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
+                    {organization.pictures.map((picture) => (
+                        <li>
+                            <figure class="overflow-hidden rounded-2xl bg-white shadow-lg shadow-sky-950/10">
+                                <img
+                                    class="aspect-4/3 w-full object-cover"
+                                    src={picture.src}
+                                    alt={picture.alt}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                                {picture.caption && <figcaption class="px-5 py-4 text-sm text-slate-600">{picture.caption}</figcaption>}
+                            </figure>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div class="mt-8 grid min-h-64 place-items-center rounded-2xl border-2 border-dashed border-sky-200 bg-white px-6 py-12 text-center">
+                    <div>
+                        <span class="mx-auto grid size-16 place-items-center rounded-full bg-sky-100 text-sky-900" aria-hidden="true">
+                            <Icon name="image" class="size-8" />
+                        </span>
+                        <p class="mt-5 text-xl font-extrabold text-sky-900">Pictures coming soon</p>
+                        <p class="mt-2 text-slate-600">Photos from this {organization.kind} will be added here.</p>
+                    </div>
+                </div>
+            )}
+        </div>
+    </section>
 </div>

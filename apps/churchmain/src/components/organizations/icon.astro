@@ -2,7 +2,7 @@
 import type { OrganizationIcon } from "../../data/organizations";
 
 interface Props {
-    name: OrganizationIcon | "clock" | "location" | "email" | "external";
+    name: OrganizationIcon | "clock" | "location" | "email" | "external" | "image";
     class?: string;
 }
 
@@ -107,6 +107,13 @@ const { name, class: className = "size-8" } = Astro.props;
         <>
             <path d="M15 4h5v5M20 4l-9 9" />
             <path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6" />
+        </>
+    )}
+    {name === "image" && (
+        <>
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <circle cx="8.5" cy="9" r="1.5" />
+            <path d="m5 17 4.5-4.5 3.5 3 2.5-2.5 3.5 4" />
         </>
     )}
 </svg>
