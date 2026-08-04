@@ -1,0 +1,66 @@
+---
+interface LinkDetails {
+    href: string;
+    label: string;
+}
+
+interface MediaItem {
+    src: string;
+    alt: string;
+    caption?: string;
+    href?: string;
+}
+
+interface Props {
+    year: string | number;
+    heading?: string;
+    paragraphs: string[];
+    media?: MediaItem[];
+    cta?: LinkDetails;
+}
+
+const {
+    year,
+    heading = `${year} Recap`,
+    paragraphs,
+    media = [],
+    cta,
+} = Astro.props as Props;
+---
+
+<section class="px-4 py-16 md:px-8 md:py-24" aria-labelledby={`conference-${year}-recap`}>
+    <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 rounded-3xl bg-berry p-6 text-white md:p-10">
+        <div class="max-w-3xl">
+            <p class="font-sans text-sm uppercase tracking-[0.25em] text-white/70">Looking back</p>
+            <h2 id={`conference-${year}-recap`} class="mt-2 text-4xl md:text-6xl">{heading}</h2>
+            {paragraphs.map((paragraph) => (
+                <p class="mt-4 text-lg text-white/90 md:text-xl">{paragraph}</p>
+            ))}
+            {cta && (
+                <a class="mt-6 inline-block rounded-full bg-navy px-7 py-3 font-sans text-white transition-colors hover:bg-navy/80" href={cta.href}>
+                    {cta.label}
+                </a>
+            )}
+        </div>
+
+        {media.length > 0 && (
+            <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {media.map((item) => (
+                    <li class="overflow-hidden rounded-xl bg-navy/30">
+                        {item.href ? (
+                            <a class="block" href={item.href}>
+                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                {item.caption && <p class="p-3">{item.caption}</p>}
+                            </a>
+                        ) : (
+                            <>
+                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                {item.caption && <p class="p-3">{item.caption}</p>}
+                            </>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        )}
+    </div>
+</section>
