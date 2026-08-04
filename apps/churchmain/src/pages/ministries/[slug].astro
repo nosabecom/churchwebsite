@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/layout.astro";
+import DetailPage from "../../components/organizations/detail-page.astro";
+import { ministries, type Organization } from "../../data/organizations";
+
+export function getStaticPaths() {
+    return ministries.map((organization) => ({
+        params: { slug: organization.slug },
+        props: { organization },
+    }));
+}
+
+interface Props {
+    organization: Organization;
+}
+
+const { organization } = Astro.props;
+---
+
+<Layout>
+    <DetailPage organization={organization} />
+</Layout>
