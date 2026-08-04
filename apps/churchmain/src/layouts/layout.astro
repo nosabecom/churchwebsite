@@ -26,27 +26,27 @@ const explore = [
 const getInvolved = [
     { label: "Join the team", href: "/#join" },
     { label: "Send a prayer request", href: "/contact" },
-    { label: "Ministries", href: "#" },
-    { label: "Departments", href: "#" },
+    { label: "Ministries", href: "/ministries" },
+    { label: "Departments", href: "/departments" },
 ];
 
 // One source of truth for the nav, so the desktop bar and the mobile drawer
 // can never drift apart.
 const ministries = [
-    { label: "Men's", href: "#" },
-    { label: "Women's", href: "#" },
-    { label: "Children", href: "#" },
-    { label: "Youths & Teenagers", href: "#" },
+    { label: "Men's", href: "/ministries/men" },
+    { label: "Women's", href: "/ministries/women" },
+    { label: "Children", href: "/ministries/children" },
+    { label: "Youths & Teenagers", href: "/ministries/youths-teenagers" },
 ];
 
 const departments = [
-    { label: "Music", href: "#" },
-    { label: "Prayer", href: "#" },
-    { label: "Bible Study", href: "#" },
-    { label: "Evangelism", href: "#" },
-    { label: "Welfare", href: "#" },
-    { label: "Multimedia", href: "#" },
-    { label: "Sanctuary Helpers", href: "#" },
+    { label: "Music", href: "/departments/music" },
+    { label: "Prayer", href: "/departments/prayer" },
+    { label: "Bible Study", href: "/departments/bible-study" },
+    { label: "Evangelism", href: "/departments/evangelism" },
+    { label: "Welfare", href: "/departments/welfare" },
+    { label: "Multimedia", href: "/departments/multimedia" },
+    { label: "Sanctuary Helpers", href: "/departments/sanctuary-helpers" },
 ];
 
 const primaryLinks = [
@@ -91,9 +91,9 @@ const primaryLinks = [
                         <ul class="context-menu left-0 top-full z-10">
                             <li><a class="context-menu-item" href="#">About Us</a></li>
                             <li class="context-menu-trigger">
-                                <button class="context-menu-item w-full cursor-pointer text-left" type="button" aria-expanded="false" data-menu-trigger>
+                                <a class="context-menu-item w-full cursor-pointer text-left" href="/ministries">
                                     Ministries
-                                </button>
+                                </a>
 
                                 <ul class="context-menu left-full -top-2 z-20">
                                     {ministries.map((item) => (
@@ -102,9 +102,9 @@ const primaryLinks = [
                                 </ul>
                             </li>
                             <li class="context-menu-trigger">
-                                <button class="context-menu-item w-full cursor-pointer text-left" type="button" aria-expanded="false" data-menu-trigger>
+                                <a class="context-menu-item w-full cursor-pointer text-left" href="/departments">
                                     Departments
-                                </button>
+                                </a>
 
                                 <ul class="context-menu left-full -top-2 z-20 grid w-max grid-cols-2 gap-1 space-y-0">
                                     {departments.map((item) => (
@@ -174,6 +174,7 @@ const primaryLinks = [
                                     <details class="drawer-group">
                                         <summary class="drawer-summary">Ministries</summary>
                                         <ul class="list-none space-y-1 p-0 pl-3">
+                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/ministries">All Ministries</a></li>
                                             {ministries.map((item) => (
                                                 <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
                                             ))}
@@ -185,6 +186,7 @@ const primaryLinks = [
                                     <details class="drawer-group">
                                         <summary class="drawer-summary">Departments</summary>
                                         <ul class="list-none space-y-1 p-0 pl-3">
+                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/departments">All Departments</a></li>
                                             {departments.map((item) => (
                                                 <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
                                             ))}
