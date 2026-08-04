@@ -65,10 +65,126 @@ export interface Props {
 /**
  * Reusable Woman Excel conference-year page shell.
  *
- * Keep year-specific copy and asset paths in the route that imports this
- * component. Placing the shared shell under components (rather than pages)
- * ensures it never becomes a public route on its own.
+ * Visiting /conference/template renders this 2026-based sample so the shell
+ * can be reviewed directly. Conference year pages can also import this file
+ * and pass their own content through Props. Keep this review route out of all
+ * site navigation and conference archive links.
  */
+const previewProps: Props = {
+    year: "2026",
+    theme: {
+        name: "The Word",
+        artwork: { src: "/images/the-word.svg", alt: "The Word" },
+        scripture: {
+            quote: "In the beginning was the Word, and the Word was with God, and the Word was God",
+            citation: "John 1:1",
+        },
+    },
+    heroSlides: [1, 2, 3, 4].map((number) => ({
+        src: `/images/placeholds/photo-${number}.jpg`,
+        alt: `Woman Excel conference highlight ${number}`,
+    })),
+    introduction: {
+        heading: "Who are we?",
+        paragraphs: [
+            "The Woman Excel Conference is a gathering of women who refuse to settle for ordinary. Born from the conviction that every woman carries God-given purpose, it calls that purpose out of her.",
+            "Come expectant for powerful teaching, Spirit-led worship, and a sisterhood that cheers you on long after the final session.",
+        ],
+        image: { src: "/images/logo-full.png", alt: "Woman Excel Conference" },
+    },
+    schedule: [
+        {
+            day: "Friday",
+            time: "Evening",
+            title: "Opening Night",
+            description: "Welcome, worship, and an opening message rooted in the Word.",
+        },
+        {
+            day: "Saturday",
+            time: "Morning",
+            title: "Conference Day",
+            description: "Teaching sessions, conversation, prayer, and fellowship.",
+        },
+    ],
+    guests: [
+        {
+            name: "Tosin Olayinka Ajibs",
+            role: "Guest Speaker",
+            image: {
+                src: "/images/speakers/tosin-olayinka-ajibs.png",
+                alt: "Tosin Olayinka Ajibs",
+            },
+        },
+        {
+            name: "Pastor Toyin Adeleye",
+            role: "Host",
+            image: {
+                src: "/images/speakers/toyin-adeleye.png",
+                alt: "Pastor Toyin Adeleye",
+            },
+        },
+        {
+            name: "Angela Hunter",
+            role: "Guest Speaker",
+            image: {
+                src: "/images/speakers/angela-hunter.png",
+                alt: "Angela Hunter",
+            },
+        },
+        {
+            name: "His Covenant Music",
+            role: "Worship",
+            image: {
+                src: "/images/speakers/his-covenant-music.png",
+                alt: "His Covenant Music",
+            },
+        },
+    ],
+    registration: { href: "#registration", label: "Register now" },
+    donation: { href: "#donation", label: "Support the conference" },
+    gallery: {
+        heading: "Gallery & Media",
+        items: [
+            {
+                src: "/images/placeholds/photo-5.jpg",
+                alt: "Conference guests sharing a joyful moment",
+                caption: "Growing together",
+            },
+            {
+                src: "/images/placeholds/photo-6.jpg",
+                alt: "Women gathered during a conference session",
+                caption: "Rooted in the Word",
+            },
+            {
+                src: "/images/placeholds/photo-7.jpg",
+                alt: "Woman Excel worship gathering",
+                caption: "Worshipping together",
+            },
+        ],
+    },
+    recap: {
+        heading: "2026 Recap",
+        paragraphs: [
+            "Revisit the teaching, worship, and moments of connection that made this gathering unforgettable.",
+        ],
+        media: [
+            {
+                src: "/images/placeholds/photo-8.jpg",
+                alt: "Highlights from Woman Excel 2026",
+                caption: "Conference highlights",
+            },
+            {
+                src: "/images/placeholds/photo-9.jpg",
+                alt: "Women connecting at Woman Excel 2026",
+                caption: "A lasting sisterhood",
+            },
+        ],
+        cta: { href: "#recap", label: "Watch the recap" },
+    },
+};
+
+const props = Object.keys(Astro.props).length > 0 ? Astro.props as Props : previewProps;
+
 const {
     year,
     theme,
@@ -80,7 +196,7 @@ const {
     donation,
     gallery,
     recap,
-} = Astro.props as Props;
+} = props;
 
 const pageTitle = `${year}: ${theme.name}`;
 const introductionHeading = introduction.heading ?? "Who are we?";
