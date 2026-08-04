@@ -1,0 +1,65 @@
+---
+import Layout from "../layouts/layout.astro";
+
+const configuredUrl = import.meta.env.PUBLIC_NEW_TO_CHURCH_FORM_URL?.trim();
+let formUrl: string | undefined;
+
+if (configuredUrl) {
+    try {
+        const url = new URL(configuredUrl);
+        const isGoogleForm = url.hostname === "docs.google.com" && url.pathname.includes("/forms/");
+
+        if (isGoogleForm) {
+            url.searchParams.set("embedded", "true");
+            formUrl = url.toString();
+        }
+    } catch {
+        // An invalid value falls through to the friendly setup state below.
+    }
+}
+---
+
+<Layout
+    title="New to Church? | RCCG Cornerstone Assembly"
+    description="Connect with RCCG Cornerstone Assembly in Saskatoon. Tell us a little about yourself and how we can welcome you."
+>
+    <section class="bg-slate-100 px-4 py-10 sm:py-14">
+        <div class="mx-auto max-w-4xl">
+            <div class="mb-8 text-center">
+                <p class="text-sm font-bold tracking-[0.16em] text-red-600 uppercase">Welcome</p>
+                <h1 class="mt-2 text-3xl font-bold text-sky-950 sm:text-4xl">New to Cornerstone?</h1>
+                <p class="mx-auto mt-3 max-w-2xl text-lg leading-relaxed text-slate-600">
+                    We’re glad you’re here. Fill out the form below and our team will help you get connected.
+                </p>
+            </div>
+
+            {
+                formUrl ? (
+                    <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+                        <iframe
+                            class="block min-h-[75rem] w-full border-0"
+                            src={formUrl}
+                            title="New to Cornerstone connection form"
+                            loading="eager"
+                        >
+                            Loading…
+                        </iframe>
+                    </div>
+                ) : (
+                    <div class="rounded-2xl bg-white px-6 py-12 text-center shadow-sm ring-1 ring-slate-200 sm:px-10">
+                        <h2 class="text-2xl font-semibold text-sky-950">Our connection form is coming soon.</h2>
+                        <p class="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">
+                            In the meantime, email us and we’ll be happy to help you get connected.
+                        </p>
+                        <a
+                            class="mt-6 inline-block rounded-full bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                            href="mailto:connect@rccgcornerstoneassembly.com"
+                        >
+                            Email us
+                        </a>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+</Layout>
