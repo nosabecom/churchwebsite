@@ -11,9 +11,10 @@ interface Props {
 	/** "fellowship" is the Cornerstone Excellent Women shell used across the
 	    site; "conference" keeps the Woman Excel identity for /conference/*. */
 	variant?: "fellowship" | "conference";
+	bodyClass?: string;
 }
 
-const { title, variant = "fellowship" } = Astro.props as Props;
+const { title, variant = "fellowship", bodyClass } = Astro.props as Props;
 const isConference = variant === "conference";
 
 const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
@@ -63,7 +64,7 @@ const footerTheme = isConference
 		<title>{title} | {siteName}</title>
 	</head>
 
-	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream"]}>
+	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream", bodyClass]}>
 		<Analytics/>
 
 		<nav class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>

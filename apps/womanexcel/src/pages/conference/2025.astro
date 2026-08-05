@@ -112,7 +112,7 @@ const gallery = galleryAlts.map((alt, index) => ({
 }));
 ---
 
-<Layout title="2025: Excel" variant="conference">
+<Layout title="2025: Excel" variant="conference" bodyClass="conference-2025-shell">
     <div class="conference-2025">
         <Slideshow
             slides={heroSlides}
@@ -211,6 +211,11 @@ const gallery = galleryAlts.map((alt, index) => ({
 </Layout>
 
 <style is:global>
+    .conference-2025-shell,
+    .conference-2025-shell > nav {
+        background: #fff2f0;
+    }
+
     .conference-2025 {
         --we25-violet: #30004f;
         --we25-plum: #4b086a;
