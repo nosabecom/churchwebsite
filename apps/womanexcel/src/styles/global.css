@@ -101,7 +101,7 @@
 }
 
 @utility speaker-nametag {
-    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 md:py-5 md:px-2 px-0
+    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 px-2 md:py-5
 }
 
 /* Cornerstone Excellent Women — fellowship shell and homepage */
@@ -154,4 +154,3 @@
 @utility contact-input {
     @apply w-full rounded-md bg-white text-charcoal placeholder:text-charcoal/40 px-3 py-2 border-2 border-sand focus:outline-none focus:border-orchid user-invalid:border-red-600 user-valid:border-green-700
 }
-

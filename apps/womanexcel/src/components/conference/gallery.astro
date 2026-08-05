@@ -26,12 +26,12 @@ const { year, heading = "Gallery & Media", items } = Astro.props as Props;
                 <li class="overflow-hidden rounded-2xl bg-berry text-white">
                     {item.href ? (
                         <a class="group block" href={item.href}>
-                            <img class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105" src={item.src} alt={item.alt} />
+                            <img class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
                             {item.caption && <p class="p-4">{item.caption}</p>}
                         </a>
                     ) : (
                         <>
-                            <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                            <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
                             {item.caption && <p class="p-4">{item.caption}</p>}
                         </>
                     )}

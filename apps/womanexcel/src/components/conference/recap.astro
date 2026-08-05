@@ -49,12 +49,12 @@ const {
                     <li class="overflow-hidden rounded-xl bg-navy/30">
                         {item.href ? (
                             <a class="block" href={item.href}>
-                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
                                 {item.caption && <p class="p-3">{item.caption}</p>}
                             </a>
                         ) : (
                             <>
-                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} />
+                                <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
                                 {item.caption && <p class="p-3">{item.caption}</p>}
                             </>
                         )}
