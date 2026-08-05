@@ -1,13 +1,14 @@
 ---
 import Layout from "../../layouts/layout.astro";
 import Hero from "../../components/conference/2026/hero.astro";
-import Speakers from "../../components/conference/2026/speakers.astro";
 import Aboutus from "../../components/conference/2026/aboutus.astro";
 import Mailinglist from "../../components/conference/2026/mailinglist.astro";
 import Gallery from "../../components/conference/gallery.astro";
 import Recap from "../../components/conference/recap.astro";
 import Registration from "../../components/conference/registration.astro";
 import Schedule from "../../components/conference/schedule.astro";
+import Speakers from "../../components/conference/speakers.astro";
+import { speakers } from "../../components/conference/2026/speakers";
 
 const schedule = [
     {
@@ -53,7 +54,7 @@ const recapMedia = [
     <Hero />
     <Aboutus />
     <Schedule year="2026" items={schedule} />
-    <Speakers />
+    <Speakers speakers={speakers} />
     <Registration
         year="2026"
         heading="Registration details coming soon"

@@ -5,6 +5,8 @@ import Gallery from "../../components/conference/gallery.astro";
 import Recap from "../../components/conference/recap.astro";
 import Registration from "../../components/conference/registration.astro";
 import Schedule from "../../components/conference/schedule.astro";
+import Speakers from "../../components/conference/speakers.astro";
+import { speakers as conference2026Speakers } from "../../components/conference/2026/speakers";
 
 export interface ImageDetails {
     src: string;
@@ -110,40 +112,7 @@ const previewProps: Props = {
             description: "Teaching sessions, conversation, prayer, and fellowship.",
         },
     ],
-    guests: [
-        {
-            name: "Tosin Olayinka Ajibs",
-            role: "Guest Speaker",
-            image: {
-                src: "/images/speakers/tosin-olayinka-ajibs.png",
-                alt: "Tosin Olayinka Ajibs",
-            },
-        },
-        {
-            name: "Pastor Toyin Adeleye",
-            role: "Host",
-            image: {
-                src: "/images/speakers/toyin-adeleye.png",
-                alt: "Pastor Toyin Adeleye",
-            },
-        },
-        {
-            name: "Angela Hunter",
-            role: "Guest Speaker",
-            image: {
-                src: "/images/speakers/angela-hunter.png",
-                alt: "Angela Hunter",
-            },
-        },
-        {
-            name: "His Covenant Music",
-            role: "Worship",
-            image: {
-                src: "/images/speakers/his-covenant-music.png",
-                alt: "His Covenant Music",
-            },
-        },
-    ],
+    guests: conference2026Speakers,
     registration: { href: "#registration", label: "Register now" },
     donation: { href: "#donation", label: "Support the conference" },
     gallery: {
@@ -265,25 +234,7 @@ const introductionHeading = introduction.heading ?? "Who are we?";
 
     <Schedule year={year} items={schedule} />
 
-    {guests.length > 0 && (
-        <section class="flex flex-col items-center py-16" aria-labelledby={`conference-${year}-guests`}>
-            <h2 id={`conference-${year}-guests`} class="mb-8 rounded-3xl bg-navy px-5 py-2.5 text-3xl text-white md:text-4xl">
-                Speakers &amp; Guests
-            </h2>
-
-            <ul class="mx-auto grid w-full max-w-7xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:px-8">
-                {guests.map((guest) => (
-                    <li class="relative overflow-hidden rounded-2xl bg-berry text-white">
-                        <img class="aspect-[4/5] w-full object-cover" src={guest.image.src} alt={guest.image.alt} />
-                        <div class="absolute inset-x-0 bottom-0 bg-navy/95 p-4 text-center">
-                            <h3 class="text-xl md:text-2xl">{guest.name}</h3>
-                            {guest.role && <p class="font-sans text-sm text-white/80">{guest.role}</p>}
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        </section>
-    )}
+    <Speakers speakers={guests} />
 
     <Registration year={year} registration={registration} donation={donation} />
 
