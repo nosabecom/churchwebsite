@@ -1,14 +1,72 @@
 ---
 import Layout from "../../layouts/layout.astro";
 import Hero from "../../components/conference/2026/hero.astro";
-import Speakers from "../../components/conference/2026/speakers.astro";
 import Aboutus from "../../components/conference/2026/aboutus.astro";
-import Mailinglist from "../../components/conference/2026/mailinglist.astro"
+import Mailinglist from "../../components/conference/2026/mailinglist.astro";
+import Gallery from "../../components/conference/gallery.astro";
+import Recap from "../../components/conference/recap.astro";
+import Registration from "../../components/conference/registration.astro";
+import Schedule from "../../components/conference/schedule.astro";
+import Speakers from "../../components/conference/speakers.astro";
+import { speakers } from "../../components/conference/2026/speakers";
+
+const schedule = [
+    {
+        day: "Programme",
+        title: "Schedule coming soon",
+        description: "Session times and the full conference programme will be shared here once they are confirmed.",
+    },
+];
+
+const gallery = [
+    {
+        src: "/images/placeholds/photo-5.jpg",
+        alt: "Woman Excel conference highlight",
+        caption: "Growing together",
+    },
+    {
+        src: "/images/placeholds/photo-6.jpg",
+        alt: "Women gathered during a conference session",
+        caption: "Rooted in the Word",
+    },
+    {
+        src: "/images/placeholds/photo-7.jpg",
+        alt: "Woman Excel worship gathering",
+        caption: "Worshipping together",
+    },
+];
+
+const recapMedia = [
+    {
+        src: "/images/placeholds/photo-8.jpg",
+        alt: "Woman Excel conference highlights",
+        caption: "Conference highlights",
+    },
+    {
+        src: "/images/placeholds/photo-9.jpg",
+        alt: "Women connecting at Woman Excel",
+        caption: "A lasting sisterhood",
+    },
+];
 ---
 
 <Layout title="2026" variant="conference">
     <Hero />
     <Aboutus />
-    <Speakers />
+    <Schedule year="2026" items={schedule} />
+    <Speakers speakers={speakers} />
+    <Registration
+        year="2026"
+        heading="Registration details coming soon"
+        description="The official registration link will be added once it is confirmed. Contact us if you would like to be notified."
+        registration={{ href: "/contact", label: "Ask about registration" }}
+    />
+    <Gallery year="2026" items={gallery} />
+    <Recap
+        year="2026"
+        heading="2026 Recap"
+        paragraphs={["Highlights, teaching, and worship media from Woman Excel 2026 will be gathered here as they become available."]}
+        media={recapMedia}
+    />
     <Mailinglist />
 </Layout>

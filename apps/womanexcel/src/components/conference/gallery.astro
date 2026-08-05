@@ -1,0 +1,42 @@
+---
+export interface GalleryItem {
+    src: string;
+    alt: string;
+    caption?: string;
+    href?: string;
+}
+
+interface Props {
+    year: string | number;
+    heading?: string;
+    items: GalleryItem[];
+}
+
+const { year, heading = "Gallery & Media", items } = Astro.props as Props;
+---
+
+{items.length > 0 && (
+    <section class="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24" aria-labelledby={`conference-${year}-gallery`}>
+        <h2 id={`conference-${year}-gallery`} class="mb-8 text-center text-4xl text-navy md:text-6xl">
+            {heading}
+        </h2>
+
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((item) => (
+                <li class="overflow-hidden rounded-2xl bg-berry text-white">
+                    {item.href ? (
+                        <a class="group block" href={item.href}>
+                            <img class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                            {item.caption && <p class="p-4">{item.caption}</p>}
+                        </a>
+                    ) : (
+                        <>
+                            <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                            {item.caption && <p class="p-4">{item.caption}</p>}
+                        </>
+                    )}
+                </li>
+            ))}
+        </ul>
+    </section>
+)}

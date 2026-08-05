@@ -1,5 +1,7 @@
 ---
-import { Quote, Slideshow } from "@churchwebsite/ui";
+import { Slideshow } from "@churchwebsite/ui";
+import HeroDetails from "../hero-details.astro";
+import HeroLabels from "../hero-labels.astro";
 
 const slides = Array.from({ length: 10 }, (_, index) => ({
     src: `/images/placeholds/photo-${index + 1}.jpg`,
@@ -12,15 +14,18 @@ const slides = Array.from({ length: 10 }, (_, index) => ({
     label="Woman Excel conference highlights"
     class="woman-excel-slideshow mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl"
 >
-    <div class="absolute inset-0 bg-navy/20"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
 
-    <div class="relative z-10 flex flex-col items-center mt-1.5 md:m-0 md:gap-6 pb-20 pt-10">
-        <p class="border-none rounded-xl bg-navy text-white text-[13px] px-3 py-1.5 mb-8.5 md:mb-5.5 font-sans">Theme for this year</p>
+    <div class="relative z-10 mt-1.5 flex flex-col items-center gap-4 pb-20 pt-10 md:m-0 md:gap-6">
+        <HeroLabels year="2026" />
         <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="The Word">
-        <Quote
-            quote="In the beginning was the Word, and the Word was with God, and the Word was God"
-            citation="John 1:1"
-            class="woman-excel-quote my-6 mx-8 md:m-0 max-w-[92%]"
+        <HeroDetails
+            quote={{
+                text: "In the beginning was the Word, and the Word was with God, and the Word was God",
+                citation: "John 1:1",
+            }}
+            date="Date to be announced"
+            address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
         />
     </div>
 </Slideshow>

@@ -78,17 +78,25 @@
     clip-path: none;
 }
 
-.woman-excel-quote {
-    --quote-bg: var(--color-berry);
+.conference-hero-card {
+    --quote-bg: rgb(0 0 0 / 25%);
     --quote-color: white;
-    --quote-font-size: 1.125rem;
-    --quote-padding: 1.25rem 1.5rem;
+    --quote-font-size: 1rem;
+    --quote-padding: 1rem 1.5rem;
+    --quote-radius: 1rem;
+    --quote-mark-size: 1.5rem;
+    background-color: rgb(0 0 0 / 25%);
+    border: 1px solid rgb(255 255 255 / 25%);
+    border-radius: 1rem;
+    box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 12%);
+    backdrop-filter: blur(0.25rem);
 }
 
 @media (min-width: 768px) {
-    .woman-excel-quote {
-        --quote-font-size: 1.25rem;
-        --quote-padding: 1.5rem 3rem;
+    .conference-hero-card {
+        --quote-font-size: 1.125rem;
+        --quote-padding: 1.25rem 2rem;
+        --quote-mark-size: 2rem;
     }
 }
 
@@ -101,7 +109,7 @@
 }
 
 @utility speaker-nametag {
-    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 md:py-5 md:px-2 px-0
+    @apply border-none rounded-lg -translate-y-0.5 bg-navy text-white text-center text-xl md:text-3xl absolute bottom-0 left-0 right-0 py-2 px-2 md:py-5
 }
 
 /* Cornerstone Excellent Women — fellowship shell and homepage */
@@ -154,4 +162,3 @@
 @utility contact-input {
     @apply w-full rounded-md bg-white text-charcoal placeholder:text-charcoal/40 px-3 py-2 border-2 border-sand focus:outline-none focus:border-orchid user-invalid:border-red-600 user-valid:border-green-700
 }
-
