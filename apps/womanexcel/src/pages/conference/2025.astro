@@ -2,6 +2,7 @@
 import { Slideshow } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
 import Gallery from "../../components/conference/gallery.astro";
+import HeroDetails from "../../components/conference/hero-details.astro";
 import Recap from "../../components/conference/recap.astro";
 import Schedule from "../../components/conference/schedule.astro";
 import Speakers from "../../components/conference/speakers.astro";
@@ -129,12 +130,14 @@ const gallery = galleryAlts.map((alt, index) => ({
                 <h1 class="text-7xl font-bold italic leading-none drop-shadow-xl sm:text-8xl md:text-[10rem]">
                     Excel
                 </h1>
-                <p class="font-sans text-lg font-semibold tracking-wide md:text-2xl">2 Corinthians 8:7</p>
-                <div class="mt-3 flex flex-col gap-2 rounded-2xl bg-black/25 px-6 py-4 font-sans text-sm backdrop-blur-sm sm:flex-row sm:gap-6 md:text-base">
-                    <p>May 17–18, 2025</p>
-                    <span class="hidden text-white/50 sm:inline">•</span>
-                    <p>RCCG Cornerstone Assembly · 70-3904 Millar Avenue</p>
-                </div>
+                <HeroDetails
+                    quote={{
+                        text: "Therefore, as ye abound in every thing, in faith, and utterance, and knowledge, and in all diligence, and in your love to us, see that ye abound in this grace also.",
+                        citation: "2 Corinthians 8:7",
+                    }}
+                    date="May 17–18, 2025"
+                    address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
+                />
             </div>
         </Slideshow>
 

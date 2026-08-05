@@ -1,7 +1,8 @@
 ---
-import { Quote, Slideshow } from "@churchwebsite/ui";
+import { Slideshow } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
 import Gallery from "../../components/conference/gallery.astro";
+import HeroDetails from "../../components/conference/hero-details.astro";
 import Recap from "../../components/conference/recap.astro";
 import Registration from "../../components/conference/registration.astro";
 import Schedule from "../../components/conference/schedule.astro";
@@ -47,6 +48,10 @@ export interface Props {
         };
     };
     heroSlides: ImageDetails[];
+    eventDetails: {
+        date: string;
+        address: string;
+    };
     introduction: {
         heading?: string;
         paragraphs: string[];
@@ -90,6 +95,10 @@ const previewProps: Props = {
         src: `/images/placeholds/photo-${number}.jpg`,
         alt: `Woman Excel conference highlight ${number}`,
     })),
+    eventDetails: {
+        date: "Date to be announced",
+        address: "RCCG Cornerstone Assembly · 70-3904 Millar Avenue",
+    },
     introduction: {
         heading: "Who are we?",
         paragraphs: [
@@ -162,6 +171,7 @@ const {
     year,
     theme,
     heroSlides,
+    eventDetails,
     introduction,
     schedule = [],
     guests = [],
@@ -200,13 +210,14 @@ const introductionHeading = introduction.heading ?? "Who are we?";
                 </h1>
             )}
 
-            {theme.scripture && (
-                <Quote
-                    quote={theme.scripture.quote}
-                    citation={theme.scripture.citation}
-                    class="woman-excel-quote mx-4 my-2 max-w-[92%] md:mx-0"
-                />
-            )}
+            <HeroDetails
+                quote={theme.scripture && {
+                    text: theme.scripture.quote,
+                    citation: theme.scripture.citation,
+                }}
+                date={eventDetails.date}
+                address={eventDetails.address}
+            />
         </div>
     </Slideshow>
 

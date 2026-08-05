@@ -1,5 +1,6 @@
 ---
-import { Quote, Slideshow } from "@churchwebsite/ui";
+import { Slideshow } from "@churchwebsite/ui";
+import HeroDetails from "../hero-details.astro";
 
 const slides = Array.from({ length: 10 }, (_, index) => ({
     src: `/images/placeholds/photo-${index + 1}.jpg`,
@@ -17,10 +18,13 @@ const slides = Array.from({ length: 10 }, (_, index) => ({
     <div class="relative z-10 flex flex-col items-center mt-1.5 md:m-0 md:gap-6 pb-20 pt-10">
         <p class="border-none rounded-xl bg-navy text-white text-[13px] px-3 py-1.5 mb-8.5 md:mb-5.5 font-sans">Theme for this year</p>
         <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="The Word">
-        <Quote
-            quote="In the beginning was the Word, and the Word was with God, and the Word was God"
-            citation="John 1:1"
-            class="woman-excel-quote my-6 mx-8 md:m-0 max-w-[92%]"
+        <HeroDetails
+            quote={{
+                text: "In the beginning was the Word, and the Word was with God, and the Word was God",
+                citation: "John 1:1",
+            }}
+            date="Date to be announced"
+            address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
         />
     </div>
 </Slideshow>
