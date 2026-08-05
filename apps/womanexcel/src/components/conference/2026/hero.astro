@@ -1,6 +1,7 @@
 ---
 import { Slideshow } from "@churchwebsite/ui";
 import HeroDetails from "../hero-details.astro";
+import HeroLabels from "../hero-labels.astro";
 
 const slides = Array.from({ length: 10 }, (_, index) => ({
     src: `/images/placeholds/photo-${index + 1}.jpg`,
@@ -15,8 +16,8 @@ const slides = Array.from({ length: 10 }, (_, index) => ({
 >
     <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
 
-    <div class="relative z-10 flex flex-col items-center mt-1.5 md:m-0 md:gap-6 pb-20 pt-10">
-        <p class="border-none rounded-xl bg-navy text-white text-[13px] px-3 py-1.5 mb-8.5 md:mb-5.5 font-sans">Theme for this year</p>
+    <div class="relative z-10 mt-1.5 flex flex-col items-center gap-4 pb-20 pt-10 md:m-0 md:gap-6">
+        <HeroLabels year="2026" />
         <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="The Word">
         <HeroDetails
             quote={{
