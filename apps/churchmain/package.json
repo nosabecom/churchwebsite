@@ -8,11 +8,21 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/react": "catalog:",
     "@churchwebsite/ui": "workspace:*",
+    "@sanity/astro": "catalog:",
+    "@sanity/client": "catalog:",
     "@tailwindcss/vite": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@vercel/analytics": "catalog:",
     "astro": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-is": "catalog:",
+    "sanity": "catalog:",
     "sharp": "catalog:",
+    "styled-components": "catalog:",
     "tailwindcss": "catalog:"
   }
 }
