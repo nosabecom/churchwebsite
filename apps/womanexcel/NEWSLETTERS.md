@@ -20,6 +20,9 @@ runs the build, and opens the publishing pull request.
 6. Set `draft: false`, run `pnpm build:womanexcel` from the repository root,
    and submit the change for review.
 
+`publishedAt` controls display order but does not schedule publication. Keep a
+future edition at `draft: true` until it is ready to appear on the site.
+
 The newest published `publishedAt` value automatically becomes the large
 editorial feature. Every older published edition automatically appears in the
 magazine-cover archive beneath it.

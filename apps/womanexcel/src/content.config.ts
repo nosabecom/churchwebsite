@@ -8,9 +8,9 @@ const newsletters = defineCollection({
         publishedAt: z.coerce.date(),
         excerpt: z.string().min(1),
         issue: z.number().int().positive().optional(),
-        image: z.string().min(1).optional(),
+        image: z.string().regex(/^\/(?!\/)/, "Use a root-relative image path beginning with /").optional(),
         imageAlt: z.string().default(""),
-        link: z.string().min(1).optional(),
+        link: z.string().regex(/^(\/(?!\/)|https?:\/\/|mailto:)/, "Use a root-relative, http(s), or mailto link").optional(),
         draft: z.boolean().default(false),
     }),
 });

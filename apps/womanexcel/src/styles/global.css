@@ -146,7 +146,7 @@
 }
 
 @utility cew-btn-outline {
-    @apply inline-block font-sans text-sm md:text-base rounded-full border border-charcoal/30 text-charcoal px-7 py-3 transition-colors hover:border-orchid hover:text-orchid
+    @apply inline-block font-sans text-sm md:text-base rounded-full border border-charcoal/30 text-charcoal px-7 py-3 transition-colors hover:border-orchid-deep hover:text-orchid-deep
 }
 
 /* Contact form — Cornerstone Excellent Women palette, matching the shell. */
