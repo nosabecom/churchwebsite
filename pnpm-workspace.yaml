@@ -3,10 +3,20 @@ packages:
   - packages/*
 
 catalog:
+  '@astrojs/react': ^6.0.2
+  '@sanity/astro': ^3.5.0
+  '@sanity/client': ^7.26.2
   '@tailwindcss/vite': ^4.3.2
+  '@types/react': ^19.2.18
+  '@types/react-dom': ^19.2.4
   '@vercel/analytics': ^2.0.1
   astro: 7.0.6
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  react-is: ^19.2.8
+  sanity: ^6.9.0
   sharp: ^0.35.3
+  styled-components: ^6.5.0
   tailwindcss: ^4.3.2
 
 catalogMode: prefer
