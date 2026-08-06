@@ -22,6 +22,7 @@ const favicon = isConference ? ConferenceMark : FellowshipLogo;
 
 const navLinks = [
 	{ href: "/", label: "Home" },
+	{ href: "/newsletters", label: "Newsletters" },
 	{ href: "/conference", label: "Conference" },
 	{ href: "/contact", label: "Contact Us" },
 ];
@@ -67,7 +68,7 @@ const footerTheme = isConference
 	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream", bodyClass]}>
 		<Analytics/>
 
-		<nav class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
+		<nav aria-label="Primary" class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
 			<a href="/" class="shrink-0 flex items-center gap-3">
 				{isConference
 					? <Image src={ConferenceLogo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/>
