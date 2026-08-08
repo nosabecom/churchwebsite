@@ -88,10 +88,10 @@ const primaryLinks = [
         <!-- The bar shares `px-4` + `mx-auto max-w-400` with every page section,
              so the header, body and footer all sit on one gutter. -->
         <nav class="bg-white px-4 text-lg" aria-label="Main">
-            <div class="mx-auto flex max-w-400 items-center justify-between gap-4 py-2.5">
-                <a class="shrink-0" href="/"><Image class="w-18 h-auto" src={Logo} alt="RCCG Cornerstone Assembly — home" /></a>
+            <div class="mx-auto flex max-w-400 items-center justify-between gap-4 py-2.5 xl:grid xl:grid-cols-[1fr_auto_1fr]">
+                <a class="shrink-0 xl:justify-self-start" href="/"><Image class="w-18 h-auto" src={Logo} alt="RCCG Cornerstone Assembly — home" /></a>
 
-                <ul class="hidden gap-5 xl:flex">
+                <ul class="hidden gap-5 xl:flex xl:items-center xl:justify-self-center">
                     <li><a href="/">Home</a></li>
                     <li class="context-menu-trigger">
                         <button
@@ -137,12 +137,15 @@ const primaryLinks = [
                     ))}
                 </ul>
 
-                <div class="flex shrink-0 items-center gap-1">
+                <div class="flex shrink-0 items-center gap-2 xl:justify-self-end">
                     <a
-                        class="hidden rounded-lg bg-sky-900 px-4 py-2 text-base font-semibold text-white hover:bg-sky-950 xl:inline-block"
+                        class="hidden items-center justify-center rounded-lg bg-sky-900 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-sky-950 xl:inline-flex"
                         href={latestNewsletterHref}
                     >View latest newsletter</a>
-                    <a class="hidden rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 xl:inline-block" href="#">Give</a>
+                    <a
+                        class="hidden items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-red-700 xl:inline-flex"
+                        href="#"
+                    >Give</a>
 
                     <button
                         class="grid size-11 cursor-pointer place-items-center rounded-lg text-sky-900 hover:bg-slate-100 xl:hidden"
