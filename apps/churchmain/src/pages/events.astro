@@ -76,9 +76,6 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
             <div>
                 <p class="event-calendar__eyebrow">Calendar</p>
                 <h1>Plan a visit</h1>
-                <p class="event-calendar__intro">
-                    Browse upcoming services and gatherings by month or scan the full list.
-                </p>
             </div>
 
             <label class="event-calendar__search">
@@ -142,8 +139,6 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                 >
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
                 </button>
-
-                <button class="event-command__today" type="button" data-today>Today</button>
 
                 <label class="event-command__category">
                     <span class="sr-only">Filter by category</span>
@@ -256,10 +251,6 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                                         <dt>Location</dt>
                                         <dd>{event.location}</dd>
                                     </div>
-                                    <div>
-                                        <dt>Category</dt>
-                                        <dd>{event.category}</dd>
-                                    </div>
                                 </dl>
                                 <a href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">
                                     Get directions
@@ -296,7 +287,7 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
 
             {eventMonths.map((month) => (
                 <section class="event-list-month" data-list-month={month.key} hidden={month.key !== calendarMonths[0].key}>
-                    <h2>{month.label}</h2>
+                    <h2 class="sr-only">{month.label}</h2>
                     <ul>
                         {month.events.map((event) => (
                             <li
@@ -312,10 +303,6 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                                         </time>
                                     </p>
                                     <div class="event-list-row__event">
-                                        <p class:list={[
-                                            "event-list-row__category",
-                                            `event-list-row__category--${event.category.toLowerCase()}`,
-                                        ]}>{event.category}</p>
                                         <h3>{event.title}</h3>
                                         <p>{event.description}</p>
                                     </div>
@@ -351,18 +338,16 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
 <style>
     .event-calendar {
         min-height: 70vh;
-        background: #f0f7fb;
+        padding: 2.75rem 4vw 3.875rem;
+        background: #eef6fb;
         color: #0f172a;
     }
 
     .event-calendar__heading {
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
-        gap: 2rem;
-        align-items: end;
-        width: min(100% - 2rem, 100rem);
-        margin-inline: auto;
-        padding-block: clamp(2.75rem, 7vw, 5.5rem) 2rem;
+        gap: 1.5rem;
+        align-items: center;
     }
 
     .event-calendar__eyebrow,
@@ -378,24 +363,17 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
     .event-calendar__heading h1 {
         margin: .5rem 0 0;
         color: #082f49;
-        font-size: clamp(3rem, 7vw, 5.25rem);
-        line-height: .94;
-        letter-spacing: -.055em;
-    }
-
-    .event-calendar__intro {
-        max-width: 42rem;
-        margin: .85rem 0 0;
-        color: #475569;
-        font-size: 1.075rem;
-        line-height: 1.65;
+        font-size: clamp(2.5rem, 4vw, 2.75rem);
+        line-height: 1;
+        letter-spacing: -.045em;
     }
 
     .event-calendar__search {
         display: flex;
         align-items: center;
-        min-width: min(23rem, 100%);
+        min-width: min(18rem, 100%);
         border: 1px solid #cbd5e1;
+        border-radius: .5rem;
         background: white;
     }
 
@@ -418,42 +396,58 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         border: 0;
         padding: .7rem .85rem;
         color: #0f172a;
+        font-size: .75rem;
         outline: 0;
     }
 
     .event-command {
         display: flex;
         justify-content: space-between;
-        gap: 1.5rem;
-        align-items: stretch;
-        padding-inline: max(1rem, calc((100% - 100rem) / 2));
-        border-block: 1px solid #cbd5e1;
+        gap: .75rem;
+        align-items: center;
+        margin-top: 1.45rem;
+        padding: .55rem;
+        border: 1px solid #cbd5e1;
+        border-radius: .8125rem;
         background: white;
+        box-shadow: 0 10px 25px rgb(8 47 73 / 8%);
     }
 
     .event-view-switch,
     .event-command__tools {
         display: flex;
-        align-items: stretch;
+        align-items: center;
+    }
+
+    .event-view-switch {
+        gap: .2rem;
+        padding: .2rem;
+        border-radius: .5625rem;
+        background: #f1f5f9;
+    }
+
+    .event-command__tools {
+        gap: .45rem;
     }
 
     .event-view-switch button {
         display: inline-flex;
         align-items: center;
         gap: .5rem;
-        min-height: 3.5rem;
+        min-height: 2.5rem;
         border: 0;
-        border-bottom: 3px solid transparent;
+        border-radius: .4375rem;
         background: transparent;
-        padding: .75rem 1rem;
+        padding: .625rem .875rem;
         color: #64748b;
         font-weight: 800;
         cursor: pointer;
     }
 
     .event-view-switch button[aria-pressed="true"] {
-        border-color: #dc2626;
-        color: #082f49;
+        background: #0c4a6e;
+        box-shadow: 0 5px 14px rgb(12 74 110 / 21%);
+        color: white;
     }
 
     .event-view-switch svg,
@@ -466,20 +460,12 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         stroke-linejoin: round;
     }
 
-    .event-command__tools > * {
-        border: 0;
-        border-left: 1px solid #cbd5e1;
-        background: transparent;
-    }
-
-    .event-command__tools > :last-child {
-        border-right: 1px solid #cbd5e1;
-    }
-
-    .event-command__arrow,
-    .event-command__today {
+    .event-command__arrow {
         min-width: 2.75rem;
         min-height: 2.75rem;
+        border: 1px solid #cbd5e1;
+        border-radius: .5rem;
+        background: white;
         padding: .75rem;
         color: #0c4a6e;
         cursor: pointer;
@@ -495,18 +481,25 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         min-width: 10rem;
         margin: 0;
         place-items: center;
-        padding: .75rem 1rem;
+        min-height: 2.75rem;
+        border: 1px solid #cbd5e1;
+        border-radius: .5rem;
+        background: white;
+        padding: .65rem 1rem;
         color: #082f49;
         font-weight: 800;
     }
 
-    .event-command__today {
-        font-weight: 700;
+    .event-command__category {
+        border: 1px solid #cbd5e1;
+        border-radius: .5rem;
+        background: white;
     }
 
     .event-command__category select {
-        min-height: 100%;
+        min-height: 2.625rem;
         border: 0;
+        border-radius: inherit;
         background: transparent;
         padding: .75rem 2.25rem .75rem 1rem;
         color: #334155;
@@ -515,10 +508,9 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
 
     .calendar-month-panel {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
-        width: min(100% - 2rem, 100rem);
-        margin-inline: auto;
-        padding-bottom: clamp(3.5rem, 7vw, 6rem);
+        grid-template-columns: minmax(38.75rem, 1fr) 20rem;
+        gap: .875rem;
+        margin-top: .875rem;
     }
 
     .calendar-month-panel[hidden],
@@ -528,8 +520,10 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
 
     .calendar-table-scroll {
         overflow-x: auto;
-        border-left: 1px solid #cbd5e1;
+        border: 1px solid #cbd5e1;
+        border-radius: .875rem;
         background: white;
+        box-shadow: 0 10px 25px rgb(8 47 73 / 6%);
     }
 
     .calendar-table-scroll:focus-visible {
@@ -556,12 +550,17 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         text-transform: uppercase;
     }
 
+    .calendar-table th:last-child,
+    .calendar-day:last-child {
+        border-right: 0;
+    }
+
     .calendar-table__weekday-short {
         display: none;
     }
 
     .calendar-day {
-        height: 6.2rem;
+        height: 5.375rem;
         border-right: 1px solid #e2e8f0;
         border-bottom: 1px solid #e2e8f0;
         padding: 0;
@@ -646,13 +645,14 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
     }
 
     .selected-event {
-        display: flex;
         min-height: 100%;
-        align-items: flex-end;
-        border-left: 1px solid #cbd5e1;
+        overflow: hidden;
+        border: 1px solid #cbd5e1;
+        border-radius: .875rem;
         background: #082f49;
-        padding: clamp(1.75rem, 4vw, 3rem);
+        padding: 1.45rem;
         color: white;
+        box-shadow: 0 10px 25px rgb(8 47 73 / 6%);
     }
 
     .selected-event article,
@@ -660,30 +660,37 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         width: 100%;
     }
 
+    .selected-event .selected-event__date {
+        color: #fca5a5;
+        font-size: .6rem;
+    }
+
     .selected-event h2 {
-        margin: .75rem 0;
+        margin: .625rem 0 .5rem;
         color: white;
-        font-size: clamp(1.75rem, 3vw, 2.5rem);
+        font-size: 1.5rem;
         line-height: 1.05;
         letter-spacing: -.035em;
     }
 
     .selected-event__description,
     .selected-event__empty p:last-child {
-        margin: 0;
+        margin: 0 0 .95rem;
         color: #bae6fd;
-        line-height: 1.65;
+        font-size: .75rem;
+        line-height: 1.6;
     }
 
     .selected-event dl {
-        display: grid;
-        gap: 1rem;
-        margin: 1.75rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem;
+        margin: 0 0 1.05rem;
     }
 
     .selected-event dl div {
-        padding-top: .85rem;
-        border-top: 1px solid rgb(255 255 255 / 18%);
+        padding: 0;
+        border: 0;
     }
 
     .selected-event dt {
@@ -696,6 +703,7 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
 
     .selected-event dd {
         margin: .25rem 0 0;
+        font-size: .7rem;
     }
 
     .selected-event a {
@@ -704,6 +712,7 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         align-items: center;
         gap: .5rem;
         color: white;
+        font-size: .72rem;
         font-weight: 800;
         text-underline-offset: .25rem;
     }
@@ -714,20 +723,20 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
     }
 
     .event-list-view {
-        width: min(100% - 2rem, 100rem);
-        margin-inline: auto;
-        padding: 2rem 0 clamp(3.5rem, 7vw, 6rem);
+        margin-top: .875rem;
+        border-top: 2px solid #082f49;
+        padding-top: .75rem;
     }
 
     .event-list-heading,
     .event-list-row {
         display: grid;
-        grid-template-columns: 8.5rem minmax(18rem, 1.35fr) minmax(9rem, .55fr) minmax(9rem, .7fr) 5rem;
+        grid-template-columns: 6.5625rem minmax(18rem, 1.2fr) minmax(8rem, .55fr) minmax(9rem, .75fr) 4.875rem;
         gap: 1.25rem;
     }
 
     .event-list-heading {
-        padding: 0 0 .8rem;
+        padding: 0 0 .75rem;
         color: #64748b;
         font-size: .68rem;
         font-weight: 800;
@@ -736,18 +745,11 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
     }
 
     .event-list-month {
-        border-top: 2px solid #082f49;
-    }
-
-    .event-list-month + .event-list-month {
-        margin-top: 2.5rem;
+        border-top: 1px solid #cbd5e1;
     }
 
     .event-list-month > h2 {
         margin: 0;
-        padding: 1rem 0 .25rem;
-        color: #082f49;
-        font-size: 1.25rem;
     }
 
     .event-list-month ul {
@@ -792,28 +794,6 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         color: #64748b;
         font-size: .875rem;
         line-height: 1.5;
-    }
-
-    .event-list-row__category {
-        width: max-content;
-        margin: 0;
-        background: #e0f2fe;
-        padding: .25rem .45rem;
-        color: #0c4a6e;
-        font-size: .62rem;
-        font-weight: 850;
-        letter-spacing: .07em;
-        text-transform: uppercase;
-    }
-
-    .event-list-row__category--worship {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-    .event-list-row__category--community {
-        background: #dcfce7;
-        color: #166534;
     }
 
     .event-list-row__meta {
@@ -863,7 +843,32 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         display: none;
     }
 
-    @media (max-width: 64rem) {
+    @media (max-width: 62.5rem) {
+        .calendar-month-panel {
+            grid-template-columns: 1fr;
+        }
+
+        .selected-event {
+            min-height: auto;
+        }
+
+        .event-list-heading span:nth-child(4),
+        .event-list-row > .event-list-row__meta:last-of-type {
+            display: none;
+        }
+
+        .event-list-heading,
+        .event-list-row {
+            grid-template-columns: 5.9375rem minmax(0, 1.2fr) minmax(7rem, .55fr) 3.75rem;
+        }
+    }
+
+    @media (max-width: 43.75rem) {
+        .event-calendar {
+            padding-right: 1.1875rem;
+            padding-left: 1.1875rem;
+        }
+
         .event-calendar__heading {
             grid-template-columns: 1fr;
         }
@@ -875,59 +880,12 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
         .event-command {
             align-items: flex-start;
             flex-direction: column;
-            gap: 0;
         }
 
         .event-command__tools {
             max-width: 100%;
             overflow-x: auto;
-        }
-
-        .event-command__tools > :first-child {
-            border-left: 0;
-        }
-
-        .calendar-month-panel {
-            grid-template-columns: 1fr;
-        }
-
-        .selected-event {
-            min-height: auto;
-            border-top: 1px solid #cbd5e1;
-            border-left: 0;
-        }
-
-        .event-list-heading {
-            display: none;
-        }
-
-        .event-list-row {
-            grid-template-columns: 6.5rem minmax(0, 1fr) 4rem;
-        }
-
-        .event-list-row__meta {
-            grid-column: 2;
-        }
-
-        .event-list-row__mobile-label {
-            display: inline;
-            margin-right: .35rem;
-            color: #64748b;
-            font-size: .68rem;
-            font-weight: 800;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-        }
-
-        .event-list-row > a {
-            grid-column: 3;
-            grid-row: 1 / span 2;
-        }
-    }
-
-    @media (max-width: 40rem) {
-        .event-calendar__heading {
-            padding-top: 2.75rem;
+            padding-bottom: .15rem;
         }
 
         .event-command__month {
@@ -956,20 +914,14 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
             color: transparent;
         }
 
+        .event-list-heading,
+        .event-list-row > .event-list-row__meta {
+            display: none;
+        }
+
         .event-list-row {
-            grid-template-columns: 4.75rem minmax(0, 1fr);
-            gap: .75rem 1rem;
-        }
-
-        .event-list-row__event,
-        .event-list-row__meta,
-        .event-list-row > a {
-            grid-column: 2;
-        }
-
-        .event-list-row > a {
-            grid-row: auto;
-            justify-content: flex-start;
+            grid-template-columns: 5.3125rem minmax(0, 1fr) 3.4375rem;
+            gap: .75rem;
         }
     }
 
