@@ -146,7 +146,7 @@
 }
 
 @utility cew-btn-outline {
-    @apply inline-block font-sans text-sm md:text-base rounded-full border border-charcoal/30 text-charcoal px-7 py-3 transition-colors hover:border-orchid hover:text-orchid
+    @apply inline-block font-sans text-sm md:text-base rounded-full border border-charcoal/30 text-charcoal px-7 py-3 transition-colors hover:border-orchid-deep hover:text-orchid-deep
 }
 
 /* Contact form — Cornerstone Excellent Women palette, matching the shell. */
@@ -161,4 +161,63 @@
 
 @utility contact-input {
     @apply w-full rounded-md bg-white text-charcoal placeholder:text-charcoal/40 px-3 py-2 border-2 border-sand focus:outline-none focus:border-orchid user-invalid:border-red-600 user-valid:border-green-700
+}
+
+/* Newsletter body content comes from Markdown. Keeping its rhythm here lets
+   editors write ordinary headings, paragraphs, lists, quotes, and links. */
+.newsletter-prose {
+    color: color-mix(in srgb, var(--color-charcoal) 88%, transparent);
+    font-size: 1.125rem;
+    line-height: 1.8;
+}
+
+.newsletter-prose > * + * {
+    margin-top: 1.5rem;
+}
+
+.newsletter-prose h2 {
+    margin-top: 3rem;
+    color: var(--color-charcoal);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.15;
+}
+
+.newsletter-prose h3 {
+    margin-top: 2.25rem;
+    color: var(--color-charcoal);
+    font-size: 1.5rem;
+    line-height: 1.25;
+}
+
+.newsletter-prose ul,
+.newsletter-prose ol {
+    padding-left: 1.5rem;
+}
+
+.newsletter-prose ul {
+    list-style: disc;
+}
+
+.newsletter-prose ol {
+    list-style: decimal;
+}
+
+.newsletter-prose blockquote {
+    padding: 1.25rem 1.5rem;
+    color: var(--color-charcoal);
+    background: var(--color-cream-soft);
+    border-left: 0.25rem solid var(--color-orchid);
+    border-radius: 0 1rem 1rem 0;
+}
+
+.newsletter-prose a {
+    color: var(--color-orchid-deep);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+@media (min-width: 768px) {
+    .newsletter-prose {
+        font-size: 1.25rem;
+    }
 }
