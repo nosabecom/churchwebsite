@@ -3,10 +3,34 @@ import { Slideshow } from "@churchwebsite/ui";
 import HeroDetails from "../hero-details.astro";
 import HeroLabels from "../hero-labels.astro";
 
-const slides = Array.from({ length: 10 }, (_, index) => ({
-    src: `/images/placeholds/photo-${index + 1}.jpg`,
-    alt: `Woman Excel conference highlight ${index + 1}`,
-}));
+const imageRoot = "/images/conference/2026";
+
+const slides = [
+    {
+        src: `${imageRoot}/day-one-08.jpg`,
+        alt: "A panel of women seated on stage at Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-two-01.jpg`,
+        alt: "Three women leading worship on stage at Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-one-02.jpg`,
+        alt: "Women sharing a stage ministration during Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-two-07.jpg`,
+        alt: "The Woman Excel congregation standing together in worship",
+    },
+    {
+        src: `${imageRoot}/day-one-05.jpg`,
+        alt: "Attendees gathered around decorated tables on day one",
+    },
+    {
+        src: `${imageRoot}/day-two-10.jpg`,
+        alt: "Women gathered before the stage during the closing service",
+    },
+];
 ---
 
 <Slideshow
@@ -24,7 +48,7 @@ const slides = Array.from({ length: 10 }, (_, index) => ({
                 text: "In the beginning was the Word, and the Word was with God, and the Word was God",
                 citation: "John 1:1",
             }}
-            date="Date to be announced"
+            date="May 9–10, 2026"
             address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
         />
     </div>
