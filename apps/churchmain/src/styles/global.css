@@ -5,6 +5,73 @@ html, body {
     width: 100%;
 }
 
+/* The selected newsletter direction uses a publication-style display face.
+   System serifs keep it dependency-free and render immediately. */
+.newsletter-serif {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+/* Newsletter bodies come from Markdown. Tailwind's reset removes the default
+   document rhythm, so editors get predictable headings, lists, quotes, and links here. */
+.newsletter-prose {
+    color: rgb(51 65 85);
+    font-size: 1.125rem;
+    line-height: 1.8;
+}
+
+.newsletter-prose > * + * {
+    margin-top: 1.5rem;
+}
+
+.newsletter-prose h2 {
+    margin-top: 3rem;
+    color: rgb(8 47 73);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.15;
+}
+
+.newsletter-prose h3 {
+    margin-top: 2.25rem;
+    color: rgb(8 47 73);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.5rem;
+    line-height: 1.25;
+}
+
+.newsletter-prose ul,
+.newsletter-prose ol {
+    padding-left: 1.5rem;
+}
+
+.newsletter-prose ul {
+    list-style: disc;
+}
+
+.newsletter-prose ol {
+    list-style: decimal;
+}
+
+.newsletter-prose blockquote {
+    padding: 1.25rem 1.5rem;
+    color: rgb(15 23 42);
+    background: rgb(240 249 255);
+    border-left: 0.25rem solid rgb(220 38 38);
+    border-radius: 0 1rem 1rem 0;
+}
+
+.newsletter-prose a {
+    color: rgb(185 28 28);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+@media (min-width: 768px) {
+    .newsletter-prose {
+        font-size: 1.25rem;
+    }
+}
+
 /* Safety net so an absolutely-positioned menu can never pan the page sideways.
    `clip` rather than `hidden` so it does not trap the fixed drawer. */
 html {

@@ -1,5 +1,10 @@
 ---
+import { getCollection } from "astro:content";
+
 // No backend is wired up yet, so the form posts to itself and does nothing.
+const latestNewsletter = (await getCollection("newsletters", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())[0];
+const latestNewsletterHref = latestNewsletter ? `/newsletters/${latestNewsletter.id}/` : "/newsletters";
 ---
 
 <section class="px-4 pb-16" aria-labelledby="newsletter-heading">
@@ -17,6 +22,11 @@
                 Announcements, upcoming events, and any changes to our service times &mdash;
                 so you never have to wonder what is happening this week.
             </p>
+
+            <a
+                class="mt-6 inline-block rounded-full bg-sky-900 px-6 py-3 font-semibold text-white hover:bg-sky-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-900"
+                href={latestNewsletterHref}
+            >View latest newsletter</a>
         </div>
 
         <div>

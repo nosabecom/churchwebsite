@@ -134,6 +134,20 @@ When adding styles:
 - Use meaningful `alt` text for images that communicate content.
 - Avoid committing generated output or local-only files.
 
+### Church Main Newsletter Updates
+
+The designated church communications lead owns newsletter copy and publishing. A developer or repository maintainer reviews and deploys the resulting pull request.
+
+Church Main newsletter entries live in `apps/churchmain/src/content/newsletters/`. To publish an edition:
+
+1. Copy an existing Markdown file and name it `YYYY-MM.md`.
+2. Update `title`, `publishedAt`, `excerpt`, and the Markdown body.
+3. Optionally add `issue`, an image path plus meaningful `imageAlt`, or a related `link`.
+4. Keep `draft: true` while the edition is being reviewed; change it to `false` to publish.
+5. Run `pnpm build:churchmain`, review `/newsletters` and the new detail page, then open a pull request.
+
+The newest published date automatically becomes the featured edition and the target of every “View latest newsletter” button. Older editions move to the archive automatically. Entries without images use a branded cover treatment, and an empty collection shows a friendly fallback. Content is loaded during the static build, so there is no client-side loading state or runtime content request to fail.
+
 ### Dependency Changes
 
 - Add shared dependency versions to the `catalog` in `pnpm-workspace.yaml` when possible.
