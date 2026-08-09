@@ -1,58 +1,8 @@
 ---
 import CardRail from "./card-rail.astro";
+import { churchEvents, formatEventDate, formatEventTime } from "../../data/events";
 
-// Placeholder content only. These entries will later come from the church
-// calendar; nothing here is wired to a data source yet.
-const events = [
-    {
-        month: "Aug",
-        day: "02",
-        title: "Sunday Thanksgiving Service",
-        time: "9:00am – 12:00pm",
-        location: "Main Auditorium",
-        blurb: "A morning of worship, the word, and thanksgiving as we open the new month together.",
-    },
-    {
-        month: "Aug",
-        day: "06",
-        title: "Mid-week Bible Study",
-        time: "7:00pm – 8:30pm",
-        location: "Main Auditorium",
-        blurb: "Working through the book of Acts, chapter by chapter, with time for questions.",
-    },
-    {
-        month: "Aug",
-        day: "16",
-        title: "Youth & Teens Hangout",
-        time: "4:00pm – 7:00pm",
-        location: "Fellowship Hall",
-        blurb: "Games, food, and a short devotional for everyone between 13 and 19.",
-    },
-    {
-        month: "Aug",
-        day: "23",
-        title: "Community Outreach",
-        time: "11:00am – 3:00pm",
-        location: "Millar Avenue",
-        blurb: "Meeting our neighbours in Saskatoon with practical help and a word of hope.",
-    },
-    {
-        month: "Aug",
-        day: "29",
-        title: "Power Night Vigil",
-        time: "10:00pm – 1:00am",
-        location: "Main Auditorium",
-        blurb: "Our monthly night of prayer and intercession on the last Friday of the month.",
-    },
-    {
-        month: "Sep",
-        day: "07",
-        title: "Men's Fellowship Breakfast",
-        time: "8:00am – 10:00am",
-        location: "Fellowship Hall",
-        blurb: "Breakfast, testimony, and honest conversation for the men of the assembly.",
-    },
-];
+const events = churchEvents.slice(0, 6);
 ---
 
 <CardRail
@@ -62,27 +12,29 @@ const events = [
     previousLabel="Previous events"
     nextLabel="More events"
     linkLabel="See the full calendar"
-    linkHref="#"
+    linkHref="/events"
 >
     {events.map((event) => (
         <li class="flex w-[min(20rem,85vw)] shrink-0 snap-start flex-col rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-xl shadow-sky-950/30 md:w-88">
             <p class="mb-3 px-3 py-2 flex flex-col items-center self-start rounded-xl bg-sky-900 leading-none text-white">
-                <span class="text-2xl font-bold tracking-tight uppercase">{event.month} {event.day}</span>
+                <time class="text-2xl font-bold tracking-tight uppercase" datetime={event.date}>
+                    {formatEventDate(event.date, { month: "short", day: "2-digit" })}
+                </time>
             </p>
 
             <h3 class="mb-3 text-2xl leading-snug font-bold text-sky-900">{event.title}</h3>
 
             <p class="mb-4 text-sm font-semibold tracking-wide text-red-700">
-                {event.time}
+                {formatEventTime(event.startTime)}–{formatEventTime(event.endTime)}
                 <span class="mx-2 text-slate-400" aria-hidden="true">•</span>
                 {event.location}
             </p>
 
-            <p class="mb-8 leading-relaxed text-slate-700">{event.blurb}</p>
+            <p class="mb-8 leading-relaxed text-slate-700">{event.description}</p>
 
             <a
                 class="mt-auto inline-flex items-center gap-2 self-start text-base font-semibold text-sky-900 no-underline underline-offset-4 hover:underline focus-visible:underline"
-                href="#"
+                href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`}
             >
                 Event details →
             </a>

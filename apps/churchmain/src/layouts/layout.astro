@@ -20,6 +20,7 @@ const year = new Date().getFullYear();
 const latestNewsletter = (await getCollection("newsletters", ({ data }) => !data.draft))
     .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())[0];
 const latestNewsletterHref = latestNewsletter ? `/newsletters/${latestNewsletter.id}/` : "/newsletters";
+const currentPath = Astro.url.pathname;
 
 const services = [
     { title: "Sunday Service", day: "Every Sunday", time: "9:00 AM" },
@@ -32,7 +33,7 @@ const explore = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "#" },
     { label: "New to Church?", href: "/new-to-church" },
-    { label: "Events", href: "#" },
+    { label: "Events", href: "/events" },
     { label: "Newsletters", href: "/newsletters" },
     { label: "Sermons", href: "#" },
     { label: "Contact Us", href: "/contact" },
@@ -66,7 +67,7 @@ const departments = [
 
 const primaryLinks = [
     { label: "New to Church?", href: "/new-to-church" },
-    { label: "Events", href: "#" },
+    { label: "Events", href: "/events" },
     { label: "Sermons", href: "#" },
     { label: "Contact Us", href: "/contact" },
 ];
@@ -133,7 +134,13 @@ const primaryLinks = [
                     </li>
 
                     {primaryLinks.map((link) => (
-                        <li><a href={link.href}>{link.label}</a></li>
+                        <li>
+                            <a
+                                class:list={{ "font-semibold text-sky-900": currentPath === link.href }}
+                                href={link.href}
+                                aria-current={currentPath === link.href ? "page" : undefined}
+                            >{link.label}</a>
+                        </li>
                     ))}
                 </ul>
 
@@ -223,7 +230,16 @@ const primaryLinks = [
                     </li>
 
                     {primaryLinks.map((link) => (
-                        <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={link.href}>{link.label}</a></li>
+                        <li>
+                            <a
+                                class:list={[
+                                    "block rounded-md py-2.5 hover:bg-slate-100",
+                                    { "font-semibold text-sky-900": currentPath === link.href },
+                                ]}
+                                href={link.href}
+                                aria-current={currentPath === link.href ? "page" : undefined}
+                            >{link.label}</a>
+                        </li>
                     ))}
                 </ul>
 
@@ -290,7 +306,11 @@ const primaryLinks = [
                         <ul class="mt-5 list-none space-y-1 p-0 text-base text-slate-300">
                             {explore.map((link) => (
                                 <li>
-                                    <a class="block py-2 underline-offset-4 hover:text-white hover:underline" href={link.href}>
+                                    <a
+                                        class="block py-2 underline-offset-4 hover:text-white hover:underline"
+                                        href={link.href}
+                                        aria-current={currentPath === link.href ? "page" : undefined}
+                                    >
                                         {link.label}
                                     </a>
                                 </li>
