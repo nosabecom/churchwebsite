@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/layout.astro";
+import Wordmark from "../../assets/cornerstone-logo-horizontal.png";
+import { messages } from "../../data/messages";
+
+const [latest, ...recent] = messages;
+---
+
+<Layout
+    title="Messages | RCCG Cornerstone Assembly"
+    description="Watch recent Sunday messages and explore biblical teaching from RCCG Cornerstone Assembly."
+>
+    <section class="messages-landing" aria-labelledby="messages-heading">
+        <aside class="messages-scripture-panel">
+            <Image
+                class="messages-wordmark"
+                src={Wordmark}
+                alt="RCCG Cornerstone Assembly"
+                widths={[260, 520]}
+                sizes="260px"
+            />
+
+            <div class="messages-scripture-copy">
+                <p class="messages-kicker messages-kicker-light">From this Sunday’s message</p>
+                <p class="messages-reference">{latest.scripture}</p>
+                <blockquote>“{latest.quote}”</blockquote>
+            </div>
+        </aside>
+
+        <div class="messages-landing-content">
+            <header>
+                <p class="messages-kicker">Messages & sermons</p>
+                <h1 id="messages-heading">Hear the word.<br />Live the word.</h1>
+                <p>Recent biblical teaching from Cornerstone Assembly.</p>
+            </header>
+
+            <article class="messages-featured">
+                <div>
+                    <p class="messages-kicker messages-kicker-light">Featured this week</p>
+                    <h2>{latest.title}</h2>
+                    <p>{latest.speaker} · {latest.duration}</p>
+                </div>
+
+                <a class="messages-play" href={`/messages/${latest.slug}`} aria-label={`Open ${latest.title}`}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+                </a>
+            </article>
+
+            <div class="messages-recent-list">
+                {recent.slice(0, 4).map((message) => (
+                    <article>
+                        <time datetime={message.isoDate}>{message.date}</time>
+                        <div>
+                            <h2>{message.title}</h2>
+                            <p>{message.speaker} · {message.series}</p>
+                        </div>
+                        <a class="messages-arrow" href={`/messages/${message.slug}`} aria-label={`Open ${message.title}`}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                        </a>
+                    </article>
+                ))}
+            </div>
+
+            <div class="messages-archive-cta">
+                <a href="/messages/archive">
+                    View all messages
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+</Layout>

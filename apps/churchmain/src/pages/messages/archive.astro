@@ -1,0 +1,144 @@
+---
+import Layout from "../../layouts/layout.astro";
+import { messages, series, speakers, years } from "../../data/messages";
+
+const latest = messages[0];
+---
+
+<Layout
+    title="Message Archive | RCCG Cornerstone Assembly"
+    description="Search the complete archive of Sunday messages from RCCG Cornerstone Assembly."
+>
+    <div class="messages-archive-page">
+        <header class="messages-timeline-hero">
+            <div>
+                <p class="messages-kicker messages-kicker-light">Cornerstone messages</p>
+                <h1>Sunday by Sunday.</h1>
+            </div>
+            <p>Follow the teaching life of our church—from the latest service back through every season.</p>
+        </header>
+
+        <article class="messages-timeline-latest">
+            <time datetime={latest.isoDate}>
+                <b>03</b>
+                <span>AUG<br />2026</span>
+            </time>
+            <div>
+                <p class="messages-kicker messages-kicker-light">Latest Sunday</p>
+                <h2>{latest.title}</h2>
+                <p>{latest.speaker} · {latest.scripture}</p>
+            </div>
+            <a class="messages-play messages-play-light" href={`/messages/${latest.slug}`} aria-label={`Open ${latest.title}`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+            </a>
+        </article>
+
+        <section class="messages-archive-library" aria-labelledby="archive-heading">
+            <header>
+                <p class="messages-kicker">The complete timeline</p>
+                <h2 id="archive-heading">Browse every Sunday</h2>
+            </header>
+
+            <div class="messages-filter-grid">
+                <label class="messages-search-field">
+                    <span class="sr-only">Search messages</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
+                    <input data-message-search type="search" placeholder="Search title, speaker, series, or scripture" />
+                </label>
+
+                <label class="messages-filter-field">
+                    <span>Series</span>
+                    <select data-message-series>
+                        <option value="">All series</option>
+                        {series.map((name) => <option value={name}>{name}</option>)}
+                    </select>
+                </label>
+
+                <label class="messages-filter-field">
+                    <span>Speaker</span>
+                    <select data-message-speaker>
+                        <option value="">All speakers</option>
+                        {speakers.map((name) => <option value={name}>{name}</option>)}
+                    </select>
+                </label>
+
+                <label class="messages-filter-field">
+                    <span>Year</span>
+                    <select data-message-year>
+                        <option value="">All years</option>
+                        {years.map((year) => <option value={year}>{year}</option>)}
+                    </select>
+                </label>
+            </div>
+
+            <div class="messages-results-heading">
+                <p><b data-message-count>{messages.length}</b> messages</p>
+                <span>Newest first</span>
+            </div>
+
+            <div class="messages-archive-list">
+                {messages.map((message, index) => (
+                    <article
+                        data-message-row
+                        data-search={`${message.title} ${message.speaker} ${message.series} ${message.scripture}`.toLowerCase()}
+                        data-series={message.series}
+                        data-speaker={message.speaker}
+                        data-year={message.isoDate.slice(0, 4)}
+                    >
+                        <span class="messages-row-number">{String(index + 1).padStart(2, "0")}</span>
+                        <div>
+                            <p class="messages-kicker">{message.series}</p>
+                            <h3>{message.title}</h3>
+                            <p>{message.speaker} <i aria-hidden="true">·</i> {message.scripture}</p>
+                        </div>
+                        <time datetime={message.isoDate}>
+                            <b>{message.date}</b>
+                            <span>{message.duration}</span>
+                        </time>
+                        <a class="messages-arrow" href={`/messages/${message.slug}`} aria-label={`Open ${message.title}`}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                        </a>
+                    </article>
+                ))}
+            </div>
+
+            <div class="messages-empty" data-message-empty hidden>
+                <h3>No messages found</h3>
+                <p>Try another title, speaker, series, scripture, or year.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const search = document.querySelector<HTMLInputElement>("[data-message-search]");
+        const series = document.querySelector<HTMLSelectElement>("[data-message-series]");
+        const speaker = document.querySelector<HTMLSelectElement>("[data-message-speaker]");
+        const year = document.querySelector<HTMLSelectElement>("[data-message-year]");
+        const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-message-row]"));
+        const count = document.querySelector<HTMLElement>("[data-message-count]");
+        const empty = document.querySelector<HTMLElement>("[data-message-empty]");
+
+        const filterMessages = () => {
+            const query = search?.value.trim().toLowerCase() ?? "";
+            let visible = 0;
+
+            rows.forEach((row) => {
+                const matches = (row.dataset.search ?? "").includes(query)
+                    && (!series?.value || row.dataset.series === series.value)
+                    && (!speaker?.value || row.dataset.speaker === speaker.value)
+                    && (!year?.value || row.dataset.year === year.value);
+
+                row.hidden = !matches;
+                if (matches) visible += 1;
+            });
+
+            if (count) count.textContent = String(visible);
+            if (empty) empty.hidden = visible !== 0;
+        };
+
+        search?.addEventListener("input", filterMessages);
+        series?.addEventListener("change", filterMessages);
+        speaker?.addEventListener("change", filterMessages);
+        year?.addEventListener("change", filterMessages);
+    </script>
+</Layout>

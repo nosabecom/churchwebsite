@@ -1,0 +1,153 @@
+---
+import Layout from "../../layouts/layout.astro";
+import { messages, type Message } from "../../data/messages";
+
+export function getStaticPaths() {
+    return messages.map((message) => ({
+        params: { slug: message.slug },
+        props: { message },
+    }));
+}
+
+const { message } = Astro.props as { message: Message };
+const transcriptTimes = ["00:00", "08:42", "21:15", "34:08"];
+---
+
+<Layout
+    title={`${message.title} | RCCG Cornerstone Assembly`}
+    description={`${message.summary} Watch the message and read the complete transcript.`}
+>
+    <article class="message-detail-page">
+        <nav class="message-detail-breadcrumb" aria-label="Breadcrumb">
+            <a href="/messages/archive">← Back to all messages</a>
+            <span>Watch + transcript</span>
+        </nav>
+
+        <section class="message-video-stage" data-video-stage data-youtube-id={message.youtubeId}>
+            <div class="message-video-topline">
+                <span>Cornerstone messages</span>
+                <span>{message.duration}</span>
+            </div>
+
+            <button class="message-video-play" type="button" data-video-play aria-label={`Load video for ${message.title}`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+                <span>Watch message</span>
+            </button>
+
+            <div class="message-video-caption">
+                <p>{message.series}</p>
+                <h1>{message.title}</h1>
+            </div>
+        </section>
+
+        <section class="message-detail-meta" aria-label="Message information">
+            <div>
+                <span>Speaker</span>
+                <b>{message.speaker}</b>
+            </div>
+            <div>
+                <span>Published</span>
+                <b>{message.date}</b>
+            </div>
+            <div>
+                <span>Primary scripture</span>
+                <b>{message.scripture}</b>
+            </div>
+            <div class="message-detail-share">
+                <button type="button" data-message-share>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4" /></svg>
+                    Share message
+                </button>
+            </div>
+        </section>
+
+        <div class="message-transcript-layout">
+            <section class="message-transcript" aria-labelledby="transcript-heading">
+                <p class="messages-kicker">Full message transcript</p>
+                <h2 id="transcript-heading">{message.title}</h2>
+                <p class="message-transcript-intro">{message.summary}</p>
+
+                <div class="message-transcript-copy">
+                    {message.transcript.map((paragraph, index) => (
+                        <div>
+                            <time>{transcriptTimes[index] ?? ""}</time>
+                            <p>{paragraph}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            <aside class="message-resources">
+                <section class="message-resource-card message-scripture-card">
+                    <p class="messages-kicker messages-kicker-light">Key scriptures</p>
+                    {message.keyScriptures.map((item) => (
+                        <div>
+                            <b>{item.reference}</b>
+                            <span>{item.note}</span>
+                        </div>
+                    ))}
+                </section>
+
+                <section class="message-resource-card message-points-card">
+                    <p class="messages-kicker">Key message points</p>
+                    <ol>
+                        {message.keyPoints.map((point) => <li>{point}</li>)}
+                    </ol>
+                </section>
+
+                <button class="message-download" type="button" data-download-transcript data-message-title={message.title}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>
+                    Download transcript
+                </button>
+            </aside>
+        </div>
+    </article>
+
+    <p class="message-toast" data-message-toast hidden></p>
+
+    <script>
+        const stage = document.querySelector<HTMLElement>("[data-video-stage]");
+        const play = document.querySelector<HTMLButtonElement>("[data-video-play]");
+
+        play?.addEventListener("click", () => {
+            if (!stage || stage.querySelector("iframe")) return;
+            const iframe = document.createElement("iframe");
+            iframe.src = `https://www.youtube-nocookie.com/embed/${stage.dataset.youtubeId}?autoplay=1&rel=0`;
+            iframe.title = "Message video";
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            iframe.allowFullscreen = true;
+            stage.classList.add("is-playing");
+            stage.append(iframe);
+        });
+
+        const toast = document.querySelector<HTMLElement>("[data-message-toast]");
+        const showToast = (text: string) => {
+            if (!toast) return;
+            toast.textContent = text;
+            toast.hidden = false;
+            window.setTimeout(() => { toast.hidden = true; }, 2200);
+        };
+
+        document.querySelector<HTMLButtonElement>("[data-message-share]")?.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                showToast("Message link copied");
+            } catch {
+                showToast("Copy the page address from your browser");
+            }
+        });
+
+        document.querySelector<HTMLButtonElement>("[data-download-transcript]")?.addEventListener("click", (event) => {
+            const button = event.currentTarget as HTMLButtonElement;
+            const paragraphs = Array.from(document.querySelectorAll<HTMLElement>(".message-transcript-copy p"));
+            const text = paragraphs.map((paragraph) => paragraph.textContent ?? "").join("\n\n");
+            const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${(button.dataset.messageTitle ?? "message").toLowerCase().replace(/[^a-z0-9]+/g, "-")}-transcript.txt`;
+            link.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</Layout>
