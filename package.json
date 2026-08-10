@@ -6,6 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "audit:media": "node migration/media/scripts/audit-media.mjs",
     "dev:churchmain": "pnpm --filter @churchwebsite/churchmain dev",
     "d/c": "pnpm --filter @churchwebsite/churchmain dev",
     "dev:womanexcel": "pnpm --filter @churchwebsite/womanexcel dev",
