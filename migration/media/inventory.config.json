@@ -147,8 +147,8 @@
       "credit": null,
       "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved Woman Excel 2026 conference speaker image."
     },
     "apps/womanexcel/public/images/speakers/dunni-esuturie.png": {
       "site": "womanexcel",
@@ -161,10 +161,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved Woman Excel 2026 conference speaker image."
     },
     "apps/womanexcel/public/images/speakers/his-covenant-music.png": {
       "site": "womanexcel",
@@ -177,10 +177,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Real conference performer image."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved Woman Excel 2026 conference performer image."
     },
     "apps/womanexcel/public/images/speakers/marina-esiri-iyeme-eteng.png": {
       "site": "womanexcel",
@@ -193,10 +193,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved Woman Excel 2026 conference speaker image."
     },
     "apps/womanexcel/public/images/speakers/reuben-adeleye.png": {
       "site": "womanexcel",
@@ -209,10 +209,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Preferred canonical portrait for Woman Excel and Church Main; still requires approval before migration."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved canonical portrait for Woman Excel and Church Main."
     },
     "apps/womanexcel/public/images/speakers/tobie-hainstock.png": {
       "site": "womanexcel",
@@ -225,10 +225,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved Woman Excel 2026 conference speaker image."
     },
     "apps/womanexcel/public/images/speakers/tosin-olayinka-ajibs.png": {
       "site": "womanexcel",
@@ -241,10 +241,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved Woman Excel 2026 conference speaker image."
     },
     "apps/womanexcel/public/images/speakers/toyin-adeleye.png": {
       "site": "womanexcel",
@@ -257,10 +257,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
-      "notes": "Preferred canonical portrait for Woman Excel and Church Main; still requires approval before migration."
+      "qualityIssues": ["oversized 16-bit PNG", "credit unconfirmed"],
+      "notes": "Approved canonical portrait for Woman Excel and Church Main."
     },
     "apps/womanexcel/public/images/the-word.svg": {
       "site": "womanexcel",
