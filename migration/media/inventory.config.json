@@ -121,8 +121,8 @@
     "apps/womanexcel/public/images/logo-full.png": {
       "site": "womanexcel",
       "classification": "logo/brand asset",
-      "disposition": "keep in Git",
-      "destination": "apps/womanexcel/public/images",
+      "disposition": "replace",
+      "destination": "Approved white Woman Excel logo in apps/womanexcel/public/images",
       "owner": "womanExcel.conference.brand",
       "usageFiles": ["apps/womanexcel/src/components/conference/2026/aboutus.astro", "apps/womanexcel/src/components/home/conference.astro"],
       "altText": "The Woman Excel International Conference",
@@ -131,8 +131,8 @@
       "credit": null,
       "usageApproval": "approved",
       "originalStatus": "rendered PNG; editable design source unconfirmed",
-      "qualityIssues": [],
-      "notes": "The empty conference-page alt can be valid if the nearby heading conveys the same identity."
+      "qualityIssues": ["replacement requested: change to the white logo version"],
+      "notes": "Approved for current use; replace with the white Woman Excel logo when supplied. The empty conference-page alt can be valid if the nearby heading conveys the same identity."
     },
     "apps/womanexcel/public/images/speakers/angela-hunter.png": {
       "site": "womanexcel",

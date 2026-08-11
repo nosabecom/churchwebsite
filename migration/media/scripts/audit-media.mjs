@@ -297,10 +297,11 @@ ${markdownCounts(countBy(records, 'disposition'))}
 2. Do not migrate \`apps/churchmain/public/images/placeholds/1.jpg\`; keep it only as a development placeholder until Church Main originals are supplied for RCC-50.
 3. The eight Woman Excel 2026 speaker/performer cutouts are approved for use, but their credits remain unconfirmed. Confirm permission and credit for the remaining editorial assets, including the 48 new Woman Excel 2025/2026 gallery photographs and the conference posters/programmes.
 4. Obtain the missing camera originals where possible. The repository contains web-ready gallery JPEGs, derived transparent cutouts/crops, and flattened poster/programme files rather than source originals.
-5. Optimize the eight 1000x1000, 16-bit speaker PNGs (each currently over 2 MB), the 1.2 MB conference logo SVG, and the large Church Main raster logo before production delivery.
-6. Add accessible text for the 2026 poster. The current \`alt=""\` hides it from assistive technology even though important event details are embedded in the image.
-7. Replace the two Church Main pastor crops with the newer approved Woman Excel portraits, which are the selected canonical Sanity candidates for both sites; their credits still need to be recorded.
-8. Keep the accessible HTML 2025 schedule when migrating its two programme images because the image text alone is not an accessible content source.
+5. Replace the currently approved \`apps/womanexcel/public/images/logo-full.png\` with the white Woman Excel logo version when it is supplied.
+6. Optimize the eight 1000x1000, 16-bit speaker PNGs (each currently over 2 MB), the 1.2 MB conference logo SVG, and the large Church Main raster logo before production delivery.
+7. Add accessible text for the 2026 poster. The current \`alt=""\` hides it from assistive technology even though important event details are embedded in the image.
+8. Replace the two Church Main pastor crops with the newer approved Woman Excel portraits, which are the selected canonical Sanity candidates for both sites; their credits still need to be recorded.
+9. Keep the accessible HTML 2025 schedule when migrating its two programme images because the image text alone is not an accessible content source.
 
 ## Downstream migration contract
 
