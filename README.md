@@ -46,6 +46,7 @@ Short aliases are also available:
 ```sh
 pnpm d/c
 pnpm d/w
+pnpm d/s
 ```
 
 ## Building
@@ -70,6 +71,7 @@ Short aliases are also available:
 pnpm b
 pnpm b/c
 pnpm b/w
+pnpm b/s
 ```
 
 ## Sanity foundation
@@ -80,6 +82,15 @@ the Studio schema or a Church Main GROQ query changes.
 
 See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
 authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.
+
+The remaining Sanity commands also have short aliases:
+
+| Command               | Alias       |
+| --------------------- | ----------- |
+| `pnpm deploy:studio`  | `pnpm dp/s` |
+| `pnpm schema:extract` | `pnpm s/e`  |
+| `pnpm typegen`        | `pnpm t/g`  |
+| `pnpm typegen:check`  | `pnpm t/c`  |
 
 ## Shared components
 
