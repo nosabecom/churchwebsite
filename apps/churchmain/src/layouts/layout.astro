@@ -35,7 +35,7 @@ const explore = [
     { label: "New to Church?", href: "/new-to-church" },
     { label: "Events", href: "/events" },
     { label: "Newsletters", href: "/newsletters" },
-    { label: "Sermons", href: "#" },
+    { label: "Sermons", href: "/messages" },
     { label: "Contact Us", href: "/contact" },
 ];
 
@@ -68,7 +68,7 @@ const departments = [
 const primaryLinks = [
     { label: "New to Church?", href: "/new-to-church" },
     { label: "Events", href: "/events" },
-    { label: "Sermons", href: "#" },
+    { label: "Sermons", href: "/messages" },
     { label: "Contact Us", href: "/contact" },
 ];
 ---
@@ -78,7 +78,7 @@ const primaryLinks = [
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
+        <meta name="generator" content={Astro.generator} />
         <link rel="shortcut icon" href={Logo.src} type="image/png">
 		<title>{title}</title>
         <meta name="description" content={description} />
