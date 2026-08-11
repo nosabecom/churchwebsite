@@ -190,6 +190,35 @@ export const messages: Message[] = [
             "Received grace becomes welcome we extend to others.",
         ],
     },
+    {
+        slug: "peace-in-the-storm",
+        title: "Peace in the Storm",
+        speaker: "Pastor Toyin Adeleye",
+        date: "June 22, 2026",
+        isoDate: "2026-06-22",
+        series: "Anchored",
+        duration: "39:54",
+        scripture: "Mark 4:39",
+        youtubeId: "wrOvChccjMI",
+        summary: "Jesus meets us in the storm and teaches us to trust the authority of his presence.",
+        quote: "Peace, be still.",
+        transcript: [
+            "The disciples entered the boat at Jesus’ invitation, yet obedience did not keep the storm from arriving.",
+            "Fear tells us that the waves have the final word. Faith remembers that Christ is present even when he seems silent.",
+            "Jesus speaks peace to the wind and then invites his followers into a deeper confidence in who he is.",
+            "The storm may expose our fear, but it can also reveal the steadiness of the One who travels with us.",
+        ],
+        keyScriptures: [
+            { reference: "Mark 4:35–41", note: "Jesus calms the storm" },
+            { reference: "Psalm 46:1–3", note: "God is present in trouble" },
+            { reference: "John 14:27", note: "Christ gives lasting peace" },
+        ],
+        keyPoints: [
+            "Obedience does not guarantee an absence of storms.",
+            "Christ’s presence is greater than the pressure around us.",
+            "Peace grows as we trust the authority of Jesus.",
+        ],
+    },
 ];
 
 export const series = [...new Set(messages.map((message) => message.series))];

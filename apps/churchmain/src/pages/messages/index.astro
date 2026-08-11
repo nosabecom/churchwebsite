@@ -62,7 +62,7 @@ const [latest, ...recent] = messages;
             </article>
 
             <div>
-                {recent.slice(0, 4).map((message) => (
+                {recent.slice(0, 6).map((message) => (
                     <article class="grid grid-cols-[7rem_minmax(0,1fr)_2.5rem] items-center gap-4 border-t border-slate-300 py-4 max-[35rem]:grid-cols-[minmax(0,1fr)_2.5rem]">
                         <time class="text-xs text-slate-500 max-[35rem]:col-span-full" datetime={message.isoDate}>{message.date}</time>
                         <div>
