@@ -6,17 +6,17 @@ The Studio is a standalone workspace in `apps/studio`. Church Main has a configu
 but no production route fetches Sanity content yet. Woman Excel remains disconnected until its own
 migration issue is implemented.
 
-The verified Sanity connection is:
+The Sanity connection is supplied at build time:
 
-- Project ID: `qd5xjyx2`
-- Dataset: `production`
+- Church Main: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
+- Studio: `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET`
 - API mode: public, read-only queries with no token
 
 ## Environment variables
 
-Copy `apps/churchmain/.env.example` to `apps/churchmain/.env.local` only when overriding the checked-in
-defaults. The project ID and dataset name are public identifiers. Never put a Sanity token in a
-`PUBLIC_` variable or commit one to Git.
+Copy `apps/churchmain/.env.example` and `apps/studio/.env.example` to matching `.env.local` files,
+then replace the placeholders. No project ID, dataset name, or token is checked into Git. Never put
+a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
 
 If a future private dataset requires a token, use a server-only variable such as
 `SANITY_API_READ_TOKEN` and keep it out of browser code, logs, and generated static assets.
@@ -72,6 +72,13 @@ pnpm --filter @churchwebsite/studio exec sanity cors add https://<trusted-origin
 Public static builds that query Sanity from the build server do not need an authenticated browser
 origin.
 
+## Deployment environment
+
+GitHub Actions reads `SANITY_PROJECT_ID` and `SANITY_DATASET` from repository variables and maps them
+to the Church Main and Studio variable names. Church Main deployment environments should define the
+two `PUBLIC_SANITY_` variables. Without them, the current Git-backed routes still build, but the
+Sanity client integration remains disabled.
+
 ## Development, TypeGen, and builds
 
 ```sh
@@ -124,6 +131,6 @@ This foundation does not replace any live content source. If it causes a deploym
 2. Keep the existing Git-backed routes and assets active; there is no Sanity content cutover to undo.
 3. Remove any newly added CORS origin that is no longer required.
 4. Revoke any developer or deployment credential that may have been exposed.
-5. Leave the `production` dataset intact; rollback must not delete shared content or assets.
+5. Leave the configured dataset intact; rollback must not delete shared content or assets.
 
 After rollback, run all four builds again before attempting a corrected deployment.

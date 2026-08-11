@@ -1,7 +1,7 @@
 # RCCG Cornerstone Sanity Studio
 
 This standalone Studio is the shared editorial workspace for Church Main and Woman Excel.
-It connects to Sanity project `qd5xjyx2` and the `production` dataset.
+Its Sanity project and dataset are supplied through local or deployment environment variables.
 
 Run it from the repository root:
 

@@ -10,8 +10,16 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
   "",
 );
 
-const projectId = PUBLIC_SANITY_PROJECT_ID || "qd5xjyx2";
-const dataset = PUBLIC_SANITY_DATASET || "production";
+const sanityIntegrations =
+  PUBLIC_SANITY_PROJECT_ID && PUBLIC_SANITY_DATASET
+    ? [
+        sanity({
+          projectId: PUBLIC_SANITY_PROJECT_ID,
+          dataset: PUBLIC_SANITY_DATASET,
+          useCdn: false,
+        }),
+      ]
+    : [];
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,11 +35,5 @@ export default defineConfig({
     },
   },
 
-  integrations: [
-    sanity({
-      projectId,
-      dataset,
-      useCdn: false,
-    }),
-  ],
+  integrations: sanityIntegrations,
 });

@@ -9,6 +9,12 @@ on:
 permissions:
   contents: read
 
+env:
+  PUBLIC_SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+  PUBLIC_SANITY_DATASET: ${{ vars.SANITY_DATASET }}
+  SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+  SANITY_STUDIO_DATASET: ${{ vars.SANITY_DATASET }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
