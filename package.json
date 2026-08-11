@@ -7,6 +7,12 @@
   },
   "scripts": {
     "audit:media": "node migration/media/scripts/audit-media.mjs",
+    "dev:studio": "pnpm --filter @churchwebsite/studio dev",
+    "build:studio": "pnpm --filter @churchwebsite/studio build",
+    "deploy:studio": "pnpm --filter @churchwebsite/studio deploy",
+    "schema:extract": "pnpm --filter @churchwebsite/studio schema:extract",
+    "typegen": "pnpm --filter @churchwebsite/studio typegen",
+    "typegen:check": "pnpm typegen && git diff --exit-code -- apps/churchmain/src/sanity.types.ts",
     "dev:churchmain": "pnpm --filter @churchwebsite/churchmain dev",
     "d/c": "pnpm --filter @churchwebsite/churchmain dev",
     "dev:womanexcel": "pnpm --filter @churchwebsite/womanexcel dev",

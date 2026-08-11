@@ -1,5 +1,5 @@
 {
-  "name": "rccgcornerstone",
+  "name": "@churchwebsite/studio",
   "private": true,
   "version": "1.0.0",
   "main": "package.json",
@@ -9,7 +9,10 @@
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
     "dev": "sanity dev",
-    "start": "sanity start"
+    "schema:extract": "sanity schemas extract --force --enforce-required-fields",
+    "start": "sanity start",
+    "typegen:generate": "sanity typegen generate",
+    "typegen": "pnpm schema:extract && pnpm typegen:generate"
   },
   "keywords": [
     "sanity"

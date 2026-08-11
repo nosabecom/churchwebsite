@@ -6,6 +6,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 - `apps/churchmain` is the main RCCG Cornerstone Assembly site.
 - `apps/womanexcel` is the Woman Excel site.
+- `apps/studio` is the standalone Sanity Studio shared by both sites.
 - `packages/ui` contains the UI components shared by both sites.
 - Shared dependency versions are managed from the root `pnpm-workspace.yaml` catalog.
 - Each app is an Astro project using Tailwind CSS through `@tailwindcss/vite`.
@@ -37,6 +38,7 @@ Run one app locally:
 ```sh
 pnpm dev:churchmain
 pnpm dev:womanexcel
+pnpm dev:studio
 ```
 
 Short aliases are also available:
@@ -59,6 +61,7 @@ Build one app:
 ```sh
 pnpm build:churchmain
 pnpm build:womanexcel
+pnpm build:studio
 ```
 
 Short aliases are also available:
@@ -68,6 +71,15 @@ pnpm b
 pnpm b/c
 pnpm b/w
 ```
+
+## Sanity foundation
+
+Church Main has the first Sanity client configuration, but its routes still render the existing
+Git-backed content. Woman Excel is intentionally not connected yet. Run `pnpm typegen` whenever
+the Studio schema or a Church Main GROQ query changes.
+
+See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
+authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.
 
 ## Shared components
 
