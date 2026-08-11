@@ -289,10 +289,10 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "development-only",
       "originalStatus": "rendered JPEG only; vector source missing",
-      "qualityIssues": ["lossy raster logo; approved vector original should replace it if available"],
-      "notes": "Build-time fellowship brand asset."
+      "qualityIssues": ["development-only", "lossy raster logo; approved vector original should replace it if available"],
+      "notes": "Approved for development use only; do not use in production or migrate to Sanity."
     },
     "apps/womanexcel/src/assets/logo.png": {
       "site": "womanexcel",
