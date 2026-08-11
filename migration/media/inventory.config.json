@@ -71,36 +71,36 @@
     "apps/churchmain/src/assets/pastors/reuben-adeleye.png": {
       "site": "churchmain",
       "classification": "editorial image",
-      "disposition": "move to Sanity",
-      "destination": "Sanity person portrait image",
+      "disposition": "replace",
+      "destination": "Use apps/womanexcel/public/images/speakers/reuben-adeleye.png as the canonical Sanity person portrait",
       "owner": "person.reubenAdeleye",
       "usageFiles": ["apps/churchmain/src/components/home/welcome-message.astro"],
       "altText": "Pst. Reuben Adeleye",
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "disapproved",
       "originalStatus": "derived square crop; original photograph missing",
       "possibleDuplicateOf": "apps/womanexcel/public/images/speakers/reuben-adeleye.png",
-      "qualityIssues": ["permission and credit unconfirmed", "possible derivative duplicate"],
-      "notes": "The component says this was copied from the Woman Excel site."
+      "qualityIssues": ["superseded by the newer Woman Excel portrait"],
+      "notes": "Do not migrate this Church Main crop; replace it with the newer Woman Excel portrait."
     },
     "apps/churchmain/src/assets/pastors/toyin-adeleye.png": {
       "site": "churchmain",
       "classification": "editorial image",
-      "disposition": "move to Sanity",
-      "destination": "Sanity person portrait image",
+      "disposition": "replace",
+      "destination": "Use apps/womanexcel/public/images/speakers/toyin-adeleye.png as the canonical Sanity person portrait",
       "owner": "person.toyinAdeleye",
       "usageFiles": ["apps/churchmain/src/components/home/welcome-message.astro"],
       "altText": "Pst. Toyin Adeleye",
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "disapproved",
       "originalStatus": "derived square crop; original photograph missing",
       "possibleDuplicateOf": "apps/womanexcel/public/images/speakers/toyin-adeleye.png",
-      "qualityIssues": ["permission and credit unconfirmed", "possible derivative duplicate"],
-      "notes": "The component says this was copied from the Woman Excel site."
+      "qualityIssues": ["superseded by the newer Woman Excel portrait"],
+      "notes": "Do not migrate this Church Main crop; replace it with the newer Woman Excel portrait."
     },
     "apps/womanexcel/public/images/banner.jpeg": {
       "site": "womanexcel",
@@ -203,7 +203,7 @@
       "classification": "editorial image",
       "disposition": "move to Sanity",
       "destination": "Sanity person portrait image",
-      "owner": "person.reubenAdeleye / womanExcel.conference.2026",
+      "owner": "person.reubenAdeleye / womanExcel.conference.2026 / churchMain.homePage",
       "usageFiles": ["apps/womanexcel/src/components/conference/2026/speakers.ts"],
       "altText": "Pst. Reuben Adeleye",
       "altTextStatus": "present",
@@ -211,8 +211,8 @@
       "credit": null,
       "usageApproval": "unconfirmed",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed", "possible derivative duplicate used by Church Main"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
+      "notes": "Preferred canonical portrait for Woman Excel and Church Main; still requires approval before migration."
     },
     "apps/womanexcel/public/images/speakers/tobie-hainstock.png": {
       "site": "womanexcel",
@@ -251,7 +251,7 @@
       "classification": "editorial image",
       "disposition": "move to Sanity",
       "destination": "Sanity person portrait image",
-      "owner": "person.toyinAdeleye / womanExcel.conference.2026",
+      "owner": "person.toyinAdeleye / womanExcel.conference.2026 / churchMain.homePage",
       "usageFiles": ["apps/womanexcel/src/components/conference/2026/speakers.ts"],
       "altText": "Pst. Toyin Adeleye",
       "altTextStatus": "present",
@@ -259,8 +259,8 @@
       "credit": null,
       "usageApproval": "unconfirmed",
       "originalStatus": "transparent cutout only; original photograph missing",
-      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed", "possible derivative duplicate used by Church Main"],
-      "notes": "Real conference speaker image."
+      "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
+      "notes": "Preferred canonical portrait for Woman Excel and Church Main; still requires approval before migration."
     },
     "apps/womanexcel/public/images/the-word.svg": {
       "site": "womanexcel",

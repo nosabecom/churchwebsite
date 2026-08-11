@@ -299,7 +299,7 @@ ${markdownCounts(countBy(records, 'disposition'))}
 4. Obtain the missing camera originals where possible. The repository contains web-ready gallery JPEGs, derived transparent cutouts/crops, and flattened poster/programme files rather than source originals.
 5. Optimize the eight 1000x1000, 16-bit speaker PNGs (each currently over 2 MB), the 1.2 MB conference logo SVG, and the large Church Main raster logo before production delivery.
 6. Add accessible text for the 2026 poster. The current \`alt=""\` hides it from assistive technology even though important event details are embedded in the image.
-7. Review the two pastor portrait variants across both apps as semantic duplicates and select a canonical Sanity person image per pastor.
+7. Replace the two Church Main pastor crops with the newer Woman Excel portraits, which are now the selected canonical Sanity candidates for both sites; their permission/credit still requires approval.
 8. Keep the accessible HTML 2025 schedule when migrating its two programme images because the image text alone is not an accessible content source.
 
 ## Downstream migration contract
