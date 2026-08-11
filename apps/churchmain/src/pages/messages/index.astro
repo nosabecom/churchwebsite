@@ -11,61 +11,82 @@ const [latest, ...recent] = messages;
     title="Messages | RCCG Cornerstone Assembly"
     description="Watch recent Sunday messages and explore biblical teaching from RCCG Cornerstone Assembly."
 >
-    <section class="messages-landing" aria-labelledby="messages-heading">
-        <aside class="messages-scripture-panel">
+    <section
+        class="mx-auto mt-8 mb-22 grid max-w-400 grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] overflow-hidden rounded-2xl shadow-[0_1.5rem_3.5rem_rgb(8_47_73_/_45%)] max-lg:mx-4 max-lg:mt-5 max-lg:mb-18 max-lg:grid-cols-1 max-[35rem]:mx-3"
+        aria-labelledby="messages-heading"
+    >
+        <aside
+            class="flex min-h-192 flex-col bg-cover bg-center p-[clamp(2.75rem,6vw,5.5rem)] text-white max-lg:min-h-160 max-[35rem]:min-h-156 max-[35rem]:px-6 max-[35rem]:py-[2.4rem]"
+            style="background-image: linear-gradient(rgb(8 47 73 / 90%), rgb(8 47 73 / 94%)), url('/images/placeholds/1.jpg')"
+        >
             <Image
-                class="messages-wordmark"
+                class="h-auto w-65 object-contain object-left max-[35rem]:w-54"
                 src={Wordmark}
                 alt="RCCG Cornerstone Assembly"
                 widths={[260, 520]}
                 sizes="260px"
             />
 
-            <div class="messages-scripture-copy">
-                <p class="messages-kicker messages-kicker-light">From this Sunday’s message</p>
-                <p class="messages-reference">{latest.scripture}</p>
-                <blockquote>“{latest.quote}”</blockquote>
+            <div class="mt-auto">
+                <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-rose-300 uppercase">From this Sunday’s message</p>
+                <p class="mt-[0.45rem] mb-6 text-[0.85rem] font-extrabold tracking-[0.12em] text-rose-300">{latest.scripture}</p>
+                <blockquote class="m-0 max-w-180 font-[Georgia,_serif] text-[clamp(2.5rem,5vw,4.1rem)] leading-[1.16] max-[35rem]:text-[2.35rem] max-[35rem]:leading-[1.12]">
+                    “{latest.quote}”
+                </blockquote>
             </div>
         </aside>
 
-        <div class="messages-landing-content">
+        <div class="bg-white p-[clamp(2.5rem,5vw,4.5rem)] max-[35rem]:px-6 max-[35rem]:py-9">
             <header>
-                <p class="messages-kicker">Messages & sermons</p>
-                <h1 id="messages-heading">Hear the word.<br />Live the word.</h1>
-                <p>Recent biblical teaching from Cornerstone Assembly.</p>
+                <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-red-700 uppercase">Messages & sermons</p>
+                <h1 class="mt-[0.6rem] mb-[1.1rem] text-[clamp(3.25rem,6.5vw,5.4rem)] leading-[0.88] font-bold tracking-[-0.05em] text-sky-900 max-[35rem]:text-[3.05rem]" id="messages-heading">
+                    Hear the word.<br />Live the word.
+                </h1>
+                <p class="m-0 text-[1.1rem] text-slate-500">Recent biblical teaching from Cornerstone Assembly.</p>
             </header>
 
-            <article class="messages-featured">
+            <article class="my-[2.4rem] mb-[1.4rem] flex items-center justify-between gap-5 rounded-[0.875rem] bg-sky-900 p-7 text-white max-[35rem]:p-[1.4rem]">
                 <div>
-                    <p class="messages-kicker messages-kicker-light">Featured this week</p>
-                    <h2>{latest.title}</h2>
-                    <p>{latest.speaker} · {latest.duration}</p>
+                    <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-rose-300 uppercase">Featured this week</p>
+                    <h2 class="my-[0.4rem] text-[clamp(2rem,4vw,2.5rem)] leading-none font-bold max-[35rem]:text-[1.85rem]">{latest.title}</h2>
+                    <p class="m-0 text-sky-200">{latest.speaker} · {latest.duration}</p>
                 </div>
 
-                <a class="messages-play" href={`/messages/${latest.slug}`} aria-label={`Open ${latest.title}`}>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+                <a
+                    class="grid size-17 shrink-0 place-items-center rounded-full bg-red-600 text-white no-underline hover:bg-red-700 focus-visible:bg-red-700 max-[35rem]:size-14"
+                    href={`/messages/${latest.slug}`}
+                    aria-label={`Open ${latest.title}`}
+                >
+                    <svg class="w-6 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
                 </a>
             </article>
 
-            <div class="messages-recent-list">
+            <div>
                 {recent.slice(0, 4).map((message) => (
-                    <article>
-                        <time datetime={message.isoDate}>{message.date}</time>
+                    <article class="grid grid-cols-[7rem_minmax(0,1fr)_2.5rem] items-center gap-4 border-t border-slate-300 py-4 max-[35rem]:grid-cols-[minmax(0,1fr)_2.5rem]">
+                        <time class="text-xs text-slate-500 max-[35rem]:col-span-full" datetime={message.isoDate}>{message.date}</time>
                         <div>
-                            <h2>{message.title}</h2>
-                            <p>{message.speaker} · {message.series}</p>
+                            <h2 class="mt-0 mb-1 text-[1.45rem] leading-[1.05] font-bold text-sky-900">{message.title}</h2>
+                            <p class="m-0 text-[0.82rem] text-slate-500">{message.speaker} · {message.series}</p>
                         </div>
-                        <a class="messages-arrow" href={`/messages/${message.slug}`} aria-label={`Open ${message.title}`}>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                        <a
+                            class="grid size-10 shrink-0 place-items-center rounded-full bg-sky-100 text-sky-900 no-underline hover:bg-sky-900 hover:text-white focus-visible:bg-sky-900 focus-visible:text-white"
+                            href={`/messages/${message.slug}`}
+                            aria-label={`Open ${message.title}`}
+                        >
+                            <svg class="w-[1.1rem] fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                         </a>
                     </article>
                 ))}
             </div>
 
-            <div class="messages-archive-cta">
-                <a href="/messages/archive">
+            <div class="flex justify-end pt-6 max-[35rem]:w-full">
+                <a
+                    class="inline-flex items-center gap-[0.55rem] rounded-full border border-slate-300 bg-slate-50 px-[1.1rem] py-3 font-extrabold text-sky-900 no-underline hover:border-sky-200 hover:bg-sky-100 focus-visible:border-sky-200 focus-visible:bg-sky-100 max-[35rem]:w-full max-[35rem]:justify-center"
+                    href="/messages/archive"
+                >
                     View all messages
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                    <svg class="w-[1.1rem] fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </a>
             </div>
         </div>

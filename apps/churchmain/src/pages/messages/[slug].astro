@@ -17,93 +17,100 @@ const transcriptTimes = ["00:00", "08:42", "21:15", "34:08"];
     title={`${message.title} | RCCG Cornerstone Assembly`}
     description={`${message.summary} Watch the message and read the complete transcript.`}
 >
-    <article class="message-detail-page">
-        <nav class="message-detail-breadcrumb" aria-label="Breadcrumb">
-            <a href="/messages/archive">← Back to all messages</a>
+    <article class="mx-auto mt-8 mb-26 max-w-350 overflow-hidden rounded-2xl bg-white shadow-[0_1.5rem_3.75rem_rgb(8_47_73_/_45%)] max-lg:mx-4 max-lg:mt-5 max-lg:mb-18 max-[35rem]:mx-3">
+        <nav class="flex items-center justify-between gap-4 border-b border-slate-200 px-6 py-4 text-xs tracking-[0.12em] text-slate-500 uppercase" aria-label="Breadcrumb">
+            <a class="font-extrabold text-sky-900 no-underline" href="/messages/archive">← Back to all messages</a>
             <span>Watch + transcript</span>
         </nav>
 
-        <section class="message-video-stage" data-video-stage data-youtube-id={message.youtubeId}>
-            <div class="message-video-topline">
+        <section class="relative flex min-h-170 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgb(14_165_233_/_27%),transparent_30%),linear-gradient(145deg,#075985,#082f49)] text-white max-[35rem]:min-h-130" data-video-stage data-youtube-id={message.youtubeId}>
+            <span class="pointer-events-none absolute font-sans text-[38rem] leading-none font-black text-white/5" aria-hidden="true">C</span>
+
+            <div class="absolute top-[2.8rem] right-[3.4rem] left-[3.4rem] z-2 flex justify-between text-[0.65rem] font-extrabold tracking-[0.16em] text-sky-200 uppercase max-[35rem]:top-8 max-[35rem]:right-[1.8rem] max-[35rem]:left-[1.8rem]">
                 <span>Cornerstone messages</span>
                 <span>{message.duration}</span>
             </div>
 
-            <button class="message-video-play" type="button" data-video-play aria-label={`Load video for ${message.title}`}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
-                <span>Watch message</span>
+            <button class="relative z-3 grid size-38 cursor-pointer place-items-center content-center gap-2 rounded-full border border-white/30 bg-red-600 font-extrabold text-white hover:bg-red-700 focus-visible:bg-red-700 max-[35rem]:size-29" type="button" data-video-play aria-label={`Load video for ${message.title}`}>
+                <svg class="w-[2.2rem] fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+                <span class="text-xs">Watch message</span>
             </button>
 
-            <div class="message-video-caption">
-                <p>{message.series}</p>
-                <h1>{message.title}</h1>
+            <div class="absolute right-55 bottom-[2.8rem] left-[3.4rem] z-2 max-[35rem]:right-[1.8rem] max-[35rem]:bottom-8 max-[35rem]:left-[1.8rem]">
+                <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-rose-300 uppercase">{message.series}</p>
+                <h1 class="mt-3 mb-0 text-[clamp(3rem,6vw,5.15rem)] leading-[0.9] font-bold max-[35rem]:text-[2.8rem]">{message.title}</h1>
             </div>
         </section>
 
-        <section class="message-detail-meta" aria-label="Message information">
-            <div>
-                <span>Speaker</span>
-                <b>{message.speaker}</b>
+        <section class="grid grid-cols-[repeat(3,1fr)_1.2fr] bg-white px-[3.4rem] max-lg:grid-cols-2 max-lg:px-0 max-[35rem]:grid-cols-1" aria-label="Message information">
+            <div class="border-r border-slate-200 p-[1.55rem] max-lg:border-b max-[35rem]:border-r-0">
+                <span class="block text-[0.65rem] tracking-[0.14em] text-slate-500 uppercase">Speaker</span>
+                <b class="mt-[0.45rem] block text-sky-900">{message.speaker}</b>
             </div>
-            <div>
-                <span>Published</span>
-                <b>{message.date}</b>
+            <div class="border-r border-slate-200 p-[1.55rem] max-lg:border-r-0 max-lg:border-b">
+                <span class="block text-[0.65rem] tracking-[0.14em] text-slate-500 uppercase">Published</span>
+                <b class="mt-[0.45rem] block text-sky-900">{message.date}</b>
             </div>
-            <div>
-                <span>Primary scripture</span>
-                <b>{message.scripture}</b>
+            <div class="border-r border-slate-200 p-[1.55rem] max-lg:border-b max-[35rem]:border-r-0">
+                <span class="block text-[0.65rem] tracking-[0.14em] text-slate-500 uppercase">Primary scripture</span>
+                <b class="mt-[0.45rem] block text-sky-900">{message.scripture}</b>
             </div>
-            <div class="message-detail-share">
-                <button type="button" data-message-share>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4" /></svg>
+            <div class="flex items-center justify-end p-[1.55rem] max-lg:border-b max-[35rem]:justify-start">
+                <button class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border-0 bg-sky-100 px-[0.9rem] py-[0.7rem] font-extrabold text-sky-900 hover:bg-sky-900 hover:text-white focus-visible:bg-sky-900 focus-visible:text-white" type="button" data-message-share>
+                    <svg class="w-[1.1rem] fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4" /></svg>
                     Share message
                 </button>
             </div>
         </section>
 
-        <div class="message-transcript-layout">
-            <section class="message-transcript" aria-labelledby="transcript-heading">
-                <p class="messages-kicker">Full message transcript</p>
-                <h2 id="transcript-heading">{message.title}</h2>
-                <p class="message-transcript-intro">{message.summary}</p>
+        <div class="grid grid-cols-[minmax(0,1fr)_24.5rem] items-start gap-18 bg-slate-50 px-[clamp(2.5rem,7vw,6.25rem)] py-22 max-lg:grid-cols-1 max-[35rem]:gap-10 max-[35rem]:px-6 max-[35rem]:py-14">
+            <section class="max-w-216" aria-labelledby="transcript-heading">
+                <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-red-700 uppercase">Full message transcript</p>
+                <h2 class="mt-3 mb-[1.4rem] text-[clamp(3rem,6vw,4.9rem)] leading-none font-bold text-sky-900 max-[35rem]:text-[2.9rem]" id="transcript-heading">{message.title}</h2>
+                <p class="m-0 border-b border-slate-300 pb-8 text-[1.3rem] leading-[1.65] font-bold text-sky-900 max-[35rem]:text-[1.12rem]">{message.summary}</p>
 
-                <div class="message-transcript-copy">
+                <div data-transcript-copy>
                     {message.transcript.map((paragraph, index) => (
-                        <div>
-                            <time>{transcriptTimes[index] ?? ""}</time>
-                            <p>{paragraph}</p>
+                        <div class="border-b border-slate-200 py-[1.8rem]">
+                            <time class="mb-[0.7rem] block text-[0.65rem] font-extrabold tracking-[0.14em] text-red-700">{transcriptTimes[index] ?? ""}</time>
+                            <p class="m-0 text-[1.1rem] leading-[1.9] text-slate-600">{paragraph}</p>
                         </div>
                     ))}
                 </div>
             </section>
 
-            <aside class="message-resources">
-                <section class="message-resource-card message-scripture-card">
-                    <p class="messages-kicker messages-kicker-light">Key scriptures</p>
-                    {message.keyScriptures.map((item) => (
-                        <div>
-                            <b>{item.reference}</b>
-                            <span>{item.note}</span>
+            <aside class="sticky top-6 grid gap-[1.1rem] max-lg:static max-lg:grid-cols-2 max-[35rem]:grid-cols-1">
+                <section class="rounded-[0.875rem] bg-sky-950 p-7 text-white shadow-[0_0.875rem_2.25rem_rgb(15_23_42_/_8%)]">
+                    <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-rose-300 uppercase">Key scriptures</p>
+                    {message.keyScriptures.map((item, index) => (
+                        <div class:list={["border-t border-white/15 py-[1.1rem]", { "border-t-0 pt-0": index === 0 }]}>
+                            <b class="block">{item.reference}</b>
+                            <span class="mt-[0.35rem] block text-[0.82rem] text-sky-200">{item.note}</span>
                         </div>
                     ))}
                 </section>
 
-                <section class="message-resource-card message-points-card">
-                    <p class="messages-kicker">Key message points</p>
-                    <ol>
-                        {message.keyPoints.map((point) => <li>{point}</li>)}
+                <section class="rounded-[0.875rem] bg-white p-7 shadow-[0_0.875rem_2.25rem_rgb(15_23_42_/_8%)]">
+                    <p class="m-0 text-[0.7rem] font-extrabold tracking-[0.16em] text-red-700 uppercase">Key message points</p>
+                    <ol class="m-0 list-none p-0">
+                        {message.keyPoints.map((point, index) => (
+                            <li class:list={["grid grid-cols-[2rem_1fr] gap-3 border-t border-slate-200 py-[0.95rem] leading-normal text-slate-600", { "border-t-0 pt-0": index === 0 }]}>
+                                <span class="font-black text-red-600">{String(index + 1).padStart(2, "0")}</span>
+                                <span>{point}</span>
+                            </li>
+                        ))}
                     </ol>
                 </section>
 
-                <button class="message-download" type="button" data-download-transcript data-message-title={message.title}>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>
+                <button class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-[0.8rem] font-extrabold text-sky-900 hover:border-sky-900 hover:bg-sky-900 hover:text-white focus-visible:border-sky-900 focus-visible:bg-sky-900 focus-visible:text-white max-lg:col-span-full max-[35rem]:col-span-1" type="button" data-download-transcript data-message-title={message.title}>
+                    <svg class="w-[1.1rem] fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>
                     Download transcript
                 </button>
             </aside>
         </div>
     </article>
 
-    <p class="message-toast" data-message-toast hidden></p>
+    <p class="fixed right-5 bottom-5 z-50 m-0 hidden rounded-[0.6rem] bg-slate-900 px-[1.1rem] py-[0.8rem] text-white shadow-[0_0.75rem_1.8rem_rgb(0_0_0_/_30%)]" data-message-toast></p>
 
     <script>
         const stage = document.querySelector<HTMLElement>("[data-video-stage]");
@@ -116,7 +123,8 @@ const transcriptTimes = ["00:00", "08:42", "21:15", "34:08"];
             iframe.title = "Message video";
             iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
             iframe.allowFullscreen = true;
-            stage.classList.add("is-playing");
+            iframe.className = "absolute inset-0 z-[5] h-full w-full border-0 bg-black";
+            stage.querySelectorAll<HTMLElement>(":scope > *").forEach((child) => child.classList.add("hidden"));
             stage.append(iframe);
         });
 
@@ -124,8 +132,8 @@ const transcriptTimes = ["00:00", "08:42", "21:15", "34:08"];
         const showToast = (text: string) => {
             if (!toast) return;
             toast.textContent = text;
-            toast.hidden = false;
-            window.setTimeout(() => { toast.hidden = true; }, 2200);
+            toast.classList.remove("hidden");
+            window.setTimeout(() => toast.classList.add("hidden"), 2200);
         };
 
         document.querySelector<HTMLButtonElement>("[data-message-share]")?.addEventListener("click", async () => {
@@ -139,7 +147,7 @@ const transcriptTimes = ["00:00", "08:42", "21:15", "34:08"];
 
         document.querySelector<HTMLButtonElement>("[data-download-transcript]")?.addEventListener("click", (event) => {
             const button = event.currentTarget as HTMLButtonElement;
-            const paragraphs = Array.from(document.querySelectorAll<HTMLElement>(".message-transcript-copy p"));
+            const paragraphs = Array.from(document.querySelectorAll<HTMLElement>("[data-transcript-copy] p"));
             const text = paragraphs.map((paragraph) => paragraph.textContent ?? "").join("\n\n");
             const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
             const url = URL.createObjectURL(blob);
