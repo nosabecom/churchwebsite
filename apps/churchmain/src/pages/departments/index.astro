@@ -1,0 +1,9 @@
+---
+import Layout from "../../layouts/layout.astro";
+import DirectoryPage from "../../components/organizations/directory-page.astro";
+import { departments } from "../../data/organizations";
+---
+
+<Layout>
+    <DirectoryPage kind="department" organizations={departments} />
+</Layout>

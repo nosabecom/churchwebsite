@@ -1,14 +1,131 @@
 ---
 import Layout from "../../layouts/layout.astro";
 import Hero from "../../components/conference/2026/hero.astro";
-import Speakers from "../../components/conference/2026/speakers.astro";
 import Aboutus from "../../components/conference/2026/aboutus.astro";
-import Mailinglist from "../../components/conference/2026/mailinglist.astro"
+import Mailinglist from "../../components/conference/2026/mailinglist.astro";
+import Gallery from "../../components/conference/gallery.astro";
+import Recap from "../../components/conference/recap.astro";
+import Speakers from "../../components/conference/speakers.astro";
+import { speakers } from "../../components/conference/2026/speakers";
+
+const imageRoot = "/images/conference/2026";
+
+const dayOneGallery = [
+    {
+        src: `${imageRoot}/day-one-01.jpg`,
+        alt: "A woman speaking at the lectern during Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-one-02.jpg`,
+        alt: "Women sharing a stage ministration on day one of Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-one-03.jpg`,
+        alt: "Woman Excel attendees seated together around a conference table",
+    },
+    {
+        src: `${imageRoot}/day-one-04.jpg`,
+        alt: "Women enjoying conversation around a decorated table",
+    },
+    {
+        src: `${imageRoot}/day-one-05.jpg`,
+        alt: "The day one gathering seated around tables at Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-one-06.jpg`,
+        alt: "Two keyboardists leading music during Woman Excel 2026",
+    },
+    {
+        src: `${imageRoot}/day-one-07.jpg`,
+        alt: "Women sharing brunch and fellowship on day one",
+    },
+    {
+        src: `${imageRoot}/day-one-08.jpg`,
+        alt: "A panel of women seated together on the Woman Excel stage",
+    },
+];
+
+const dayTwoGallery = [
+    {
+        src: `${imageRoot}/day-two-01.jpg`,
+        alt: "Three women leading worship on stage on day two",
+    },
+    {
+        src: `${imageRoot}/day-two-02.jpg`,
+        alt: "Women dressed in white standing together in worship",
+    },
+    {
+        src: `${imageRoot}/day-two-03.jpg`,
+        alt: "A woman singing among the Woman Excel congregation",
+    },
+    {
+        src: `${imageRoot}/day-two-04.jpg`,
+        alt: "Three singers leading the congregation from the stage",
+    },
+    {
+        src: `${imageRoot}/day-two-05.jpg`,
+        alt: "Men and women praying together during the Sunday service",
+    },
+    {
+        src: `${imageRoot}/day-two-06.jpg`,
+        alt: "The Woman Excel congregation gathered in prayer",
+    },
+    {
+        src: `${imageRoot}/day-two-07.jpg`,
+        alt: "Women standing together during the day two worship service",
+    },
+    {
+        src: `${imageRoot}/day-two-08.jpg`,
+        alt: "Attendees embracing during a prayerful moment",
+    },
+    {
+        src: `${imageRoot}/day-two-09.jpg`,
+        alt: "Women on stage leading the congregation in worship",
+    },
+    {
+        src: `${imageRoot}/day-two-10.jpg`,
+        alt: "Women gathered before the stage during the closing service",
+    },
+];
 ---
 
 <Layout title="2026" variant="conference">
     <Hero />
     <Aboutus />
-    <Speakers />
+    <Speakers speakers={speakers} />
+    <Gallery
+        year="2026"
+        heading="Day One · May 9"
+        sectionId="conference-2026-day-one-gallery"
+        items={dayOneGallery}
+    />
+    <Gallery
+        year="2026"
+        heading="Day Two · May 10"
+        sectionId="conference-2026-day-two-gallery"
+        items={dayTwoGallery}
+    />
+    <Recap
+        year="2026"
+        heading="2026 Recap"
+        paragraphs={["Across two days, Woman Excel 2026 brought women together around the Word for worship, prayer, teaching, fellowship, and meaningful connection."]}
+        media={[
+            {
+                src: `${imageRoot}/day-one-08.jpg`,
+                alt: "The Woman Excel panel seated together on stage",
+                caption: "Rooted in the Word",
+            },
+            {
+                src: `${imageRoot}/day-two-01.jpg`,
+                alt: "Three women leading the Woman Excel congregation in worship",
+                caption: "Worshipping together",
+            },
+            {
+                src: `${imageRoot}/day-two-08.jpg`,
+                alt: "Woman Excel attendees sharing an embrace",
+                caption: "A lasting sisterhood",
+            },
+        ]}
+    />
     <Mailinglist />
 </Layout>

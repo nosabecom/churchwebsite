@@ -2,10 +2,25 @@
 import '../styles/global.css'
 import { Image } from 'astro:assets'
 import Analytics from '@vercel/analytics/astro'
+import { getCollection } from 'astro:content'
 import Logo from '../assets/logo.png'
 import Wordmark from '../assets/cornerstone-logo-horizontal.png'
 
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "RCCG Cornerstone Assembly",
+    description = "RCCG Cornerstone Assembly in Saskatoon, Saskatchewan.",
+} = Astro.props;
+
 const year = new Date().getFullYear();
+const latestNewsletter = (await getCollection("newsletters", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())[0];
+const latestNewsletterHref = latestNewsletter ? `/newsletters/${latestNewsletter.id}/` : "/newsletters";
+const currentPath = Astro.url.pathname;
 
 const services = [
     { title: "Sunday Service", day: "Every Sunday", time: "9:00 AM" },
@@ -17,8 +32,9 @@ const services = [
 const explore = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "#" },
-    { label: "New to Church?", href: "#" },
-    { label: "Events", href: "#" },
+    { label: "New to Church?", href: "/new-to-church" },
+    { label: "Events", href: "/events" },
+    { label: "Newsletters", href: "/newsletters" },
     { label: "Sermons", href: "#" },
     { label: "Contact Us", href: "/contact" },
 ];
@@ -26,32 +42,32 @@ const explore = [
 const getInvolved = [
     { label: "Join the team", href: "/#join" },
     { label: "Send a prayer request", href: "/contact" },
-    { label: "Ministries", href: "#" },
-    { label: "Departments", href: "#" },
+    { label: "Ministries", href: "/ministries" },
+    { label: "Departments", href: "/departments" },
 ];
 
 // One source of truth for the nav, so the desktop bar and the mobile drawer
 // can never drift apart.
 const ministries = [
-    { label: "Men's", href: "#" },
-    { label: "Women's", href: "#" },
-    { label: "Children", href: "#" },
-    { label: "Youths & Teenagers", href: "#" },
+    { label: "Men's", href: "/ministries/men" },
+    { label: "Women's", href: "/ministries/women" },
+    { label: "Children", href: "/ministries/children" },
+    { label: "Youths & Teenagers", href: "/ministries/youths-teenagers" },
 ];
 
 const departments = [
-    { label: "Music", href: "#" },
-    { label: "Prayer", href: "#" },
-    { label: "Bible Study", href: "#" },
-    { label: "Evangelism", href: "#" },
-    { label: "Welfare", href: "#" },
-    { label: "Multimedia", href: "#" },
-    { label: "Sanctuary Helpers", href: "#" },
+    { label: "Music", href: "/departments/music" },
+    { label: "Prayer", href: "/departments/prayer" },
+    { label: "Bible Study", href: "/departments/bible-study" },
+    { label: "Evangelism", href: "/departments/evangelism" },
+    { label: "Welfare", href: "/departments/welfare" },
+    { label: "Multimedia", href: "/departments/multimedia" },
+    { label: "Sanctuary Helpers", href: "/departments/sanctuary-helpers" },
 ];
 
 const primaryLinks = [
-    { label: "New to Church?", href: "#" },
-    { label: "Events", href: "#" },
+    { label: "New to Church?", href: "/new-to-church" },
+    { label: "Events", href: "/events" },
     { label: "Sermons", href: "#" },
     { label: "Contact Us", href: "/contact" },
 ];
@@ -64,7 +80,8 @@ const primaryLinks = [
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
         <link rel="shortcut icon" href={Logo.src} type="image/png">
-		<title>RCCG Cornerstone Assembly</title>
+		<title>{title}</title>
+        <meta name="description" content={description} />
 	</head>
 	<body class="bg-sky-900 min-h-dvh flex flex-col">
         <Analytics />
@@ -72,10 +89,10 @@ const primaryLinks = [
         <!-- The bar shares `px-4` + `mx-auto max-w-400` with every page section,
              so the header, body and footer all sit on one gutter. -->
         <nav class="bg-white px-4 text-lg" aria-label="Main">
-            <div class="mx-auto flex max-w-400 items-center justify-between gap-4 py-2.5">
-                <a class="shrink-0" href="/"><Image class="w-18 h-auto" src={Logo} alt="RCCG Cornerstone Assembly — home" /></a>
+            <div class="mx-auto flex max-w-400 items-center justify-between gap-4 py-2.5 xl:grid xl:grid-cols-[1fr_auto_1fr]">
+                <a class="shrink-0 xl:justify-self-start" href="/"><Image class="w-18 h-auto" src={Logo} alt="RCCG Cornerstone Assembly — home" /></a>
 
-                <ul class="hidden gap-6 lg:flex">
+                <ul class="hidden gap-5 xl:flex xl:items-center xl:justify-self-center">
                     <li><a href="/">Home</a></li>
                     <li class="context-menu-trigger">
                         <button
@@ -90,10 +107,11 @@ const primaryLinks = [
 
                         <ul class="context-menu left-0 top-full z-10">
                             <li><a class="context-menu-item" href="#">About Us</a></li>
+                            <li><a class="context-menu-item" href="/newsletters">Newsletters</a></li>
                             <li class="context-menu-trigger">
-                                <button class="context-menu-item w-full cursor-pointer text-left" type="button" aria-expanded="false" data-menu-trigger>
+                                <a class="context-menu-item w-full cursor-pointer text-left" href="/ministries">
                                     Ministries
-                                </button>
+                                </a>
 
                                 <ul class="context-menu left-full -top-2 z-20">
                                     {ministries.map((item) => (
@@ -102,9 +120,9 @@ const primaryLinks = [
                                 </ul>
                             </li>
                             <li class="context-menu-trigger">
-                                <button class="context-menu-item w-full cursor-pointer text-left" type="button" aria-expanded="false" data-menu-trigger>
+                                <a class="context-menu-item w-full cursor-pointer text-left" href="/departments">
                                     Departments
-                                </button>
+                                </a>
 
                                 <ul class="context-menu left-full -top-2 z-20 grid w-max grid-cols-2 gap-1 space-y-0">
                                     {departments.map((item) => (
@@ -116,15 +134,28 @@ const primaryLinks = [
                     </li>
 
                     {primaryLinks.map((link) => (
-                        <li><a href={link.href}>{link.label}</a></li>
+                        <li>
+                            <a
+                                class:list={{ "font-semibold text-sky-900": currentPath === link.href }}
+                                href={link.href}
+                                aria-current={currentPath === link.href ? "page" : undefined}
+                            >{link.label}</a>
+                        </li>
                     ))}
                 </ul>
 
-                <div class="flex shrink-0 items-center gap-1">
-                    <a class="hidden rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 lg:inline-block" href="#">Give</a>
+                <div class="flex shrink-0 items-center gap-2 xl:justify-self-end">
+                    <a
+                        class="hidden items-center justify-center rounded-lg bg-sky-900 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-sky-950 xl:inline-flex"
+                        href={latestNewsletterHref}
+                    >View latest newsletter</a>
+                    <a
+                        class="hidden items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-red-700 xl:inline-flex"
+                        href="#"
+                    >Give</a>
 
                     <button
-                        class="grid size-11 cursor-pointer place-items-center rounded-lg text-sky-900 hover:bg-slate-100 lg:hidden"
+                        class="grid size-11 cursor-pointer place-items-center rounded-lg text-sky-900 hover:bg-slate-100 xl:hidden"
                         type="button"
                         aria-label="Open menu"
                         aria-expanded="false"
@@ -142,7 +173,7 @@ const primaryLinks = [
         <!-- Off-canvas drawer, mirroring the pattern already proven on the
              Woman Excel site. Fixed and translated off-screen, so it never
              contributes to page width while closed. -->
-        <div class="group lg:hidden" id="mobile-nav" data-nav>
+        <div class="group xl:hidden" id="mobile-nav" data-nav>
             <div
                 class="fixed inset-0 z-30 bg-sky-950/70 opacity-0 pointer-events-none transition-opacity duration-300 group-data-open:opacity-100 group-data-open:pointer-events-auto"
                 data-nav-backdrop
@@ -169,11 +200,13 @@ const primaryLinks = [
 
                             <ul class="list-none space-y-1 p-0 pl-3">
                                 <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="#">About Us</a></li>
+                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/newsletters">Newsletters</a></li>
 
                                 <li>
                                     <details class="drawer-group">
                                         <summary class="drawer-summary">Ministries</summary>
                                         <ul class="list-none space-y-1 p-0 pl-3">
+                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/ministries">All Ministries</a></li>
                                             {ministries.map((item) => (
                                                 <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
                                             ))}
@@ -185,6 +218,7 @@ const primaryLinks = [
                                     <details class="drawer-group">
                                         <summary class="drawer-summary">Departments</summary>
                                         <ul class="list-none space-y-1 p-0 pl-3">
+                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/departments">All Departments</a></li>
                                             {departments.map((item) => (
                                                 <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
                                             ))}
@@ -196,14 +230,29 @@ const primaryLinks = [
                     </li>
 
                     {primaryLinks.map((link) => (
-                        <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={link.href}>{link.label}</a></li>
+                        <li>
+                            <a
+                                class:list={[
+                                    "block rounded-md py-2.5 hover:bg-slate-100",
+                                    { "font-semibold text-sky-900": currentPath === link.href },
+                                ]}
+                                href={link.href}
+                                aria-current={currentPath === link.href ? "page" : undefined}
+                            >{link.label}</a>
+                        </li>
                     ))}
                 </ul>
 
-                <a
-                    class="mt-6 shrink-0 rounded-lg bg-red-600 px-4 py-3 text-center text-lg text-white hover:bg-red-700"
-                    href="#"
-                >Give</a>
+                <div class="mt-6 grid gap-3">
+                    <a
+                        class="shrink-0 rounded-lg bg-sky-900 px-4 py-3 text-center text-base font-semibold text-white hover:bg-sky-950"
+                        href={latestNewsletterHref}
+                    >View latest newsletter</a>
+                    <a
+                        class="shrink-0 rounded-lg bg-red-600 px-4 py-3 text-center text-lg text-white hover:bg-red-700"
+                        href="#"
+                    >Give</a>
+                </div>
             </div>
         </div>
 
@@ -257,7 +306,11 @@ const primaryLinks = [
                         <ul class="mt-5 list-none space-y-1 p-0 text-base text-slate-300">
                             {explore.map((link) => (
                                 <li>
-                                    <a class="block py-2 underline-offset-4 hover:text-white hover:underline" href={link.href}>
+                                    <a
+                                        class="block py-2 underline-offset-4 hover:text-white hover:underline"
+                                        href={link.href}
+                                        aria-current={currentPath === link.href ? "page" : undefined}
+                                    >
                                         {link.label}
                                     </a>
                                 </li>
@@ -279,7 +332,12 @@ const primaryLinks = [
                         </ul>
 
                         <a
-                            class="mt-6 inline-block rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+                            class="mt-6 inline-block rounded-lg bg-sky-900 px-4 py-2 font-semibold text-white ring-1 ring-white/25 hover:bg-sky-800"
+                            href={latestNewsletterHref}
+                        >View latest newsletter</a>
+
+                        <a
+                            class="mt-3 block w-fit rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
                             href="#"
                         >Give</a>
                     </div>
@@ -330,9 +388,9 @@ const primaryLinks = [
                     if (event.key === "Escape") setOpen(false);
                 });
 
-                // The drawer is display:none from lg up; drop the open state too so
+                // The drawer is display:none from xl up; drop the open state too so
                 // the scroll lock cannot outlive the panel.
-                window.matchMedia("(min-width: 64rem)").addEventListener("change", (event) => {
+                window.matchMedia("(min-width: 80rem)").addEventListener("change", (event) => {
                     if (event.matches) setOpen(false);
                 });
             }

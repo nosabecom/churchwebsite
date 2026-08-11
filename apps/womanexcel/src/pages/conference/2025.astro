@@ -1,0 +1,252 @@
+---
+import { Slideshow } from "@churchwebsite/ui";
+import Layout from "../../layouts/layout.astro";
+import Gallery from "../../components/conference/gallery.astro";
+import HeroDetails from "../../components/conference/hero-details.astro";
+import HeroLabels from "../../components/conference/hero-labels.astro";
+import Recap from "../../components/conference/recap.astro";
+import Schedule from "../../components/conference/schedule.astro";
+import Speakers from "../../components/conference/speakers.astro";
+import { speakers } from "../../components/conference/2025/speakers";
+
+const imageRoot = "/images/conference/2025";
+
+const heroSlides = [
+    {
+        src: `${imageRoot}/gallery-24.jpg`,
+        alt: "Women gathered on stage at the 2025 Woman Excel Conference",
+    },
+    {
+        src: `${imageRoot}/gallery-20.jpg`,
+        alt: "The Woman Excel 2025 team gathered around a conference table",
+    },
+    {
+        src: `${imageRoot}/gallery-16.jpg`,
+        alt: "Two women together at the 2025 Woman Excel Conference",
+    },
+    {
+        src: `${imageRoot}/gallery-11.jpg`,
+        alt: "Two attendees smiling together at Woman Excel 2025",
+    },
+];
+
+const schedule = [
+    {
+        day: "Saturday · May 17",
+        time: "9:00 AM–3:00 PM",
+        title: "Worship",
+        description: "Opening prayer, a royal welcome, heartfelt praise, and worship.",
+    },
+    {
+        day: "Saturday · May 17",
+        title: "Altar of Travail",
+        description: "Prayer for spiritual growth, family life, health, career, and business.",
+    },
+    {
+        day: "Saturday · May 17",
+        title: "Brunch & Networking",
+        description: "The convener’s message, buffet, and time to connect.",
+    },
+    {
+        day: "Saturday · May 17",
+        title: "Breakout Sessions",
+        description: "Morit Music, 21st-century Christian parenting, and the finance session “Treasure or Pleasure.”",
+    },
+    {
+        day: "Sunday · May 18",
+        time: "9:00–11:30 AM",
+        title: "Praise, Worship & Prayer",
+        description: "Thanksgiving, praise, and a dedicated prayer session.",
+    },
+    {
+        day: "Sunday · May 18",
+        title: "Special Ministrations",
+        description: "A playlet from the CEW Drama Group and music from the CEW Mass Choir.",
+    },
+    {
+        day: "Sunday · May 18",
+        title: "Excel in Everything",
+        description: "Word ministration by Pastor Ngozi Elendu, grounded in the 2025 conference theme.",
+    },
+    {
+        day: "Sunday · May 18",
+        title: "Closing",
+        description: "Vote of thanks, offering, special announcement, thanksgiving, and benediction.",
+    },
+];
+
+const galleryAlts = [
+    "Women praying together around a table at Woman Excel 2025",
+    "Two women sharing a prayerful moment at Woman Excel 2025",
+    "A group of women worshipping together at Woman Excel 2025",
+    "Two attendees singing together during Woman Excel 2025",
+    "Women standing together in prayer at Woman Excel 2025",
+    "Two women connecting during the 2025 conference",
+    "An attendee in a purple Excel sweatshirt during the conference",
+    "Women praying together during the 2025 gathering",
+    "Two women greeting one another at Woman Excel 2025",
+    "Women gathered around a conference table",
+    "Two attendees smiling together at Woman Excel 2025",
+    "Women holding hands in prayer during the conference",
+    "A group of attendees praying together at Woman Excel 2025",
+    "Two women holding hands during a prayer session",
+    "An attendee listening during the Woman Excel gathering",
+    "Two women together on the conference stage",
+    "A conference attendee seated at a decorated table",
+    "Women standing together for prayer at Woman Excel 2025",
+    "Women worshipping together during a conference session",
+    "The Woman Excel team gathered around a conference table",
+    "The Woman Excel team posing together after a session",
+    "Women praying and recording a moment from Woman Excel 2025",
+    "Women connecting in prayer during the conference",
+    "The full Woman Excel 2025 gathering on stage",
+    "A woman leading prayer during Woman Excel 2025",
+    "Two women standing together during a conference session",
+    "Two attendees holding hands in prayer",
+    "Women sharing a prayerful moment at Woman Excel 2025",
+    "Two women praying together during the gathering",
+    "A group of women worshipping during Woman Excel 2025",
+];
+
+const gallery = galleryAlts.map((alt, index) => ({
+    src: `${imageRoot}/gallery-${String(index + 1).padStart(2, "0")}.jpg`,
+    alt,
+}));
+---
+
+<Layout title="2025: Excel" variant="conference" bodyClass="conference-2025-shell">
+    <div class="conference-2025">
+        <Slideshow
+            slides={heroSlides}
+            label="Woman Excel 2025 conference highlights"
+            class="woman-excel-slideshow mx-4 mb-20 mt-6 max-w-400 rounded-3xl 2xl:mx-auto"
+        >
+            <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
+
+            <div class="relative z-10 flex min-h-[34rem] flex-col items-center justify-center gap-4 px-5 py-16 text-center text-white md:min-h-[43rem] md:gap-6">
+                <HeroLabels year="2025" />
+                <h1 class="flex w-full justify-center">
+                    <img
+                        class="w-[85%] max-w-3xl drop-shadow-xl"
+                        src={`${imageRoot}/excel-theme.png`}
+                        alt="Excel"
+                    />
+                </h1>
+                <HeroDetails
+                    quote={{
+                        text: "Therefore, as ye abound in every thing, in faith, and utterance, and knowledge, and in all diligence, and in your love to us, see that ye abound in this grace also.",
+                        citation: "2 Corinthians 8:7",
+                    }}
+                    date="May 17–18, 2025"
+                    address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
+                />
+            </div>
+        </Slideshow>
+
+        <section class="relative px-4 pb-20 md:px-8" aria-labelledby="conference-2025-intro">
+            <div class="absolute inset-x-0 top-1/2 h-72 -translate-y-1/2 bg-[#ef2a88]/55 blur-3xl"></div>
+            <div class="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-3xl bg-[#4b086a] text-white shadow-2xl lg:grid-cols-[minmax(18rem,0.8fr)_1.2fr]">
+                <img
+                    class="h-full max-h-[50rem] w-full object-cover object-top"
+                    src={`${imageRoot}/poster.jpg`}
+                    alt="Woman Excel Conference 2025 poster for the theme Excel"
+                />
+                <div class="flex flex-col justify-center gap-5 p-7 md:p-12">
+                    <p class="font-sans text-sm uppercase tracking-[0.28em] text-[#ff9aa7]">May 17–18, 2025</p>
+                    <h2 id="conference-2025-intro" class="text-4xl md:text-6xl">A weekend to Excel</h2>
+                    <p class="text-lg text-white/90 md:text-xl">
+                        Woman Excel 2025 brought women together for worship, prayer, practical teaching, brunch, and meaningful connection under the theme “Excel.”
+                    </p>
+                    <p class="text-lg text-white/90 md:text-xl">
+                        The two-day gathering explored spiritual growth, family life, wellness, parenting, finance, career, and business before closing with a special Sunday service.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <Schedule year="2025" items={schedule} />
+
+        <section class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8 md:py-24" aria-labelledby="conference-2025-original-programme">
+            <div class="mb-8 text-center">
+                <p class="font-sans text-sm uppercase tracking-[0.25em] text-[#6b167f]">From the archive</p>
+                <h2 id="conference-2025-original-programme" class="mt-2 text-4xl text-[#30004f] md:text-6xl">Original Programme</h2>
+            </div>
+            <div class="grid items-start gap-6 md:grid-cols-2">
+                <figure class="overflow-hidden rounded-3xl bg-[#4b086a] p-3 shadow-xl">
+                    <img class="w-full rounded-2xl" src={`${imageRoot}/agenda-saturday.jpg`} alt="Saturday May 17 Woman Excel 2025 programme" loading="lazy" decoding="async" />
+                    <figcaption class="px-3 py-4 text-center text-xl text-white">Saturday · May 17</figcaption>
+                </figure>
+                <figure class="overflow-hidden rounded-3xl bg-[#4b086a] p-3 shadow-xl">
+                    <img class="w-full rounded-2xl" src={`${imageRoot}/agenda-sunday.jpg`} alt="Sunday May 18 Woman Excel 2025 programme" loading="lazy" decoding="async" />
+                    <figcaption class="px-3 py-4 text-center text-xl text-white">Sunday · May 18</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <Speakers speakers={speakers} />
+
+        <Gallery year="2025" heading="Conference Gallery" items={gallery} />
+
+        <Recap
+            year="2025"
+            heading="Excel 2025 Recap"
+            paragraphs={[
+                "Across two days, Woman Excel moved from prayer and practical conversations into worship, special ministrations, and a closing word on excelling in everything.",
+                "These moments preserve the fellowship, faith, and connection shared throughout the weekend.",
+            ]}
+            media={[
+                {
+                    src: `${imageRoot}/gallery-24.jpg`,
+                    alt: "The full Woman Excel 2025 gathering on stage",
+                    caption: "Together at Woman Excel 2025",
+                },
+                {
+                    src: `${imageRoot}/gallery-20.jpg`,
+                    alt: "The Woman Excel team gathered around a conference table",
+                    caption: "Serving together",
+                },
+                {
+                    src: `${imageRoot}/gallery-16.jpg`,
+                    alt: "Two women together on the Woman Excel stage",
+                    caption: "A weekend to Excel",
+                },
+            ]}
+        />
+    </div>
+</Layout>
+
+<style is:global>
+    .conference-2025-shell,
+    .conference-2025-shell > nav {
+        background: #fff2f0;
+    }
+
+    .conference-2025 {
+        --we25-violet: #30004f;
+        --we25-plum: #4b086a;
+        --we25-pink: #e51482;
+        background: linear-gradient(145deg, #fff2f0 0%, #f7d9ee 38%, #eee1ff 72%, #fff7f3 100%);
+    }
+
+    .conference-2025 .bg-navy,
+    .conference-2025 .speaker-nametag {
+        background-color: var(--we25-violet);
+    }
+
+    .conference-2025 .bg-berry {
+        background-color: var(--we25-plum);
+    }
+
+    .conference-2025 .bg-pink {
+        background-color: var(--we25-pink);
+    }
+
+    .conference-2025 .text-navy {
+        color: var(--we25-violet);
+    }
+
+    .conference-2025 .woman-excel-slideshow {
+        --slideshow-control-bg: rgb(48 0 79 / 70%);
+        --slideshow-control-bg-hover: rgb(48 0 79 / 95%);
+    }
+</style>

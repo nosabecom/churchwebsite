@@ -11,9 +11,10 @@ interface Props {
 	/** "fellowship" is the Cornerstone Excellent Women shell used across the
 	    site; "conference" keeps the Woman Excel identity for /conference/*. */
 	variant?: "fellowship" | "conference";
+	bodyClass?: string;
 }
 
-const { title, variant = "fellowship" } = Astro.props as Props;
+const { title, variant = "fellowship", bodyClass } = Astro.props as Props;
 const isConference = variant === "conference";
 
 const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
@@ -21,6 +22,7 @@ const favicon = isConference ? ConferenceMark : FellowshipLogo;
 
 const navLinks = [
 	{ href: "/", label: "Home" },
+	{ href: "/newsletters", label: "Newsletters" },
 	{ href: "/conference", label: "Conference" },
 	{ href: "/contact", label: "Contact Us" },
 ];
@@ -63,10 +65,10 @@ const footerTheme = isConference
 		<title>{title} | {siteName}</title>
 	</head>
 
-	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream"]}>
+	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream", bodyClass]}>
 		<Analytics/>
 
-		<nav class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
+		<nav aria-label="Primary" class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
 			<a href="/" class="shrink-0 flex items-center gap-3">
 				{isConference
 					? <Image src={ConferenceLogo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/>
@@ -92,7 +94,10 @@ const footerTheme = isConference
 					data-sidebar-backdrop
 				></div>
 
-				<div class:list={[
+				<div
+					id="primary-menu-panel"
+					data-sidebar-panel
+					class:list={[
 					"max-xs:fixed max-xs:top-0 max-xs:right-0 max-xs:z-40 max-xs:h-dvh max-xs:w-60 max-xs:flex max-xs:flex-col max-xs:p-6 max-xs:translate-x-full max-xs:group-data-open:translate-x-0 max-xs:transition-transform max-xs:duration-300 max-xs:ease-in-out",
 					isConference ? "max-xs:bg-navy" : "max-xs:bg-charcoal",
 				]}>
@@ -121,6 +126,7 @@ const footerTheme = isConference
 				type="button"
 				aria-label="Open menu"
 				aria-expanded="false"
+				aria-controls="primary-menu-panel"
 				data-sidebar-open
 				class:list={["xs:hidden cursor-pointer p-1", isConference ? "text-navy" : "text-charcoal"]}
 			>
@@ -178,28 +184,63 @@ const footerTheme = isConference
 
 		<script>
 			const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
-			const openBtn = document.querySelector<HTMLElement>("[data-sidebar-open]");
-			if (sidebar && openBtn) {
-				const setOpen = (open: boolean) => {
-					sidebar.toggleAttribute("data-open", open);
-					openBtn.setAttribute("aria-expanded", String(open));
-					document.body.classList.toggle("overflow-hidden", open);
+			const openBtn = document.querySelector<HTMLButtonElement>("[data-sidebar-open]");
+			const panel = sidebar?.querySelector<HTMLElement>("[data-sidebar-panel]");
+			const closeBtn = sidebar?.querySelector<HTMLButtonElement>("[data-sidebar-close]");
+			if (sidebar && openBtn && panel && closeBtn) {
+				const mobileMenu = window.matchMedia("(max-width: 449px)");
+				const setOpen = (open: boolean, restoreFocus = true) => {
+					const shouldOpen = mobileMenu.matches && open;
+					sidebar.toggleAttribute("data-open", shouldOpen);
+					openBtn.setAttribute("aria-expanded", String(shouldOpen));
+					panel.toggleAttribute("inert", mobileMenu.matches && !shouldOpen);
+					if (mobileMenu.matches && !shouldOpen) panel.setAttribute("aria-hidden", "true");
+					else panel.removeAttribute("aria-hidden");
+					document.body.classList.toggle("overflow-hidden", shouldOpen);
+
+					if (shouldOpen) closeBtn.focus();
+					else if (restoreFocus && mobileMenu.matches) openBtn.focus();
 				};
 
 				openBtn.addEventListener("click", () => setOpen(true));
 				sidebar.querySelectorAll("[data-sidebar-close], [data-sidebar-backdrop], a").forEach((el) => {
 					el.addEventListener("click", () => setOpen(false));
 				});
-				document.addEventListener("keydown", (e) => {
-					if (e.key === "Escape") setOpen(false);
+				document.addEventListener("keydown", (event) => {
+					if (!mobileMenu.matches || !sidebar.hasAttribute("data-open")) return;
+
+					if (event.key === "Escape") {
+						event.preventDefault();
+						setOpen(false);
+						return;
+					}
+
+					if (event.key !== "Tab") return;
+					const focusable = Array.from(panel.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"))
+						.filter((element) => element.offsetParent !== null);
+					const first = focusable[0];
+					const last = focusable.at(-1);
+					if (!first || !last) return;
+
+					if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+						event.preventDefault();
+						last.focus();
+					} else if (!event.shiftKey && document.activeElement === last) {
+						event.preventDefault();
+						first.focus();
+					}
 				});
 
 				// The sidebar is display:none above the xs breakpoint; drop the open
 				// state too so the scroll lock doesn't outlive it.
-				window.matchMedia("(min-width: 450px)").addEventListener("change", (e) => {
-					if (e.matches) setOpen(false);
-				});
+				mobileMenu.addEventListener("change", () => setOpen(false, false));
+				setOpen(false, false);
 			}
+
+			document.querySelectorAll<HTMLImageElement>("[data-image-with-fallback]").forEach((image) => {
+				if (image.complete && image.naturalWidth === 0) image.remove();
+				else image.addEventListener("error", () => image.remove());
+			});
 		</script>
 	</body>
 </html>

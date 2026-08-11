@@ -1,0 +1,262 @@
+---
+import { Slideshow } from "@churchwebsite/ui";
+import Layout from "../../layouts/layout.astro";
+import Gallery from "../../components/conference/gallery.astro";
+import HeroDetails from "../../components/conference/hero-details.astro";
+import HeroLabels from "../../components/conference/hero-labels.astro";
+import Recap from "../../components/conference/recap.astro";
+import Registration from "../../components/conference/registration.astro";
+import Schedule from "../../components/conference/schedule.astro";
+import Speakers from "../../components/conference/speakers.astro";
+import { speakers as conference2026Speakers } from "../../components/conference/2026/speakers";
+
+export interface ImageDetails {
+    src: string;
+    alt: string;
+}
+
+export interface LinkDetails {
+    href: string;
+    label: string;
+}
+
+export interface ScheduleItem {
+    day: string;
+    time?: string;
+    title: string;
+    description?: string;
+}
+
+export interface Guest {
+    name: string;
+    role?: string;
+    image: ImageDetails;
+}
+
+export interface GalleryItem extends ImageDetails {
+    caption?: string;
+    href?: string;
+}
+
+export interface Props {
+    year: string | number;
+    theme: {
+        name: string;
+        artwork?: ImageDetails;
+        scripture?: {
+            quote: string;
+            citation: string;
+        };
+    };
+    heroSlides: ImageDetails[];
+    eventDetails: {
+        date: string;
+        address: string;
+    };
+    introduction: {
+        heading?: string;
+        paragraphs: string[];
+        image?: ImageDetails;
+    };
+    schedule?: ScheduleItem[];
+    guests?: Guest[];
+    registration?: LinkDetails;
+    donation?: LinkDetails;
+    gallery?: {
+        heading?: string;
+        items: GalleryItem[];
+    };
+    recap?: {
+        heading?: string;
+        paragraphs: string[];
+        media?: GalleryItem[];
+        cta?: LinkDetails;
+    };
+}
+
+/**
+ * Reusable Woman Excel conference-year page shell.
+ *
+ * Visiting /conference/template renders this 2026-based sample so the shell
+ * can be reviewed directly. Conference year pages can also import this file
+ * and pass their own content through Props. Keep this review route out of all
+ * site navigation and conference archive links.
+ */
+const previewProps: Props = {
+    year: "2026",
+    theme: {
+        name: "The Word",
+        artwork: { src: "/images/the-word.svg", alt: "The Word" },
+        scripture: {
+            quote: "In the beginning was the Word, and the Word was with God, and the Word was God",
+            citation: "John 1:1",
+        },
+    },
+    heroSlides: [1, 2, 3, 4].map((number) => ({
+        src: `/images/placeholds/photo-${number}.jpg`,
+        alt: `Woman Excel conference highlight ${number}`,
+    })),
+    eventDetails: {
+        date: "Date to be announced",
+        address: "RCCG Cornerstone Assembly · 70-3904 Millar Avenue",
+    },
+    introduction: {
+        heading: "Who are we?",
+        paragraphs: [
+            "The Woman Excel Conference is a gathering of women who refuse to settle for ordinary. Born from the conviction that every woman carries God-given purpose, it calls that purpose out of her.",
+            "Come expectant for powerful teaching, Spirit-led worship, and a sisterhood that cheers you on long after the final session.",
+        ],
+        image: { src: "/images/logo-full.png", alt: "Woman Excel Conference" },
+    },
+    schedule: [
+        {
+            day: "Friday",
+            time: "Evening",
+            title: "Opening Night",
+            description: "Welcome, worship, and an opening message rooted in the Word.",
+        },
+        {
+            day: "Saturday",
+            time: "Morning",
+            title: "Conference Day",
+            description: "Teaching sessions, conversation, prayer, and fellowship.",
+        },
+    ],
+    guests: conference2026Speakers,
+    registration: { href: "#registration", label: "Register now" },
+    donation: { href: "#donation", label: "Support the conference" },
+    gallery: {
+        heading: "Gallery & Media",
+        items: [
+            {
+                src: "/images/placeholds/photo-5.jpg",
+                alt: "Conference guests sharing a joyful moment",
+                caption: "Growing together",
+            },
+            {
+                src: "/images/placeholds/photo-6.jpg",
+                alt: "Women gathered during a conference session",
+                caption: "Rooted in the Word",
+            },
+            {
+                src: "/images/placeholds/photo-7.jpg",
+                alt: "Woman Excel worship gathering",
+                caption: "Worshipping together",
+            },
+        ],
+    },
+    recap: {
+        heading: "2026 Recap",
+        paragraphs: [
+            "Revisit the teaching, worship, and moments of connection that made this gathering unforgettable.",
+        ],
+        media: [
+            {
+                src: "/images/placeholds/photo-8.jpg",
+                alt: "Highlights from Woman Excel 2026",
+                caption: "Conference highlights",
+            },
+            {
+                src: "/images/placeholds/photo-9.jpg",
+                alt: "Women connecting at Woman Excel 2026",
+                caption: "A lasting sisterhood",
+            },
+        ],
+        cta: { href: "#recap", label: "Watch the recap" },
+    },
+};
+
+const props = Object.keys(Astro.props).length > 0 ? Astro.props as Props : previewProps;
+
+const {
+    year,
+    theme,
+    heroSlides,
+    eventDetails,
+    introduction,
+    schedule = [],
+    guests = [],
+    registration,
+    donation,
+    gallery,
+    recap,
+} = props;
+
+const pageTitle = `${year}: ${theme.name}`;
+const introductionHeading = introduction.heading ?? "Who are we?";
+---
+
+<Layout title={pageTitle} variant="conference">
+    <Slideshow
+        slides={heroSlides}
+        label={`Woman Excel ${year} conference highlights`}
+        class="woman-excel-slideshow mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl"
+    >
+        <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
+
+        <div class="relative z-10 flex flex-col items-center gap-5 px-4 pb-20 pt-10 md:gap-6">
+            <HeroLabels year={year} />
+
+            {theme.artwork ? (
+                <img
+                    class="w-[85%] max-w-350"
+                    src={theme.artwork.src}
+                    alt={theme.artwork.alt}
+                />
+            ) : (
+                <h1 class="max-w-5xl text-center text-5xl leading-tight text-white drop-shadow-lg md:text-8xl">
+                    {theme.name}
+                </h1>
+            )}
+
+            <HeroDetails
+                quote={theme.scripture && {
+                    text: theme.scripture.quote,
+                    citation: theme.scripture.citation,
+                }}
+                date={eventDetails.date}
+                address={eventDetails.address}
+            />
+        </div>
+    </Slideshow>
+
+    <section class="relative flex items-center justify-center px-4 pb-20 md:px-8" aria-labelledby={`conference-${year}-intro`}>
+        <div class="absolute inset-x-0 top-1/2 h-70 -translate-y-1/2 bg-pink blur-3xl"></div>
+        <div class="relative mx-auto flex w-full max-w-312 flex-col items-center gap-6 rounded-2xl bg-berry p-4 md:p-6 lg:flex-row lg:gap-12">
+            {introduction.image && (
+                <img
+                    class="w-full max-w-xl lg:w-1/2"
+                    src={introduction.image.src}
+                    alt={introduction.image.alt}
+                />
+            )}
+
+            <div class:list={["flex w-full flex-col items-center text-white", introduction.image && "lg:w-1/2"]}>
+                <h2 id={`conference-${year}-intro`} class="mb-3 rounded-xl bg-navy px-5.5 py-3 text-3xl md:text-5xl">
+                    {introductionHeading}
+                </h2>
+                {introduction.paragraphs.map((paragraph) => (
+                    <p class="mb-2 text-lg last:mb-0 md:text-2xl">{paragraph}</p>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <Schedule year={year} items={schedule} />
+
+    <Speakers speakers={guests} />
+
+    <Registration year={year} registration={registration} donation={donation} />
+
+    {gallery && <Gallery year={year} heading={gallery.heading} items={gallery.items} />}
+
+    {recap && (
+        <Recap
+            year={year}
+            heading={recap.heading}
+            paragraphs={recap.paragraphs}
+            media={recap.media}
+            cta={recap.cta}
+        />
+    )}
+</Layout>

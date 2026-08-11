@@ -1,0 +1,64 @@
+---
+import Icon from "./icon.astro";
+import type { Organization, OrganizationKind } from "../../data/organizations";
+
+interface Props {
+    kind: OrganizationKind;
+    organizations: Organization[];
+}
+
+const { kind, organizations } = Astro.props;
+const isMinistry = kind === "ministry";
+const title = isMinistry ? "Our ministries" : "Our departments";
+const kicker = isMinistry ? "There is a place for you" : "Serving the house together";
+const basePath = isMinistry ? "/ministries" : "/departments";
+---
+
+<section class="bg-slate-100 px-4 py-16 sm:py-20" aria-labelledby="directory-heading">
+    <div class="mx-auto max-w-400">
+        <div class="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+            <div>
+                <p class="text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">{kicker}</p>
+                <h1 class="mt-4 text-4xl leading-tight font-extrabold tracking-tight text-sky-900 sm:text-5xl lg:text-6xl" id="directory-heading">
+                    {title}
+                </h1>
+                <p class="mt-5 max-w-2xl text-lg leading-relaxed text-slate-700">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet etiam ultricies nisi vel augue.
+                </p>
+            </div>
+
+        </div>
+
+        <ul class="mt-12 grid list-none gap-5 p-0 sm:grid-cols-2 xl:grid-cols-4">
+            {organizations.map((organization, index) => (
+                <li>
+                    <a
+                        class="group flex min-h-72 flex-col rounded-t-[4.5rem] rounded-b-2xl bg-slate-50 p-7 text-center shadow-xl shadow-sky-950/15 transition duration-200 hover:-translate-y-1 hover:shadow-2xl hover:shadow-sky-950/25 focus-visible:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600 motion-reduce:transition-none"
+                        href={`${basePath}/${organization.slug}`}
+                    >
+                        <span
+                            class:list={[
+                                "mx-auto grid size-20 shrink-0 place-items-center rounded-full text-white",
+                                index % 4 === 0 && "bg-sky-900",
+                                index % 4 === 1 && "bg-sky-700",
+                                index % 4 === 2 && "bg-sky-800",
+                                index % 4 === 3 && "bg-slate-700",
+                            ]}
+                            aria-hidden="true"
+                        >
+                            <Icon name={organization.icon} class="size-9" />
+                        </span>
+
+                        <h2 class="mt-7 text-xl leading-snug font-extrabold text-sky-900">{organization.name}</h2>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">{organization.summary}</p>
+
+                        <span class="mt-auto inline-flex items-center justify-center gap-2 pt-6 text-sm font-bold text-sky-900">
+                            Explore
+                            <span class="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" aria-hidden="true">→</span>
+                        </span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
