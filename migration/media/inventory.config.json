@@ -47,7 +47,7 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "rendered PNG only; design source unconfirmed",
       "qualityIssues": [],
       "notes": "Build-time brand asset; do not move blindly into Sanity."
@@ -63,7 +63,7 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "rendered PNG only; vector source unconfirmed",
       "qualityIssues": ["large raster logo; optimize or replace with an approved vector original if available"],
       "notes": "Used as the site mark and favicon."
@@ -113,7 +113,7 @@
       "altTextStatus": "missing",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "flattened JPEG only; editable design source missing",
       "qualityIssues": ["missing alt text", "important event details exist only inside the image", "permission and credit unconfirmed"],
       "notes": "Real 2026 event poster, not placeholder photography."
@@ -129,7 +129,7 @@
       "altTextStatus": "present on homepage; empty on conference about section",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "rendered PNG; editable design source unconfirmed",
       "qualityIssues": [],
       "notes": "The empty conference-page alt can be valid if the nearby heading conveys the same identity."
@@ -145,7 +145,7 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "transparent cutout only; original photograph missing",
       "qualityIssues": ["oversized 16-bit PNG", "permission and credit unconfirmed"],
       "notes": "Real conference speaker image."
