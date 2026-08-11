@@ -264,9 +264,9 @@
     },
     "apps/womanexcel/public/images/the-word.svg": {
       "site": "womanexcel",
-      "classification": "repository/build asset",
-      "disposition": "keep in Git",
-      "destination": "apps/womanexcel/public/images",
+      "classification": "editorial image",
+      "disposition": "move to Sanity",
+      "destination": "Sanity conference themeArtwork image field",
       "owner": "womanExcel.conference.2026.theme",
       "usageFiles": ["apps/womanexcel/src/components/conference/2026/hero.astro"],
       "altText": "The Word",
@@ -276,7 +276,7 @@
       "usageApproval": "approved",
       "originalStatus": "vector artwork present",
       "qualityIssues": [],
-      "notes": "2026 theme artwork; keep with the versioned site design."
+      "notes": "Approved conference-specific hero theme artwork; migrate to the 2026 conference themeArtwork field."
     },
     "apps/womanexcel/src/assets/excellent-women-logo.jpg": {
       "site": "womanexcel",
@@ -521,9 +521,9 @@
     },
     "apps/womanexcel/public/images/conference/2025/excel-theme.png": {
       "site": "womanexcel",
-      "classification": "repository/build asset",
-      "disposition": "keep in Git",
-      "destination": "apps/womanexcel/public/images/conference/2025",
+      "classification": "editorial image",
+      "disposition": "move to Sanity",
+      "destination": "Sanity conference themeArtwork image field",
       "owner": "womanExcel.conference.2025.theme",
       "usageFiles": ["apps/womanexcel/src/pages/conference/2025.astro"],
       "altText": "Excel",
@@ -533,7 +533,7 @@
       "usageApproval": "approved",
       "originalStatus": "rendered transparent PNG; editable design source unconfirmed",
       "qualityIssues": [],
-      "notes": "2025 theme artwork; keep with the versioned site design."
+      "notes": "Approved conference-specific hero theme artwork; migrate to the 2025 conference themeArtwork field."
     },
     "apps/womanexcel/public/images/conference/2025/poster.jpg": {
       "site": "womanexcel",
