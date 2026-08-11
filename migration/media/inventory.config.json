@@ -297,35 +297,35 @@
     "apps/womanexcel/src/assets/logo.png": {
       "site": "womanexcel",
       "classification": "logo/brand asset",
-      "disposition": "keep in Git",
-      "destination": "apps/womanexcel/src/assets",
+      "disposition": "replace",
+      "destination": "Approved white Woman Excel logo in apps/womanexcel/src/assets",
       "owner": "womanExcel.conference.brand",
       "usageFiles": ["apps/womanexcel/src/layouts/layout.astro"],
       "altText": null,
       "altTextStatus": "decorative favicon",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "rendered PNG; related vector exists",
       "possibleDuplicateOf": "apps/womanexcel/src/assets/logo.svg",
-      "qualityIssues": ["semantic duplicate/variant of the conference logo SVG"],
-      "notes": "Used as the conference favicon."
+      "qualityIssues": ["semantic duplicate/variant of the conference logo SVG", "replacement requested: change to the white logo version"],
+      "notes": "Approved for current use as the conference favicon; replace with the white Woman Excel logo version when supplied."
     },
     "apps/womanexcel/src/assets/logo.svg": {
       "site": "womanexcel",
       "classification": "logo/brand asset",
-      "disposition": "keep in Git",
-      "destination": "apps/womanexcel/src/assets",
+      "disposition": "replace",
+      "destination": "Approved white Woman Excel logo in apps/womanexcel/src/assets",
       "owner": "womanExcel.conference.brand",
       "usageFiles": ["apps/womanexcel/src/layouts/layout.astro"],
       "altText": null,
       "altTextStatus": "decorative; adjacent site identity supplies the name",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "SVG present",
-      "qualityIssues": ["1.2 MB SVG is unusually large and should be optimized"],
-      "notes": "Build-time conference wordmark."
+      "qualityIssues": ["replacement requested: change to the white logo version", "1.2 MB SVG is unusually large and should be optimized if retained"],
+      "notes": "Approved for current use as the build-time conference wordmark; replace with the white Woman Excel logo version when supplied."
     },
     "apps/womanexcel/public/images/placeholds/photo-1.jpg": {
       "site": "womanexcel",
@@ -338,10 +338,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-2.jpg": {
       "site": "womanexcel",
@@ -354,10 +354,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-3.jpg": {
       "site": "womanexcel",
@@ -370,10 +370,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-4.jpg": {
       "site": "womanexcel",
@@ -386,10 +386,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-5.jpg": {
       "site": "womanexcel",
@@ -402,10 +402,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-6.jpg": {
       "site": "womanexcel",
@@ -418,10 +418,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-7.jpg": {
       "site": "womanexcel",
@@ -434,10 +434,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-8.jpg": {
       "site": "womanexcel",
@@ -450,10 +450,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-9.jpg": {
       "site": "womanexcel",
@@ -466,10 +466,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/placeholds/photo-10.jpg": {
       "site": "womanexcel",
@@ -482,10 +482,10 @@
       "altTextStatus": "present but inaccurate for stock image",
       "caption": null,
       "credit": null,
-      "usageApproval": "not approved for production",
+      "usageApproval": "development-only",
       "originalStatus": "missing; placeholder only",
       "qualityIssues": ["placeholder", "not a real Woman Excel image"],
-      "notes": "Conference sites must use only real supplied images."
+      "notes": "Development-only placeholder; conference sites must use only real supplied images in production."
     },
     "apps/womanexcel/public/images/conference/2025/agenda-saturday.jpg": {
       "site": "womanexcel",
@@ -530,7 +530,7 @@
       "altTextStatus": "present",
       "caption": null,
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "rendered transparent PNG; editable design source unconfirmed",
       "qualityIssues": [],
       "notes": "2025 theme artwork; keep with the versioned site design."
