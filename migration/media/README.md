@@ -17,4 +17,6 @@ Generated, reviewable outputs are committed under `reports/`:
 
 The audit intentionally fails when it finds an unclassified media file or a stale configured path. Add an explicit record with ownership, accessibility, approval, original-file status, and disposition before accepting a new asset.
 
+Large related sets such as conference galleries can use `assetGroups`: shared defaults describe the set while every item still supplies its own filename and alt text, and the generated CSV still contains one complete row per file.
+
 No command in this directory uploads to Sanity or publishes to YouTube. Those writes belong to the downstream migration issues after the inventory is reviewed and the target dataset is confirmed.
