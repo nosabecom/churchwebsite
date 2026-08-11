@@ -15,7 +15,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 ## Requirements
 
-- Node.js `>=22.12.0`
+- Node.js `>=22.13.0`
 - pnpm `11.9.0` or compatible with the lockfile
 
 If pnpm is not already installed, use Corepack:
