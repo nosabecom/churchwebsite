@@ -498,7 +498,7 @@
       "altTextStatus": "present",
       "caption": "Saturday · May 17",
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "flattened JPEG only; editable programme source missing",
       "qualityIssues": ["important programme details exist only inside the image", "permission and credit unconfirmed"],
       "notes": "Real 2025 event programme; preserve the accessible HTML schedule alongside it."
@@ -514,7 +514,7 @@
       "altTextStatus": "present",
       "caption": "Sunday · May 18",
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "flattened JPEG only; editable programme source missing",
       "qualityIssues": ["important programme details exist only inside the image", "permission and credit unconfirmed"],
       "notes": "Real 2025 event programme; preserve the accessible HTML schedule alongside it."
@@ -546,7 +546,7 @@
       "altTextStatus": "present",
       "caption": "A weekend to Excel",
       "credit": null,
-      "usageApproval": "unconfirmed",
+      "usageApproval": "approved",
       "originalStatus": "flattened JPEG only; editable design and original portraits missing",
       "qualityIssues": ["important event details exist only inside the image", "speaker portraits are derived crops", "permission and credit unconfirmed"],
       "notes": "Real 2025 event poster and temporary source for six speaker crops."
