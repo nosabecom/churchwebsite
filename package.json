@@ -6,7 +6,6 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "audit:media": "node migration/media/scripts/audit-media.mjs",
     "dev:studio": "pnpm --filter @churchwebsite/studio dev",
     "d/s": "pnpm --filter @churchwebsite/studio dev",
     "build:studio": "pnpm --filter @churchwebsite/studio build",
