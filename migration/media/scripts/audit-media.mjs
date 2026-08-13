@@ -192,17 +192,22 @@ for (const absolutePath of scannedFiles) {
   const sourcePath = normalizePath(absolutePath)
   const buffer = await readFile(absolutePath)
   const metadata = configuredAssets[sourcePath]
-  const fileStat = await stat(absolutePath)
   const extension = path.extname(sourcePath).toLowerCase()
-  const dimensions = dimensionsFor(buffer, extension)
+  // Git treats SVGs as text, so their checkout bytes can use LF or CRLF
+  // depending on the contributor's platform. Hash the canonical LF form to
+  // keep the committed manifest reproducible across machines.
+  const canonicalBuffer = extension === '.svg'
+    ? Buffer.from(buffer.toString('utf8').replaceAll('\r\n', '\n'))
+    : buffer
+  const dimensions = dimensionsFor(canonicalBuffer, extension)
 
   records.push({
     sourcePath,
     ...metadata,
     fileType: extension.slice(1),
-    bytes: fileStat.size,
+    bytes: canonicalBuffer.length,
     dimensions: dimensions ? `${dimensions.width}x${dimensions.height}` : 'unknown',
-    sha256: createHash('sha256').update(buffer).digest('hex'),
+    sha256: createHash('sha256').update(canonicalBuffer).digest('hex'),
   })
 }
 
