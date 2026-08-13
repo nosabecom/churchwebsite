@@ -1,0 +1,27 @@
+---
+interface Props {
+  node: {
+    alt?: string;
+    decorative?: boolean;
+    url?: string;
+    dimensions?: {
+      width?: number;
+      height?: number;
+    };
+  };
+}
+
+const { node } = Astro.props as Props;
+const alt = node.decorative ? "" : (node.alt ?? "");
+---
+
+{node.url && (
+  <img
+    src={node.url}
+    alt={alt}
+    width={node.dimensions?.width}
+    height={node.dimensions?.height}
+    loading="lazy"
+    decoding="async"
+  />
+)}

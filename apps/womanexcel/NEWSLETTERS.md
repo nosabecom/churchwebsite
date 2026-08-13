@@ -1,21 +1,32 @@
 # Newsletter publishing workflow
 
-The Woman Excel newsletter is currently stored as Markdown in
-`apps/womanexcel/src/content/newsletters/`. Astro validates every entry and
-builds the newsletter archive and individual edition pages at deploy time.
+The Woman Excel newsletter is authored in the Woman Excel section of the shared Sanity Studio.
+Sanity validates each issue and Astro builds the newsletter archive and individual edition pages at
+deploy time. Slugs are scoped to Woman Excel, so Church Main may use the same month slug.
+
+The Markdown in `apps/womanexcel/src/content/newsletters/` remains a temporary rollback source while
+the migration is reviewed. It is used as a whole-source fallback until
+`PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`, and again if a configured Sanity build-time request fails.
 
 The Cornerstone Excellent Women communications lead owns the wording, dates,
 links, and image selection. A repository maintainer adds the approved content,
 runs the build, and opens the publishing pull request.
 
-## Publish an edition
+## Publish an edition in Sanity
+
+1. Open the Woman Excel section of Studio and create a newsletter issue with its site-owned template.
+2. Complete the title, slug, publication date, excerpt, body, and any issue number, cover, link, or SEO overrides.
+3. Keep the issue as a Sanity draft while it is reviewed; publish it when approved.
+4. Run `pnpm build:womanexcel` and confirm the archive and detail route before deployment.
+
+## Maintain the temporary Markdown fallback
 
 1. Duplicate the newest Markdown file in `src/content/newsletters/`.
 2. Rename it to `YYYY-MM.md`, using the edition's publication month.
 3. Replace the frontmatter and body with the approved content.
 4. Put new images in `public/images/newsletters/` and reference them with a
    root-relative path such as `/images/newsletters/2026-09-cover.jpg`.
-5. Set `draft: true` while the edition is being reviewed. Drafts do not appear
+5. Set `draft: true` while the fallback edition is being reviewed. Drafts do not appear
    anywhere on the built site.
 6. Set `draft: false`, run `pnpm build:womanexcel` from the repository root,
    and submit the change for review.

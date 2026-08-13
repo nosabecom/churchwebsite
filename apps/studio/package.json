@@ -11,13 +11,14 @@
     "dev": "sanity dev",
     "schema:extract": "sanity schemas extract --force --enforce-required-fields",
     "start": "sanity start",
-    "typegen:generate": "sanity typegen generate",
+    "typegen:generate": "sanity typegen generate && cp ../churchmain/src/sanity.types.ts ../womanexcel/src/sanity.types.ts",
     "typegen": "pnpm schema:extract && pnpm typegen:generate"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
+    "@sanity/icons": "^5.2.1",
     "@sanity/vision": "^6.9.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

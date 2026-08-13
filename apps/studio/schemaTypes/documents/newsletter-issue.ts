@@ -1,0 +1,124 @@
+import {EnvelopeIcon} from '@sanity/icons/Envelope'
+import {defineField, defineType} from 'sanity'
+import {isSlugUniqueWithinSite} from '../shared/site-slug-is-unique'
+import {siteOwnershipField, siteTitle} from '../shared/sites'
+
+export const newsletterIssue = defineType({
+  name: 'newsletterIssue',
+  title: 'Newsletter issue',
+  type: 'document',
+  icon: EnvelopeIcon,
+  groups: [
+    {name: 'content', title: 'Content', default: true},
+    {name: 'seo', title: 'SEO'},
+    {name: 'migration', title: 'Migration'},
+  ],
+  fields: [
+    {...siteOwnershipField, group: 'content'},
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      group: 'content',
+      validation: (rule) => rule.required().max(120),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      group: 'content',
+      options: {
+        source: 'title',
+        maxLength: 96,
+        isUnique: isSlugUniqueWithinSite,
+      },
+      validation: (rule) =>
+        rule.required().custom((slug) => {
+          if (!slug?.current) return true
+          return (
+            /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug.current) ||
+            'Use lowercase letters, numbers, and single hyphens only.'
+          )
+        }),
+    }),
+    defineField({
+      name: 'publishedAt',
+      title: 'Publication date',
+      type: 'date',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'issue',
+      title: 'Issue number',
+      type: 'number',
+      group: 'content',
+      validation: (rule) => rule.integer().positive(),
+    }),
+    defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'text',
+      rows: 3,
+      group: 'content',
+      validation: (rule) => rule.required().max(240),
+    }),
+    defineField({
+      name: 'coverImage',
+      title: 'Cover image',
+      type: 'editorialImage',
+      group: 'content',
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'portableText',
+      group: 'content',
+      validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: 'relatedLink',
+      title: 'Related link',
+      type: 'link',
+      group: 'content',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
+    }),
+    defineField({
+      name: 'migrationMetadata',
+      title: 'Migration metadata',
+      type: 'migrationMetadata',
+      group: 'migration',
+      readOnly: true,
+    }),
+  ],
+  orderings: [
+    {
+      title: 'Publication date, newest first',
+      name: 'publishedAtDesc',
+      by: [{field: 'publishedAt', direction: 'desc'}],
+    },
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      site: 'site',
+      publishedAt: 'publishedAt',
+      issue: 'issue',
+      media: 'coverImage',
+    },
+    prepare: ({title, site, publishedAt, issue, media}) => {
+      const details = [siteTitle(site), publishedAt, issue ? `Issue ${issue}` : undefined]
+
+      return {
+        title: title || 'Untitled newsletter issue',
+        subtitle: details.filter(Boolean).join(' · '),
+        media,
+      }
+    },
+  },
+})

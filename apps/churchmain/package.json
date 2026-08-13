@@ -14,6 +14,8 @@
     "@tailwindcss/vite": "catalog:",
     "@vercel/analytics": "catalog:",
     "astro": "catalog:",
+    "astro-portabletext": "catalog:",
+    "groq": "catalog:",
     "sharp": "catalog:",
     "tailwindcss": "catalog:",
     "vite": "catalog:"

@@ -74,11 +74,13 @@ pnpm b/w
 pnpm b/s
 ```
 
-## Sanity foundation
+## Sanity content
 
-Church Main and Woman Excel have Sanity client configurations, but their routes still render the
-existing Git-backed content. Run `pnpm typegen` whenever the Studio schema or a typed GROQ query
-changes.
+Church Main and Woman Excel share a Sanity Studio. Newsletter routes can read site-scoped Sanity
+content after the review migration has passed and `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true` is set
+for that application. Until then, and whenever a configured Sanity request fails, the committed
+Markdown remains the whole-source fallback. Run `pnpm typegen` whenever the Studio schema or a typed
+GROQ query changes.
 
 See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
 authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.
@@ -161,12 +163,17 @@ When adding styles:
 
 The designated church communications lead owns newsletter copy and publishing. A developer or repository maintainer reviews and deploys the resulting pull request.
 
-Church Main newsletter entries live in `apps/churchmain/src/content/newsletters/`. To publish an edition:
+New editions are authored in the Church Main section of Sanity Studio. Select the correct site-owned
+newsletter template, fill the issue fields, and use Sanity's draft/publish state for review. Slugs are
+unique within Church Main, so Woman Excel may use the same month slug without a collision.
+
+The files in `apps/churchmain/src/content/newsletters/` stay committed as rollback content during the
+temporary migration window. To test or update that fallback:
 
 1. Copy an existing Markdown file and name it `YYYY-MM.md`.
 2. Update `title`, `publishedAt`, `excerpt`, and the Markdown body.
 3. Optionally add `issue`, an image path plus meaningful `imageAlt`, or a related `link`.
-4. Keep `draft: true` while the edition is being reviewed; change it to `false` to publish.
+4. Keep `draft: true` while the fallback edition is being reviewed; change it to `false` to publish.
 5. Run `pnpm build:churchmain`, review `/newsletters` and the new detail page, then open a pull request.
 
 The newest published date automatically becomes the featured edition and the target of every “View latest newsletter” button. Older editions move to the archive automatically. Entries without images use a branded cover treatment, and an empty collection shows a friendly fallback. Content is loaded during the static build, so there is no client-side loading state or runtime content request to fail.

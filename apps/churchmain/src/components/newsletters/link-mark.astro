@@ -1,0 +1,19 @@
+---
+import type { MarkProps } from "astro-portabletext/types";
+
+import { isExternalNewsletterLink } from "../../data/newsletters";
+
+interface LinkMark {
+  href?: string;
+}
+
+const { node } = Astro.props as MarkProps<LinkMark>;
+const href = node.markDef.href ?? "#";
+const external = isExternalNewsletterLink(href);
+---
+
+<a
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+><slot /></a>

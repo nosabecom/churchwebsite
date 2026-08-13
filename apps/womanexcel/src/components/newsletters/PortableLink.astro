@@ -1,0 +1,21 @@
+---
+import type { MarkProps } from "astro-portabletext/types";
+
+interface LinkMark { href?: string | null }
+
+const { node } = Astro.props as MarkProps<LinkMark>;
+const href = node.markDef.href;
+const safeHref = href && /^(\/(?!\/)|https?:\/\/|mailto:)/.test(href) ? href : undefined;
+const external = safeHref ? /^https?:\/\//.test(safeHref) : false;
+---
+
+{
+  safeHref ? (
+    <a href={safeHref} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+      <slot />
+      {external && <span class="sr-only"> (opens in a new tab)</span>}
+    </a>
+  ) : (
+    <span><slot /></span>
+  )
+}

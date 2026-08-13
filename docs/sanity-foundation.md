@@ -2,14 +2,16 @@
 
 ## Current scope
 
-The Studio is a standalone workspace in `apps/studio`. Church Main and Woman Excel have configured
-read clients, but no production route fetches Sanity content yet. Their existing Git-backed content
-remains in place until each migration issue is implemented.
+The Studio is a standalone workspace in `apps/studio`. Church Main and Woman Excel have site-scoped
+newsletter schemas, typed queries, and build-time read clients. The newsletter integration remains
+behind `PUBLIC_SANITY_NEWSLETTERS_ENABLED`; existing Git-backed content stays in place as a temporary
+rollback source until the review import and render-parity checks pass.
 
 The Sanity connection is supplied at build time:
 
 - Church Main: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
 - Woman Excel: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
+- Newsletter cutover per app: `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`
 - Studio: `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET`
 - API mode: public, read-only queries with no token
 
@@ -93,11 +95,31 @@ pnpm build:womanexcel
 pnpm build
 ```
 
-`pnpm typegen` extracts the Studio schema, scans named GROQ queries in Church Main, and writes
-`apps/churchmain/src/sanity.types.ts`. Commit that generated TypeScript file whenever it changes.
-Woman Excel currently has no GROQ queries; its migration issue must add its queries to TypeGen before
-using generated query result types. The intermediate `apps/studio/schema.json` file is intentionally
-ignored.
+`pnpm typegen` extracts the Studio schema, scans named GROQ queries in both applications, and writes
+the same complete generated contract to `apps/churchmain/src/sanity.types.ts` and
+`apps/womanexcel/src/sanity.types.ts`. Commit both files whenever either schema or query changes. The
+intermediate `apps/studio/schema.json` file is intentionally ignored.
+
+## Newsletter migration and cutover
+
+The deterministic tooling in `apps/studio/migrations/newsletters/` inventories the eight committed
+sources, converts Markdown directly to Portable Text, resolves four local cover assets, and validates
+site/slug uniqueness, dates, links, SEO, assets, keys, and source metadata. Its import command accepts
+only an explicitly confirmed review/staging/test dataset and intentionally refuses production.
+
+Use this sequence:
+
+1. Run `pnpm --filter @churchwebsite/newsletter-migration test` and `validate`.
+2. Extract review artifacts and inspect the validation report, especially its editorial warnings.
+3. Import into a review dataset using the guarded command documented beside the migration.
+4. Rerun the import and confirm it updates the same eight source keys without duplicate documents or assets.
+5. Compare representative image, no-image, related-link, date, SEO, and Portable Text routes for both sites.
+6. Point a review deployment at that dataset and enable `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`.
+7. After approval, import to the intended dataset using a separately reviewed production procedure, then enable the flag per site.
+
+When the flag is off, no Sanity newsletter request is made. When it is on, a successful Sanity result
+is authoritative—even an empty result—so an intentionally unpublished issue cannot reappear from
+Markdown. Only missing configuration or a fetch failure activates the whole-source Markdown fallback.
 
 ## Deployment
 
@@ -128,10 +150,10 @@ Sanity instead of uploading production video to ordinary Sanity file assets.
 
 ## Rollback
 
-This foundation does not replace any live content source. If it causes a deployment problem:
+The newsletter cutover is reversible while the fallback remains. If it causes a deployment problem:
 
 1. Redeploy the last known-good commit or revert the foundation commit.
-2. Keep the existing Git-backed routes and assets active; there is no Sanity content cutover to undo.
+2. Set `PUBLIC_SANITY_NEWSLETTERS_ENABLED=false` for the affected application and redeploy to restore the Git-backed routes and assets.
 3. Remove any newly added CORS origin that is no longer required.
 4. Revoke any developer or deployment credential that may have been exposed.
 5. Leave the configured dataset intact; rollback must not delete shared content or assets.

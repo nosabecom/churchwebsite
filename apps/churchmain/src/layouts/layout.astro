@@ -2,7 +2,7 @@
 import '../styles/global.css'
 import { Image } from 'astro:assets'
 import Analytics from '@vercel/analytics/astro'
-import { getCollection } from 'astro:content'
+import { getLatestNewsletter, getNewsletterHref } from '../data/newsletters'
 import Logo from '../assets/logo.png'
 import Wordmark from '../assets/cornerstone-logo-horizontal.png'
 
@@ -17,9 +17,7 @@ const {
 } = Astro.props;
 
 const year = new Date().getFullYear();
-const latestNewsletter = (await getCollection("newsletters", ({ data }) => !data.draft))
-    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())[0];
-const latestNewsletterHref = latestNewsletter ? `/newsletters/${latestNewsletter.id}/` : "/newsletters";
+const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
 const currentPath = Astro.url.pathname;
 
 const services = [

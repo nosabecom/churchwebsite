@@ -1,0 +1,26 @@
+---
+import { PortableText } from "astro-portabletext";
+
+import { renderMarkdownNewsletter, type Newsletter } from "../../lib/newsletters";
+import PortableImage from "./PortableImage.astro";
+import PortableLink from "./PortableLink.astro";
+
+interface Props {
+  newsletter: Newsletter;
+}
+
+const { newsletter } = Astro.props;
+const markdown = await renderMarkdownNewsletter(newsletter);
+const components = {
+  type: { editorialImage: PortableImage },
+  mark: { link: PortableLink },
+};
+---
+
+{
+  newsletter.content.source === "sanity" ? (
+    <PortableText value={newsletter.content.body} components={components} />
+  ) : markdown ? (
+    <markdown.Content />
+  ) : null
+}

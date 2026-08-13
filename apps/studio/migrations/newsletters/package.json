@@ -1,0 +1,16 @@
+{
+  "name": "@churchwebsite/newsletter-migration",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract": "node scripts/extract.mjs",
+    "validate": "node scripts/validate.mjs",
+    "import:review": "node scripts/import-review.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@portabletext/markdown": "1.4.6",
+    "@sanity/client": "7.26.2",
+    "gray-matter": "4.0.3"
+  }
+}
