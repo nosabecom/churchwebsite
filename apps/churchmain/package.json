@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "@churchwebsite/ui": "workspace:*",
+    "@sanity/astro": "catalog:",
+    "@sanity/client": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@vercel/analytics": "catalog:",
     "astro": "catalog:",
     "sharp": "catalog:",
-    "tailwindcss": "catalog:"
+    "tailwindcss": "catalog:",
+    "vite": "catalog:"
   }
 }

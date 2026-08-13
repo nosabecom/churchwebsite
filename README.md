@@ -6,6 +6,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 - `apps/churchmain` is the main RCCG Cornerstone Assembly site.
 - `apps/womanexcel` is the Woman Excel site.
+- `apps/studio` is the standalone Sanity Studio shared by both sites.
 - `packages/ui` contains the UI components shared by both sites.
 - Shared dependency versions are managed from the root `pnpm-workspace.yaml` catalog.
 - Each app is an Astro project using Tailwind CSS through `@tailwindcss/vite`.
@@ -14,7 +15,7 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 
 ## Requirements
 
-- Node.js `>=22.12.0`
+- Node.js `>=22.13.0`
 - pnpm `11.9.0` or compatible with the lockfile
 
 If pnpm is not already installed, use Corepack:
@@ -37,6 +38,7 @@ Run one app locally:
 ```sh
 pnpm dev:churchmain
 pnpm dev:womanexcel
+pnpm dev:studio
 ```
 
 Short aliases are also available:
@@ -44,6 +46,7 @@ Short aliases are also available:
 ```sh
 pnpm d/c
 pnpm d/w
+pnpm d/s
 ```
 
 ## Building
@@ -59,6 +62,7 @@ Build one app:
 ```sh
 pnpm build:churchmain
 pnpm build:womanexcel
+pnpm build:studio
 ```
 
 Short aliases are also available:
@@ -67,7 +71,26 @@ Short aliases are also available:
 pnpm b
 pnpm b/c
 pnpm b/w
+pnpm b/s
 ```
+
+## Sanity foundation
+
+Church Main and Woman Excel have Sanity client configurations, but their routes still render the
+existing Git-backed content. Run `pnpm typegen` whenever the Studio schema or a typed GROQ query
+changes.
+
+See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
+authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.
+
+The remaining Sanity commands also have short aliases:
+
+| Command               | Alias       |
+| --------------------- | ----------- |
+| `pnpm deploy:studio`  | `pnpm dp/s` |
+| `pnpm schema:extract` | `pnpm s/e`  |
+| `pnpm typegen`        | `pnpm t/g`  |
+| `pnpm typegen:check`  | `pnpm t/c`  |
 
 ## Shared components
 

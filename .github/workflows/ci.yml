@@ -1,0 +1,48 @@
+name: Build verification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  PUBLIC_SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+  PUBLIC_SANITY_DATASET: ${{ vars.SANITY_DATASET }}
+  SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+  SANITY_STUDIO_DATASET: ${{ vars.SANITY_DATASET }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.13.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify generated Sanity types
+        run: pnpm typegen:check
+
+      - name: Build all workspaces
+        run: pnpm build
