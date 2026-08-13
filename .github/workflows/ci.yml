@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   PUBLIC_SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
   PUBLIC_SANITY_DATASET: ${{ vars.SANITY_DATASET }}
