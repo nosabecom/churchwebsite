@@ -76,9 +76,9 @@ pnpm b/s
 
 ## Sanity foundation
 
-Church Main has the first Sanity client configuration, but its routes still render the existing
-Git-backed content. Woman Excel is intentionally not connected yet. Run `pnpm typegen` whenever
-the Studio schema or a Church Main GROQ query changes.
+Church Main and Woman Excel have Sanity client configurations, but their routes still render the
+existing Git-backed content. Run `pnpm typegen` whenever the Studio schema or a typed GROQ query
+changes.
 
 See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
 authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.

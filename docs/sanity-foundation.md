@@ -2,21 +2,22 @@
 
 ## Current scope
 
-The Studio is a standalone workspace in `apps/studio`. Church Main has a configured read client,
-but no production route fetches Sanity content yet. Woman Excel remains disconnected until its own
-migration issue is implemented.
+The Studio is a standalone workspace in `apps/studio`. Church Main and Woman Excel have configured
+read clients, but no production route fetches Sanity content yet. Their existing Git-backed content
+remains in place until each migration issue is implemented.
 
 The Sanity connection is supplied at build time:
 
 - Church Main: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
+- Woman Excel: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
 - Studio: `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET`
 - API mode: public, read-only queries with no token
 
 ## Environment variables
 
-Copy `apps/churchmain/.env.example` and `apps/studio/.env.example` to matching `.env.local` files,
-then replace the placeholders. No project ID, dataset name, or token is checked into Git. Never put
-a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
+Copy the `.env.example` files in `apps/churchmain`, `apps/womanexcel`, and `apps/studio` to matching
+`.env.local` files, then replace the placeholders. No project ID, dataset name, or token is checked
+into Git. Never put a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
 
 If a future private dataset requires a token, use a server-only variable such as
 `SANITY_API_READ_TOKEN` and keep it out of browser code, logs, and generated static assets.
@@ -75,9 +76,9 @@ origin.
 ## Deployment environment
 
 GitHub Actions reads `SANITY_PROJECT_ID` and `SANITY_DATASET` from repository variables and maps them
-to the Church Main and Studio variable names. Church Main deployment environments should define the
-two `PUBLIC_SANITY_` variables. Without them, the current Git-backed routes still build, but the
-Sanity client integration remains disabled.
+to the frontend and Studio variable names. Church Main and Woman Excel deployment environments
+should define the two `PUBLIC_SANITY_` variables. Without them, the current Git-backed routes still
+build, but the Sanity client integrations remain disabled.
 
 ## Development, TypeGen, and builds
 
@@ -94,7 +95,9 @@ pnpm build
 
 `pnpm typegen` extracts the Studio schema, scans named GROQ queries in Church Main, and writes
 `apps/churchmain/src/sanity.types.ts`. Commit that generated TypeScript file whenever it changes.
-The intermediate `apps/studio/schema.json` file is intentionally ignored.
+Woman Excel currently has no GROQ queries; its migration issue must add its queries to TypeGen before
+using generated query result types. The intermediate `apps/studio/schema.json` file is intentionally
+ignored.
 
 ## Deployment
 
