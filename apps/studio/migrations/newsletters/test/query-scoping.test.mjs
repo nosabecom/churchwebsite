@@ -44,6 +44,15 @@ for (const queryFile of queryFiles) {
   })
 }
 
+test('deployment blueprint is explicitly dataset-scoped and projects the event operation', async () => {
+  const source = await readFile(path.join(repoRoot, 'sanity.blueprint.ts'), 'utf8')
+
+  assert.match(source, /SANITY_PROJECT_ID and SANITY_DATASET are required/)
+  assert.match(source, /sanity::dataset\(\) ==/)
+  assert.match(source, /"operation": delta::operation\(\)/)
+  assert.match(source, /includeDrafts: false/)
+})
+
 test('Studio slug uniqueness is scoped to site and excludes both document variants', async () => {
   const source = await readFile(
     path.join(repoRoot, 'apps/studio/schemaTypes/shared/site-slug-is-unique.ts'),
@@ -134,6 +143,9 @@ test('Studio derives a read-only, collision-safe slug from the publication month
 
   assert.match(input, /useFormValue\(\['publishedAt'\]\)/)
   assert.match(input, /resolveNewsletterSlug/)
+  assert.match(input, /\*\[_id == \$publishedId\]\[0\]\.slug\.current/)
+  assert.match(input, /publishedSlug !== currentSlug/)
+  assert.match(input, /perspective: 'raw'/)
   assert.match(input, /set\(\{_type: 'slug', current: generatedSlug\}\)/)
   assert.match(input, /renderDefault\(\{\.\.\.props, readOnly: true\}\)/)
   assert.equal(slugFromPublicationDate('2026-08-24'), '2026-08')

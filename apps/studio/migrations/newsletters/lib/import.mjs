@@ -20,6 +20,18 @@ export function assertSafeDataset(dataset, confirmedDataset) {
   }
 }
 
+export function assertProductionDataset(dataset, confirmedDataset, acknowledgement) {
+  if (
+    dataset !== 'production' ||
+    confirmedDataset !== dataset ||
+    acknowledgement !== 'RCC-55-RCC-57-approved'
+  ) {
+    throw new Error(
+      'Refusing production write: target production explicitly and acknowledge RCC-55-RCC-57-approved',
+    )
+  }
+}
+
 export async function resolveAssetId(client, document) {
   const asset = await assetDetails(document)
   if (!asset) return undefined
@@ -44,11 +56,15 @@ export async function upsertNewsletter(client, document, resolveAsset = resolveA
   const prepared = importableDocument(document, assetId)
 
   let baseId = existingId?.replace(/^drafts\./, '')
-  let createdNew = false
+  let createdId
   if (!baseId) {
-    const created = await client.create(prepared.document, {visibility: 'deferred'})
-    baseId = created._id
-    createdNew = true
+    const initialDocument =
+      prepared.migrationState === 'draft'
+        ? {...prepared.document, _id: 'drafts.'}
+        : prepared.document
+    const created = await client.create(initialDocument, {visibility: 'deferred'})
+    createdId = created._id
+    baseId = created._id.replace(/^drafts\./, '')
   }
 
   const publishedId = baseId
@@ -57,8 +73,7 @@ export async function upsertNewsletter(client, document, resolveAsset = resolveA
   const staleId = prepared.migrationState === 'draft' ? publishedId : draftId
   const transaction = client.transaction().createOrReplace({...prepared.document, _id: targetId})
   const staleExists =
-    (createdNew && staleId === publishedId) ||
-    (await client.fetch(`defined(*[_id == $id][0]._id)`, {id: staleId}))
+    createdId === staleId || (await client.fetch(`defined(*[_id == $id][0]._id)`, {id: staleId}))
   if (staleExists) transaction.delete(staleId)
   await transaction.commit({visibility: 'sync'})
   return {sourceKey, id: targetId, state: prepared.migrationState}

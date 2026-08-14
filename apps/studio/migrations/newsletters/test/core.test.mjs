@@ -54,6 +54,18 @@ test('transformation is deterministic and validates all assets', async () => {
   })
 })
 
+test('validation reports a missing body without throwing', async () => {
+  const documents = await transformAll()
+  const invalidDocuments = documents.map((document, index) =>
+    index === 0 ? {...document, body: undefined} : document,
+  )
+
+  const report = await validateDocuments(invalidDocuments)
+  assert.equal(report.ok, false)
+  assert.ok(report.errors.some((error) => error.includes('missing body')))
+  assert.ok(report.errors.some((error) => error.includes('unsupported Portable Text objects')))
+})
+
 test('Portable Text keys differ between sites with colliding slugs', async () => {
   const documents = await transformAll()
   const may = documents.filter((document) => document.slug.current === '2026-05')

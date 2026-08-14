@@ -30,5 +30,8 @@ tmp
 # claude shi
 .claude/
 
+# local Sanity Blueprint stack binding
+.sanity/blueprint.config.json
+
 # agent shi
 design/

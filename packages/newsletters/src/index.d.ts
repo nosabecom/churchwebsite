@@ -6,10 +6,8 @@ interface NewsletterSourceOptions<T> {
   configured: boolean;
   loadSanity: () => Promise<T>;
   loadMarkdown: () => Promise<T>;
-  warn?: (message: string | undefined, error?: unknown) => void;
-  missingConfigurationMessage?: string;
-  fetchFailureMessage?: string;
-  fallbackOnFetchFailure?: boolean;
+  missingConfigurationMessage: string;
+  fetchFailureMessage: string;
 }
 
 export function loadNewsletterSource<T>(

@@ -31,8 +31,9 @@ It uploads assets by SHA-1, finds documents by `migrationMetadata.sourceKey`, le
 for new records, and updates the matching published or draft document on reruns. Run extraction and
 review `reports/validation.json` before authorizing an import. The import is deliberately serial and
 waits for each small write to become queryable so its post-import checks are reliable. New records are
-created with their complete content at deferred visibility before the final published/draft transaction;
-an incomplete placeholder document is never published. No import is part of CI.
+created with their complete content at deferred visibility before the final published/draft transaction.
+New draft sources are created directly under a Sanity-generated `drafts.` ID and are never transiently
+published. An incomplete placeholder document is never published. No import is part of CI.
 
 For an authenticated local development import, use the Sanity CLI user token without copying it into
 an environment variable:
@@ -47,6 +48,27 @@ pnpm --filter @churchwebsite/studio exec sanity exec \
 
 Rerun the same command and verify that document and asset counts remain stable before enabling the
 frontend flag against the development dataset.
+
+## Production import after approval
+
+Production import is a separate, triple-guarded command. Do not run it while the validation report
+still contains unapproved placeholder copy. First capture the approved review evidence, export a
+recoverable dataset backup, verify the target project in Sanity Manage, and have both site owners sign
+off on the expected four-per-site count.
+
+```sh
+SANITY_STUDIO_PROJECT_ID=<verified-production-project-id> \
+SANITY_STUDIO_DATASET=production \
+SANITY_AUTH_TOKEN=<temporary-editor-token> \
+pnpm --filter @churchwebsite/newsletter-migration import:production -- \
+  --confirm-production-dataset production \
+  --acknowledge-production-import RCC-55-RCC-57-approved
+```
+
+This procedure uses a temporary import credential with write access; it is not the Viewer/read-only
+token used by Vercel builds. Revoke the import credential after the rerun/count checks. The command
+still performs the same deterministic source-key upserts and post-import count, duplicate, and asset
+reference validation as the review import. It never deletes unrelated content.
 
 After building both frontends, `verify:build` derives the expected routes from the source inventory and
 checks every archive/detail route for its title, excerpt, Portable Text/Markdown body blocks, related

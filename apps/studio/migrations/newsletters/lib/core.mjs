@@ -209,7 +209,7 @@ export async function validateDocuments(documents, root = repoRoot) {
       errors.push(`${label}: non-decorative cover needs alt text`)
     if (
       /placeholder copy/i.test(
-        document.body
+        (document.body ?? [])
           .flatMap((block) => block.children ?? [])
           .map((span) => span.text ?? '')
           .join(' '),

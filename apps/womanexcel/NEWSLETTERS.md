@@ -5,8 +5,9 @@ Sanity validates each issue and Astro builds the newsletter archive and individu
 deploy time. Slugs are scoped to Woman Excel, so Church Main may use the same month slug.
 
 The Markdown in `apps/womanexcel/src/content/newsletters/` remains a temporary rollback source while
-the migration is reviewed. It is used as a whole-source fallback until
-`PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`, and again if a configured Sanity build-time request fails.
+the production migration is verified. It is used only when
+`PUBLIC_SANITY_NEWSLETTERS_ENABLED=false`; an enabled Sanity request fails closed instead of silently
+restoring stale or intentionally unpublished Markdown content.
 
 The Cornerstone Excellent Women communications lead owns the wording, dates,
 links, and image selection. A repository maintainer adds the approved content,
@@ -15,9 +16,14 @@ runs the build, and opens the publishing pull request.
 ## Publish an edition in Sanity
 
 1. Open the Woman Excel section of Studio and create a newsletter issue with its site-owned template.
-2. Complete the title, slug, publication date, excerpt, body, and any issue number, cover, link, or SEO overrides.
+2. Complete the title, publication date, excerpt, body, and any cover, link, or SEO overrides. Studio
+   assigns the next site-specific issue number and derives the slug automatically.
 3. Keep the issue as a Sanity draft while it is reviewed; publish it when approved.
 4. Run `pnpm build:womanexcel` and confirm the archive and detail route before deployment.
+
+The first issue in a month uses `YYYY-MM`. If another issue is published in that same month, its slug
+adds the automatically assigned issue number (for example, `2026-08-10`) so both permanent routes
+remain valid. Existing published slugs do not change when titles or dates are later edited.
 
 When the local Astro server is connected to the `development` dataset with newsletters enabled,
 publishing, unpublishing, or deleting a Woman Excel issue automatically reloads connected browser
@@ -36,7 +42,7 @@ and updates through a Vercel rebuild.
 6. Set `draft: false`, run `pnpm build:womanexcel` from the repository root,
    and submit the change for review.
 
-`publishedAt` controls display order but does not schedule publication. Keep a
+`publishedAt` and the automatic issue number control display order but do not schedule publication. Keep a
 future edition at `draft: true` until it is ready to appear on the site.
 
 The newest published `publishedAt` value automatically becomes the large

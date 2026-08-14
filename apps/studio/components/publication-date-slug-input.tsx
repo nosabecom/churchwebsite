@@ -20,27 +20,44 @@ export function PublicationDateSlugInput(props: SlugInputProps) {
   useEffect(() => {
     let cancelled = false
 
-    if (!baseSlug) {
-      if (currentSlug) props.onChange(unset())
-      return
-    }
+    void (async () => {
+      const publishedId =
+        typeof documentId === 'string' ? documentId.replace(/^drafts\./, '') : undefined
+      const publishedSlug = publishedId
+        ? await client.fetch<string | null>(
+            '*[_id == $publishedId][0].slug.current',
+            {publishedId},
+            {perspective: 'raw'},
+          )
+        : undefined
 
-    void resolveNewsletterSlug({
-      client,
-      currentSlug,
-      documentId: typeof documentId === 'string' ? documentId : undefined,
-      issue: typeof issue === 'number' ? issue : undefined,
-      publishedAt,
-      site: site === 'churchMain' || site === 'womanExcel' ? (site as Site) : undefined,
-    })
-      .then((generatedSlug) => {
-        if (!cancelled && generatedSlug && generatedSlug !== currentSlug) {
-          props.onChange(set({_type: 'slug', current: generatedSlug}))
+      if (cancelled) return
+      if (publishedSlug) {
+        if (publishedSlug !== currentSlug) {
+          props.onChange(set({_type: 'slug', current: publishedSlug}))
         }
+        return
+      }
+
+      if (!baseSlug) {
+        if (currentSlug) props.onChange(unset())
+        return
+      }
+
+      const generatedSlug = await resolveNewsletterSlug({
+        client,
+        currentSlug,
+        documentId: typeof documentId === 'string' ? documentId : undefined,
+        issue: typeof issue === 'number' ? issue : undefined,
+        publishedAt,
+        site: site === 'churchMain' || site === 'womanExcel' ? (site as Site) : undefined,
       })
-      .catch((error: unknown) => {
-        console.error('Unable to generate the newsletter slug.', error)
-      })
+      if (!cancelled && generatedSlug && generatedSlug !== currentSlug) {
+        props.onChange(set({_type: 'slug', current: generatedSlug}))
+      }
+    })().catch((error: unknown) => {
+      console.error('Unable to generate the newsletter slug.', error)
+    })
 
     return () => {
       cancelled = true

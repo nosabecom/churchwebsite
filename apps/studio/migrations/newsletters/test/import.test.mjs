@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises'
 import test from 'node:test'
 
 import {transformAll} from '../lib/core.mjs'
-import {assertSafeDataset, upsertNewsletter} from '../lib/import.mjs'
+import {assertProductionDataset, assertSafeDataset, upsertNewsletter} from '../lib/import.mjs'
 
 test('local imports use the raw perspective so reruns can find drafts', async () => {
   const source = await readFile(new URL('../scripts/import-local.mjs', import.meta.url), 'utf8')
@@ -35,6 +35,20 @@ test('dataset guard accepts explicit non-production targets only', () => {
   assert.throws(() => assertSafeDataset('development', 'review'), /Refusing to write/)
 })
 
+test('production import requires the exact dataset and explicit approval acknowledgement', () => {
+  assert.doesNotThrow(() =>
+    assertProductionDataset('production', 'production', 'RCC-55-RCC-57-approved'),
+  )
+  assert.throws(
+    () => assertProductionDataset('production', 'production', undefined),
+    /Refusing production write/,
+  )
+  assert.throws(
+    () => assertProductionDataset('development', 'development', 'RCC-55-RCC-57-approved'),
+    /Refusing production write/,
+  )
+})
+
 function fakeClient({existingId, staleExists = false} = {}) {
   const calls = {create: [], replace: [], delete: [], commit: []}
   const transaction = {
@@ -57,7 +71,7 @@ function fakeClient({existingId, staleExists = false} = {}) {
     },
     async create(document, options) {
       calls.create.push({document, options})
-      return {_id: 'generated-id'}
+      return {_id: document._id === 'drafts.' ? 'drafts.generated-id' : 'generated-id'}
     },
     transaction() {
       return transaction
@@ -65,7 +79,7 @@ function fakeClient({existingId, staleExists = false} = {}) {
   }
 }
 
-test('new draft imports create a complete deferred document then atomically move it to drafts', async () => {
+test('new draft imports are never transiently created as published documents', async () => {
   const source = (await transformAll()).find((document) => !document.coverImage)
   const document = {...source, migrationState: 'draft'}
   const client = fakeClient()
@@ -74,10 +88,10 @@ test('new draft imports create a complete deferred document then atomically move
   assert.equal(client.calls.create.length, 1)
   assert.equal(client.calls.create[0].document.title, document.title)
   assert.ok(client.calls.create[0].document.body.length > 0)
-  assert.equal('_id' in client.calls.create[0].document, false)
+  assert.equal(client.calls.create[0].document._id, 'drafts.')
   assert.deepEqual(client.calls.create[0].options, {visibility: 'deferred'})
   assert.equal(client.calls.replace[0]._id, 'drafts.generated-id')
-  assert.deepEqual(client.calls.delete, ['generated-id'])
+  assert.deepEqual(client.calls.delete, [])
   assert.deepEqual(client.calls.commit, [{visibility: 'sync'}])
   assert.deepEqual(result, {
     sourceKey: document.migrationMetadata.sourceKey,

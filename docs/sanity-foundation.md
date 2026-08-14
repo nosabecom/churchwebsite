@@ -5,7 +5,7 @@
 The Studio is a standalone workspace in `apps/studio`. Church Main and Woman Excel have site-scoped
 newsletter schemas, typed queries, and build-time read clients. The newsletter integration remains
 behind `PUBLIC_SANITY_NEWSLETTERS_ENABLED`; existing Git-backed content stays in place as a temporary
-rollback source until the review import and render-parity checks pass.
+explicit rollback source until the production import and render-parity checks pass.
 
 The Sanity connection is supplied at build time:
 
@@ -96,9 +96,9 @@ origin.
 GitHub Actions reads `SANITY_PROJECT_ID` and `SANITY_DATASET` from repository variables and maps them
 to the frontend and Studio variable names. Church Main and Woman Excel production environments
 must define both `PUBLIC_SANITY_` connection variables, enable the newsletter flag, and provide a
-server-only `SANITY_API_READ_TOKEN`. Without the public connection variables, the current Git-backed
-routes still build. An enabled production build intentionally fails when its private read token is
-missing or rejected, preventing an empty or stale fallback deployment.
+server-only `SANITY_API_READ_TOKEN`. A build with the newsletter flag disabled intentionally uses the
+Git rollback source without contacting Sanity. Once enabled, a build fails if its connection is
+missing or rejected in any environment, preventing an empty or stale fallback deployment.
 
 ## Development, TypeGen, and builds
 
@@ -134,7 +134,8 @@ Use this sequence:
 4. Rerun the import and confirm it updates the same eight source keys without duplicate documents or assets.
 5. Compare representative image, no-image, related-link, date, SEO, and Portable Text routes for both sites.
 6. Point a review deployment at that dataset and enable `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`.
-7. After approval, import to the intended dataset using a separately reviewed production procedure, then enable the flag per site.
+7. After approval and a dataset export, use the triple-guarded production procedure in the migration
+   README, rerun its count checks, then enable the flag per site.
 
 Use a reusable public `development` dataset for Sanity-backed local/static-build testing. Keep
 production deployment variables pointed at `production`; developers opt into `development` explicitly:
@@ -163,9 +164,13 @@ production path uses the same queries with a Viewer token supplied only during t
 
 When the flag is off, no Sanity newsletter request is made. When it is on, a successful Sanity result
 is authoritative—even an empty result—so an intentionally unpublished issue cannot reappear from
-Markdown. Development and review builds retain the whole-source Markdown fallback for missing
-configuration or fetch failures. Private production builds fail closed when the token is missing or a
-Sanity request fails.
+Markdown. Missing configuration and failed requests stop enabled development, preview, and production
+builds. Set the flag to `false` only as an explicit, separately deployed rollback.
+
+Publishing, unpublishing, or republishing a newsletter triggers only its owning site's deployment
+through the repository-managed Sanity Function described in
+[`newsletter-deployments.md`](./newsletter-deployments.md). The function keeps Vercel hook URLs in its
+server-side environment, coalesces rapid events per site, and retries observable failures.
 
 ## Deployment
 
@@ -189,7 +194,7 @@ Sanity account; normal site builds do not.
 | Breeze ChMS | People, families, subscriber consent, Do Not Email status, tags, attendance, and operational event scheduling                              | Website presentation or editorial media                                   |
 | YouTube     | Production video hosting and playback                                                                                                      | Canonical website copy or member data                                     |
 | Git assets  | Existing static content and rollback assets until each migration is verified                                                               | Newly migrated editorial content after an approved cutover                |
-| Astro       | Public rendering, static builds, and fallback behavior                                                                                     | Editorial source data or subscriber records                               |
+| Astro       | Public rendering, static builds, and the temporary explicit rollback path                                                                  | Editorial source data or subscriber records                               |
 
 Member and subscriber records must never be copied into Sanity. Store YouTube identifiers or URLs in
 Sanity instead of uploading production video to ordinary Sanity file assets.
@@ -205,3 +210,7 @@ The newsletter cutover is reversible while the fallback remains. If it causes a 
 5. Leave the configured dataset intact; rollback must not delete shared content or assets.
 
 After rollback, run all four builds again before attempting a corrected deployment.
+
+Delete the Markdown sources and the rollback flag only after both production datasets have passed the
+count, route, image, link, SEO, empty-state, publish, unpublish, and republish checks. That final removal
+is deliberately gated on production evidence rather than inferred from a preview build.

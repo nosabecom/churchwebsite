@@ -68,7 +68,8 @@ function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
     !newsletter.title ||
     !newsletter.slug ||
     !newsletter.publishedAt ||
-    !newsletter.excerpt
+    !newsletter.excerpt ||
+    !newsletter.body?.length
   ) {
     console.warn(
       `Skipping incomplete Woman Excel newsletter ${newsletter._id}`,
@@ -108,7 +109,7 @@ function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
           description: newsletter.seo.description ?? undefined,
         }
       : undefined,
-    content: { source: "sanity", body: newsletter.body ?? [] },
+    content: { source: "sanity", body: newsletter.body },
   };
 }
 
@@ -153,7 +154,7 @@ async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
     projectId && dataset ? { projectId, dataset, token } : undefined;
   const sanityEnabled =
     import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
-  const productionSource = enforceSanityProductionConfig({
+  enforceSanityProductionConfig({
     enabled: sanityEnabled,
     deployment: import.meta.env.VERCEL_ENV,
     projectId,
@@ -182,11 +183,9 @@ async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
       });
     },
     missingConfigurationMessage:
-      "Woman Excel Sanity newsletters are enabled but not configured; using Markdown.",
-    fetchFailureMessage: productionSource
-      ? "Unable to fetch Woman Excel newsletters from the private production dataset."
-      : "Unable to load Woman Excel newsletters from Sanity; using Markdown.",
-    fallbackOnFetchFailure: !productionSource,
+      "Woman Excel Sanity newsletters are enabled but PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET are not configured.",
+    fetchFailureMessage:
+      "Unable to fetch Woman Excel newsletters from Sanity. Disable PUBLIC_SANITY_NEWSLETTERS_ENABLED only for an intentional Markdown rollback.",
   });
 }
 

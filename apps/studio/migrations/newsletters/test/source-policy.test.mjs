@@ -61,53 +61,31 @@ test('flag off reads Markdown without attempting Sanity', async () => {
   assert.equal(sanityCalls, 0)
 })
 
-test('missing configuration and fetch failures fall back to Markdown', async () => {
-  const warnings = []
+test('enabled Sanity fails closed for missing configuration and fetch failures', async () => {
+  let markdownCalls = 0
   const base = {
     enabled: true,
-    loadMarkdown: async () => ['markdown'],
-    warn: (...message) => warnings.push(message),
+    loadMarkdown: async () => {
+      markdownCalls += 1
+      return ['markdown']
+    },
     missingConfigurationMessage: 'missing',
     fetchFailureMessage: 'failed',
   }
 
-  assert.deepEqual(
-    await loadNewsletterSource({...base, configured: false, loadSanity: async () => ['sanity']}),
-    ['markdown'],
+  await assert.rejects(
+    loadNewsletterSource({...base, configured: false, loadSanity: async () => ['sanity']}),
+    /missing/,
   )
-  assert.deepEqual(
-    await loadNewsletterSource({
+  await assert.rejects(
+    loadNewsletterSource({
       ...base,
       configured: true,
       loadSanity: async () => {
         throw new Error('network')
       },
     }),
-    ['markdown'],
-  )
-  assert.deepEqual(
-    warnings.map(([message]) => message),
-    ['missing', 'failed'],
-  )
-})
-
-test('production can fail closed instead of falling back after a Sanity error', async () => {
-  let markdownCalls = 0
-  await assert.rejects(
-    loadNewsletterSource({
-      enabled: true,
-      configured: true,
-      loadSanity: async () => {
-        throw new Error('unauthorized')
-      },
-      loadMarkdown: async () => {
-        markdownCalls += 1
-        return ['markdown']
-      },
-      fetchFailureMessage: 'Private production fetch failed.',
-      fallbackOnFetchFailure: false,
-    }),
-    /Private production fetch failed/,
+    /failed/,
   )
   assert.equal(markdownCalls, 0)
 })

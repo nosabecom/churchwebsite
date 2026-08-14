@@ -7,6 +7,7 @@
     "validate": "node scripts/validate.mjs",
     "verify:build": "node scripts/verify-built-routes.mjs",
     "import:review": "node scripts/import-review.mjs",
+    "import:production": "node scripts/import-production.mjs",
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {

@@ -77,13 +77,14 @@ pnpm b/s
 ## Sanity content
 
 Church Main and Woman Excel share a Sanity Studio. Newsletter routes can read site-scoped Sanity
-content after the review migration has passed and `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true` is set
-for that application. Until then, and whenever a configured Sanity request fails, the committed
-Markdown remains the whole-source fallback. Run `pnpm typegen` whenever the Studio schema or a typed
-GROQ query changes.
+content when `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true` is set for that application. Enabled builds fail
+closed if Sanity is missing or unavailable; committed Markdown is used only when the flag is deliberately
+disabled for rollback. Run `pnpm typegen` whenever the Studio schema or a typed GROQ query changes.
 
 See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
-authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.
+authentication, SSH tunnelling, CORS, architecture, and rollback instructions. See
+[`docs/newsletter-deployments.md`](docs/newsletter-deployments.md) for the site-routed Sanity Function,
+Vercel hooks, retries, debounce behavior, and publishing verification.
 
 The remaining Sanity commands also have short aliases:
 
@@ -164,8 +165,10 @@ When adding styles:
 The designated church communications lead owns newsletter copy and publishing. A developer or repository maintainer reviews and deploys the resulting pull request.
 
 New editions are authored in the Church Main section of Sanity Studio. Select the correct site-owned
-newsletter template, fill the issue fields, and use Sanity's draft/publish state for review. Slugs are
-unique within Church Main, so Woman Excel may use the same month slug without a collision.
+newsletter template, fill the editorial fields, and use Sanity's draft/publish state for review. Studio
+assigns the next Church Main issue number and generates the slug from the publication month. A second
+issue in one month adds its issue number to keep both routes stable. Woman Excel may use the same slug
+without a collision because uniqueness is site-scoped.
 
 The files in `apps/churchmain/src/content/newsletters/` stay committed as rollback content during the
 temporary migration window. To test or update that fallback:

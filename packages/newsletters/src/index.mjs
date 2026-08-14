@@ -13,27 +13,19 @@ export async function loadNewsletterSource({
   configured,
   loadSanity,
   loadMarkdown,
-  warn = console.warn,
   missingConfigurationMessage,
   fetchFailureMessage,
-  fallbackOnFetchFailure = true,
 }) {
   if (!enabled) return loadMarkdown();
 
   if (!configured) {
-    warn(missingConfigurationMessage);
-    return loadMarkdown();
+    throw new Error(missingConfigurationMessage);
   }
 
   try {
     return await loadSanity();
   } catch (error) {
-    if (!fallbackOnFetchFailure) {
-      throw new Error(fetchFailureMessage, { cause: error });
-    }
-
-    warn(fetchFailureMessage, error);
-    return loadMarkdown();
+    throw new Error(fetchFailureMessage, { cause: error });
   }
 }
 

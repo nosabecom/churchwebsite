@@ -131,7 +131,8 @@ function normalizeSanityNewsletter(
     !newsletter.slug ||
     !newsletter.title ||
     !newsletter.publishedAt ||
-    !newsletter.excerpt
+    !newsletter.excerpt ||
+    !newsletter.body?.length
   ) {
     console.warn(
       `Skipping incomplete ${CHURCH_MAIN_SITE} newsletter ${newsletter._id}.`,
@@ -194,7 +195,7 @@ async function loadNewsletters(): Promise<Newsletter[]> {
     projectId && dataset ? { projectId, dataset, token } : undefined;
   const sanityEnabled =
     import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
-  const productionSource = enforceSanityProductionConfig({
+  enforceSanityProductionConfig({
     enabled: sanityEnabled,
     deployment: import.meta.env.VERCEL_ENV,
     projectId,
@@ -228,11 +229,9 @@ async function loadNewsletters(): Promise<Newsletter[]> {
         );
     },
     missingConfigurationMessage:
-      "Church Main Sanity newsletters are enabled but not configured; using Markdown.",
-    fetchFailureMessage: productionSource
-      ? "Unable to fetch Church Main newsletters from the private production dataset."
-      : "Unable to fetch Church Main newsletters from Sanity; using Markdown fallback.",
-    fallbackOnFetchFailure: !productionSource,
+      "Church Main Sanity newsletters are enabled but PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET are not configured.",
+    fetchFailureMessage:
+      "Unable to fetch Church Main newsletters from Sanity. Disable PUBLIC_SANITY_NEWSLETTERS_ENABLED only for an intentional Markdown rollback.",
   });
 }
 
