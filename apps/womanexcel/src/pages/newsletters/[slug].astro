@@ -48,13 +48,19 @@ const isExternal = newsletter.relatedLink
                     <p class="mt-6 max-w-2xl text-xl leading-relaxed text-charcoal/80">{newsletter.excerpt}</p>
                 </div>
 
-                <div class="relative order-1 lg:order-2 aspect-[4/3] lg:aspect-[3/4] overflow-hidden rounded-2xl bg-orchid-deep">
-                    <div class="relative grid h-full place-items-center overflow-hidden p-8 text-center text-white">
+                <div class:list={[
+                    "relative order-1 overflow-hidden rounded-2xl bg-orchid-deep lg:order-2",
+                    newsletter.coverImage ? "self-center" : "aspect-[4/3] lg:aspect-[3/4]",
+                ]}>
+                    <div class:list={[
+                        "grid place-items-center overflow-hidden p-8 text-center text-white",
+                        newsletter.coverImage ? "absolute inset-0" : "relative h-full",
+                    ]}>
                         <div class="absolute -right-20 top-12 h-64 w-64 rounded-full border-[2.5rem] border-white/15"></div>
                         <p class="relative text-5xl md:text-6xl leading-none">{newsletter.title}</p>
                     </div>
                     {newsletter.coverImage && (
-                        <img src={newsletter.coverImage.url} alt={newsletter.coverImage.alt} width={newsletter.coverImage.width} height={newsletter.coverImage.height} data-image-with-fallback class="absolute inset-0 h-full w-full object-cover" />
+                        <img src={newsletter.coverImage.url} alt={newsletter.coverImage.alt} width={newsletter.coverImage.width} height={newsletter.coverImage.height} data-image-with-fallback class="relative z-10 mx-auto block h-auto max-w-full" />
                     )}
                 </div>
             </div>

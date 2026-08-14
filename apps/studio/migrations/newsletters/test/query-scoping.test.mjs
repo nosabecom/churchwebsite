@@ -81,3 +81,42 @@ test('Studio assigns a read-only next issue number within each site', async () =
   assert.match(schema, /custom\(isIssueNumberUniqueWithinSite\)/)
   assert.match(structure, /field: 'issue', direction: 'desc'/)
 })
+
+test('Studio derives a read-only slug from the publication month', async () => {
+  const input = await readFile(
+    path.join(repoRoot, 'apps/studio/components/publication-date-slug-input.tsx'),
+    'utf8',
+  )
+  const schema = await readFile(
+    path.join(repoRoot, 'apps/studio/schemaTypes/documents/newsletter-issue.ts'),
+    'utf8',
+  )
+
+  assert.match(input, /useFormValue\(\['publishedAt'\]\)/)
+  assert.match(input, /\^\\d\{4\}-\\d\{2\}-\\d\{2\}\$/)
+  assert.match(input, /value\.slice\(0, 7\)/)
+  assert.match(input, /set\(\{_type: 'slug', current: generatedSlug\}\)/)
+  assert.match(input, /renderDefault\(\{\.\.\.props, readOnly: true\}\)/)
+  assert.match(schema, /name: 'slug'[\s\S]*?readOnly: true/)
+  assert.match(schema, /source: 'publishedAt'/)
+  assert.match(schema, /components: \{input: PublicationDateSlugInput\}/)
+})
+
+test('newsletter detail covers preserve portrait and landscape aspect ratios', async () => {
+  const detailPages = [
+    'apps/churchmain/src/pages/newsletters/[slug].astro',
+    'apps/womanexcel/src/pages/newsletters/[slug].astro',
+  ]
+
+  for (const detailPage of detailPages) {
+    const source = await readFile(path.join(repoRoot, detailPage), 'utf8')
+    const coverImage = source.match(/<img src=\{newsletter\.coverImage\.url\}[^>]+>/)?.[0]
+
+    assert.ok(coverImage, `${detailPage} must render the cover image`)
+    assert.match(coverImage, /width=\{newsletter\.coverImage\.width\}/)
+    assert.match(coverImage, /height=\{newsletter\.coverImage\.height\}/)
+    assert.match(coverImage, /h-auto/)
+    assert.match(coverImage, /max-w-full/)
+    assert.doesNotMatch(coverImage, /object-cover/)
+  }
+})

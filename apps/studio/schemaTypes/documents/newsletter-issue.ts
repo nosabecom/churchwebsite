@@ -1,5 +1,6 @@
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {defineField, defineType} from 'sanity'
+import {PublicationDateSlugInput} from '../../components/publication-date-slug-input'
 import {isIssueNumberUniqueWithinSite} from '../shared/site-issue-number'
 import {isSlugUniqueWithinSite} from '../shared/site-slug-is-unique'
 import {siteOwnershipField, siteTitle} from '../shared/sites'
@@ -28,8 +29,11 @@ export const newsletterIssue = defineType({
       title: 'Slug',
       type: 'slug',
       group: 'content',
+      description: 'Generated automatically from the publication date.',
+      readOnly: true,
+      components: {input: PublicationDateSlugInput},
       options: {
-        source: 'title',
+        source: 'publishedAt',
         maxLength: 96,
         isUnique: isSlugUniqueWithinSite,
       },
