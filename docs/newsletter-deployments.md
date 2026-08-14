@@ -20,14 +20,19 @@ branches. Never reuse a production hook in the development stack.
 export SANITY_PROJECT_ID=<project-id>
 export SANITY_DATASET=development
 npx sanity@latest blueprints init .
-npx sanity@latest functions env add route-site-deploy \
-  CHURCH_MAIN_VERCEL_DEPLOY_HOOK_URL <church-main-vercel-hook>
-npx sanity@latest functions env add route-site-deploy \
-  WOMAN_EXCEL_VERCEL_DEPLOY_HOOK_URL <woman-excel-vercel-hook>
 npx sanity@latest blueprints plan
 npx sanity@latest blueprints deploy -m "Route development content deployments"
+pnpm blueprint:configure:churchmain
+npx sanity@latest functions env add route-site-deploy \
+  WOMAN_EXCEL_VERCEL_DEPLOY_HOOK_URL <woman-excel-vercel-hook>
 npx sanity@latest blueprints info
 ```
+
+Sanity accepts Function environment variables only after the Function exists, so do not publish a
+development newsletter between the initial Blueprint deployment and the hook configuration. The Church
+Main helper prompts without echoing the URL, validates the Vercel deploy-hook shape, refuses any dataset
+other than `development`, and lists only configured key names afterward. It never writes the secret to
+disk. Woman Excel can use a matching helper when that site's hook is ready.
 
 Repeat with `SANITY_DATASET=production` and the production stack only after review. The local
 `.sanity/blueprint.config.json` selects a stack and is intentionally ignored by Git. Use `--stack` or

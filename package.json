@@ -6,6 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "blueprint:configure:churchmain": "bash scripts/configure-churchmain-development-hook.sh",
     "blueprint:plan": "sanity blueprints plan",
     "dev:studio": "pnpm --filter @churchwebsite/studio dev",
     "d/s": "pnpm --filter @churchwebsite/studio dev",
