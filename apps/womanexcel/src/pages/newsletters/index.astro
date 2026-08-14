@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/layout.astro";
-import { getWomanExcelNewsletters } from "../../lib/newsletters";
+import { getWomanExcelNewsletters, isExternalNewsletterLink } from "../../lib/newsletters";
 
 const newsletters = await getWomanExcelNewsletters();
 
@@ -16,7 +16,6 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     timeZone: "UTC",
 }).format(date);
-const isExternal = (href: string) => /^https?:\/\//.test(href);
 const coverThemes = [
     "bg-blush text-charcoal",
     "bg-orchid-deep text-white",
@@ -75,9 +74,9 @@ const coverThemes = [
                                 <a
                                     class="cew-btn-outline"
                                     href={latest.relatedLink.href}
-                                    target={isExternal(latest.relatedLink.href) ? "_blank" : undefined}
-                                    rel={isExternal(latest.relatedLink.href) ? "noopener noreferrer" : undefined}
-                                >{latest.relatedLink.label ?? "Related link"}{isExternal(latest.relatedLink.href) && <span class="sr-only"> (opens in a new tab)</span>}</a>
+                                    target={isExternalNewsletterLink(latest.relatedLink.href) ? "_blank" : undefined}
+                                    rel={isExternalNewsletterLink(latest.relatedLink.href) ? "noopener noreferrer" : undefined}
+                                >{latest.relatedLink.label ?? "Related link"}{isExternalNewsletterLink(latest.relatedLink.href) && <span class="sr-only"> (opens in a new tab)</span>}</a>
                             )}
                         </div>
                         {archive.length > 0 && (

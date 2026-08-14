@@ -11,7 +11,7 @@
     "dev": "sanity dev",
     "schema:extract": "sanity schemas extract --force --enforce-required-fields",
     "start": "sanity start",
-    "typegen:generate": "sanity typegen generate && cp ../churchmain/src/sanity.types.ts ../womanexcel/src/sanity.types.ts",
+    "typegen:generate": "sanity typegen generate && node scripts/sync-generated-types.mjs",
     "typegen": "pnpm schema:extract && pnpm typegen:generate"
   },
   "keywords": [

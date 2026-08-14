@@ -24,6 +24,19 @@ into Git. Never put a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
 If a future private dataset requires a token, use a server-only variable such as
 `SANITY_API_READ_TOKEN` and keep it out of browser code, logs, and generated static assets.
 
+## Dataset strategy
+
+| Dataset          | Purpose                                                      | Frontend flag                              |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------ |
+| `production`     | Approved content used by production deployments              | Enable only after migration sign-off       |
+| `development`    | Shared integration testing for Studio, migrations, and Astro | May be enabled explicitly in local/dev env |
+| `review-<issue>` | Optional short-lived rehearsal for a risky migration         | Enable only in that issue's preview env    |
+
+The shared `development` dataset is public because the current static frontends use anonymous
+build-time reads. Do not put private, member, subscriber, or unapproved sensitive data in it. Prefer a
+temporary `review-<issue>` dataset when a migration needs destructive rehearsal or isolation from
+other development work, and remove that dataset only after its review evidence is captured.
+
 ## Install and authenticate
 
 Install workspace dependencies from the repository root:
@@ -102,10 +115,11 @@ intermediate `apps/studio/schema.json` file is intentionally ignored.
 
 ## Newsletter migration and cutover
 
-The deterministic tooling in `apps/studio/migrations/newsletters/` inventories the eight committed
-sources, converts Markdown directly to Portable Text, resolves four local cover assets, and validates
-site/slug uniqueness, dates, links, SEO, assets, keys, and source metadata. Its import command accepts
-only an explicitly confirmed review/staging/test dataset and intentionally refuses production.
+The deterministic tooling in `apps/studio/migrations/newsletters/` inventories the committed sources,
+derives expected counts from those directories, converts Markdown directly to Portable Text, resolves
+local cover assets, and validates site/slug uniqueness, dates, links, SEO, assets, keys, and source
+metadata. Its import command accepts only an explicitly confirmed dev/development/review/staging/test
+dataset and rejects production names or segments.
 
 Use this sequence:
 
@@ -116,6 +130,26 @@ Use this sequence:
 5. Compare representative image, no-image, related-link, date, SEO, and Portable Text routes for both sites.
 6. Point a review deployment at that dataset and enable `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`.
 7. After approval, import to the intended dataset using a separately reviewed production procedure, then enable the flag per site.
+
+Use a reusable public `development` dataset for Sanity-backed local/static-build testing. Keep
+production deployment variables pointed at `production`; developers opt into `development` explicitly:
+
+```sh
+SANITY_STUDIO_PROJECT_ID=<project-id> \
+SANITY_STUDIO_DATASET=development \
+pnpm --filter @churchwebsite/studio exec sanity exec \
+  migrations/newsletters/scripts/import-local.mjs --with-user-token -- \
+  --confirm-review-dataset development
+
+PUBLIC_SANITY_PROJECT_ID=<project-id> \
+PUBLIC_SANITY_DATASET=development \
+PUBLIC_SANITY_NEWSLETTERS_ENABLED=true \
+pnpm build:churchmain
+```
+
+Run the equivalent Woman Excel build after the import. This keeps development content and destructive
+migration exercises isolated from production while exercising the same public-query path used by the
+deployments.
 
 When the flag is off, no Sanity newsletter request is made. When it is on, a successful Sanity result
 is authoritative—even an empty result—so an intentionally unpublished issue cannot reappear from

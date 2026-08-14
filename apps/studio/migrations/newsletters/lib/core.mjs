@@ -133,7 +133,10 @@ export async function validateDocuments(documents, root = repoRoot) {
   const errors = []
   const warnings = []
   const pairs = new Set()
+  const sourceKeys = new Set()
   const assets = []
+  const sourceRecords = await extractNewsletters(root)
+  const expectedSourceKeys = new Set(sourceRecords.map((record) => record.sourceKey))
   for (const document of documents) {
     const label = document.migrationMetadata?.sourcePath ?? 'unknown source'
     for (const field of ['site', 'title', 'publishedAt', 'excerpt', 'body'])
@@ -146,9 +149,13 @@ export async function validateDocuments(documents, root = repoRoot) {
       !/^[a-f0-9]{64}$/.test(document.migrationMetadata?.sourceHash ?? '')
     )
       errors.push(`${label}: incomplete migration metadata`)
+    else if (sourceKeys.has(document.migrationMetadata.sourceKey))
+      errors.push(`${label}: duplicate source key ${document.migrationMetadata.sourceKey}`)
+    else sourceKeys.add(document.migrationMetadata.sourceKey)
     if (!['draft', 'published'].includes(document.migrationState))
       errors.push(`${label}: invalid migration state`)
-    if (!/^\d{4}-\d{2}$/.test(document.slug?.current ?? '')) errors.push(`${label}: invalid slug`)
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(document.slug?.current ?? ''))
+      errors.push(`${label}: invalid slug`)
     const pair = `${document.site}:${document.slug?.current}`
     if (pairs.has(pair)) errors.push(`${label}: duplicate site/slug ${pair}`)
     pairs.add(pair)
@@ -213,9 +220,20 @@ export async function validateDocuments(documents, root = repoRoot) {
   const bySite = Object.fromEntries(
     sources.map(({site}) => [site, documents.filter((d) => d.site === site).length]),
   )
-  if (documents.length !== 8) errors.push(`expected 8 documents, found ${documents.length}`)
-  if (bySite.churchMain !== 4 || bySite.womanExcel !== 4)
-    errors.push(`expected 4 documents per site, found ${JSON.stringify(bySite)}`)
+  const expectedBySite = Object.fromEntries(
+    sources.map(({site}) => [site, sourceRecords.filter((record) => record.site === site).length]),
+  )
+  if (documents.length !== sourceRecords.length)
+    errors.push(`expected ${sourceRecords.length} documents, found ${documents.length}`)
+  for (const site of Object.keys(expectedBySite)) {
+    if (bySite[site] !== expectedBySite[site])
+      errors.push(`expected ${expectedBySite[site]} ${site} documents, found ${bySite[site]}`)
+  }
+  for (const sourceKey of expectedSourceKeys)
+    if (!sourceKeys.has(sourceKey)) errors.push(`missing transformed source ${sourceKey}`)
+  for (const sourceKey of sourceKeys)
+    if (!expectedSourceKeys.has(sourceKey))
+      errors.push(`unexpected transformed source ${sourceKey}`)
   return {
     ok: errors.length === 0,
     counts: {total: documents.length, bySite, assets: assets.length},

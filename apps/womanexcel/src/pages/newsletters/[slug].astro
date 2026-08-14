@@ -1,7 +1,11 @@
 ---
 import Layout from "../../layouts/layout.astro";
 import NewsletterBody from "../../components/newsletters/NewsletterBody.astro";
-import { getWomanExcelNewsletters, type Newsletter } from "../../lib/newsletters";
+import {
+    getWomanExcelNewsletters,
+    isExternalNewsletterLink,
+    type Newsletter,
+} from "../../lib/newsletters";
 
 export async function getStaticPaths() {
     const newsletters = await getWomanExcelNewsletters();
@@ -23,7 +27,9 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     timeZone: "UTC",
 }).format(date);
-const isExternal = newsletter.relatedLink ? /^https?:\/\//.test(newsletter.relatedLink.href) : false;
+const isExternal = newsletter.relatedLink
+    ? isExternalNewsletterLink(newsletter.relatedLink.href)
+    : false;
 ---
 
 <Layout title={newsletter.seo?.title ?? newsletter.title} description={newsletter.seo?.description ?? newsletter.excerpt}>

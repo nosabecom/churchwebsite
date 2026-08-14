@@ -1,4 +1,10 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import {
+  getSafeNewsletterHref,
+  isExternalNewsletterHref,
+  loadNewsletterSource,
+  memoizePromise,
+} from "@churchwebsite/newsletters";
 import { createClient } from "@sanity/client";
 import { defineQuery } from "groq";
 
@@ -84,9 +90,11 @@ export interface SanityNewsletterView extends NewsletterBase {
 
 export type Newsletter = MarkdownNewsletterView | SanityNewsletterView;
 
-let newsletterPromise: Promise<Newsletter[]> | undefined;
+function normalizeMarkdownNewsletter(
+  entry: MarkdownNewsletter,
+): MarkdownNewsletterView {
+  const relatedHref = getSafeNewsletterHref(entry.data.link);
 
-function normalizeMarkdownNewsletter(entry: MarkdownNewsletter): MarkdownNewsletterView {
   return {
     source: "markdown",
     entry,
@@ -99,13 +107,13 @@ function normalizeMarkdownNewsletter(entry: MarkdownNewsletter): MarkdownNewslet
       ? {
           url: entry.data.image,
           alt: entry.data.imageAlt,
-          decorative: false,
+          decorative: entry.data.imageAlt.length === 0,
         }
       : undefined,
-    relatedLink: entry.data.link
+    relatedLink: relatedHref
       ? {
           label: "Related link",
-          href: entry.data.link,
+          href: relatedHref,
         }
       : undefined,
     seo: {
@@ -115,25 +123,37 @@ function normalizeMarkdownNewsletter(entry: MarkdownNewsletter): MarkdownNewslet
   };
 }
 
-function normalizeSanityNewsletter(newsletter: SanityNewsletter): SanityNewsletterView | undefined {
-  if (!newsletter.slug || !newsletter.title || !newsletter.publishedAt || !newsletter.excerpt) {
-    console.warn(`Skipping incomplete ${CHURCH_MAIN_SITE} newsletter ${newsletter._id}.`);
+function normalizeSanityNewsletter(
+  newsletter: SanityNewsletter,
+): SanityNewsletterView | undefined {
+  if (
+    !newsletter.slug ||
+    !newsletter.title ||
+    !newsletter.publishedAt ||
+    !newsletter.excerpt
+  ) {
+    console.warn(
+      `Skipping incomplete ${CHURCH_MAIN_SITE} newsletter ${newsletter._id}.`,
+    );
     return undefined;
   }
 
   const coverImage = newsletter.coverImage?.url
     ? {
         url: newsletter.coverImage.url,
-        alt: newsletter.coverImage.decorative ? "" : (newsletter.coverImage.alt ?? ""),
+        alt: newsletter.coverImage.decorative
+          ? ""
+          : (newsletter.coverImage.alt ?? ""),
         decorative: newsletter.coverImage.decorative ?? false,
         width: newsletter.coverImage.dimensions?.width,
         height: newsletter.coverImage.dimensions?.height,
       }
     : undefined;
-  const relatedLink = newsletter.relatedLink?.href
+  const relatedHref = getSafeNewsletterHref(newsletter.relatedLink?.href);
+  const relatedLink = relatedHref
     ? {
-        label: newsletter.relatedLink.label || "Related link",
-        href: newsletter.relatedLink.href,
+        label: newsletter.relatedLink?.label || "Related link",
+        href: relatedHref,
       }
     : undefined;
 
@@ -159,48 +179,53 @@ async function getMarkdownNewsletters(): Promise<Newsletter[]> {
     .map(normalizeMarkdownNewsletter)
     .sort(
       (a, b) =>
-        b.publishedAt.valueOf() - a.publishedAt.valueOf() || a.slug.localeCompare(b.slug),
+        b.publishedAt.valueOf() - a.publishedAt.valueOf() ||
+        a.slug.localeCompare(b.slug),
     );
 }
 
 async function loadNewsletters(): Promise<Newsletter[]> {
   const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
-  const sanityEnabled = import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
+  const sanityConfig =
+    projectId && dataset ? { projectId, dataset } : undefined;
+  const sanityEnabled =
+    import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
 
-  if (!sanityEnabled) {
-    return getMarkdownNewsletters();
-  }
+  return loadNewsletterSource({
+    enabled: sanityEnabled,
+    configured: Boolean(sanityConfig),
+    loadMarkdown: getMarkdownNewsletters,
+    loadSanity: async () => {
+      if (!sanityConfig) throw new Error("Missing Sanity configuration.");
+      const client = createClient({
+        ...sanityConfig,
+        apiVersion: SANITY_API_VERSION,
+        useCdn: false,
+        perspective: "published",
+      });
+      const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
+        CHURCH_MAIN_NEWSLETTERS_QUERY,
+      );
 
-  if (!projectId || !dataset) {
-    console.warn("Church Main Sanity newsletters are enabled but not configured; using Markdown.");
-    return getMarkdownNewsletters();
-  }
-
-  try {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion: SANITY_API_VERSION,
-      useCdn: false,
-      perspective: "published",
-    });
-    const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
-      CHURCH_MAIN_NEWSLETTERS_QUERY,
-    );
-
-    return result
-      .map(normalizeSanityNewsletter)
-      .filter((newsletter): newsletter is SanityNewsletterView => newsletter !== undefined);
-  } catch (error) {
-    console.warn("Unable to fetch Church Main newsletters from Sanity; using Markdown fallback.", error);
-    return getMarkdownNewsletters();
-  }
+      return result
+        .map(normalizeSanityNewsletter)
+        .filter(
+          (newsletter): newsletter is SanityNewsletterView =>
+            newsletter !== undefined,
+        );
+    },
+    missingConfigurationMessage:
+      "Church Main Sanity newsletters are enabled but not configured; using Markdown.",
+    fetchFailureMessage:
+      "Unable to fetch Church Main newsletters from Sanity; using Markdown fallback.",
+  });
 }
 
+const getCachedNewsletters = memoizePromise(loadNewsletters);
+
 export function getNewsletters(): Promise<Newsletter[]> {
-  newsletterPromise ??= loadNewsletters();
-  return newsletterPromise;
+  return getCachedNewsletters();
 }
 
 export async function getLatestNewsletter(): Promise<Newsletter | undefined> {
@@ -212,5 +237,5 @@ export function getNewsletterHref(newsletter: Newsletter | undefined): string {
 }
 
 export function isExternalNewsletterLink(href: string): boolean {
-  return /^https?:\/\//.test(href);
+  return isExternalNewsletterHref(href);
 }

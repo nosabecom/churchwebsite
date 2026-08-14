@@ -43,6 +43,9 @@ importers:
 
   apps/churchmain:
     dependencies:
+      '@churchwebsite/newsletters':
+        specifier: workspace:*
+        version: link:../../packages/newsletters
       '@churchwebsite/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -116,6 +119,9 @@ importers:
 
   apps/studio/migrations/newsletters:
     dependencies:
+      '@churchwebsite/newsletters':
+        specifier: workspace:*
+        version: link:../../../../packages/newsletters
       '@portabletext/markdown':
         specifier: 1.4.6
         version: 1.4.6
@@ -128,6 +134,9 @@ importers:
 
   apps/womanexcel:
     dependencies:
+      '@churchwebsite/newsletters':
+        specifier: workspace:*
+        version: link:../../packages/newsletters
       '@churchwebsite/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -161,6 +170,8 @@ importers:
       vite:
         specifier: 'catalog:'
         version: 8.2.0(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.7)(yaml@2.9.0)
+
+  packages/newsletters: {}
 
   packages/ui:
     dependencies:

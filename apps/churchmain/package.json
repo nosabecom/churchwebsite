@@ -8,6 +8,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@churchwebsite/newsletters": "workspace:*",
     "@churchwebsite/ui": "workspace:*",
     "@sanity/astro": "catalog:",
     "@sanity/client": "catalog:",

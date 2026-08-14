@@ -5,10 +5,12 @@
   "scripts": {
     "extract": "node scripts/extract.mjs",
     "validate": "node scripts/validate.mjs",
+    "verify:build": "node scripts/verify-built-routes.mjs",
     "import:review": "node scripts/import-review.mjs",
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
+    "@churchwebsite/newsletters": "workspace:*",
     "@portabletext/markdown": "1.4.6",
     "@sanity/client": "7.26.2",
     "gray-matter": "4.0.3"

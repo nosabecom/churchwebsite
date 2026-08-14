@@ -1,3 +1,9 @@
+import {
+  getSafeNewsletterHref,
+  isExternalNewsletterHref,
+  loadNewsletterSource,
+  memoizePromise,
+} from "@churchwebsite/newsletters";
 import { createClient } from "@sanity/client";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import { defineQuery } from "groq";
@@ -57,12 +63,20 @@ export type Newsletter = {
 };
 
 function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
-  if (!newsletter.title || !newsletter.slug || !newsletter.publishedAt || !newsletter.excerpt) {
-    console.warn(`Skipping incomplete Woman Excel newsletter ${newsletter._id}`);
+  if (
+    !newsletter.title ||
+    !newsletter.slug ||
+    !newsletter.publishedAt ||
+    !newsletter.excerpt
+  ) {
+    console.warn(
+      `Skipping incomplete Woman Excel newsletter ${newsletter._id}`,
+    );
     return undefined;
   }
 
   const dimensions = newsletter.coverImage?.dimensions;
+  const relatedHref = getSafeNewsletterHref(newsletter.relatedLink?.href);
   return {
     id: newsletter._id,
     title: newsletter.title,
@@ -70,30 +84,27 @@ function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
     publishedAt: new Date(newsletter.publishedAt),
     issue: newsletter.issue ?? undefined,
     excerpt: newsletter.excerpt,
-    coverImage:
-      newsletter.coverImage?.url
-        ? {
-            url: newsletter.coverImage.url,
-            alt: newsletter.coverImage.alt ?? "",
-            decorative: newsletter.coverImage.decorative ?? false,
-            width: dimensions?.width,
-            height: dimensions?.height,
-          }
-        : undefined,
-    relatedLink:
-      newsletter.relatedLink?.href
-        ? {
-            label: newsletter.relatedLink.label ?? undefined,
-            href: newsletter.relatedLink.href,
-          }
-        : undefined,
-    seo:
-      newsletter.seo
-        ? {
-            title: newsletter.seo.title ?? undefined,
-            description: newsletter.seo.description ?? undefined,
-          }
-        : undefined,
+    coverImage: newsletter.coverImage?.url
+      ? {
+          url: newsletter.coverImage.url,
+          alt: newsletter.coverImage.alt ?? "",
+          decorative: newsletter.coverImage.decorative ?? false,
+          width: dimensions?.width,
+          height: dimensions?.height,
+        }
+      : undefined,
+    relatedLink: relatedHref
+      ? {
+          label: newsletter.relatedLink?.label ?? undefined,
+          href: relatedHref,
+        }
+      : undefined,
+    seo: newsletter.seo
+      ? {
+          title: newsletter.seo.title ?? undefined,
+          description: newsletter.seo.description ?? undefined,
+        }
+      : undefined,
     content: { source: "sanity", body: newsletter.body ?? [] },
   };
 }
@@ -102,58 +113,71 @@ async function getMarkdownNewsletters(): Promise<Newsletter[]> {
   const entries = await getCollection("newsletters", ({ data }) => !data.draft);
 
   return entries
-    .map((entry) => ({
-      id: entry.id,
-      title: entry.data.title,
-      slug: entry.id,
-      publishedAt: entry.data.publishedAt,
-      issue: entry.data.issue,
-      excerpt: entry.data.excerpt,
-      coverImage: entry.data.image
-        ? {
-            url: entry.data.image,
-            alt: entry.data.imageAlt,
-            decorative: entry.data.imageAlt.length === 0,
-          }
-        : undefined,
-      relatedLink: entry.data.link ? { href: entry.data.link } : undefined,
-      content: { source: "markdown" as const, entry },
-    }))
+    .map((entry) => {
+      const relatedHref = getSafeNewsletterHref(entry.data.link);
+
+      return {
+        id: entry.id,
+        title: entry.data.title,
+        slug: entry.id,
+        publishedAt: entry.data.publishedAt,
+        issue: entry.data.issue,
+        excerpt: entry.data.excerpt,
+        coverImage: entry.data.image
+          ? {
+              url: entry.data.image,
+              alt: entry.data.imageAlt,
+              decorative: entry.data.imageAlt.length === 0,
+            }
+          : undefined,
+        relatedLink: relatedHref ? { href: relatedHref } : undefined,
+        content: { source: "markdown" as const, entry },
+      };
+    })
     .sort(
       (a, b) =>
-        b.publishedAt.valueOf() - a.publishedAt.valueOf() || a.slug.localeCompare(b.slug),
+        b.publishedAt.valueOf() - a.publishedAt.valueOf() ||
+        a.slug.localeCompare(b.slug),
     );
 }
 
-export async function getWomanExcelNewsletters(): Promise<Newsletter[]> {
-  if (import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED !== "true") {
-    return getMarkdownNewsletters();
-  }
-
+async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
   const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
-  if (!projectId || !dataset) {
-    console.warn("Woman Excel Sanity newsletters are enabled but not configured; using Markdown.");
-    return getMarkdownNewsletters();
-  }
+  const sanityConfig =
+    projectId && dataset ? { projectId, dataset } : undefined;
 
-  try {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion: "2026-08-13",
-      useCdn: false,
-      perspective: "published",
-    });
-    const result = await client.fetch(WOMAN_EXCEL_NEWSLETTERS_QUERY);
-    return result.flatMap((newsletter) => {
-      const normalized = fromSanity(newsletter);
-      return normalized ? [normalized] : [];
-    });
-  } catch (error) {
-    console.warn("Unable to load Woman Excel newsletters from Sanity; using Markdown.", error);
-    return getMarkdownNewsletters();
-  }
+  return loadNewsletterSource({
+    enabled: import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true",
+    configured: Boolean(sanityConfig),
+    loadMarkdown: getMarkdownNewsletters,
+    loadSanity: async () => {
+      if (!sanityConfig) throw new Error("Missing Sanity configuration.");
+      const client = createClient({
+        ...sanityConfig,
+        apiVersion: "2026-08-13",
+        useCdn: false,
+        perspective: "published",
+      });
+      const result = await client.fetch(WOMAN_EXCEL_NEWSLETTERS_QUERY);
+      return result.flatMap((newsletter) => {
+        const normalized = fromSanity(newsletter);
+        return normalized ? [normalized] : [];
+      });
+    },
+    missingConfigurationMessage:
+      "Woman Excel Sanity newsletters are enabled but not configured; using Markdown.",
+    fetchFailureMessage:
+      "Unable to load Woman Excel newsletters from Sanity; using Markdown.",
+  });
+}
+
+export const getWomanExcelNewsletters = memoizePromise(
+  loadWomanExcelNewsletters,
+);
+
+export function isExternalNewsletterLink(href: string): boolean {
+  return isExternalNewsletterHref(href);
 }
 
 export async function renderMarkdownNewsletter(newsletter: Newsletter) {
