@@ -10,7 +10,6 @@
   "dependencies": {
     "@churchwebsite/newsletters": "workspace:*",
     "@churchwebsite/ui": "workspace:*",
-    "@sanity/astro": "catalog:",
     "@sanity/client": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@vercel/analytics": "catalog:",
