@@ -98,19 +98,19 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
                 </article>
             </section>
 
-            <section id="past-editions" aria-labelledby="past-editions-heading" class="scroll-mt-20 bg-sky-950 text-white">
-                <div class="mx-auto w-full max-w-400 px-4 py-16 md:px-8 md:py-24">
-                    <header class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <p class="text-xs font-extrabold tracking-[0.22em] text-sky-200 uppercase md:text-sm">Past editions</p>
-                            <h2 id="past-editions-heading" class="newsletter-serif mt-3 text-4xl text-balance md:text-6xl">Stories worth keeping.</h2>
-                        </div>
-                        <p class="max-w-md text-base leading-relaxed text-sky-100/70 md:text-lg">
-                            Browse pastoral notes, church-family stories, and updates from previous months.
-                        </p>
-                    </header>
+            {archive.length > 0 && (
+                <section id="past-editions" aria-labelledby="past-editions-heading" class="scroll-mt-20 bg-sky-950 text-white">
+                    <div class="mx-auto w-full max-w-400 px-4 py-16 md:px-8 md:py-24">
+                        <header class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                            <div>
+                                <p class="text-xs font-extrabold tracking-[0.22em] text-sky-200 uppercase md:text-sm">Past editions</p>
+                                <h2 id="past-editions-heading" class="newsletter-serif mt-3 text-4xl text-balance md:text-6xl">Stories worth keeping.</h2>
+                            </div>
+                            <p class="max-w-md text-base leading-relaxed text-sky-100/70 md:text-lg">
+                                Browse pastoral notes, church-family stories, and updates from previous months.
+                            </p>
+                        </header>
 
-                    {archive.length > 0 ? (
                         <ol class="-mx-4 flex list-none snap-x gap-6 overflow-x-auto px-4 pb-7 md:-mx-8 md:gap-8 md:px-8">
                             {archive.map((entry, index) => (
                                 <li class="w-60 shrink-0 snap-start md:w-64">
@@ -149,22 +149,14 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
                                 </li>
                             ))}
                         </ol>
-                    ) : (
-                        <div class="rounded-2xl border border-white/20 bg-white/5 px-6 py-10 text-center">
-                            <p class="newsletter-serif text-2xl">Past editions will appear here.</p>
-                            <p class="mt-2 text-sm text-sky-100/65">This is the first published newsletter.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
+                    </div>
+                </section>
+            )}
         </>
     ) : (
         <section class="grid min-h-[32rem] place-items-center bg-slate-100 px-4 py-16 text-center" aria-labelledby="newsletter-empty-heading">
             <div class="max-w-xl rounded-2xl border border-slate-300 bg-white p-8 shadow-xl shadow-sky-950/10 md:p-12">
-                <p class="text-xs font-extrabold tracking-[0.18em] text-red-700 uppercase">Newsletters</p>
-                <h1 id="newsletter-empty-heading" class="newsletter-serif mt-3 text-4xl text-sky-950 md:text-5xl">The first edition is on its way.</h1>
-                <p class="mt-5 text-lg text-slate-700">Please check back soon for news from RCCG Cornerstone Assembly.</p>
-                <a class="mt-8 inline-block rounded-full bg-red-600 px-7 py-3 font-bold text-white hover:bg-red-700" href="/contact">Contact us</a>
+                <h1 id="newsletter-empty-heading" class="newsletter-serif text-4xl text-sky-950 md:text-5xl">Check back soon when there's a new newsletter.</h1>
             </div>
         </section>
     )}

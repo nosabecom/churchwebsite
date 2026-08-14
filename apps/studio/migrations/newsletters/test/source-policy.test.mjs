@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import {readFile} from 'node:fs/promises'
 import test from 'node:test'
 
 import {
@@ -103,6 +104,20 @@ test('a successful empty Sanity response remains authoritative', async () => {
   })
   assert.deepEqual(result, [])
   assert.equal(markdownCalls, 0)
+})
+
+test('newsletter indexes show the production empty state and hide empty archives', async () => {
+  const indexPaths = [
+    new URL('../../../../churchmain/src/pages/newsletters/index.astro', import.meta.url),
+    new URL('../../../../womanexcel/src/pages/newsletters/index.astro', import.meta.url),
+  ]
+
+  for (const indexPath of indexPaths) {
+    const source = await readFile(indexPath, 'utf8')
+    assert.match(source, /Check back soon when there's a new newsletter\./)
+    assert.match(source, /\{archive\.length > 0 && \(\s*<section id="past-editions"/)
+    assert.doesNotMatch(source, /Past editions will appear here\./)
+  }
 })
 
 test('memoized loaders keep a build on one source decision', async () => {
