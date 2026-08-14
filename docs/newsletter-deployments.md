@@ -84,6 +84,19 @@ pnpm typegen:check
 pnpm build
 ```
 
+During a development publish test, stream the deployed Function logs without manually exporting the
+Blueprint variables. Use the command for the current terminal:
+
+```sh
+# Linux or macOS
+pnpm blueprint:logs:development
+```
+
+```powershell
+# Windows PowerShell
+pnpm blueprint:logs:development:windows
+```
+
 ## Recovery and rollback
 
 Inspect failures with `npx sanity@latest functions logs route-site-deploy`. Fix the selected function
