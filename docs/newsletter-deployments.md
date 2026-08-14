@@ -94,8 +94,12 @@ pnpm blueprint:logs:development
 
 ```powershell
 # Windows PowerShell
-pnpm blueprint:logs:development:windows
+pnpm blueprint:watch:development:windows
 ```
+
+The Windows watcher polls the durable Church Main deployment-state document instead of Sanity's
+streaming-log socket, which can terminate unexpectedly on Windows. It reports the latest operation,
+document, hook HTTP status, and any recorded failure while continuing through transient read errors.
 
 ## Recovery and rollback
 

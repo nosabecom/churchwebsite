@@ -10,6 +10,7 @@
     "blueprint:configure:churchmain:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure-churchmain-development-hook.ps1",
     "blueprint:logs:development": "bash scripts/watch-development-deploys.sh",
     "blueprint:logs:development:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/watch-development-deploys.ps1",
+    "blueprint:watch:development:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/watch-development-deploys.ps1",
     "blueprint:plan": "sanity blueprints plan",
     "dev:studio": "pnpm --filter @churchwebsite/studio dev",
     "d/s": "pnpm --filter @churchwebsite/studio dev",

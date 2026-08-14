@@ -1,5 +1,7 @@
 [CmdletBinding()]
 param(
+    [ValidateRange(2, 60)]
+    [int]$IntervalSeconds = 3,
     [switch]$Help
 )
 
@@ -20,23 +22,17 @@ $Dataset = if ($env:SANITY_DATASET) {
 } else {
     "development"
 }
-$StackId = if ($env:SANITY_BLUEPRINT_STACK_ID) {
-    $env:SANITY_BLUEPRINT_STACK_ID
-} else {
-    "ST-ggvrshfmum"
-}
-$FunctionName = "route-site-deploy"
-$RepositoryRoot = Split-Path -Parent $PSScriptRoot
 
 if ($Help) {
     @"
-Watch the newsletter-routing Function in the Sanity development stack.
+Watch Church Main's durable deployment state in the Sanity development dataset.
 
 Usage:
-  pnpm blueprint:logs:development:windows
+  pnpm blueprint:watch:development:windows
+  .\scripts\watch-development-deploys.ps1 -IntervalSeconds 5
 
-The command supplies the required Blueprint project, dataset, and development
-stack automatically. Press Ctrl+C to stop watching.
+This polls Content Lake instead of Sanity's streaming-log socket, which can exit
+unexpectedly on Windows. Press Ctrl+C to stop watching.
 "@ | Write-Host
     exit 0
 }
@@ -47,34 +43,67 @@ if ($Dataset -ne "development") {
 if ($ProjectId -notmatch "^[a-z0-9]+$") {
     throw "SANITY_PROJECT_ID is not a valid project ID."
 }
-if (-not (Get-Command npx -ErrorAction SilentlyContinue)) {
-    throw "npx is required but was not found."
-}
-if (-not (Test-Path (Join-Path $RepositoryRoot "sanity.blueprint.ts"))) {
-    throw "Could not find sanity.blueprint.ts beside this script's repository."
-}
 
-Write-Host "Watching $FunctionName in $ProjectId.$Dataset. Press Ctrl+C to stop."
+$Query = '*[_id == "deploy.state-churchMain"][0]{_rev,status,lastOperation,lastDocumentId,lastTriggeredAt,lastSucceededAt,failedAt,lastError,responseStatus}'
+$EncodedQuery = [Uri]::EscapeDataString($Query)
+$QueryUrl = "https://${ProjectId}.api.sanity.io/v2026-08-14/data/query/${Dataset}?query=${EncodedQuery}"
+$LastSnapshot = $null
 
-$PreviousProjectId = $env:SANITY_PROJECT_ID
-$PreviousDataset = $env:SANITY_DATASET
-try {
-    $env:SANITY_PROJECT_ID = $ProjectId
-    $env:SANITY_DATASET = $Dataset
-    Push-Location $RepositoryRoot
-    try {
-        & npx --yes sanity@latest functions logs `
-            $FunctionName `
-            --stack $StackId `
-            --watch `
-            --utc
-        if ($LASTEXITCODE -ne 0) {
-            exit $LASTEXITCODE
-        }
-    } finally {
-        Pop-Location
+function Get-StateValue {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$State,
+        [Parameter(Mandatory = $true)]
+        [string]$Name,
+        [string]$Fallback = "-"
+    )
+
+    $Property = $State.PSObject.Properties[$Name]
+    if ($null -eq $Property -or $null -eq $Property.Value -or $Property.Value -eq "") {
+        return $Fallback
     }
-} finally {
-    $env:SANITY_PROJECT_ID = $PreviousProjectId
-    $env:SANITY_DATASET = $PreviousDataset
+    return $Property.Value
+}
+
+Write-Host "Watching Church Main deployment state in $ProjectId.$Dataset every $IntervalSeconds seconds."
+Write-Host "Press Ctrl+C to stop."
+
+while ($true) {
+    try {
+        $Response = Invoke-RestMethod `
+            -Uri $QueryUrl `
+            -Method Get `
+            -TimeoutSec 15 `
+            -Headers @{ "User-Agent" = "churchwebsite-development-deploy-watcher" }
+        $State = $Response.result
+        $Snapshot = if ($null -eq $State) {
+            "<none>"
+        } else {
+            $State | ConvertTo-Json -Compress -Depth 4
+        }
+
+        if ($Snapshot -ne $LastSnapshot) {
+            $Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            if ($null -eq $State) {
+                Write-Host "[$Timestamp] No Church Main deployment has run yet. Publish an issue to test it."
+            } else {
+                $Status = Get-StateValue -State $State -Name "status"
+                $Operation = Get-StateValue -State $State -Name "lastOperation"
+                $DocumentId = Get-StateValue -State $State -Name "lastDocumentId"
+                $ResponseStatus = Get-StateValue -State $State -Name "responseStatus"
+                Write-Host "[$Timestamp] status=$Status operation=$Operation document=$DocumentId hookHttp=$ResponseStatus"
+
+                $LastError = Get-StateValue -State $State -Name "lastError" -Fallback ""
+                if ($LastError) {
+                    Write-Warning $LastError
+                }
+            }
+            $LastSnapshot = $Snapshot
+        }
+    } catch {
+        $Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        Write-Warning "[$Timestamp] Could not read deployment state; retrying: $($_.Exception.Message)"
+    }
+
+    Start-Sleep -Seconds $IntervalSeconds
 }
