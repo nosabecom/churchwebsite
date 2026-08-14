@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import {
+  enforceSanityProductionConfig,
   getSafeNewsletterHref,
   isExternalNewsletterHref,
   loadNewsletterSource,
@@ -19,7 +20,7 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
     site == "churchMain" &&
     defined(slug.current) &&
     defined(publishedAt)
-  ] | order(publishedAt desc, _id) {
+  ] | order(publishedAt desc, slug.current asc) {
     _id,
     title,
     "slug": slug.current,
@@ -187,10 +188,19 @@ async function getMarkdownNewsletters(): Promise<Newsletter[]> {
 async function loadNewsletters(): Promise<Newsletter[]> {
   const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
+  const token = import.meta.env.SANITY_API_READ_TOKEN;
   const sanityConfig =
-    projectId && dataset ? { projectId, dataset } : undefined;
+    projectId && dataset ? { projectId, dataset, token } : undefined;
   const sanityEnabled =
     import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
+  const productionSource = enforceSanityProductionConfig({
+    enabled: sanityEnabled,
+    deployment: import.meta.env.VERCEL_ENV,
+    projectId,
+    dataset,
+    token,
+    label: "Church Main",
+  });
 
   return loadNewsletterSource({
     enabled: sanityEnabled,
@@ -203,6 +213,7 @@ async function loadNewsletters(): Promise<Newsletter[]> {
         apiVersion: SANITY_API_VERSION,
         useCdn: false,
         perspective: "published",
+        token: sanityConfig.token,
       });
       const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
         CHURCH_MAIN_NEWSLETTERS_QUERY,
@@ -217,12 +228,16 @@ async function loadNewsletters(): Promise<Newsletter[]> {
     },
     missingConfigurationMessage:
       "Church Main Sanity newsletters are enabled but not configured; using Markdown.",
-    fetchFailureMessage:
-      "Unable to fetch Church Main newsletters from Sanity; using Markdown fallback.",
+    fetchFailureMessage: productionSource
+      ? "Unable to fetch Church Main newsletters from the private production dataset."
+      : "Unable to fetch Church Main newsletters from Sanity; using Markdown fallback.",
+    fallbackOnFetchFailure: !productionSource,
   });
 }
 
-const getCachedNewsletters = memoizePromise(loadNewsletters);
+const getCachedNewsletters = import.meta.env.DEV
+  ? loadNewsletters
+  : memoizePromise(loadNewsletters);
 
 export function getNewsletters(): Promise<Newsletter[]> {
   return getCachedNewsletters();

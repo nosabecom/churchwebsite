@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import {readFile, stat} from 'node:fs/promises'
 import path from 'node:path'
 
+import {normalizeRenderedText, renderedHrefs} from '../lib/artifacts.mjs'
 import {extractNewsletters, repoRoot, transformAll} from '../lib/core.mjs'
 
 const siteDirectories = {
@@ -30,24 +31,30 @@ for (const [site, appDirectory] of Object.entries(siteDirectories)) {
     )
     await stat(detailPath)
     const html = await readFile(detailPath, 'utf8')
-    const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')
+    const text = normalizeRenderedText(html.replace(/<[^>]+>/g, ' '))
     const document = documents.find(
       (candidate) => candidate.site === site && candidate.slug.current === record.slug,
     )
 
     assert.ok(document, `${site}:${record.slug}: transformed document not found`)
-    assert.ok(text.includes(document.title), `${site}:${record.slug}: title missing from build`)
-    assert.ok(text.includes(document.excerpt), `${site}:${record.slug}: excerpt missing from build`)
+    assert.ok(
+      text.includes(normalizeRenderedText(document.title)),
+      `${site}:${record.slug}: title missing from build`,
+    )
+    assert.ok(
+      text.includes(normalizeRenderedText(document.excerpt)),
+      `${site}:${record.slug}: excerpt missing from build`,
+    )
     for (const block of document.body) {
       const blockText = block.children.map((child) => child.text).join('')
       assert.ok(
-        text.includes(blockText),
+        text.includes(normalizeRenderedText(blockText)),
         `${site}:${record.slug}: body block missing: ${blockText}`,
       )
     }
     if (document.relatedLink)
       assert.ok(
-        html.includes(`href="${document.relatedLink.href}"`),
+        renderedHrefs(html).includes(document.relatedLink.href),
         `${site}:${record.slug}: related link missing`,
       )
     if (document.coverImage)

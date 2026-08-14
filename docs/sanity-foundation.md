@@ -12,8 +12,9 @@ The Sanity connection is supplied at build time:
 - Church Main: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
 - Woman Excel: `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`
 - Newsletter cutover per app: `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`
+- Private production read access: server-only `SANITY_API_READ_TOKEN`
 - Studio: `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET`
-- API mode: public, read-only queries with no token
+- API mode: anonymous reads in public development; authenticated read-only builds in private production
 
 ## Environment variables
 
@@ -21,19 +22,21 @@ Copy the `.env.example` files in `apps/churchmain`, `apps/womanexcel`, and `apps
 `.env.local` files, then replace the placeholders. No project ID, dataset name, or token is checked
 into Git. Never put a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
 
-If a future private dataset requires a token, use a server-only variable such as
-`SANITY_API_READ_TOKEN` and keep it out of browser code, logs, and generated static assets.
+The private production dataset requires `SANITY_API_READ_TOKEN`. Create a Viewer/read-only token in
+Sanity Manage and store it only in the server-side environment for each Vercel project. Keep it out
+of browser code, logs, generated static assets, and every `PUBLIC_` or `SANITY_STUDIO_` variable.
 
 ## Dataset strategy
 
-| Dataset          | Purpose                                                      | Frontend flag                              |
-| ---------------- | ------------------------------------------------------------ | ------------------------------------------ |
-| `production`     | Approved content used by production deployments              | Enable only after migration sign-off       |
-| `development`    | Shared integration testing for Studio, migrations, and Astro | May be enabled explicitly in local/dev env |
-| `review-<issue>` | Optional short-lived rehearsal for a risky migration         | Enable only in that issue's preview env    |
+| Dataset          | Purpose                                                          | Frontend flag                              |
+| ---------------- | ---------------------------------------------------------------- | ------------------------------------------ |
+| `production`     | Private approved content used by authenticated production builds | Enable only after migration sign-off       |
+| `development`    | Shared integration testing for Studio, migrations, and Astro     | May be enabled explicitly in local/dev env |
+| `review-<issue>` | Optional short-lived rehearsal for a risky migration             | Enable only in that issue's preview env    |
 
-The shared `development` dataset is public because the current static frontends use anonymous
-build-time reads. Do not put private, member, subscriber, or unapproved sensitive data in it. Prefer a
+The shared `development` dataset is public so local static frontends can use anonymous reads and a
+server-side mutation listener can reload connected Astro browsers after published newsletter changes.
+Do not put private, member, subscriber, or unapproved sensitive data in it. Prefer a
 temporary `review-<issue>` dataset when a migration needs destructive rehearsal or isolation from
 other development work, and remove that dataset only after its review evidence is captured.
 
@@ -91,9 +94,11 @@ origin.
 ## Deployment environment
 
 GitHub Actions reads `SANITY_PROJECT_ID` and `SANITY_DATASET` from repository variables and maps them
-to the frontend and Studio variable names. Church Main and Woman Excel deployment environments
-should define the two `PUBLIC_SANITY_` variables. Without them, the current Git-backed routes still
-build, but the Sanity client integrations remain disabled.
+to the frontend and Studio variable names. Church Main and Woman Excel production environments
+must define both `PUBLIC_SANITY_` connection variables, enable the newsletter flag, and provide a
+server-only `SANITY_API_READ_TOKEN`. Without the public connection variables, the current Git-backed
+routes still build. An enabled production build intentionally fails when its private read token is
+missing or rejected, preventing an empty or stale fallback deployment.
 
 ## Development, TypeGen, and builds
 
@@ -147,13 +152,20 @@ PUBLIC_SANITY_NEWSLETTERS_ENABLED=true \
 pnpm build:churchmain
 ```
 
-Run the equivalent Woman Excel build after the import. This keeps development content and destructive
-migration exercises isolated from production while exercising the same public-query path used by the
-deployments.
+Run the equivalent Woman Excel build after the import. The same variables with `pnpm dev:churchmain`
+or `pnpm dev:womanexcel` also start a site-scoped Sanity listener. A published mutation in
+`development` sends Vite a debounced full-reload message, and development requests bypass the
+build-wide promise cache so the refreshed page fetches current content. The listener is disabled for
+other datasets and when the newsletter flag is off.
+
+This keeps development content and destructive migration exercises isolated from production. The
+production path uses the same queries with a Viewer token supplied only during the static Vercel build.
 
 When the flag is off, no Sanity newsletter request is made. When it is on, a successful Sanity result
 is authoritative—even an empty result—so an intentionally unpublished issue cannot reappear from
-Markdown. Only missing configuration or a fetch failure activates the whole-source Markdown fallback.
+Markdown. Development and review builds retain the whole-source Markdown fallback for missing
+configuration or fetch failures. Private production builds fail closed when the token is missing or a
+Sanity request fails.
 
 ## Deployment
 

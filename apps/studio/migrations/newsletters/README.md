@@ -50,5 +50,6 @@ frontend flag against the development dataset.
 
 After building both frontends, `verify:build` derives the expected routes from the source inventory and
 checks every archive/detail route for its title, excerpt, Portable Text/Markdown body blocks, related
-link, and cover-image source. CI runs this against the default Markdown build; run it again after a
-Sanity-backed development build to exercise both render paths.
+link, and cover-image source. Run it against the default Markdown build and again after a Sanity-backed
+development build to exercise both render paths. These remain explicit pre-push checks; the current CI
+workflow runs TypeGen and the workspace build.

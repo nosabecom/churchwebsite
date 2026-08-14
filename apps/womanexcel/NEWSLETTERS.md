@@ -19,6 +19,11 @@ runs the build, and opens the publishing pull request.
 3. Keep the issue as a Sanity draft while it is reviewed; publish it when approved.
 4. Run `pnpm build:womanexcel` and confirm the archive and detail route before deployment.
 
+When the local Astro server is connected to the `development` dataset with newsletters enabled,
+publishing, unpublishing, or deleting a Woman Excel issue automatically reloads connected browser
+pages. Draft edits do not reload the public-content preview. Production remains statically rendered
+and updates through a Vercel rebuild.
+
 ## Maintain the temporary Markdown fallback
 
 1. Duplicate the newest Markdown file in `src/content/newsletters/`.
@@ -40,16 +45,16 @@ magazine-cover archive beneath it.
 
 ## Frontmatter fields
 
-| Field | Required | Purpose |
-| --- | --- | --- |
-| `title` | Yes | Edition title shown on the feature, cover, and detail page. |
-| `publishedAt` | Yes | Publication date in `YYYY-MM-DD` format; controls sorting. |
-| `excerpt` | Yes | Short summary shown on the newsletter landing page. |
-| `issue` | No | Positive issue number shown as a label. |
-| `image` | No | Root-relative cover image path. A branded type treatment is used when omitted. |
-| `imageAlt` | No | Meaningful alternative text when the image conveys information; use an empty string for decorative artwork. |
-| `link` | No | Related internal path or full external URL. |
-| `draft` | No | Defaults to `false`; set to `true` to keep an entry out of production. |
+| Field         | Required | Purpose                                                                                                     |
+| ------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
+| `title`       | Yes      | Edition title shown on the feature, cover, and detail page.                                                 |
+| `publishedAt` | Yes      | Publication date in `YYYY-MM-DD` format; controls sorting.                                                  |
+| `excerpt`     | Yes      | Short summary shown on the newsletter landing page.                                                         |
+| `issue`       | No       | Positive issue number shown as a label.                                                                     |
+| `image`       | No       | Root-relative cover image path. A branded type treatment is used when omitted.                              |
+| `imageAlt`    | No       | Meaningful alternative text when the image conveys information; use an empty string for decorative artwork. |
+| `link`        | No       | Related internal path or full external URL.                                                                 |
+| `draft`       | No       | Defaults to `false`; set to `true` to keep an entry out of production.                                      |
 
 The Markdown after the frontmatter is the full newsletter body. Standard
 headings, paragraphs, lists, quotations, and links are supported.

@@ -8,5 +8,5 @@ const dataset = process.env.SANITY_STUDIO_DATASET
 
 assertSafeDataset(dataset, confirmedDataset)
 
-const client = getCliClient({apiVersion: SANITY_API_VERSION})
+const client = getCliClient({apiVersion: SANITY_API_VERSION, perspective: 'raw'})
 console.log(JSON.stringify(await runNewsletterImport(client, dataset), null, 2))

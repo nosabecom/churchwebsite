@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict'
+import {readFile} from 'node:fs/promises'
 import test from 'node:test'
 
 import {transformAll} from '../lib/core.mjs'
 import {assertSafeDataset, upsertNewsletter} from '../lib/import.mjs'
+
+test('local imports use the raw perspective so reruns can find drafts', async () => {
+  const source = await readFile(new URL('../scripts/import-local.mjs', import.meta.url), 'utf8')
+  assert.match(source, /getCliClient\(\{[^}]*perspective: 'raw'/)
+})
 
 test('dataset guard accepts explicit non-production targets only', () => {
   for (const dataset of [

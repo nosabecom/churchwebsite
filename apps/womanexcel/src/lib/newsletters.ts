@@ -1,4 +1,5 @@
 import {
+  enforceSanityProductionConfig,
   getSafeNewsletterHref,
   isExternalNewsletterHref,
   loadNewsletterSource,
@@ -87,7 +88,9 @@ function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
     coverImage: newsletter.coverImage?.url
       ? {
           url: newsletter.coverImage.url,
-          alt: newsletter.coverImage.alt ?? "",
+          alt: newsletter.coverImage.decorative
+            ? ""
+            : (newsletter.coverImage.alt ?? ""),
           decorative: newsletter.coverImage.decorative ?? false,
           width: dimensions?.width,
           height: dimensions?.height,
@@ -144,11 +147,22 @@ async function getMarkdownNewsletters(): Promise<Newsletter[]> {
 async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
   const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
+  const token = import.meta.env.SANITY_API_READ_TOKEN;
   const sanityConfig =
-    projectId && dataset ? { projectId, dataset } : undefined;
+    projectId && dataset ? { projectId, dataset, token } : undefined;
+  const sanityEnabled =
+    import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
+  const productionSource = enforceSanityProductionConfig({
+    enabled: sanityEnabled,
+    deployment: import.meta.env.VERCEL_ENV,
+    projectId,
+    dataset,
+    token,
+    label: "Woman Excel",
+  });
 
   return loadNewsletterSource({
-    enabled: import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true",
+    enabled: sanityEnabled,
     configured: Boolean(sanityConfig),
     loadMarkdown: getMarkdownNewsletters,
     loadSanity: async () => {
@@ -158,6 +172,7 @@ async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
         apiVersion: "2026-08-13",
         useCdn: false,
         perspective: "published",
+        token: sanityConfig.token,
       });
       const result = await client.fetch(WOMAN_EXCEL_NEWSLETTERS_QUERY);
       return result.flatMap((newsletter) => {
@@ -167,14 +182,16 @@ async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
     },
     missingConfigurationMessage:
       "Woman Excel Sanity newsletters are enabled but not configured; using Markdown.",
-    fetchFailureMessage:
-      "Unable to load Woman Excel newsletters from Sanity; using Markdown.",
+    fetchFailureMessage: productionSource
+      ? "Unable to fetch Woman Excel newsletters from the private production dataset."
+      : "Unable to load Woman Excel newsletters from Sanity; using Markdown.",
+    fallbackOnFetchFailure: !productionSource,
   });
 }
 
-export const getWomanExcelNewsletters = memoizePromise(
-  loadWomanExcelNewsletters,
-);
+export const getWomanExcelNewsletters = import.meta.env.DEV
+  ? loadWomanExcelNewsletters
+  : memoizePromise(loadWomanExcelNewsletters);
 
 export function isExternalNewsletterLink(href: string): boolean {
   return isExternalNewsletterHref(href);

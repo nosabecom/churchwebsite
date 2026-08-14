@@ -19,5 +19,8 @@
     "sharp": "catalog:",
     "tailwindcss": "catalog:",
     "vite": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:"
   }
 }

@@ -4,6 +4,7 @@ import {tmpdir} from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 
+import {normalizeRenderedText, renderedHrefs} from '../lib/artifacts.mjs'
 import {
   extractNewsletters,
   importableDocument,
@@ -11,6 +12,18 @@ import {
   transformNewsletter,
   validateDocuments,
 } from '../lib/core.mjs'
+
+test('build verification normalizes HTML entities and smart punctuation', () => {
+  const source = `Faith's "test" & grace -- always...`
+  const rendered = '<p>Faith’s “test” &amp; grace – always…</p>'
+  assert.equal(
+    normalizeRenderedText(rendered.replace(/<[^>]+>/g, ' ')),
+    normalizeRenderedText(source),
+  )
+  assert.deepEqual(renderedHrefs('<a href="/contact?topic=faith&amp;source=newsletter">'), [
+    '/contact?topic=faith&source=newsletter',
+  ])
+})
 
 test('extracts all newsletter sources with site-qualified keys', async () => {
   const records = await extractNewsletters()
