@@ -13,7 +13,7 @@ import type { WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT } from "../sanity.types";
 
 export const WOMAN_EXCEL_NEWSLETTERS_QUERY = defineQuery(`
   *[_type == "newsletterIssue" && site == "womanExcel" && defined(slug.current) && defined(publishedAt)]
-    | order(publishedAt desc, slug.current asc) {
+    | order(issue desc, publishedAt desc, slug.current asc) {
       _id,
       title,
       "slug": slug.current,
@@ -139,6 +139,7 @@ async function getMarkdownNewsletters(): Promise<Newsletter[]> {
     })
     .sort(
       (a, b) =>
+        (b.issue ?? 0) - (a.issue ?? 0) ||
         b.publishedAt.valueOf() - a.publishedAt.valueOf() ||
         a.slug.localeCompare(b.slug),
     );

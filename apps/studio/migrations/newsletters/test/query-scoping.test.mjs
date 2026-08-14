@@ -38,6 +38,7 @@ for (const queryFile of queryFiles) {
       assert.doesNotMatch(query, new RegExp(`site == "${queryFile.otherOwner}"`))
       assert.match(query, /defined\(slug\.current\)/)
       assert.match(query, /defined\(publishedAt\)/)
+      assert.match(query, /order\(issue desc, publishedAt desc, slug\.current asc\)/)
     }
   })
 }
@@ -51,4 +52,32 @@ test('Studio slug uniqueness is scoped to site and excludes both document varian
   assert.match(source, /site == \$site/)
   assert.match(source, /slug\.current == \$slug/)
   assert.match(source, /!\(_id in \[\$draftId, \$publishedId\]\)/)
+})
+
+test('Studio assigns a read-only next issue number within each site', async () => {
+  const helper = await readFile(
+    path.join(repoRoot, 'apps/studio/schemaTypes/shared/site-issue-number.ts'),
+    'utf8',
+  )
+  const templates = await readFile(
+    path.join(repoRoot, 'apps/studio/schemaTypes/shared/sites.ts'),
+    'utf8',
+  )
+  const schema = await readFile(
+    path.join(repoRoot, 'apps/studio/schemaTypes/documents/newsletter-issue.ts'),
+    'utf8',
+  )
+  const structure = await readFile(path.join(repoRoot, 'apps/studio/structure/index.ts'), 'utf8')
+
+  assert.match(helper, /site == \$site/)
+  assert.match(helper, /order\(issue desc\)/)
+  assert.match(helper, /\) \+ 1/)
+  assert.match(helper, /perspective: 'raw'/)
+  assert.match(helper, /issue == \$issue/)
+  assert.match(helper, /!\(_id in \[\$draftId, \$publishedId\]\)/)
+  assert.match(templates, /issue: await nextNewsletterIssueNumber\(site\.value, context\)/)
+  assert.match(schema, /name: 'issue'[\s\S]*?readOnly: true/)
+  assert.match(schema, /rule\.required\(\)\.integer\(\)\.positive\(\)/)
+  assert.match(schema, /custom\(isIssueNumberUniqueWithinSite\)/)
+  assert.match(structure, /field: 'issue', direction: 'desc'/)
 })

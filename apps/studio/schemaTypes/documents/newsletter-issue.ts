@@ -1,5 +1,6 @@
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {defineField, defineType} from 'sanity'
+import {isIssueNumberUniqueWithinSite} from '../shared/site-issue-number'
 import {isSlugUniqueWithinSite} from '../shared/site-slug-is-unique'
 import {siteOwnershipField, siteTitle} from '../shared/sites'
 
@@ -53,7 +54,10 @@ export const newsletterIssue = defineType({
       title: 'Issue number',
       type: 'number',
       group: 'content',
-      validation: (rule) => rule.integer().positive(),
+      description: 'Assigned automatically from the highest issue number for the owning site.',
+      readOnly: true,
+      validation: (rule) =>
+        rule.required().integer().positive().custom(isIssueNumberUniqueWithinSite),
     }),
     defineField({
       name: 'excerpt',
@@ -98,9 +102,12 @@ export const newsletterIssue = defineType({
   ],
   orderings: [
     {
-      title: 'Publication date, newest first',
-      name: 'publishedAtDesc',
-      by: [{field: 'publishedAt', direction: 'desc'}],
+      title: 'Issue number, newest first',
+      name: 'issueDesc',
+      by: [
+        {field: 'issue', direction: 'desc'},
+        {field: 'publishedAt', direction: 'desc'},
+      ],
     },
   ],
   preview: {

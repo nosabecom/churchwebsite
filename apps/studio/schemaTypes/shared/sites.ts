@@ -1,4 +1,6 @@
-import {defineField} from 'sanity'
+import {defineField, type InitialValueResolverContext, type Template} from 'sanity'
+
+import {nextNewsletterIssueNumber} from './site-issue-number'
 
 export const sites = [
   {title: 'Church Main', value: 'churchMain'},
@@ -12,11 +14,14 @@ export const siteTitle = (site: unknown) =>
 
 export const newsletterIssueTemplateId = (site: Site) => `newsletterIssue-${site}`
 
-export const newsletterIssueTemplates = sites.map((site) => ({
+export const newsletterIssueTemplates = sites.map((site): Template => ({
   id: newsletterIssueTemplateId(site.value),
   title: `${site.title} newsletter issue`,
   schemaType: 'newsletterIssue',
-  value: {site: site.value},
+  value: async (_parameters: unknown, context: InitialValueResolverContext) => ({
+    site: site.value,
+    issue: await nextNewsletterIssueNumber(site.value, context),
+  }),
 }))
 
 export const siteOwnershipField = defineField({

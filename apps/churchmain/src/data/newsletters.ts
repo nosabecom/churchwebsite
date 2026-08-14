@@ -20,7 +20,7 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
     site == "churchMain" &&
     defined(slug.current) &&
     defined(publishedAt)
-  ] | order(publishedAt desc, slug.current asc) {
+  ] | order(issue desc, publishedAt desc, slug.current asc) {
     _id,
     title,
     "slug": slug.current,
@@ -180,6 +180,7 @@ async function getMarkdownNewsletters(): Promise<Newsletter[]> {
     .map(normalizeMarkdownNewsletter)
     .sort(
       (a, b) =>
+        (b.issue ?? 0) - (a.issue ?? 0) ||
         b.publishedAt.valueOf() - a.publishedAt.valueOf() ||
         a.slug.localeCompare(b.slug),
     );

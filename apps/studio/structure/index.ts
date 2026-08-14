@@ -30,7 +30,10 @@ const siteSection = (S: StructureBuilder, site: (typeof sites)[number]) =>
                 .schemaType('newsletterIssue')
                 .filter('_type == "newsletterIssue" && site == $site')
                 .params({site: site.value})
-                .defaultOrdering([{field: 'publishedAt', direction: 'desc'}])
+                .defaultOrdering([
+                  {field: 'issue', direction: 'desc'},
+                  {field: 'publishedAt', direction: 'desc'},
+                ])
                 .menuItems(S.documentTypeList('newsletterIssue').getMenuItems())
                 .initialValueTemplates([
                   S.initialValueTemplateItem(newsletterIssueTemplateId(site.value)),
