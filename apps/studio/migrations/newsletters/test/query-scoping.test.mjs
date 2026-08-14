@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import path from 'node:path'
+import {pathToFileURL} from 'node:url'
 import test from 'node:test'
 
 import {repoRoot} from '../lib/core.mjs'
@@ -82,21 +83,75 @@ test('Studio assigns a read-only next issue number within each site', async () =
   assert.match(structure, /field: 'issue', direction: 'desc'/)
 })
 
-test('Studio derives a read-only slug from the publication month', async () => {
+test('Studio derives a read-only, collision-safe slug from the publication month', async () => {
   const input = await readFile(
     path.join(repoRoot, 'apps/studio/components/publication-date-slug-input.tsx'),
     'utf8',
   )
+  const helperPath = path.join(repoRoot, 'apps/studio/schemaTypes/shared/newsletter-slug.ts')
+  const helper = await readFile(helperPath, 'utf8')
   const schema = await readFile(
     path.join(repoRoot, 'apps/studio/schemaTypes/documents/newsletter-issue.ts'),
     'utf8',
   )
+  const {resolveNewsletterSlug, slugFromPublicationDate} = await import(
+    pathToFileURL(helperPath).href
+  )
+
+  const lookups = []
+  let availability = {currentTaken: true, baseTaken: true}
+  const client = {
+    async fetch(query, params, options) {
+      lookups.push({query, params, options})
+      return availability
+    },
+  }
+  const collisionSlug = await resolveNewsletterSlug({
+    client,
+    currentSlug: '2026-08',
+    documentId: 'drafts.new-issue',
+    issue: 10,
+    publishedAt: '2026-08-24',
+    site: 'churchMain',
+  })
+  availability = {currentTaken: false, baseTaken: false}
+  const existingSlug = await resolveNewsletterSlug({
+    client,
+    currentSlug: '2026-08',
+    documentId: 'existing-issue',
+    issue: 8,
+    publishedAt: '2026-08-01',
+    site: 'churchMain',
+  })
+  const existingFallbackSlug = await resolveNewsletterSlug({
+    client,
+    currentSlug: '2026-08-10',
+    documentId: 'same-month-issue',
+    issue: 10,
+    publishedAt: '2026-08-24',
+    site: 'churchMain',
+  })
 
   assert.match(input, /useFormValue\(\['publishedAt'\]\)/)
-  assert.match(input, /\^\\d\{4\}-\\d\{2\}-\\d\{2\}\$/)
-  assert.match(input, /value\.slice\(0, 7\)/)
+  assert.match(input, /resolveNewsletterSlug/)
   assert.match(input, /set\(\{_type: 'slug', current: generatedSlug\}\)/)
   assert.match(input, /renderDefault\(\{\.\.\.props, readOnly: true\}\)/)
+  assert.equal(slugFromPublicationDate('2026-08-24'), '2026-08')
+  assert.equal(collisionSlug, '2026-08-10')
+  assert.equal(existingSlug, '2026-08')
+  assert.equal(existingFallbackSlug, '2026-08-10')
+  assert.equal(lookups.length, 3)
+  assert.match(lookups[0].query, /site == \$site/)
+  assert.match(lookups[0].query, /!\(_id in \[\$draftId, \$publishedId\]\)/)
+  assert.deepEqual(lookups[0].params, {
+    baseSlug: '2026-08',
+    currentSlug: '2026-08',
+    draftId: 'drafts.new-issue',
+    publishedId: 'new-issue',
+    site: 'churchMain',
+  })
+  assert.deepEqual(lookups[0].options, {perspective: 'raw'})
+  assert.match(helper, /currentSlug === baseSlug \|\| currentSlug === fallbackSlug/)
   assert.match(schema, /name: 'slug'[\s\S]*?readOnly: true/)
   assert.match(schema, /source: 'publishedAt'/)
   assert.match(schema, /components: \{input: PublicationDateSlugInput\}/)

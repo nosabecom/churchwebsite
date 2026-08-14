@@ -29,7 +29,8 @@ export const newsletterIssue = defineType({
       title: 'Slug',
       type: 'slug',
       group: 'content',
-      description: 'Generated automatically from the publication date.',
+      description:
+        'Generated from the publication month. Another issue in the same month appends its issue number.',
       readOnly: true,
       components: {input: PublicationDateSlugInput},
       options: {
