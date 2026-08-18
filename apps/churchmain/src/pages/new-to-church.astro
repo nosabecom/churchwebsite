@@ -7,10 +7,10 @@ let formUrl: string | undefined;
 if (configuredUrl) {
     try {
         const url = new URL(configuredUrl);
-        const isGoogleForm = url.hostname === "docs.google.com" && url.pathname.includes("/forms/");
+        const isBreezeForm =
+            url.protocol === "https:" && url.hostname.endsWith(".breezechms.com") && url.pathname.startsWith("/form/");
 
-        if (isGoogleForm) {
-            url.searchParams.set("embedded", "true");
+        if (isBreezeForm) {
             formUrl = url.toString();
         }
     } catch {
