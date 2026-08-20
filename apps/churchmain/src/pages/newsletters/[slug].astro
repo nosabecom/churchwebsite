@@ -1,54 +1,63 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/layout.astro";
+import PortableText from "../../components/newsletters/portable-text.astro";
+import {
+    getNewsletters,
+    isExternalNewsletterLink,
+    type Newsletter,
+} from "../../data/newsletters";
 
 export async function getStaticPaths() {
-    const newsletters = await getCollection("newsletters", ({ data }) => !data.draft);
+    const newsletters = await getNewsletters();
 
-    return newsletters.map((entry) => ({
-        params: { slug: entry.id },
-        props: { entry },
+    return newsletters.map((newsletter) => ({
+        params: { slug: newsletter.slug },
+        props: { newsletter },
     }));
 }
 
 interface Props {
-    entry: CollectionEntry<"newsletters">;
+    newsletter: Newsletter;
 }
 
-const { entry } = Astro.props as Props;
-const { Content } = await render(entry);
+const { newsletter } = Astro.props as Props;
 const formatDate = (date: Date) => new Intl.DateTimeFormat("en-CA", {
     month: "long",
     day: "numeric",
     year: "numeric",
     timeZone: "UTC",
 }).format(date);
-const isExternal = entry.data.link ? /^https?:\/\//.test(entry.data.link) : false;
+const isExternal = newsletter.relatedLink
+    ? isExternalNewsletterLink(newsletter.relatedLink.href)
+    : false;
 ---
 
-<Layout title={`${entry.data.title} | RCCG Cornerstone Assembly`} description={entry.data.excerpt}>
+<Layout title={`${newsletter.seo.title} | RCCG Cornerstone Assembly`} description={newsletter.seo.description}>
     <article class="bg-white">
         <header class="border-b border-slate-300 bg-slate-50">
             <div class="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-12 md:px-8 md:py-20 lg:grid-cols-[1fr_0.8fr]">
                 <div class="order-2 lg:order-1">
                     <a class="text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase hover:text-red-600" href="/newsletters">← All newsletters</a>
                     <p class="mt-8 text-xs font-extrabold tracking-[0.18em] text-red-700 uppercase">
-                        {entry.data.issue ? `Issue ${String(entry.data.issue).padStart(2, "0")}` : "Newsletter"}
+                        {newsletter.issue ? `Issue ${String(newsletter.issue).padStart(2, "0")}` : "Newsletter"}
                     </p>
-                    <h1 class="newsletter-serif mt-3 text-5xl leading-none text-balance text-sky-950 md:text-7xl">{entry.data.title}</h1>
-                    <time class="mt-5 block text-xs font-bold tracking-[0.16em] text-slate-500 uppercase" datetime={entry.data.publishedAt.toISOString()}>
-                        {formatDate(entry.data.publishedAt)}
+                    <h1 class="newsletter-serif mt-3 text-5xl leading-none text-balance text-sky-950 md:text-7xl">{newsletter.title}</h1>
+                    <time class="mt-5 block text-xs font-bold tracking-[0.16em] text-slate-500 uppercase" datetime={newsletter.publishedAt.toISOString()}>
+                        {formatDate(newsletter.publishedAt)}
                     </time>
-                    <p class="mt-6 max-w-2xl text-xl leading-relaxed text-slate-700">{entry.data.excerpt}</p>
+                    <p class="mt-6 max-w-2xl text-xl leading-relaxed text-slate-700">{newsletter.excerpt}</p>
                 </div>
 
-                <div class="order-1 aspect-[4/3] overflow-hidden rounded-2xl bg-sky-950 lg:order-2 lg:aspect-[3/4]">
-                    {entry.data.image ? (
-                        <img src={entry.data.image} alt={entry.data.imageAlt} class="h-full w-full object-cover" />
+                <div class:list={[
+                    "order-1 overflow-hidden rounded-2xl bg-sky-950 lg:order-2",
+                    newsletter.coverImage ? "self-center" : "aspect-[4/3] lg:aspect-[3/4]",
+                ]}>
+                    {newsletter.coverImage ? (
+                        <img src={newsletter.coverImage.url} alt={newsletter.coverImage.alt} width={newsletter.coverImage.width} height={newsletter.coverImage.height} class="mx-auto block h-auto max-w-full" />
                     ) : (
                         <div class="relative grid h-full place-items-center overflow-hidden p-8 text-center text-white">
                             <div class="absolute -right-20 top-12 size-64 rounded-full border-[2.5rem] border-white/15"></div>
-                            <p class="newsletter-serif relative text-5xl leading-none md:text-6xl">{entry.data.title}</p>
+                            <p class="newsletter-serif relative text-5xl leading-none md:text-6xl">{newsletter.title}</p>
                         </div>
                     )}
                 </div>
@@ -57,17 +66,17 @@ const isExternal = entry.data.link ? /^https?:\/\//.test(entry.data.link) : fals
 
         <div class="mx-auto w-full max-w-3xl px-4 py-14 md:px-8 md:py-20">
             <div class="newsletter-prose">
-                <Content />
+                <PortableText value={newsletter.body} />
             </div>
 
-            {entry.data.link && (
+            {newsletter.relatedLink && (
                 <p class="mt-12 border-t border-slate-300 pt-8">
                     <a
                         class="inline-block rounded-full border-2 border-sky-900 px-7 py-3 font-bold text-sky-900 transition-colors hover:bg-sky-900 hover:text-white"
-                        href={entry.data.link}
+                        href={newsletter.relatedLink.href}
                         target={isExternal ? "_blank" : undefined}
                         rel={isExternal ? "noopener noreferrer" : undefined}
-                    >Related link</a>
+                    >{newsletter.relatedLink.label}</a>
                 </p>
             )}
         </div>

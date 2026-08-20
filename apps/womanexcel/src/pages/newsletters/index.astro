@@ -1,9 +1,8 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../../layouts/layout.astro";
+import { getWomanExcelNewsletters, isExternalNewsletterLink } from "../../lib/newsletters";
 
-const newsletters = (await getCollection("newsletters", ({ data }) => !data.draft))
-    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const newsletters = await getWomanExcelNewsletters();
 
 const [latest, ...archive] = newsletters;
 const formatMonth = (date: Date) => new Intl.DateTimeFormat("en-CA", {
@@ -17,7 +16,6 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     timeZone: "UTC",
 }).format(date);
-const isExternal = (href: string) => /^https?:\/\//.test(href);
 const coverThemes = [
     "bg-blush text-charcoal",
     "bg-orchid-deep text-white",
@@ -40,12 +38,14 @@ const coverThemes = [
                 <article class="grid lg:grid-cols-2 min-h-[35rem]">
                     <div class="relative min-h-80 lg:min-h-full bg-charcoal overflow-hidden">
                         <div class="absolute inset-0 grid place-items-center bg-orchid-deep text-white p-8 text-center">
-                            <p class="text-5xl md:text-7xl leading-none">{formatMonth(latest.data.publishedAt)}</p>
+                            <p class="text-5xl md:text-7xl leading-none">{formatMonth(latest.publishedAt)}</p>
                         </div>
-                        {latest.data.image && (
+                        {latest.coverImage && (
                             <img
-                                src={latest.data.image}
-                                alt={latest.data.imageAlt}
+                                src={latest.coverImage.url}
+                                alt={latest.coverImage.alt}
+                                width={latest.coverImage.width}
+                                height={latest.coverImage.height}
                                 class="absolute inset-0 z-10 h-full w-full object-cover"
                                 fetchpriority="high"
                                 data-image-with-fallback
@@ -53,30 +53,30 @@ const coverThemes = [
                         )}
 
                         <p class="absolute z-20 bottom-5 left-5 bg-orchid text-white font-sans text-xs uppercase tracking-[0.16em] px-4 py-3">
-                            {latest.data.issue ? `Issue ${String(latest.data.issue).padStart(2, "0")}` : "Latest edition"}
+                            {latest.issue ? `Issue ${String(latest.issue).padStart(2, "0")}` : "Latest edition"}
                         </p>
                     </div>
 
                     <div class="flex flex-col items-start justify-center px-6 py-12 md:px-12 lg:px-16 lg:py-20 border-t lg:border-t-0 lg:border-l border-charcoal">
                         <p class="cew-eyebrow">Our latest newsletter</p>
                         <h1 id="latest-newsletter-heading" class="mt-3 text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-[-0.04em] text-charcoal text-balance">
-                            {latest.data.title}
+                            {latest.title}
                         </h1>
-                        <time class="mt-5 font-sans text-xs uppercase tracking-[0.16em] text-charcoal/80" datetime={latest.data.publishedAt.toISOString()}>
-                            {formatDate(latest.data.publishedAt)}
+                        <time class="mt-5 font-sans text-xs uppercase tracking-[0.16em] text-charcoal/80" datetime={latest.publishedAt.toISOString()}>
+                            {formatDate(latest.publishedAt)}
                         </time>
                         <p class="mt-6 max-w-lg text-lg md:text-xl leading-relaxed text-charcoal/80">
-                            {latest.data.excerpt}
+                            {latest.excerpt}
                         </p>
                         <div class="mt-8 flex flex-wrap items-center gap-4">
-                            <a class="cew-btn" href={`/newsletters/${latest.id}/`}>Read this edition</a>
-                            {latest.data.link && (
+                            <a class="cew-btn" href={`/newsletters/${latest.slug}/`}>Read this edition</a>
+                            {latest.relatedLink && (
                                 <a
                                     class="cew-btn-outline"
-                                    href={latest.data.link}
-                                    target={isExternal(latest.data.link) ? "_blank" : undefined}
-                                    rel={isExternal(latest.data.link) ? "noopener noreferrer" : undefined}
-                                >Related link{isExternal(latest.data.link) && <span class="sr-only"> (opens in a new tab)</span>}</a>
+                                    href={latest.relatedLink.href}
+                                    target={isExternalNewsletterLink(latest.relatedLink.href) ? "_blank" : undefined}
+                                    rel={isExternalNewsletterLink(latest.relatedLink.href) ? "noopener noreferrer" : undefined}
+                                >{latest.relatedLink.label ?? "Related link"}{isExternalNewsletterLink(latest.relatedLink.href) && <span class="sr-only"> (opens in a new tab)</span>}</a>
                             )}
                         </div>
                         {archive.length > 0 && (
@@ -88,34 +88,34 @@ const coverThemes = [
                 </article>
             </section>
 
-            <section id="past-editions" aria-labelledby="past-editions-heading" class="scroll-mt-20 bg-charcoal text-cream">
-                <div class="mx-auto w-full max-w-7xl px-4 md:px-8 py-16 md:py-24">
-                    <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-                        <div>
-                            <p class="font-sans text-xs md:text-sm uppercase tracking-[0.25em] text-blush">Past editions</p>
-                            <h2 id="past-editions-heading" class="mt-3 text-4xl md:text-6xl text-balance">The newsletter archive</h2>
-                        </div>
-                        <p class="max-w-md text-base md:text-lg leading-relaxed text-cream/70">
-                            Previous updates from Cornerstone Excellent Women.
-                        </p>
-                    </header>
+            {archive.length > 0 && (
+                <section id="past-editions" aria-labelledby="past-editions-heading" class="scroll-mt-20 bg-charcoal text-cream">
+                    <div class="mx-auto w-full max-w-7xl px-4 md:px-8 py-16 md:py-24">
+                        <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                            <div>
+                                <p class="font-sans text-xs md:text-sm uppercase tracking-[0.25em] text-blush">Past editions</p>
+                                <h2 id="past-editions-heading" class="mt-3 text-4xl md:text-6xl text-balance">The newsletter archive</h2>
+                            </div>
+                            <p class="max-w-md text-base md:text-lg leading-relaxed text-cream/70">
+                                Previous updates from Cornerstone Excellent Women.
+                            </p>
+                        </header>
 
-                    {archive.length > 0 ? (
                         <ol class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                             {archive.map((entry, index) => (
                                 <li>
-                                    <a class="group block" href={`/newsletters/${entry.id}/`}>
+                                    <a class="group block" href={`/newsletters/${entry.slug}/`}>
                                         <article class="relative aspect-[3/4] overflow-hidden rounded-sm shadow-2xl shadow-black/30 transition-transform duration-300 group-hover:-translate-y-2">
                                             <div class:list={[
                                                 "absolute inset-0",
-                                                entry.data.image ? "bg-orchid-deep text-white" : coverThemes[index % coverThemes.length],
+                                                entry.coverImage ? "bg-orchid-deep text-white" : coverThemes[index % coverThemes.length],
                                             ]}>
                                                 <div class="absolute -right-14 top-12 h-44 w-44 rounded-full border-[1.75rem] border-current opacity-20"></div>
                                                 <div class="absolute inset-0 opacity-15 bg-[repeating-linear-gradient(135deg,transparent_0_1.1rem,currentColor_1.1rem_1.15rem)]"></div>
                                             </div>
-                                            {entry.data.image && (
+                                            {entry.coverImage && (
                                                 <>
-                                                    <img src={entry.data.image} alt={entry.data.imageAlt} loading="lazy" data-image-with-fallback class="absolute inset-0 h-full w-full object-cover" />
+                                                    <img src={entry.coverImage.url} alt={entry.coverImage.alt} width={entry.coverImage.width} height={entry.coverImage.height} loading="lazy" data-image-with-fallback class="absolute inset-0 h-full w-full object-cover" />
                                                     <div class="absolute inset-0 bg-gradient-to-b from-charcoal/10 via-charcoal/10 to-charcoal/90"></div>
                                                 </>
                                             )}
@@ -123,43 +123,35 @@ const coverThemes = [
                                             <div class="absolute inset-0 z-10 flex flex-col justify-between p-6">
                                                 <p class:list={[
                                                     "self-start font-sans text-[0.65rem] uppercase tracking-[0.2em]",
-                                                    entry.data.image ? "rounded-sm bg-charcoal/85 px-2 py-1 text-white" : "",
+                                                    entry.coverImage ? "rounded-sm bg-charcoal/85 px-2 py-1 text-white" : "",
                                                 ]}>
-                                                    Excellent · {formatMonth(entry.data.publishedAt)}
+                                                    Excellent · {formatMonth(entry.publishedAt)}
                                                 </p>
                                                 <div>
-                                                    <h3 class:list={["text-3xl md:text-4xl leading-none text-balance", entry.data.image ? "text-white" : ""]}>
-                                                        {entry.data.title}
+                                                    <h3 class:list={["text-3xl md:text-4xl leading-none text-balance", entry.coverImage ? "text-white" : ""]}>
+                                                        {entry.title}
                                                     </h3>
-                                                    <p class:list={["mt-4 font-sans text-xs", entry.data.image ? "text-white/80" : ""]}>
-                                                        {entry.data.issue ? `Issue ${String(entry.data.issue).padStart(2, "0")}` : "Newsletter"}
+                                                    <p class:list={["mt-4 font-sans text-xs", entry.coverImage ? "text-white/80" : ""]}>
+                                                        {entry.issue ? `Issue ${String(entry.issue).padStart(2, "0")}` : "Newsletter"}
                                                     </p>
                                                 </div>
                                             </div>
                                         </article>
                                         <p class="mt-4 font-sans text-sm text-cream/70 group-hover:text-white transition-colors">
-                                            Read {formatMonth(entry.data.publishedAt)} →
+                                            Read {formatMonth(entry.publishedAt)} →
                                         </p>
                                     </a>
                                 </li>
                             ))}
                         </ol>
-                    ) : (
-                        <div class="rounded-2xl border border-cream/20 bg-cream/5 px-6 py-10 text-center">
-                            <p class="text-2xl">Past editions will appear here.</p>
-                            <p class="mt-2 font-sans text-sm text-cream/70">This is the first published newsletter.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
+                    </div>
+                </section>
+            )}
         </>
     ) : (
         <section class="cew-section min-h-[32rem] flex items-center justify-center text-center" aria-labelledby="newsletter-empty-heading">
             <div class="max-w-xl rounded-3xl border border-sand bg-cream-soft p-8 md:p-12">
-                <p class="cew-eyebrow">Newsletters</p>
-                <h1 id="newsletter-empty-heading" class="mt-3 cew-heading">The first edition is on its way.</h1>
-                <p class="mt-5 cew-prose">Please check back soon for news from Cornerstone Excellent Women.</p>
-                <a class="mt-8 cew-btn" href="/contact">Contact us</a>
+                <h1 id="newsletter-empty-heading" class="cew-heading">Check back soon when there's a new newsletter.</h1>
             </div>
         </section>
     )}

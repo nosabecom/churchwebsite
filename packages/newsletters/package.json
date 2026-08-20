@@ -1,0 +1,11 @@
+{
+  "name": "@churchwebsite/newsletters",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    }
+  }
+}
