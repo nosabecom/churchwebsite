@@ -49,10 +49,6 @@ const sharedDetails = {
     location: "70-3904 Millar Avenue, Saskatoon",
 };
 
-const womenWebsite =
-    import.meta.env.PUBLIC_WOMEN_MINISTRY_URL ??
-    "https://www.rccgcornerstonesk.ca/ministries";
-
 export const ministries: Organization[] = [
     {
         ...sharedDetails,
@@ -69,7 +65,7 @@ export const ministries: Organization[] = [
         kind: "ministry",
         icon: "women",
         pictures: [],
-        websiteUrl: womenWebsite,
+        websiteUrl: "https://www.womanexcel.com/",
         websiteLabel: "Visit ministry website",
     },
     {

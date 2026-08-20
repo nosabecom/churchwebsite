@@ -1,0 +1,195 @@
+import {
+  enforceSanityProductionConfig,
+  getSafeNewsletterHref,
+  isExternalNewsletterHref,
+  memoizePromise,
+} from "@churchwebsite/newsletters";
+import { createClient } from "@sanity/client";
+import { defineQuery } from "groq";
+
+import type { CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT } from "../sanity.types";
+
+const CHURCH_MAIN_SITE = "churchMain";
+const SANITY_API_VERSION = "2026-08-13";
+
+export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
+  *[
+    _type == "newsletterIssue" &&
+    site == "churchMain" &&
+    defined(slug.current) &&
+    defined(publishedAt)
+  ] | order(issue desc, publishedAt desc, slug.current asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    issue,
+    excerpt,
+    coverImage {
+      alt,
+      decorative,
+      "url": asset->url,
+      "dimensions": asset->metadata.dimensions
+    },
+    relatedLink {
+      label,
+      href
+    },
+    seo {
+      title,
+      description
+    },
+    body[] {
+      ...,
+      _type == "editorialImage" => {
+        alt,
+        decorative,
+        "url": asset->url,
+        "dimensions": asset->metadata.dimensions
+      }
+    }
+  }
+`);
+
+type SanityNewsletter = CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT[number];
+
+interface NewsletterBase {
+  slug: string;
+  title: string;
+  publishedAt: Date;
+  excerpt: string;
+  issue?: number;
+  coverImage?: {
+    url: string;
+    alt: string;
+    decorative: boolean;
+    width?: number;
+    height?: number;
+  };
+  relatedLink?: {
+    label: string;
+    href: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+  };
+}
+
+export interface Newsletter extends NewsletterBase {
+  body: SanityNewsletter["body"];
+}
+
+function normalizeSanityNewsletter(
+  newsletter: SanityNewsletter,
+): Newsletter | undefined {
+  if (
+    !newsletter.slug ||
+    !newsletter.title ||
+    !newsletter.publishedAt ||
+    !newsletter.excerpt ||
+    !newsletter.body?.length
+  ) {
+    console.warn(
+      `Skipping incomplete ${CHURCH_MAIN_SITE} newsletter ${newsletter._id}.`,
+    );
+    return undefined;
+  }
+
+  const coverImage = newsletter.coverImage?.url
+    ? {
+        url: newsletter.coverImage.url,
+        alt: newsletter.coverImage.decorative
+          ? ""
+          : (newsletter.coverImage.alt ?? ""),
+        decorative: newsletter.coverImage.decorative ?? false,
+        width: newsletter.coverImage.dimensions?.width,
+        height: newsletter.coverImage.dimensions?.height,
+      }
+    : undefined;
+  const relatedHref = getSafeNewsletterHref(newsletter.relatedLink?.href);
+  const relatedLink = relatedHref
+    ? {
+        label: newsletter.relatedLink?.label || "Related link",
+        href: relatedHref,
+      }
+    : undefined;
+
+  return {
+    slug: newsletter.slug,
+    title: newsletter.title,
+    publishedAt: new Date(newsletter.publishedAt),
+    excerpt: newsletter.excerpt,
+    issue: newsletter.issue ?? undefined,
+    coverImage,
+    relatedLink,
+    seo: {
+      title: newsletter.seo?.title || newsletter.title,
+      description: newsletter.seo?.description || newsletter.excerpt,
+    },
+    body: newsletter.body,
+  };
+}
+
+async function loadNewsletters(): Promise<Newsletter[]> {
+  const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
+  const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
+  const token = import.meta.env.SANITY_API_READ_TOKEN;
+  enforceSanityProductionConfig({
+    deployment: import.meta.env.VERCEL_ENV,
+    projectId,
+    dataset,
+    token,
+    label: "Church Main",
+  });
+
+  if (!projectId || !dataset) {
+    throw new Error(
+      "Church Main requires PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET.",
+    );
+  }
+
+  try {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion: SANITY_API_VERSION,
+      useCdn: false,
+      perspective: "published",
+      token,
+    });
+    const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
+      CHURCH_MAIN_NEWSLETTERS_QUERY,
+    );
+
+    return result
+      .map(normalizeSanityNewsletter)
+      .filter(
+        (newsletter): newsletter is Newsletter => newsletter !== undefined,
+      );
+  } catch (error) {
+    throw new Error("Unable to fetch Church Main newsletters from Sanity.", {
+      cause: error,
+    });
+  }
+}
+
+const getCachedNewsletters = import.meta.env.DEV
+  ? loadNewsletters
+  : memoizePromise(loadNewsletters);
+
+export function getNewsletters(): Promise<Newsletter[]> {
+  return getCachedNewsletters();
+}
+
+export async function getLatestNewsletter(): Promise<Newsletter | undefined> {
+  return (await getNewsletters())[0];
+}
+
+export function getNewsletterHref(newsletter: Newsletter | undefined): string {
+  return newsletter ? `/newsletters/${newsletter.slug}/` : "/newsletters";
+}
+
+export function isExternalNewsletterLink(href: string): boolean {
+  return isExternalNewsletterHref(href);
+}
