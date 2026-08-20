@@ -1,5 +1,4 @@
 ---
-import { render } from "astro:content";
 import Layout from "../../layouts/layout.astro";
 import PortableText from "../../components/newsletters/portable-text.astro";
 import {
@@ -22,9 +21,6 @@ interface Props {
 }
 
 const { newsletter } = Astro.props as Props;
-const Content = newsletter.source === "markdown"
-    ? (await render(newsletter.entry)).Content
-    : undefined;
 const formatDate = (date: Date) => new Intl.DateTimeFormat("en-CA", {
     month: "long",
     day: "numeric",
@@ -70,9 +66,7 @@ const isExternal = newsletter.relatedLink
 
         <div class="mx-auto w-full max-w-3xl px-4 py-14 md:px-8 md:py-20">
             <div class="newsletter-prose">
-                {newsletter.source === "sanity"
-                    ? <PortableText value={newsletter.body} />
-                    : Content && <Content />}
+                <PortableText value={newsletter.body} />
             </div>
 
             {newsletter.relatedLink && (

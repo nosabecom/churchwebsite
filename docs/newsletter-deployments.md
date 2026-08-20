@@ -1,9 +1,9 @@
 # Newsletter deployment automation
 
-Sanity is the canonical newsletter source when `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true`. A published
-newsletter event invokes `functions/route-site-deploy`, which reads the required `site` field and calls
-only that site's Vercel deploy hook. Church Main content cannot deploy Woman Excel, and Woman Excel
-content cannot deploy Church Main.
+Sanity is the only newsletter source. A published newsletter event invokes
+`functions/route-site-deploy`, which reads the required `site` field and calls only that site's Vercel
+deploy hook. Church Main content cannot deploy Woman Excel, and Woman Excel content cannot deploy
+Church Main.
 
 The function is declared in `sanity.blueprint.ts`. Sanity delivers authenticated internal document
 events directly to the function, so there is no public inbound webhook endpoint or signature secret to
@@ -78,15 +78,13 @@ For both datasets and both sites:
    related link, and issue ordering.
 5. Temporarily use an invalid review hook, confirm three attempts and a visible failed state/log, restore
    the hook, then republish and confirm recovery.
-6. Confirm a successful empty Sanity result renders the site's empty state and does not restore
-   Markdown content.
+6. Confirm an empty Sanity result renders the site's empty state.
 
 Run the local coverage before deploying infrastructure:
 
 ```sh
 pnpm --filter @churchwebsite/route-site-deploy test
 pnpm --filter @churchwebsite/route-site-deploy build
-pnpm --filter @churchwebsite/newsletter-migration test
 pnpm typegen:check
 pnpm build
 ```
@@ -125,7 +123,5 @@ npx --yes sanity@latest functions env remove route-site-deploy WOMAN_EXCEL_VERCE
 That stops the Function from calling the URL but does not revoke the Deploy Hook itself. Delete the
 matching hook under the Vercel project's **Settings → Git → Deploy Hooks** to invalidate the URL fully.
 
-Before production parity sign-off, rollback one site by setting its
-`PUBLIC_SANITY_NEWSLETTERS_ENABLED=false` and redeploying that Vercel project. This is an explicit
-whole-source rollback; enabled Sanity builds never fall back automatically. After both production sites
-pass the final QA checklist, remove the Markdown sources and rollback flag in a follow-up change.
+To roll back a faulty frontend deployment, redeploy the previous known-good commit. Leave the Sanity
+dataset and Function configuration intact while the code issue is corrected.

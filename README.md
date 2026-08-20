@@ -88,10 +88,9 @@ pnpm b/s
 
 ## Sanity content
 
-Church Main and Woman Excel share a Sanity Studio. Newsletter routes can read site-scoped Sanity
-content when `PUBLIC_SANITY_NEWSLETTERS_ENABLED=true` is set for that application. Enabled builds fail
-closed if Sanity is missing or unavailable; committed Markdown is used only when the flag is deliberately
-disabled for rollback. Run `pnpm typegen` whenever the Studio schema or a typed GROQ query changes.
+Church Main and Woman Excel share a Sanity Studio. Newsletter routes always read site-scoped Sanity
+content and builds fail closed if Sanity is missing or unavailable. Run `pnpm typegen` whenever the
+Studio schema or a typed GROQ query changes.
 
 See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
 authentication, SSH tunnelling, CORS, architecture, and rollback instructions. See
@@ -182,16 +181,10 @@ assigns the next Church Main issue number and generates the slug from the public
 issue in one month adds its issue number to keep both routes stable. Woman Excel may use the same slug
 without a collision because uniqueness is site-scoped.
 
-The files in `apps/churchmain/src/content/newsletters/` stay committed as rollback content during the
-temporary migration window. To test or update that fallback:
-
-1. Copy an existing Markdown file and name it `YYYY-MM.md`.
-2. Update `title`, `publishedAt`, `excerpt`, and the Markdown body.
-3. Optionally add `issue`, an image path plus meaningful `imageAlt`, or a related `link`.
-4. Keep `draft: true` while the fallback edition is being reviewed; change it to `false` to publish.
-5. Run `pnpm build:churchmain`, review `/newsletters` and the new detail page, then open a pull request.
-
-The newest published date automatically becomes the featured edition and the target of every “View latest newsletter” button. Older editions move to the archive automatically. Entries without images use a branded cover treatment, and an empty collection shows a friendly fallback. Content is loaded during the static build, so there is no client-side loading state or runtime content request to fail.
+The newest published issue automatically becomes the featured edition and the target of every “View
+latest newsletter” button. Older editions move to the archive automatically. Entries without images
+use a branded cover treatment, and an empty Sanity result shows a friendly empty state. Content is
+loaded during the static build, so there is no client-side loading state or runtime content request.
 
 ### Dependency Changes
 

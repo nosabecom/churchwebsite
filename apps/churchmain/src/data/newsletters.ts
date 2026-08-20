@@ -1,9 +1,7 @@
-import { getCollection, type CollectionEntry } from "astro:content";
 import {
   enforceSanityProductionConfig,
   getSafeNewsletterHref,
   isExternalNewsletterHref,
-  loadNewsletterSource,
   memoizePromise,
 } from "@churchwebsite/newsletters";
 import { createClient } from "@sanity/client";
@@ -53,7 +51,6 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
   }
 `);
 
-type MarkdownNewsletter = CollectionEntry<"newsletters">;
 type SanityNewsletter = CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT[number];
 
 interface NewsletterBase {
@@ -79,54 +76,13 @@ interface NewsletterBase {
   };
 }
 
-export interface MarkdownNewsletterView extends NewsletterBase {
-  source: "markdown";
-  entry: MarkdownNewsletter;
-}
-
-export interface SanityNewsletterView extends NewsletterBase {
-  source: "sanity";
+export interface Newsletter extends NewsletterBase {
   body: SanityNewsletter["body"];
-}
-
-export type Newsletter = MarkdownNewsletterView | SanityNewsletterView;
-
-function normalizeMarkdownNewsletter(
-  entry: MarkdownNewsletter,
-): MarkdownNewsletterView {
-  const relatedHref = getSafeNewsletterHref(entry.data.link);
-
-  return {
-    source: "markdown",
-    entry,
-    slug: entry.id,
-    title: entry.data.title,
-    publishedAt: entry.data.publishedAt,
-    excerpt: entry.data.excerpt,
-    issue: entry.data.issue,
-    coverImage: entry.data.image
-      ? {
-          url: entry.data.image,
-          alt: entry.data.imageAlt,
-          decorative: entry.data.imageAlt.length === 0,
-        }
-      : undefined,
-    relatedLink: relatedHref
-      ? {
-          label: "Related link",
-          href: relatedHref,
-        }
-      : undefined,
-    seo: {
-      title: entry.data.title,
-      description: entry.data.excerpt,
-    },
-  };
 }
 
 function normalizeSanityNewsletter(
   newsletter: SanityNewsletter,
-): SanityNewsletterView | undefined {
+): Newsletter | undefined {
   if (
     !newsletter.slug ||
     !newsletter.title ||
@@ -160,7 +116,6 @@ function normalizeSanityNewsletter(
     : undefined;
 
   return {
-    source: "sanity",
     slug: newsletter.slug,
     title: newsletter.title,
     publishedAt: new Date(newsletter.publishedAt),
@@ -176,27 +131,11 @@ function normalizeSanityNewsletter(
   };
 }
 
-async function getMarkdownNewsletters(): Promise<Newsletter[]> {
-  return (await getCollection("newsletters", ({ data }) => !data.draft))
-    .map(normalizeMarkdownNewsletter)
-    .sort(
-      (a, b) =>
-        (b.issue ?? 0) - (a.issue ?? 0) ||
-        b.publishedAt.valueOf() - a.publishedAt.valueOf() ||
-        a.slug.localeCompare(b.slug),
-    );
-}
-
 async function loadNewsletters(): Promise<Newsletter[]> {
   const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
   const token = import.meta.env.SANITY_API_READ_TOKEN;
-  const sanityConfig =
-    projectId && dataset ? { projectId, dataset, token } : undefined;
-  const sanityEnabled =
-    import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
   enforceSanityProductionConfig({
-    enabled: sanityEnabled,
     deployment: import.meta.env.VERCEL_ENV,
     projectId,
     dataset,
@@ -204,35 +143,35 @@ async function loadNewsletters(): Promise<Newsletter[]> {
     label: "Church Main",
   });
 
-  return loadNewsletterSource({
-    enabled: sanityEnabled,
-    configured: Boolean(sanityConfig),
-    loadMarkdown: getMarkdownNewsletters,
-    loadSanity: async () => {
-      if (!sanityConfig) throw new Error("Missing Sanity configuration.");
-      const client = createClient({
-        ...sanityConfig,
-        apiVersion: SANITY_API_VERSION,
-        useCdn: false,
-        perspective: "published",
-        token: sanityConfig.token,
-      });
-      const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
-        CHURCH_MAIN_NEWSLETTERS_QUERY,
-      );
+  if (!projectId || !dataset) {
+    throw new Error(
+      "Church Main requires PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET.",
+    );
+  }
 
-      return result
-        .map(normalizeSanityNewsletter)
-        .filter(
-          (newsletter): newsletter is SanityNewsletterView =>
-            newsletter !== undefined,
-        );
-    },
-    missingConfigurationMessage:
-      "Church Main Sanity newsletters are enabled but PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET are not configured.",
-    fetchFailureMessage:
-      "Unable to fetch Church Main newsletters from Sanity. Disable PUBLIC_SANITY_NEWSLETTERS_ENABLED only for an intentional Markdown rollback.",
-  });
+  try {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion: SANITY_API_VERSION,
+      useCdn: false,
+      perspective: "published",
+      token,
+    });
+    const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
+      CHURCH_MAIN_NEWSLETTERS_QUERY,
+    );
+
+    return result
+      .map(normalizeSanityNewsletter)
+      .filter(
+        (newsletter): newsletter is Newsletter => newsletter !== undefined,
+      );
+  } catch (error) {
+    throw new Error("Unable to fetch Church Main newsletters from Sanity.", {
+      cause: error,
+    });
+  }
 }
 
 const getCachedNewsletters = import.meta.env.DEV

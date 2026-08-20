@@ -10,9 +10,7 @@ const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 const env = loadEnv(process.env.NODE_ENV ?? "development", repositoryRoot, "");
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET;
-const newslettersEnabled = env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
-const watchDevelopment =
-  newslettersEnabled && Boolean(projectId) && dataset === "development";
+const watchDevelopment = Boolean(projectId) && dataset === "development";
 const client = watchDevelopment
   ? createClient({
       projectId,

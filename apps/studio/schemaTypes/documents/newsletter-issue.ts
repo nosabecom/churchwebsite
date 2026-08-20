@@ -13,7 +13,6 @@ export const newsletterIssue = defineType({
   groups: [
     {name: 'content', title: 'Content', default: true},
     {name: 'seo', title: 'SEO'},
-    {name: 'migration', title: 'Migration'},
   ],
   fields: [
     {...siteOwnershipField, group: 'content'},
@@ -101,8 +100,8 @@ export const newsletterIssue = defineType({
       name: 'migrationMetadata',
       title: 'Migration metadata',
       type: 'migrationMetadata',
-      group: 'migration',
       readOnly: true,
+      hidden: true,
     }),
   ],
   orderings: [

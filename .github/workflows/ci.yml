@@ -46,3 +46,6 @@ jobs:
 
       - name: Build all workspaces
         run: pnpm build
+
+      - name: Verify generated routes and internal links
+        run: pnpm verify:routes

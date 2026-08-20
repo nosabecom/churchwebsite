@@ -8,27 +8,6 @@ export function isExternalNewsletterHref(href) {
   return /^https?:\/\//i.test(href);
 }
 
-export async function loadNewsletterSource({
-  enabled,
-  configured,
-  loadSanity,
-  loadMarkdown,
-  missingConfigurationMessage,
-  fetchFailureMessage,
-}) {
-  if (!enabled) return loadMarkdown();
-
-  if (!configured) {
-    throw new Error(missingConfigurationMessage);
-  }
-
-  try {
-    return await loadSanity();
-  } catch (error) {
-    throw new Error(fetchFailureMessage, { cause: error });
-  }
-}
-
 export function memoizePromise(loader) {
   let promise;
   return () => {
@@ -38,15 +17,12 @@ export function memoizePromise(loader) {
 }
 
 export function enforceSanityProductionConfig({
-  enabled,
   deployment,
   projectId,
   dataset,
   token,
   label,
 }) {
-  if (!enabled) return false;
-
   const production = deployment === "production" || dataset === "production";
   if (!production) return false;
 

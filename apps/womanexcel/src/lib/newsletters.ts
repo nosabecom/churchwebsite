@@ -2,11 +2,9 @@ import {
   enforceSanityProductionConfig,
   getSafeNewsletterHref,
   isExternalNewsletterHref,
-  loadNewsletterSource,
   memoizePromise,
 } from "@churchwebsite/newsletters";
 import { createClient } from "@sanity/client";
-import { getCollection, render, type CollectionEntry } from "astro:content";
 import { defineQuery } from "groq";
 
 import type { WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT } from "../sanity.types";
@@ -58,9 +56,7 @@ export type Newsletter = {
   };
   relatedLink?: { label?: string; href: string };
   seo?: { title?: string; description?: string };
-  content:
-    | { source: "sanity"; body: NonNullable<SanityNewsletter["body"]> }
-    | { source: "markdown"; entry: CollectionEntry<"newsletters"> };
+  body: NonNullable<SanityNewsletter["body"]>;
 };
 
 function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
@@ -109,53 +105,15 @@ function fromSanity(newsletter: SanityNewsletter): Newsletter | undefined {
           description: newsletter.seo.description ?? undefined,
         }
       : undefined,
-    content: { source: "sanity", body: newsletter.body },
+    body: newsletter.body,
   };
-}
-
-async function getMarkdownNewsletters(): Promise<Newsletter[]> {
-  const entries = await getCollection("newsletters", ({ data }) => !data.draft);
-
-  return entries
-    .map((entry) => {
-      const relatedHref = getSafeNewsletterHref(entry.data.link);
-
-      return {
-        id: entry.id,
-        title: entry.data.title,
-        slug: entry.id,
-        publishedAt: entry.data.publishedAt,
-        issue: entry.data.issue,
-        excerpt: entry.data.excerpt,
-        coverImage: entry.data.image
-          ? {
-              url: entry.data.image,
-              alt: entry.data.imageAlt,
-              decorative: entry.data.imageAlt.length === 0,
-            }
-          : undefined,
-        relatedLink: relatedHref ? { href: relatedHref } : undefined,
-        content: { source: "markdown" as const, entry },
-      };
-    })
-    .sort(
-      (a, b) =>
-        (b.issue ?? 0) - (a.issue ?? 0) ||
-        b.publishedAt.valueOf() - a.publishedAt.valueOf() ||
-        a.slug.localeCompare(b.slug),
-    );
 }
 
 async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
   const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
   const token = import.meta.env.SANITY_API_READ_TOKEN;
-  const sanityConfig =
-    projectId && dataset ? { projectId, dataset, token } : undefined;
-  const sanityEnabled =
-    import.meta.env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
   enforceSanityProductionConfig({
-    enabled: sanityEnabled,
     deployment: import.meta.env.VERCEL_ENV,
     projectId,
     dataset,
@@ -163,30 +121,31 @@ async function loadWomanExcelNewsletters(): Promise<Newsletter[]> {
     label: "Woman Excel",
   });
 
-  return loadNewsletterSource({
-    enabled: sanityEnabled,
-    configured: Boolean(sanityConfig),
-    loadMarkdown: getMarkdownNewsletters,
-    loadSanity: async () => {
-      if (!sanityConfig) throw new Error("Missing Sanity configuration.");
-      const client = createClient({
-        ...sanityConfig,
-        apiVersion: "2026-08-13",
-        useCdn: false,
-        perspective: "published",
-        token: sanityConfig.token,
-      });
-      const result = await client.fetch(WOMAN_EXCEL_NEWSLETTERS_QUERY);
-      return result.flatMap((newsletter) => {
-        const normalized = fromSanity(newsletter);
-        return normalized ? [normalized] : [];
-      });
-    },
-    missingConfigurationMessage:
-      "Woman Excel Sanity newsletters are enabled but PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET are not configured.",
-    fetchFailureMessage:
-      "Unable to fetch Woman Excel newsletters from Sanity. Disable PUBLIC_SANITY_NEWSLETTERS_ENABLED only for an intentional Markdown rollback.",
-  });
+  if (!projectId || !dataset) {
+    throw new Error(
+      "Woman Excel requires PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET.",
+    );
+  }
+
+  try {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion: "2026-08-13",
+      useCdn: false,
+      perspective: "published",
+      token,
+    });
+    const result = await client.fetch(WOMAN_EXCEL_NEWSLETTERS_QUERY);
+    return result.flatMap((newsletter) => {
+      const normalized = fromSanity(newsletter);
+      return normalized ? [normalized] : [];
+    });
+  } catch (error) {
+    throw new Error("Unable to fetch Woman Excel newsletters from Sanity.", {
+      cause: error,
+    });
+  }
 }
 
 export const getWomanExcelNewsletters = import.meta.env.DEV
@@ -195,9 +154,4 @@ export const getWomanExcelNewsletters = import.meta.env.DEV
 
 export function isExternalNewsletterLink(href: string): boolean {
   return isExternalNewsletterHref(href);
-}
-
-export async function renderMarkdownNewsletter(newsletter: Newsletter) {
-  if (newsletter.content.source !== "markdown") return undefined;
-  return render(newsletter.content.entry);
 }
