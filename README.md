@@ -42,6 +42,8 @@ Copy-Item .env.example .env.development
 
 Fill in `.env.development` once, then start any app normally. Production builds continue to use
 environment variables configured by their deployment platform rather than this development file.
+Development Blueprint helpers and watchers read the same root file. Values already set in the terminal
+take precedence over values from `.env.development`.
 
 Run one app locally:
 

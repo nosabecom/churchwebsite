@@ -20,8 +20,9 @@ The Sanity connection is supplied at build time:
 
 Copy the root `.env.example` to `.env.development` at the repository root, then replace the
 placeholders. Both Astro development servers use that root as their Vite environment directory, and
-the Studio development and TypeGen commands load the same file. No project ID, dataset name, or token
-is checked into Git. Never put a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
+the Studio, TypeGen, Blueprint, hook-configuration, and deployment-watcher commands load the same file.
+No project ID, dataset name, or token is checked into Git. Never put a Sanity token in a `PUBLIC_` or
+`SANITY_STUDIO_` variable.
 
 ```powershell
 Copy-Item .env.example .env.development

@@ -30,7 +30,9 @@ npx sanity@latest blueprints info
 Sanity accepts Function environment variables only after the Function exists, so do not publish a
 development newsletter between the initial Blueprint deployment and the hook configuration. Both site
 helpers prompt without echoing the URL, validate the Vercel deploy-hook shape, refuse any dataset other
-than `development`, and list only configured key names afterward. They never write secrets to disk.
+than `development`, and list only configured key names afterward. When the corresponding hook URL is
+present in the ignored root `.env.development`, the helper reads it instead of prompting and
+synchronizes it to the hosted Function environment.
 
 On Windows PowerShell, configure each site with:
 
