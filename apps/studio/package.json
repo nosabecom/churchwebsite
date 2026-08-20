@@ -1,7 +1,6 @@
 {
   "name": "@churchwebsite/studio",
   "private": true,
-  "type": "module",
   "version": "1.0.0",
   "main": "package.json",
   "license": "UNLICENSED",
@@ -9,17 +8,16 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
-    "dev": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity dev",
-    "schema:extract": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity schemas extract --force --enforce-required-fields",
-    "start": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity start",
-    "typegen:generate": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity typegen generate && node scripts/sync-generated-types.mjs",
+    "dev": "sanity dev",
+    "schema:extract": "sanity schemas extract --force --enforce-required-fields",
+    "start": "sanity start",
+    "typegen:generate": "sanity typegen generate",
     "typegen": "pnpm schema:extract && pnpm typegen:generate"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
-    "@sanity/icons": "^5.2.1",
     "@sanity/vision": "^6.9.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

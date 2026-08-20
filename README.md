@@ -33,18 +33,6 @@ Install dependencies from the repository root:
 pnpm install
 ```
 
-Create one development environment file at the repository root. Church Main, Woman Excel, and the
-Studio all read this file when their development servers start:
-
-```powershell
-Copy-Item .env.example .env.development
-```
-
-Fill in `.env.development` once, then start any app normally. Production builds continue to use
-environment variables configured by their deployment platform rather than this development file.
-Development Blueprint helpers and watchers read the same root file. Values already set in the terminal
-take precedence over values from `.env.development`.
-
 Run one app locally:
 
 ```sh
@@ -86,16 +74,14 @@ pnpm b/w
 pnpm b/s
 ```
 
-## Sanity content
+## Sanity foundation
 
-Church Main and Woman Excel share a Sanity Studio. Newsletter routes always read site-scoped Sanity
-content and builds fail closed if Sanity is missing or unavailable. Run `pnpm typegen` whenever the
-Studio schema or a typed GROQ query changes.
+Church Main and Woman Excel have Sanity client configurations, but their routes still render the
+existing Git-backed content. Run `pnpm typegen` whenever the Studio schema or a typed GROQ query
+changes.
 
 See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment variables,
-authentication, SSH tunnelling, CORS, architecture, and rollback instructions. See
-[`docs/newsletter-deployments.md`](docs/newsletter-deployments.md) for the site-routed Sanity Function,
-Vercel hooks, retries, debounce behavior, and publishing verification.
+authentication, SSH tunnelling, CORS, deployment, architecture, and rollback instructions.
 
 The remaining Sanity commands also have short aliases:
 
@@ -175,16 +161,15 @@ When adding styles:
 
 The designated church communications lead owns newsletter copy and publishing. A developer or repository maintainer reviews and deploys the resulting pull request.
 
-New editions are authored in the Church Main section of Sanity Studio. Select the correct site-owned
-newsletter template, fill the editorial fields, and use Sanity's draft/publish state for review. Studio
-assigns the next Church Main issue number and generates the slug from the publication month. A second
-issue in one month adds its issue number to keep both routes stable. Woman Excel may use the same slug
-without a collision because uniqueness is site-scoped.
+Church Main newsletter entries live in `apps/churchmain/src/content/newsletters/`. To publish an edition:
 
-The newest published issue automatically becomes the featured edition and the target of every “View
-latest newsletter” button. Older editions move to the archive automatically. Entries without images
-use a branded cover treatment, and an empty Sanity result shows a friendly empty state. Content is
-loaded during the static build, so there is no client-side loading state or runtime content request.
+1. Copy an existing Markdown file and name it `YYYY-MM.md`.
+2. Update `title`, `publishedAt`, `excerpt`, and the Markdown body.
+3. Optionally add `issue`, an image path plus meaningful `imageAlt`, or a related `link`.
+4. Keep `draft: true` while the edition is being reviewed; change it to `false` to publish.
+5. Run `pnpm build:churchmain`, review `/newsletters` and the new detail page, then open a pull request.
+
+The newest published date automatically becomes the featured edition and the target of every “View latest newsletter” button. Older editions move to the archive automatically. Entries without images use a branded cover treatment, and an empty collection shows a friendly fallback. Content is loaded during the static build, so there is no client-side loading state or runtime content request to fail.
 
 ### Dependency Changes
 

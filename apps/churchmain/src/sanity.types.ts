@@ -15,107 +15,6 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type NewsletterIssue = {
-  _id: string;
-  _type: "newsletterIssue";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  site: "churchMain" | "womanExcel";
-  title: string;
-  slug: Slug;
-  publishedAt: string;
-  issue: number;
-  excerpt: string;
-  coverImage?: EditorialImage;
-  body: PortableText;
-  relatedLink?: Link;
-  seo?: Seo;
-  migrationMetadata?: MigrationMetadata;
-};
-
-export type MigrationMetadata = {
-  _type: "migrationMetadata";
-  sourceKey: string;
-  sourcePath: string;
-  sourceHash: string;
-};
-
-export type Seo = {
-  _type: "seo";
-  title?: string;
-  description?: string;
-};
-
-export type Link = {
-  _type: "link";
-  label?: string;
-  href: string;
-};
-
-export type PortableText = Array<
-  | {
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h2" | "h3" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<
-        {
-          _key: string;
-        } & Link
-      >;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }
-  | ({
-      _key: string;
-    } & EditorialImage)
->;
-
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
-
-export type EditorialImage = {
-  _type: "editorialImage";
-  asset: SanityImageAssetReference;
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  decorative?: boolean;
-  alt?: string;
-};
-
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
-
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -152,6 +51,22 @@ export type SanityImageMetadata = {
   thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityFileAsset = {
@@ -213,147 +128,21 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
 export type AllSanitySchemaTypes =
-  | NewsletterIssue
-  | MigrationMetadata
-  | Seo
-  | Link
-  | PortableText
-  | SanityImageAssetReference
-  | EditorialImage
-  | Slug
-  | SanityImageCrop
-  | SanityImageHotspot
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
   | SanityImageMetadata
+  | SanityImageHotspot
+  | SanityImageCrop
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset
-  | Geopoint;
-
-// Source: ../churchmain/src/data/newsletters.ts
-// Variable: CHURCH_MAIN_NEWSLETTERS_QUERY
-// Query: *[    _type == "newsletterIssue" &&    site == "churchMain" &&    defined(slug.current) &&    defined(publishedAt)  ] | order(issue desc, publishedAt desc, slug.current asc) {    _id,    title,    "slug": slug.current,    publishedAt,    issue,    excerpt,    coverImage {      alt,      decorative,      "url": asset->url,      "dimensions": asset->metadata.dimensions    },    relatedLink {      label,      href    },    seo {      title,      description    },    body[] {      ...,      _type == "editorialImage" => {        alt,        decorative,        "url": asset->url,        "dimensions": asset->metadata.dimensions      }    }  }
-export type CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  issue: number;
-  excerpt: string;
-  coverImage: {
-    alt: string | null;
-    decorative: boolean | null;
-    url: string;
-    dimensions: SanityImageDimensions | null;
-  } | null;
-  relatedLink: {
-    label: string | null;
-    href: string;
-  } | null;
-  seo: {
-    title: string | null;
-    description: string | null;
-  } | null;
-  body: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h2" | "h3" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<
-          {
-            _key: string;
-          } & Link
-        >;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        _key: string;
-        _type: "editorialImage";
-        asset: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        decorative: boolean | null;
-        alt: string | null;
-        url: string;
-        dimensions: SanityImageDimensions | null;
-      }
-  >;
-}>;
-
-// Source: ../womanexcel/src/lib/newsletters.ts
-// Variable: WOMAN_EXCEL_NEWSLETTERS_QUERY
-// Query: *[_type == "newsletterIssue" && site == "womanExcel" && defined(slug.current) && defined(publishedAt)]    | order(issue desc, publishedAt desc, slug.current asc) {      _id,      title,      "slug": slug.current,      publishedAt,      issue,      excerpt,      coverImage {        alt,        decorative,        "url": asset->url,        "dimensions": asset->metadata.dimensions      },      relatedLink { label, href },      seo { title, description },      body[] {        ...,        _type == "editorialImage" => {          alt,          decorative,          "url": asset->url,          "dimensions": asset->metadata.dimensions        }      }    }
-export type WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  issue: number;
-  excerpt: string;
-  coverImage: {
-    alt: string | null;
-    decorative: boolean | null;
-    url: string;
-    dimensions: SanityImageDimensions | null;
-  } | null;
-  relatedLink: {
-    label: string | null;
-    href: string;
-  } | null;
-  seo: {
-    title: string | null;
-    description: string | null;
-  } | null;
-  body: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h2" | "h3" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<
-          {
-            _key: string;
-          } & Link
-        >;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        _key: string;
-        _type: "editorialImage";
-        asset: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        decorative: boolean | null;
-        alt: string | null;
-        url: string;
-        dimensions: SanityImageDimensions | null;
-      }
-  >;
-}>;
-
-// Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
-  interface SanityQueries {
-    '\n  *[\n    _type == "newsletterIssue" &&\n    site == "churchMain" &&\n    defined(slug.current) &&\n    defined(publishedAt)\n  ] | order(issue desc, publishedAt desc, slug.current asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    issue,\n    excerpt,\n    coverImage {\n      alt,\n      decorative,\n      "url": asset->url,\n      "dimensions": asset->metadata.dimensions\n    },\n    relatedLink {\n      label,\n      href\n    },\n    seo {\n      title,\n      description\n    },\n    body[] {\n      ...,\n      _type == "editorialImage" => {\n        alt,\n        decorative,\n        "url": asset->url,\n        "dimensions": asset->metadata.dimensions\n      }\n    }\n  }\n': CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT;
-    '\n  *[_type == "newsletterIssue" && site == "womanExcel" && defined(slug.current) && defined(publishedAt)]\n    | order(issue desc, publishedAt desc, slug.current asc) {\n      _id,\n      title,\n      "slug": slug.current,\n      publishedAt,\n      issue,\n      excerpt,\n      coverImage {\n        alt,\n        decorative,\n        "url": asset->url,\n        "dimensions": asset->metadata.dimensions\n      },\n      relatedLink { label, href },\n      seo { title, description },\n      body[] {\n        ...,\n        _type == "editorialImage" => {\n          alt,\n          decorative,\n          "url": asset->url,\n          "dimensions": asset->metadata.dimensions\n        }\n      }\n    }\n': WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT;
-  }
-}
+  | Geopoint
+  | Slug;

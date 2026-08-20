@@ -3,24 +3,19 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "node --env-file-if-exists=../../.env.development ./node_modules/astro/bin/astro.mjs dev",
+    "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
-    "@churchwebsite/newsletters": "workspace:*",
     "@churchwebsite/ui": "workspace:*",
+    "@sanity/astro": "catalog:",
     "@sanity/client": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@vercel/analytics": "catalog:",
     "astro": "catalog:",
-    "astro-portabletext": "catalog:",
-    "groq": "catalog:",
     "sharp": "catalog:",
     "tailwindcss": "catalog:",
     "vite": "catalog:"
-  },
-  "devDependencies": {
-    "@types/node": "catalog:"
   }
 }
