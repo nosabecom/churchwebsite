@@ -100,10 +100,10 @@ origin.
 
 ## Deployment environment
 
-GitHub Actions reads `SANITY_PROJECT_ID` and `SANITY_DATASET` from repository variables and maps them
-to the frontend and Studio variable names. Church Main and Woman Excel production environments must
-define both `PUBLIC_SANITY_` connection variables and provide a server-only
-`SANITY_API_READ_TOKEN`. Every build fails if its Sanity connection is missing or rejected.
+GitHub Actions reads `SANITY_PROJECT_ID` from a repository variable and builds against the public
+`development` dataset so pull requests never require a production secret. Church Main and Woman Excel
+production environments must define both `PUBLIC_SANITY_` connection variables and provide a
+server-only `SANITY_API_READ_TOKEN`. Every build fails if its Sanity connection is missing or rejected.
 
 ## Development, TypeGen, and builds
 
