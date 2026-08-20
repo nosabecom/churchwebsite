@@ -1,0 +1,23 @@
+---
+import { PortableText } from "astro-portabletext";
+
+import type { SanityNewsletterView } from "../../data/newsletters";
+import BodyImage from "./body-image.astro";
+import LinkMark from "./link-mark.astro";
+
+interface Props {
+  value: SanityNewsletterView["body"];
+}
+
+const { value } = Astro.props;
+const components = {
+  type: {
+    editorialImage: BodyImage,
+  },
+  mark: {
+    link: LinkMark,
+  },
+};
+---
+
+{value && <PortableText value={value} components={components} />}

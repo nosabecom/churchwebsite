@@ -1,0 +1,26 @@
+---
+interface Props {
+  node: {
+    url?: string | null;
+    alt?: string | null;
+    decorative?: boolean | null;
+    dimensions?: { width?: number | null; height?: number | null } | null;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+{
+  node.url && (
+    <figure>
+      <img
+        src={node.url}
+        alt={node.decorative ? "" : (node.alt ?? "")}
+        width={node.dimensions?.width}
+        height={node.dimensions?.height}
+        loading="lazy"
+      />
+    </figure>
+  )
+}

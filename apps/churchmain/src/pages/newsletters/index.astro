@@ -1,9 +1,8 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../../layouts/layout.astro";
+import { getNewsletters, isExternalNewsletterLink } from "../../data/newsletters";
 
-const newsletters = (await getCollection("newsletters", ({ data }) => !data.draft))
-    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const newsletters = await getNewsletters();
 
 const [latest, ...archive] = newsletters;
 const formatMonth = (date: Date) => new Intl.DateTimeFormat("en-CA", {
@@ -17,7 +16,6 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     timeZone: "UTC",
 }).format(date);
-const isExternal = (href: string) => /^https?:\/\//.test(href);
 const coverThemes = [
     "bg-sky-200 text-sky-950",
     "bg-red-700 text-white",
@@ -43,49 +41,51 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
 
                 <article id="latest" class="grid min-h-[35rem] lg:grid-cols-[48%_52%]">
                     <div class="relative min-h-80 overflow-hidden bg-sky-950 lg:min-h-full">
-                        {latest.data.image ? (
+                        {latest.coverImage ? (
                             <img
-                                src={latest.data.image}
-                                alt={latest.data.imageAlt}
+                                src={latest.coverImage.url}
+                                alt={latest.coverImage.alt}
+                                width={latest.coverImage.width}
+                                height={latest.coverImage.height}
                                 class="absolute inset-0 h-full w-full object-cover"
                                 fetchpriority="high"
                             />
                         ) : (
                             <div class="absolute inset-0 grid place-items-center overflow-hidden bg-sky-900 p-8 text-center text-white">
                                 <div class="absolute -right-20 top-12 size-72 rounded-full border-[3rem] border-white/10"></div>
-                                <p class="newsletter-serif relative text-5xl leading-none md:text-7xl">{formatMonth(latest.data.publishedAt)}</p>
+                                <p class="newsletter-serif relative text-5xl leading-none md:text-7xl">{formatMonth(latest.publishedAt)}</p>
                             </div>
                         )}
 
                         <p class="absolute bottom-5 left-5 bg-red-600 px-4 py-3 text-xs font-extrabold tracking-[0.16em] text-white uppercase">
-                            {latest.data.issue ? `Issue ${String(latest.data.issue).padStart(2, "0")}` : "Latest edition"}
+                            {latest.issue ? `Issue ${String(latest.issue).padStart(2, "0")}` : "Latest edition"}
                         </p>
                     </div>
 
                     <div class="flex flex-col items-start justify-center border-t border-sky-950 px-6 py-12 md:px-12 lg:border-t-0 lg:border-l lg:px-16 lg:py-20">
                         <p class="text-xs font-extrabold tracking-[0.2em] text-red-700 uppercase">Our latest newsletter</p>
                         <h1 id="latest-newsletter-heading" class="newsletter-serif mt-3 text-5xl leading-[0.95] tracking-[-0.04em] text-balance text-sky-950 md:text-7xl lg:text-8xl">
-                            {latest.data.title}
+                            {latest.title}
                         </h1>
-                        <time class="mt-5 text-xs font-bold tracking-[0.16em] text-slate-500 uppercase" datetime={latest.data.publishedAt.toISOString()}>
-                            {formatDate(latest.data.publishedAt)}
+                        <time class="mt-5 text-xs font-bold tracking-[0.16em] text-slate-500 uppercase" datetime={latest.publishedAt.toISOString()}>
+                            {formatDate(latest.publishedAt)}
                         </time>
                         <p class="mt-6 max-w-lg text-lg leading-relaxed text-slate-700 md:text-xl">
-                            {latest.data.excerpt}
+                            {latest.excerpt}
                         </p>
 
                         <div class="mt-8 flex flex-wrap items-center gap-4">
                             <a
                                 class="rounded-full bg-red-600 px-7 py-3 font-bold text-white transition-colors hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600"
-                                href={`/newsletters/${latest.id}/`}
+                                href={`/newsletters/${latest.slug}/`}
                             >View latest newsletter</a>
-                            {latest.data.link && (
+                            {latest.relatedLink && (
                                 <a
                                     class="rounded-full border-2 border-sky-900 px-7 py-3 font-bold text-sky-900 transition-colors hover:bg-sky-900 hover:text-white"
-                                    href={latest.data.link}
-                                    target={isExternal(latest.data.link) ? "_blank" : undefined}
-                                    rel={isExternal(latest.data.link) ? "noopener noreferrer" : undefined}
-                                >Related link</a>
+                                    href={latest.relatedLink.href}
+                                    target={isExternalNewsletterLink(latest.relatedLink.href) ? "_blank" : undefined}
+                                    rel={isExternalNewsletterLink(latest.relatedLink.href) ? "noopener noreferrer" : undefined}
+                                >{latest.relatedLink.label}</a>
                             )}
                         </div>
 
@@ -98,27 +98,27 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
                 </article>
             </section>
 
-            <section id="past-editions" aria-labelledby="past-editions-heading" class="scroll-mt-20 bg-sky-950 text-white">
-                <div class="mx-auto w-full max-w-400 px-4 py-16 md:px-8 md:py-24">
-                    <header class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <p class="text-xs font-extrabold tracking-[0.22em] text-sky-200 uppercase md:text-sm">Past editions</p>
-                            <h2 id="past-editions-heading" class="newsletter-serif mt-3 text-4xl text-balance md:text-6xl">Stories worth keeping.</h2>
-                        </div>
-                        <p class="max-w-md text-base leading-relaxed text-sky-100/70 md:text-lg">
-                            Browse pastoral notes, church-family stories, and updates from previous months.
-                        </p>
-                    </header>
+            {archive.length > 0 && (
+                <section id="past-editions" aria-labelledby="past-editions-heading" class="scroll-mt-20 bg-sky-950 text-white">
+                    <div class="mx-auto w-full max-w-400 px-4 py-16 md:px-8 md:py-24">
+                        <header class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                            <div>
+                                <p class="text-xs font-extrabold tracking-[0.22em] text-sky-200 uppercase md:text-sm">Past editions</p>
+                                <h2 id="past-editions-heading" class="newsletter-serif mt-3 text-4xl text-balance md:text-6xl">Stories worth keeping.</h2>
+                            </div>
+                            <p class="max-w-md text-base leading-relaxed text-sky-100/70 md:text-lg">
+                                Browse pastoral notes, church-family stories, and updates from previous months.
+                            </p>
+                        </header>
 
-                    {archive.length > 0 ? (
                         <ol class="-mx-4 flex list-none snap-x gap-6 overflow-x-auto px-4 pb-7 md:-mx-8 md:gap-8 md:px-8">
                             {archive.map((entry, index) => (
                                 <li class="w-60 shrink-0 snap-start md:w-64">
-                                    <a class="group block" href={`/newsletters/${entry.id}/`}>
+                                    <a class="group block" href={`/newsletters/${entry.slug}/`}>
                                         <article class="relative aspect-[3/4] overflow-hidden rounded-sm shadow-[0.8rem_0.8rem_0_rgb(0_0_0_/_0.22)] transition-transform duration-300 group-hover:-translate-y-2 motion-reduce:transition-none">
-                                            {entry.data.image ? (
+                                            {entry.coverImage ? (
                                                 <>
-                                                    <img src={entry.data.image} alt={entry.data.imageAlt} loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+                                                    <img src={entry.coverImage.url} alt={entry.coverImage.alt} width={entry.coverImage.width} height={entry.coverImage.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
                                                     <div class="absolute inset-0 bg-gradient-to-b from-sky-950/10 via-sky-950/10 to-sky-950/95"></div>
                                                 </>
                                             ) : (
@@ -128,43 +128,35 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
                                                 </div>
                                             )}
 
-                                            <div class:list={["absolute inset-0 z-10 flex flex-col justify-between p-6", entry.data.image ? "text-white" : coverTextThemes[index % coverTextThemes.length]]}>
+                                            <div class:list={["absolute inset-0 z-10 flex flex-col justify-between p-6", entry.coverImage ? "text-white" : coverTextThemes[index % coverTextThemes.length]]}>
                                                 <p class="text-[0.65rem] font-extrabold tracking-[0.2em] uppercase">
-                                                    Cornerstone · {formatMonth(entry.data.publishedAt)}
+                                                    Cornerstone · {formatMonth(entry.publishedAt)}
                                                 </p>
                                                 <div>
                                                     <h3 class="newsletter-serif text-3xl leading-none text-balance md:text-4xl">
-                                                        {entry.data.title}
+                                                        {entry.title}
                                                     </h3>
-                                                    <p class:list={["mt-4 text-xs font-bold", entry.data.image ? "text-white/75" : "opacity-70"]}>
-                                                        {entry.data.issue ? `Issue ${String(entry.data.issue).padStart(2, "0")}` : "Newsletter"}
+                                                    <p class:list={["mt-4 text-xs font-bold", entry.coverImage ? "text-white/75" : "opacity-70"]}>
+                                                        {entry.issue ? `Issue ${String(entry.issue).padStart(2, "0")}` : "Newsletter"}
                                                     </p>
                                                 </div>
                                             </div>
                                         </article>
                                         <p class="mt-5 text-sm font-bold text-sky-100/65 transition-colors group-hover:text-white">
-                                            Read {formatMonth(entry.data.publishedAt)} →
+                                            Read {formatMonth(entry.publishedAt)} →
                                         </p>
                                     </a>
                                 </li>
                             ))}
                         </ol>
-                    ) : (
-                        <div class="rounded-2xl border border-white/20 bg-white/5 px-6 py-10 text-center">
-                            <p class="newsletter-serif text-2xl">Past editions will appear here.</p>
-                            <p class="mt-2 text-sm text-sky-100/65">This is the first published newsletter.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
+                    </div>
+                </section>
+            )}
         </>
     ) : (
         <section class="grid min-h-[32rem] place-items-center bg-slate-100 px-4 py-16 text-center" aria-labelledby="newsletter-empty-heading">
             <div class="max-w-xl rounded-2xl border border-slate-300 bg-white p-8 shadow-xl shadow-sky-950/10 md:p-12">
-                <p class="text-xs font-extrabold tracking-[0.18em] text-red-700 uppercase">Newsletters</p>
-                <h1 id="newsletter-empty-heading" class="newsletter-serif mt-3 text-4xl text-sky-950 md:text-5xl">The first edition is on its way.</h1>
-                <p class="mt-5 text-lg text-slate-700">Please check back soon for news from RCCG Cornerstone Assembly.</p>
-                <a class="mt-8 inline-block rounded-full bg-red-600 px-7 py-3 font-bold text-white hover:bg-red-700" href="/contact">Contact us</a>
+                <h1 id="newsletter-empty-heading" class="newsletter-serif text-4xl text-sky-950 md:text-5xl">Check back soon when there's a new newsletter.</h1>
             </div>
         </section>
     )}
