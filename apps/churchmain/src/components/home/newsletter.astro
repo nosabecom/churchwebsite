@@ -1,8 +1,10 @@
 ---
-import { getLatestNewsletter, getNewsletterHref } from "../../data/newsletters";
+import { getCollection } from "astro:content";
 
 // No backend is wired up yet, so the form posts to itself and does nothing.
-const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
+const latestNewsletter = (await getCollection("newsletters", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())[0];
+const latestNewsletterHref = latestNewsletter ? `/newsletters/${latestNewsletter.id}/` : "/newsletters";
 ---
 
 <section class="px-4 pb-16" aria-labelledby="newsletter-heading">

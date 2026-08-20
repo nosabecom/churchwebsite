@@ -30,11 +30,5 @@ tmp
 # claude shi
 .claude/
 
-# local Sanity Blueprint stack binding
-.sanity/blueprint.config.json
-
-# local Sanity Function deployment bundles
-functions/**/.build/
-
 # agent shi
 design/

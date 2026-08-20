@@ -1,48 +1,39 @@
 // @ts-check
-import { createSanityDevReloadPlugin } from "@churchwebsite/newsletters";
-import { createClient } from "@sanity/client";
 import { defineConfig } from "astro/config";
+import sanity from "@sanity/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
-import { fileURLToPath } from "node:url";
 
-const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
-const env = loadEnv(process.env.NODE_ENV ?? "development", repositoryRoot, "");
-const projectId = env.PUBLIC_SANITY_PROJECT_ID;
-const dataset = env.PUBLIC_SANITY_DATASET;
-const watchDevelopment = Boolean(projectId) && dataset === "development";
-const client = watchDevelopment
-  ? createClient({
-      projectId,
-      dataset,
-      apiVersion: "2026-08-13",
-      useCdn: false,
-      token: env.SANITY_API_READ_TOKEN || undefined,
-    })
-  : undefined;
+const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
+  process.env.NODE_ENV ?? "development",
+  process.cwd(),
+  "",
+);
+
+const sanityIntegrations =
+  PUBLIC_SANITY_PROJECT_ID && PUBLIC_SANITY_DATASET
+    ? [
+        sanity({
+          projectId: PUBLIC_SANITY_PROJECT_ID,
+          dataset: PUBLIC_SANITY_DATASET,
+          useCdn: false,
+        }),
+      ]
+    : [];
 
 // https://astro.build/config
 export default defineConfig({
   server: {
     host: "127.0.0.1",
-    port: 1234,
+    port: 4321,
   },
 
   vite: {
-    envDir: repositoryRoot,
-    plugins: [
-      tailwindcss(),
-      createSanityDevReloadPlugin({
-        enabled: watchDevelopment,
-        client,
-        query:
-          '*[_type == "newsletterIssue" && site == $site && !(_id in path("drafts.**"))]',
-        params: { site: "womanExcel" },
-        label: "Woman Excel",
-      }),
-    ],
+    plugins: [tailwindcss()],
     server: {
       strictPort: true,
     },
   },
+
+  integrations: sanityIntegrations,
 });
