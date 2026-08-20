@@ -2,6 +2,9 @@
   "name": "@churchwebsite/newsletters",
   "type": "module",
   "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
   "exports": {
     ".": {
       "types": "./src/index.d.ts",

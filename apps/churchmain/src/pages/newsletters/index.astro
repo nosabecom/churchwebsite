@@ -1,8 +1,10 @@
 ---
+import { getSafeBreezeFormHref } from "@churchwebsite/newsletters";
 import Layout from "../../layouts/layout.astro";
 import { getNewsletters, isExternalNewsletterLink } from "../../data/newsletters";
 
 const newsletters = await getNewsletters();
+const preferencesHref = getSafeBreezeFormHref(import.meta.env.PUBLIC_BREEZE_NEWSLETTER_FORM_URL);
 
 const [latest, ...archive] = newsletters;
 const formatMonth = (date: Date) => new Intl.DateTimeFormat("en-CA", {
@@ -157,6 +159,26 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
         <section class="grid min-h-[32rem] place-items-center bg-slate-100 px-4 py-16 text-center" aria-labelledby="newsletter-empty-heading">
             <div class="max-w-xl rounded-2xl border border-slate-300 bg-white p-8 shadow-xl shadow-sky-950/10 md:p-12">
                 <h1 id="newsletter-empty-heading" class="newsletter-serif text-4xl text-sky-950 md:text-5xl">Check back soon when there's a new newsletter.</h1>
+            </div>
+        </section>
+    )}
+
+    {preferencesHref && (
+        <section class="bg-white px-4 py-16 text-center" aria-labelledby="newsletter-preferences-heading">
+            <div class="mx-auto max-w-2xl">
+                <p class="text-xs font-extrabold tracking-[0.2em] text-red-700 uppercase">Stay connected</p>
+                <h2 id="newsletter-preferences-heading" class="newsletter-serif mt-3 text-4xl text-sky-950 md:text-5xl">
+                    Get each edition by email.
+                </h2>
+                <p class="mt-4 text-lg leading-relaxed text-slate-700">
+                    Subscribe, opt out, or update your newsletter preference through our secure Breeze form.
+                </p>
+                <a
+                    class="mt-7 inline-block rounded-full bg-red-600 px-7 py-3 font-bold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600"
+                    href={preferencesHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >Manage newsletter preferences<span class="sr-only"> (opens in a new tab)</span></a>
             </div>
         </section>
     )}

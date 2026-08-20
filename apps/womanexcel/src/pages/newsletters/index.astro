@@ -1,8 +1,10 @@
 ---
+import { getSafeBreezeFormHref } from "@churchwebsite/newsletters";
 import Layout from "../../layouts/layout.astro";
 import { getWomanExcelNewsletters, isExternalNewsletterLink } from "../../lib/newsletters";
 
 const newsletters = await getWomanExcelNewsletters();
+const preferencesHref = getSafeBreezeFormHref(import.meta.env.PUBLIC_BREEZE_NEWSLETTER_FORM_URL);
 
 const [latest, ...archive] = newsletters;
 const formatMonth = (date: Date) => new Intl.DateTimeFormat("en-CA", {
@@ -153,6 +155,22 @@ const coverThemes = [
             <div class="max-w-xl rounded-3xl border border-sand bg-cream-soft p-8 md:p-12">
                 <h1 id="newsletter-empty-heading" class="cew-heading">Check back soon when there's a new newsletter.</h1>
             </div>
+        </section>
+    )}
+
+    {preferencesHref && (
+        <section class="cew-section text-center" aria-labelledby="newsletter-preferences-heading">
+            <p class="cew-eyebrow">Stay connected</p>
+            <h2 id="newsletter-preferences-heading" class="cew-heading mt-3">Get each edition by email.</h2>
+            <p class="cew-prose mx-auto mt-4 max-w-2xl">
+                Subscribe, opt out, or update your newsletter preference through our secure Breeze form.
+            </p>
+            <a
+                class="cew-btn mt-7"
+                href={preferencesHref}
+                target="_blank"
+                rel="noopener noreferrer"
+            >Manage newsletter preferences<span class="sr-only"> (opens in a new tab)</span></a>
         </section>
     )}
 </Layout>
