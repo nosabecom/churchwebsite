@@ -33,6 +33,16 @@ Install dependencies from the repository root:
 pnpm install
 ```
 
+Create one development environment file at the repository root. Church Main, Woman Excel, and the
+Studio all read this file when their development servers start:
+
+```powershell
+Copy-Item .env.example .env.development
+```
+
+Fill in `.env.development` once, then start any app normally. Production builds continue to use
+environment variables configured by their deployment platform rather than this development file.
+
 Run one app locally:
 
 ```sh

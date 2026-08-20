@@ -18,9 +18,17 @@ The Sanity connection is supplied at build time:
 
 ## Environment variables
 
-Copy the `.env.example` files in `apps/churchmain`, `apps/womanexcel`, and `apps/studio` to matching
-`.env.local` files, then replace the placeholders. No project ID, dataset name, or token is checked
-into Git. Never put a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
+Copy the root `.env.example` to `.env.development` at the repository root, then replace the
+placeholders. Both Astro development servers use that root as their Vite environment directory, and
+the Studio development and TypeGen commands load the same file. No project ID, dataset name, or token
+is checked into Git. Never put a Sanity token in a `PUBLIC_` or `SANITY_STUDIO_` variable.
+
+```powershell
+Copy-Item .env.example .env.development
+```
+
+The shared file is development-only. Production and preview deployments continue to receive their
+own environment variables from Vercel or CI; do not commit `.env.production`.
 
 The private production dataset requires `SANITY_API_READ_TOKEN`. Create a Viewer/read-only token in
 Sanity Manage and store it only in the server-side environment for each Vercel project. Keep it out

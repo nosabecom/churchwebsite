@@ -8,6 +8,8 @@
   "scripts": {
     "blueprint:configure:churchmain": "bash scripts/configure-churchmain-development-hook.sh",
     "blueprint:configure:churchmain:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure-churchmain-development-hook.ps1",
+    "blueprint:configure:womanexcel": "bash scripts/configure-womanexcel-development-hook.sh",
+    "blueprint:configure:womanexcel:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure-womanexcel-development-hook.ps1",
     "blueprint:logs:development": "bash scripts/watch-development-deploys.sh",
     "blueprint:logs:development:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/watch-development-deploys.ps1",
     "blueprint:watch:development:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/watch-development-deploys.ps1",

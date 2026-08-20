@@ -23,16 +23,21 @@ npx sanity@latest blueprints init .
 npx sanity@latest blueprints plan
 npx sanity@latest blueprints deploy -m "Route development content deployments"
 pnpm blueprint:configure:churchmain
-npx sanity@latest functions env add route-site-deploy \
-  WOMAN_EXCEL_VERCEL_DEPLOY_HOOK_URL <woman-excel-vercel-hook>
+pnpm blueprint:configure:womanexcel
 npx sanity@latest blueprints info
 ```
 
 Sanity accepts Function environment variables only after the Function exists, so do not publish a
-development newsletter between the initial Blueprint deployment and the hook configuration. The Church
-Main helper prompts without echoing the URL, validates the Vercel deploy-hook shape, refuses any dataset
-other than `development`, and lists only configured key names afterward. It never writes the secret to
-disk. Woman Excel can use a matching helper when that site's hook is ready.
+development newsletter between the initial Blueprint deployment and the hook configuration. Both site
+helpers prompt without echoing the URL, validate the Vercel deploy-hook shape, refuse any dataset other
+than `development`, and list only configured key names afterward. They never write secrets to disk.
+
+On Windows PowerShell, configure each site with:
+
+```powershell
+pnpm blueprint:configure:churchmain:windows
+pnpm blueprint:configure:womanexcel:windows
+```
 
 Repeat with `SANITY_DATASET=production` and the production stack only after review. The local
 `.sanity/blueprint.config.json` selects a stack and is intentionally ignored by Git. Use `--stack` or
@@ -106,6 +111,17 @@ document, hook HTTP status, and any recorded failure while continuing through tr
 Inspect failures with `npx sanity@latest functions logs route-site-deploy`. Fix the selected function
 environment or Vercel hook, then republish the affected issue or invoke the hook manually. Do not delete
 the dataset or content to retry a deployment.
+
+The configure helpers upload hook URLs to the Sanity Function; they do not save them in a PowerShell
+profile. To disconnect a development site, remove its Function variable from the development stack:
+
+```powershell
+npx --yes sanity@latest functions env remove route-site-deploy CHURCH_MAIN_VERCEL_DEPLOY_HOOK_URL --stack ST-ggvrshfmum
+npx --yes sanity@latest functions env remove route-site-deploy WOMAN_EXCEL_VERCEL_DEPLOY_HOOK_URL --stack ST-ggvrshfmum
+```
+
+That stops the Function from calling the URL but does not revoke the Deploy Hook itself. Delete the
+matching hook under the Vercel project's **Settings → Git → Deploy Hooks** to invalidate the URL fully.
 
 Before production parity sign-off, rollback one site by setting its
 `PUBLIC_SANITY_NEWSLETTERS_ENABLED=false` and redeploying that Vercel project. This is an explicit

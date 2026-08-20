@@ -4,8 +4,10 @@ import { createClient } from "@sanity/client";
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
+import { fileURLToPath } from "node:url";
 
-const env = loadEnv(process.env.NODE_ENV ?? "development", process.cwd(), "");
+const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
+const env = loadEnv(process.env.NODE_ENV ?? "development", repositoryRoot, "");
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET;
 const newslettersEnabled = env.PUBLIC_SANITY_NEWSLETTERS_ENABLED === "true";
@@ -29,6 +31,7 @@ export default defineConfig({
   },
 
   vite: {
+    envDir: repositoryRoot,
     plugins: [
       tailwindcss(),
       createSanityDevReloadPlugin({

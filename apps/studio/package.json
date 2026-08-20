@@ -9,10 +9,10 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
-    "dev": "sanity dev",
-    "schema:extract": "sanity schemas extract --force --enforce-required-fields",
-    "start": "sanity start",
-    "typegen:generate": "sanity typegen generate && node scripts/sync-generated-types.mjs",
+    "dev": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity dev",
+    "schema:extract": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity schemas extract --force --enforce-required-fields",
+    "start": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity start",
+    "typegen:generate": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity typegen generate && node scripts/sync-generated-types.mjs",
     "typegen": "pnpm schema:extract && pnpm typegen:generate"
   },
   "keywords": [
