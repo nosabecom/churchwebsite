@@ -1,16 +1,19 @@
 import {
-  enforceSanityProductionConfig,
   getSafeNewsletterHref,
   isExternalNewsletterHref,
   memoizePromise,
 } from "@churchwebsite/newsletters";
-import { createClient } from "@sanity/client";
 import { defineQuery } from "groq";
 
+import { getChurchMainSanityClient } from "./sanity";
+import {
+  getSanityImageDimensions,
+  getSanityImageUrl,
+} from "./sanity-image";
 import type { CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT } from "../sanity.types";
 
 const CHURCH_MAIN_SITE = "churchMain";
-const SANITY_API_VERSION = "2026-08-13";
+const COVER_IMAGE_WIDTH = 1536;
 
 export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
   *[
@@ -28,7 +31,9 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
     coverImage {
       alt,
       decorative,
-      "url": asset->url,
+      "asset": { "_ref": asset._ref },
+      crop,
+      hotspot,
       "dimensions": asset->metadata.dimensions
     },
     relatedLink {
@@ -44,7 +49,9 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
       _type == "editorialImage" => {
         alt,
         decorative,
-        "url": asset->url,
+        "asset": { "_ref": asset._ref },
+        crop,
+        hotspot,
         "dimensions": asset->metadata.dimensions
       }
     }
@@ -96,17 +103,26 @@ function normalizeSanityNewsletter(
     return undefined;
   }
 
-  const coverImage = newsletter.coverImage?.url
-    ? {
-        url: newsletter.coverImage.url,
-        alt: newsletter.coverImage.decorative
-          ? ""
-          : (newsletter.coverImage.alt ?? ""),
-        decorative: newsletter.coverImage.decorative ?? false,
-        width: newsletter.coverImage.dimensions?.width,
-        height: newsletter.coverImage.dimensions?.height,
-      }
+  const coverUrl = newsletter.coverImage
+    ? getSanityImageUrl(newsletter.coverImage, { width: COVER_IMAGE_WIDTH })
     : undefined;
+  const coverDimensions = newsletter.coverImage
+    ? getSanityImageDimensions(newsletter.coverImage, {
+        width: COVER_IMAGE_WIDTH,
+      })
+    : {};
+  const coverImage =
+    coverUrl && newsletter.coverImage
+      ? {
+          url: coverUrl,
+          alt: newsletter.coverImage.decorative
+            ? ""
+            : (newsletter.coverImage.alt ?? ""),
+          decorative: newsletter.coverImage.decorative ?? false,
+          width: coverDimensions.width,
+          height: coverDimensions.height,
+        }
+      : undefined;
   const relatedHref = getSafeNewsletterHref(newsletter.relatedLink?.href);
   const relatedLink = relatedHref
     ? {
@@ -132,32 +148,9 @@ function normalizeSanityNewsletter(
 }
 
 async function loadNewsletters(): Promise<Newsletter[]> {
-  const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
-  const dataset = import.meta.env.PUBLIC_SANITY_DATASET;
-  const token = import.meta.env.SANITY_API_READ_TOKEN;
-  enforceSanityProductionConfig({
-    deployment: import.meta.env.VERCEL_ENV,
-    projectId,
-    dataset,
-    token,
-    label: "Church Main",
-  });
-
-  if (!projectId || !dataset) {
-    throw new Error(
-      "Church Main requires PUBLIC_SANITY_PROJECT_ID and PUBLIC_SANITY_DATASET.",
-    );
-  }
+  const client = getChurchMainSanityClient();
 
   try {
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion: SANITY_API_VERSION,
-      useCdn: false,
-      perspective: "published",
-      token,
-    });
     const result: CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = await client.fetch(
       CHURCH_MAIN_NEWSLETTERS_QUERY,
     );

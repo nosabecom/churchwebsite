@@ -235,7 +235,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../churchmain/src/data/newsletters.ts
 // Variable: CHURCH_MAIN_NEWSLETTERS_QUERY
-// Query: *[    _type == "newsletterIssue" &&    site == "churchMain" &&    defined(slug.current) &&    defined(publishedAt)  ] | order(issue desc, publishedAt desc, slug.current asc) {    _id,    title,    "slug": slug.current,    publishedAt,    issue,    excerpt,    coverImage {      alt,      decorative,      "url": asset->url,      "dimensions": asset->metadata.dimensions    },    relatedLink {      label,      href    },    seo {      title,      description    },    body[] {      ...,      _type == "editorialImage" => {        alt,        decorative,        "url": asset->url,        "dimensions": asset->metadata.dimensions      }    }  }
+// Query: *[    _type == "newsletterIssue" &&    site == "churchMain" &&    defined(slug.current) &&    defined(publishedAt)  ] | order(issue desc, publishedAt desc, slug.current asc) {    _id,    title,    "slug": slug.current,    publishedAt,    issue,    excerpt,    coverImage {      alt,      decorative,      "asset": { "_ref": asset._ref },      crop,      hotspot,      "dimensions": asset->metadata.dimensions    },    relatedLink {      label,      href    },    seo {      title,      description    },    body[] {      ...,      _type == "editorialImage" => {        alt,        decorative,        "asset": { "_ref": asset._ref },        crop,        hotspot,        "dimensions": asset->metadata.dimensions      }    }  }
 export type CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -246,7 +246,11 @@ export type CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = Array<{
   coverImage: {
     alt: string | null;
     decorative: boolean | null;
-    url: string;
+    asset: {
+      _ref: string;
+    };
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
     dimensions: SanityImageDimensions | null;
   } | null;
   relatedLink: {
@@ -279,13 +283,14 @@ export type CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT = Array<{
     | {
         _key: string;
         _type: "editorialImage";
-        asset: SanityImageAssetReference;
+        asset: {
+          _ref: string;
+        };
         media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
         decorative: boolean | null;
         alt: string | null;
-        url: string;
         dimensions: SanityImageDimensions | null;
       }
   >;
@@ -353,7 +358,7 @@ export type WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[\n    _type == "newsletterIssue" &&\n    site == "churchMain" &&\n    defined(slug.current) &&\n    defined(publishedAt)\n  ] | order(issue desc, publishedAt desc, slug.current asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    issue,\n    excerpt,\n    coverImage {\n      alt,\n      decorative,\n      "url": asset->url,\n      "dimensions": asset->metadata.dimensions\n    },\n    relatedLink {\n      label,\n      href\n    },\n    seo {\n      title,\n      description\n    },\n    body[] {\n      ...,\n      _type == "editorialImage" => {\n        alt,\n        decorative,\n        "url": asset->url,\n        "dimensions": asset->metadata.dimensions\n      }\n    }\n  }\n': CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT;
+    '\n  *[\n    _type == "newsletterIssue" &&\n    site == "churchMain" &&\n    defined(slug.current) &&\n    defined(publishedAt)\n  ] | order(issue desc, publishedAt desc, slug.current asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    issue,\n    excerpt,\n    coverImage {\n      alt,\n      decorative,\n      "asset": { "_ref": asset._ref },\n      crop,\n      hotspot,\n      "dimensions": asset->metadata.dimensions\n    },\n    relatedLink {\n      label,\n      href\n    },\n    seo {\n      title,\n      description\n    },\n    body[] {\n      ...,\n      _type == "editorialImage" => {\n        alt,\n        decorative,\n        "asset": { "_ref": asset._ref },\n        crop,\n        hotspot,\n        "dimensions": asset->metadata.dimensions\n      }\n    }\n  }\n': CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT;
     '\n  *[_type == "newsletterIssue" && site == "womanExcel" && defined(slug.current) && defined(publishedAt)]\n    | order(issue desc, publishedAt desc, slug.current asc) {\n      _id,\n      title,\n      "slug": slug.current,\n      publishedAt,\n      issue,\n      excerpt,\n      coverImage {\n        alt,\n        decorative,\n        "url": asset->url,\n        "dimensions": asset->metadata.dimensions\n      },\n      relatedLink { label, href },\n      seo { title, description },\n      body[] {\n        ...,\n        _type == "editorialImage" => {\n          alt,\n          decorative,\n          "url": asset->url,\n          "dimensions": asset->metadata.dimensions\n        }\n      }\n    }\n': WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT;
   }
 }
