@@ -9,6 +9,7 @@
     ".": {
       "types": "./src/index.d.ts",
       "default": "./src/index.mjs"
-    }
+    },
+    "./preferences-server": "./src/preferences-server.mjs"
   }
 }

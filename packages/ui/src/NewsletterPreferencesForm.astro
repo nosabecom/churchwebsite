@@ -1,0 +1,347 @@
+---
+export interface Props {
+  siteLabel: string;
+  endpoint?: string;
+}
+
+const {
+  siteLabel,
+  endpoint = "/api/newsletter-preferences/request",
+} = Astro.props;
+---
+
+<form
+  class="newsletter-preference-form"
+  action={endpoint}
+  method="post"
+  data-newsletter-preference-form
+>
+  <div class="newsletter-preference-grid">
+    <div class="newsletter-preference-field">
+      <label for="newsletter-first-name">First name</label>
+      <input
+        id="newsletter-first-name"
+        name="firstName"
+        type="text"
+        autocomplete="given-name"
+        maxlength="80"
+        required
+      />
+      <p class="newsletter-preference-error" data-error-for="firstName"></p>
+    </div>
+
+    <div class="newsletter-preference-field">
+      <label for="newsletter-last-name">Last name</label>
+      <input
+        id="newsletter-last-name"
+        name="lastName"
+        type="text"
+        autocomplete="family-name"
+        maxlength="80"
+        required
+      />
+      <p class="newsletter-preference-error" data-error-for="lastName"></p>
+    </div>
+  </div>
+
+  <div class="newsletter-preference-field">
+    <label for="newsletter-email">Email address</label>
+    <input
+      id="newsletter-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      maxlength="254"
+      required
+    />
+    <p class="newsletter-preference-error" data-error-for="email"></p>
+  </div>
+
+  <fieldset class="newsletter-preference-options">
+    <legend>What would you like us to do?</legend>
+    <label>
+      <input type="radio" name="preference" value="subscribe" required />
+      <span>
+        <strong>Send me church newsletters</strong>
+        <small>Receive new editions at this email address.</small>
+      </span>
+    </label>
+    <label>
+      <input type="radio" name="preference" value="unsubscribe" required />
+      <span>
+        <strong>Stop sending church newsletters</strong>
+        <small>Update the matching Breeze profile's newsletter preference.</small>
+      </span>
+    </label>
+    <p class="newsletter-preference-error" data-error-for="preference"></p>
+  </fieldset>
+
+  <label class="newsletter-preference-consent">
+    <input type="checkbox" name="consent" value="yes" required />
+    <span>
+      I authorize {siteLabel} to verify this email address and update the matching
+      newsletter preference in Breeze. Shared or ambiguous addresses may require staff review.
+    </span>
+  </label>
+  <p class="newsletter-preference-error" data-error-for="consent"></p>
+
+  <div class="newsletter-preference-honeypot" aria-hidden="true">
+    <label for="newsletter-website">Website</label>
+    <input id="newsletter-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button type="submit" data-newsletter-preference-submit>Send verification email</button>
+
+  <p class="newsletter-preference-privacy">
+    We return the same response whether or not an address exists in Breeze. Verification links are
+    single-use and expire shortly.
+  </p>
+  <p class="newsletter-preference-status" role="status" aria-live="polite" tabindex="-1" data-newsletter-preference-status hidden></p>
+</form>
+
+<script>
+  const outcomeMessages = {
+    requested: "Check your inbox for a verification link. The message may take a minute to arrive.",
+    verified: "Your email was verified. If one safe Breeze match existed, it was updated automatically; ambiguous requests were sent for staff review.",
+    invalid: "That verification link is invalid or expired. Submit the form again for a new link.",
+    error: "We could not process that request right now. Please try again shortly.",
+  };
+
+  document.querySelectorAll("[data-newsletter-preference-form]").forEach((element) => {
+    if (!(element instanceof HTMLFormElement) || element.dataset.enhanced === "true") return;
+    element.dataset.enhanced = "true";
+    const status = element.querySelector("[data-newsletter-preference-status]");
+    const submit = element.querySelector("[data-newsletter-preference-submit]");
+
+    const showStatus = (message, isError = false) => {
+      if (!(status instanceof HTMLElement)) return;
+      status.textContent = message;
+      status.hidden = false;
+      status.dataset.error = String(isError);
+      status.focus({ preventScroll: true });
+    };
+
+    const clearErrors = () => {
+      element.querySelectorAll("[data-error-for]").forEach((error) => {
+        error.textContent = "";
+      });
+      element.querySelectorAll("[aria-invalid='true']").forEach((field) => {
+        field.removeAttribute("aria-invalid");
+      });
+    };
+
+    const query = new URL(window.location.href).searchParams;
+    const outcome = query.get("newsletter-preference");
+    if (outcome && outcome in outcomeMessages) {
+      showStatus(outcomeMessages[outcome], outcome === "invalid" || outcome === "error");
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete("newsletter-preference");
+      window.history.replaceState({}, "", cleanUrl);
+    }
+
+    element.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearErrors();
+      if (!element.reportValidity()) return;
+      if (submit instanceof HTMLButtonElement) {
+        submit.disabled = true;
+        submit.textContent = "Sending…";
+      }
+
+      try {
+        const response = await fetch(element.action, {
+          method: "POST",
+          body: new FormData(element),
+          headers: { Accept: "application/json" },
+        });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          if (body.fields && typeof body.fields === "object") {
+            Object.entries(body.fields).forEach(([name, message]) => {
+              const error = element.querySelector(`[data-error-for="${CSS.escape(name)}"]`);
+              if (error) error.textContent = String(message);
+              element.querySelectorAll(`[name="${CSS.escape(name)}"]`).forEach((field) => {
+                field.setAttribute("aria-invalid", "true");
+              });
+            });
+          }
+          throw new Error(body.error || "The request could not be processed.");
+        }
+        element.reset();
+        showStatus(body.message || outcomeMessages.requested);
+      } catch (error) {
+        showStatus(
+          error instanceof Error ? error.message : outcomeMessages.error,
+          true,
+        );
+      } finally {
+        if (submit instanceof HTMLButtonElement) {
+          submit.disabled = false;
+          submit.textContent = "Send verification email";
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .newsletter-preference-form {
+    display: grid;
+    gap: 1.25rem;
+    margin-inline: auto;
+    max-width: 42rem;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    border: 1px solid var(--newsletter-form-border, #cbd5e1);
+    border-radius: 1.5rem;
+    background: var(--newsletter-form-bg, #fff);
+    color: var(--newsletter-form-text, #0f172a);
+    text-align: left;
+    box-shadow: 0 1.25rem 3rem rgb(15 23 42 / 10%);
+  }
+
+  .newsletter-preference-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .newsletter-preference-field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .newsletter-preference-field label,
+  .newsletter-preference-options legend {
+    font-weight: 750;
+  }
+
+  .newsletter-preference-field input {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    border: 2px solid var(--newsletter-form-border, #cbd5e1);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: #0f172a;
+    font: inherit;
+  }
+
+  .newsletter-preference-field input:focus-visible,
+  .newsletter-preference-options input:focus-visible,
+  .newsletter-preference-consent input:focus-visible {
+    outline: 3px solid var(--newsletter-form-accent, #dc2626);
+    outline-offset: 3px;
+  }
+
+  .newsletter-preference-options {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0;
+    border: 0;
+  }
+
+  .newsletter-preference-options label {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    padding: 1rem;
+    border: 2px solid var(--newsletter-form-border, #cbd5e1);
+    border-radius: 0.9rem;
+    cursor: pointer;
+  }
+
+  .newsletter-preference-options label:has(input:checked) {
+    border-color: var(--newsletter-form-accent, #dc2626);
+    background: var(--newsletter-form-accent-soft, #fef2f2);
+  }
+
+  .newsletter-preference-options input,
+  .newsletter-preference-consent input {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.15rem;
+    accent-color: var(--newsletter-form-accent, #dc2626);
+  }
+
+  .newsletter-preference-options span {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .newsletter-preference-options small,
+  .newsletter-preference-privacy {
+    color: var(--newsletter-form-muted, #475569);
+    line-height: 1.5;
+  }
+
+  .newsletter-preference-consent {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.925rem;
+    line-height: 1.55;
+  }
+
+  .newsletter-preference-form button {
+    justify-self: start;
+    padding: 0.8rem 1.35rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--newsletter-form-accent, #dc2626);
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .newsletter-preference-form button:hover {
+    filter: brightness(0.9);
+  }
+
+  .newsletter-preference-form button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .newsletter-preference-error {
+    min-height: 1.25rem;
+    margin: 0;
+    color: #b91c1c;
+    font-size: 0.875rem;
+    font-weight: 650;
+  }
+
+  .newsletter-preference-privacy {
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  .newsletter-preference-status {
+    margin: 0;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: #ecfdf5;
+    color: #065f46;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .newsletter-preference-status[data-error="true"] {
+    background: #fef2f2;
+    color: #991b1b;
+  }
+
+  .newsletter-preference-honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 40rem) {
+    .newsletter-preference-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

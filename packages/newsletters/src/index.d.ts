@@ -1,7 +1,5 @@
 export function getSafeNewsletterHref(href: unknown): string | undefined;
 export function isExternalNewsletterHref(href: string): boolean;
-export function getSafeBreezeFormHref(href: unknown): string | undefined;
-
 export function memoizePromise<T>(loader: () => Promise<T>): () => Promise<T>;
 export function enforceSanityProductionConfig(options: {
   deployment?: string;
