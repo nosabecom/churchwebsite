@@ -36,8 +36,9 @@ Every request:
 - is HTTPS GET to exactly `<configured-subdomain>.breezechms.com`;
 - carries the API key only in the `Api-key` request header;
 - rejects redirects instead of forwarding credentials;
-- waits at least 3.5 seconds after the previous request;
-- respects a 20-request run ceiling, a 30-second timeout, and a 10 MiB response ceiling;
+- waits at least one second after the previous request and serializes concurrent callers;
+- starts at most 18 requests in any rolling 60-second window, leaving headroom below Breeze's 20-request limit despite using a shorter cadence than its 3.5-second recommendation;
+- respects an 18-request run ceiling, a 30-second timeout, and a 10 MiB response ceiling;
 - uses a maximum 366-day range, 1,000 event rows, and 50 rows per log action;
 - keeps People, attendance, family, contribution, form-entry, and subscriber endpoints unreachable.
 
@@ -58,6 +59,8 @@ The command processes responses in memory and writes only aggregate, value-redac
 Reports default to `tmp/breeze-discovery/<timestamp>/`, which Git ignores. A custom directory inside this repository is rejected unless it is below `tmp/`; an absolute directory outside the repository is allowed.
 
 The command first compares the account summary with the configured subdomain. It stops before reading events if they do not match.
+
+The rolling guard is process-local. Do not run another client with the same Breeze API key during discovery; the command cannot count requests made by a separate integration.
 
 ## What the report establishes
 

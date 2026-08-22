@@ -4,6 +4,7 @@ export interface BreezeClientOptions {
   fetchImplementation?: typeof fetch;
   minimumIntervalMs?: number;
   maximumRequests?: number;
+  maximumRequestsPerMinute?: number;
   requestTimeoutMs?: number;
   maximumResponseBytes?: number;
   sleep?: (milliseconds: number) => Promise<void>;

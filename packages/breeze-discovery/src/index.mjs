@@ -1,7 +1,9 @@
 import { isIP } from "node:net";
 
-const DEFAULT_MINIMUM_INTERVAL_MS = 3_500;
+const DEFAULT_MINIMUM_INTERVAL_MS = 1_000;
 const DEFAULT_MAXIMUM_REQUESTS = 20;
+const DEFAULT_MAXIMUM_REQUESTS_PER_MINUTE = 18;
+const RATE_LIMIT_WINDOW_MS = 60_000;
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_MAXIMUM_RESPONSE_BYTES = 10 * 1024 * 1024;
 const MAXIMUM_DISCOVERY_DAYS = 366;
@@ -120,12 +122,14 @@ export class BreezeReadOnlyClient {
   #fetch;
   #minimumIntervalMs;
   #maximumRequests;
+  #maximumRequestsPerMinute;
   #requestTimeoutMs;
   #maximumResponseBytes;
   #sleep;
   #now;
   #onRequest;
   #lastRequestStartedAt;
+  #requestStartedAt = [];
   #requestCount = 0;
   #requestQueue = Promise.resolve();
 
@@ -135,6 +139,7 @@ export class BreezeReadOnlyClient {
     fetchImplementation = globalThis.fetch,
     minimumIntervalMs = DEFAULT_MINIMUM_INTERVAL_MS,
     maximumRequests = DEFAULT_MAXIMUM_REQUESTS,
+    maximumRequestsPerMinute = DEFAULT_MAXIMUM_REQUESTS_PER_MINUTE,
     requestTimeoutMs = DEFAULT_TIMEOUT_MS,
     maximumResponseBytes = DEFAULT_MAXIMUM_RESPONSE_BYTES,
     sleep = (milliseconds) =>
@@ -160,6 +165,13 @@ export class BreezeReadOnlyClient {
     this.#fetch = fetchImplementation;
     this.#minimumIntervalMs = minimumIntervalMs;
     this.#maximumRequests = positiveInteger(maximumRequests, "maximumRequests");
+    this.#maximumRequestsPerMinute = positiveInteger(
+      maximumRequestsPerMinute,
+      "maximumRequestsPerMinute",
+    );
+    if (this.#maximumRequestsPerMinute > 20) {
+      throw new Error("maximumRequestsPerMinute cannot exceed Breeze's limit of 20.");
+    }
     this.#requestTimeoutMs = positiveInteger(requestTimeoutMs, "requestTimeoutMs");
     this.#maximumResponseBytes = positiveInteger(
       maximumResponseBytes,
@@ -268,12 +280,7 @@ export class BreezeReadOnlyClient {
       }
     }
 
-    if (this.#lastRequestStartedAt !== undefined) {
-      const elapsed = this.#now() - this.#lastRequestStartedAt;
-      if (elapsed < this.#minimumIntervalMs) {
-        await this.#sleep(this.#minimumIntervalMs - elapsed);
-      }
-    }
+    await this.#waitForRateLimit();
 
     const url = new URL(endpoint.path, this.#baseUrl);
     for (const [name, value] of Object.entries(parameters)) {
@@ -290,6 +297,7 @@ export class BreezeReadOnlyClient {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), this.#requestTimeoutMs);
     this.#lastRequestStartedAt = this.#now();
+    this.#requestStartedAt.push(this.#lastRequestStartedAt);
     this.#requestCount += 1;
 
     try {
@@ -328,6 +336,33 @@ export class BreezeReadOnlyClient {
       }
     } finally {
       clearTimeout(timeout);
+    }
+  }
+
+  async #waitForRateLimit() {
+    while (true) {
+      const now = this.#now();
+      while (
+        this.#requestStartedAt.length > 0 &&
+        this.#requestStartedAt[0] <= now - RATE_LIMIT_WINDOW_MS
+      ) {
+        this.#requestStartedAt.shift();
+      }
+
+      const intervalWait =
+        this.#lastRequestStartedAt === undefined
+          ? 0
+          : Math.max(0, this.#minimumIntervalMs - (now - this.#lastRequestStartedAt));
+      const windowWait =
+        this.#requestStartedAt.length < this.#maximumRequestsPerMinute
+          ? 0
+          : Math.max(
+              0,
+              RATE_LIMIT_WINDOW_MS - (now - this.#requestStartedAt[0]),
+            );
+      const wait = Math.max(intervalWait, windowWait);
+      if (wait === 0) return;
+      await this.#sleep(wait);
     }
   }
 }
@@ -758,7 +793,7 @@ export function buildDiscoveryReport({
       cursor:
         "Persist the last successful log ID and UTC timestamp only after the whole polling batch succeeds.",
       failures:
-        "Retry on the next scheduled run; keep the same 3.5-second request interval and require a complete run before reconciling absence.",
+        "Retry on the next scheduled run; keep the same rolling request-window guard and require a complete run before reconciling absence.",
     },
     approval: {
       status: "pending",

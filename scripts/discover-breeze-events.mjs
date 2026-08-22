@@ -36,8 +36,8 @@ Required environment variables:
 
 Safety controls:
   - GET-only endpoint allowlist
-  - 3.5 seconds minimum between requests
-  - 20-request ceiling and 366-day maximum range
+  - 1 second minimum between requests
+  - at most 18 requests in any rolling minute and 18 requests per run
   - no redirects and no raw-response persistence
   - output inside this repository is restricted to the ignored tmp/ directory
 `;
@@ -126,9 +126,10 @@ const main = async () => {
   const client = new BreezeReadOnlyClient({
     subdomain,
     apiKey,
-    maximumRequests: 20,
+    maximumRequests: 18,
+    maximumRequestsPerMinute: 18,
     onRequest: ({ number, endpoint }) => {
-      console.log(`[${number}/20] GET ${endpoint}`);
+      console.log(`[${number}/18] GET ${endpoint}`);
     },
   });
 

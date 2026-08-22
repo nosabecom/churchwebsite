@@ -32,7 +32,7 @@ test("uses only GET requests against the configured HTTPS account host", async (
   assert.equal(calls[0].options.headers["Api-key"], "secret-key");
 });
 
-test("enforces Breeze's published spacing between requests", async () => {
+test("enforces the configured one-second spacing between requests", async () => {
   let clock = 1_000;
   const waits = [];
   const client = new BreezeReadOnlyClient({
@@ -50,7 +50,7 @@ test("enforces Breeze's published spacing between requests", async () => {
   clock += 500;
   await client.calendars();
 
-  assert.deepEqual(waits, [3_000]);
+  assert.deepEqual(waits, [500]);
 });
 
 test("serializes concurrent callers before applying request spacing", async () => {
@@ -77,8 +77,36 @@ test("serializes concurrent callers before applying request spacing", async () =
     client.locations(),
   ]);
 
-  assert.deepEqual(starts, [1_000, 4_500, 8_000]);
-  assert.deepEqual(waits, [3_500, 3_500]);
+  assert.deepEqual(starts, [1_000, 2_000, 3_000]);
+  assert.deepEqual(waits, [1_000, 1_000]);
+});
+
+test("holds requests that would exceed the rolling per-minute ceiling", async () => {
+  let clock = 1_000;
+  const starts = [];
+  const waits = [];
+  const client = new BreezeReadOnlyClient({
+    subdomain: "cornerstone",
+    apiKey: "secret-key",
+    fetchImplementation: async () => {
+      starts.push(clock);
+      return jsonResponse({});
+    },
+    maximumRequestsPerMinute: 3,
+    now: () => clock,
+    sleep: async (milliseconds) => {
+      waits.push(milliseconds);
+      clock += milliseconds;
+    },
+  });
+
+  await client.accountSummary();
+  await client.calendars();
+  await client.locations();
+  await client.accountSummary();
+
+  assert.deepEqual(starts, [1_000, 2_000, 3_000, 61_000]);
+  assert.deepEqual(waits, [1_000, 1_000, 58_000]);
 });
 
 test("rejects redirects without following them", async () => {
@@ -103,9 +131,18 @@ test("rejects unsafe configuration and unbounded discovery ranges", () => {
       new BreezeReadOnlyClient({
         subdomain: "cornerstone",
         apiKey: "key",
-        minimumIntervalMs: 1_000,
+        minimumIntervalMs: 500,
       }),
-    /cannot be lower than 3500/,
+    /cannot be lower than 1000/,
+  );
+  assert.throws(
+    () =>
+      new BreezeReadOnlyClient({
+        subdomain: "cornerstone",
+        apiKey: "key",
+        maximumRequestsPerMinute: 21,
+      }),
+    /cannot exceed Breeze's limit of 20/,
   );
   assert.throws(
     () => validateDiscoveryRange("2025-01-01", "2026-12-31"),
