@@ -184,6 +184,30 @@ importers:
         specifier: ^5.8.3
         version: 5.9.3
 
+  functions/sync-breeze-events:
+    dependencies:
+      '@churchwebsite/breeze-discovery':
+        specifier: workspace:*
+        version: link:../../packages/breeze-discovery
+      '@sanity/client':
+        specifier: 'catalog:'
+        version: 7.26.2
+      '@sanity/functions':
+        specifier: 1.6.6
+        version: 1.6.6(@aws-lite/client@0.23.7)(@aws-lite/dynamodb@0.3.9)(@aws-lite/lambda@0.1.5)(@aws-lite/sns@0.0.8)(@aws-lite/sqs@0.2.4)
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.13.3
+      tsx:
+        specifier: ^4.23.1
+        version: 4.23.7
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
+  packages/breeze-discovery: {}
+
   packages/newsletters: {}
 
   packages/ui:
@@ -3717,6 +3741,7 @@ packages:
   eslint@9.39.5:
     resolution: {integrity: sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'

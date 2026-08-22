@@ -1,0 +1,15 @@
+{
+  "name": "@churchwebsite/breeze-discovery",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "node --test test/*.test.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}
