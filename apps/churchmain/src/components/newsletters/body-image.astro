@@ -1,9 +1,16 @@
 ---
+import {
+  getSanityImageDimensions,
+  getSanityImageUrl,
+} from "../../data/sanity-image";
+
 interface Props {
   node: {
     alt?: string;
     decorative?: boolean;
-    url?: string;
+    asset?: { _ref?: string } | null;
+    crop?: unknown;
+    hotspot?: unknown;
     dimensions?: {
       width?: number;
       height?: number;
@@ -11,17 +18,32 @@ interface Props {
   };
 }
 
+const BODY_IMAGE_WIDTH = 1200;
+
 const { node } = Astro.props as Props;
 const alt = node.decorative ? "" : (node.alt ?? "");
+const url = getSanityImageUrl(node, { width: BODY_IMAGE_WIDTH });
+const dimensions = getSanityImageDimensions(node, {
+  width: BODY_IMAGE_WIDTH,
+});
 ---
 
-{node.url && (
-  <img
-    src={node.url}
-    alt={alt}
-    width={node.dimensions?.width}
-    height={node.dimensions?.height}
-    loading="lazy"
-    decoding="async"
-  />
-)}
+{
+  url ? (
+    <img
+      src={url}
+      alt={alt}
+      width={dimensions.width}
+      height={dimensions.height}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <figure
+      class="my-6 rounded-lg border border-slate-300 bg-slate-100 px-4 py-8 text-center text-sm text-slate-600"
+      aria-label="Image unavailable"
+    >
+      Image unavailable
+    </figure>
+  )
+}
