@@ -8,33 +8,6 @@ export function isExternalNewsletterHref(href) {
   return /^https?:\/\//i.test(href);
 }
 
-export function getSafeBreezeFormHref(href) {
-  if (typeof href !== "string" || !href.trim()) return undefined;
-
-  try {
-    const url = new URL(href.trim());
-    const isBreezeHost =
-      url.hostname !== "breezechms.com" &&
-      url.hostname.endsWith(".breezechms.com");
-    const isHostedForm = /^\/form\/[^/]+\/?$/.test(url.pathname);
-
-    if (
-      url.protocol !== "https:" ||
-      !isBreezeHost ||
-      !isHostedForm ||
-      url.username ||
-      url.password ||
-      url.port
-    ) {
-      return undefined;
-    }
-
-    return url.toString();
-  } catch {
-    return undefined;
-  }
-}
-
 export function memoizePromise(loader) {
   let promise;
   return () => {

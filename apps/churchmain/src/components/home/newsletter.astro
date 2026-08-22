@@ -1,9 +1,7 @@
 ---
-import { getSafeBreezeFormHref } from "@churchwebsite/newsletters";
 import { getLatestNewsletter, getNewsletterHref } from "../../data/newsletters";
 
 const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
-const preferencesHref = getSafeBreezeFormHref(import.meta.env.PUBLIC_BREEZE_NEWSLETTER_FORM_URL);
 ---
 
 <section class="px-4 pb-16" aria-labelledby="newsletter-heading">
@@ -29,18 +27,13 @@ const preferencesHref = getSafeBreezeFormHref(import.meta.env.PUBLIC_BREEZE_NEWS
         </div>
 
         <div>
-            {preferencesHref ? (
-                <a
-                    class="inline-block rounded-full bg-red-600 px-8 py-3 text-lg font-semibold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600"
-                    href="/newsletters/#newsletter-preferences"
-                >Subscribe or update preferences</a>
-            ) : (
-                <p class="font-semibold text-sky-950">Newsletter sign-up is coming soon.</p>
-            )}
+            <a
+                class="inline-block rounded-full bg-red-600 px-8 py-3 text-lg font-semibold text-white hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600"
+                href="/newsletters/#newsletter-preferences"
+            >Subscribe or update preferences</a>
 
             <p class="mt-3 text-sm text-slate-600">
-                Complete the secure Breeze form on our newsletter page. You can opt out or update your
-                preferences whenever you like.
+                Verify your email on our newsletter page, and we will safely match your request to Breeze.
             </p>
         </div>
     </div>

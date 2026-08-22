@@ -1,10 +1,9 @@
 ---
-import { getSafeBreezeFormHref } from "@churchwebsite/newsletters";
+import { NewsletterPreferencesForm } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
 import { getNewsletters, isExternalNewsletterLink } from "../../data/newsletters";
 
 const newsletters = await getNewsletters();
-const preferencesHref = getSafeBreezeFormHref(import.meta.env.PUBLIC_BREEZE_NEWSLETTER_FORM_URL);
 
 const [latest, ...archive] = newsletters;
 const formatMonth = (date: Date) => new Intl.DateTimeFormat("en-CA", {
@@ -163,39 +162,20 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
         </section>
     )}
 
-    {preferencesHref && (
-        <section id="newsletter-preferences" class="scroll-mt-8 bg-white px-4 py-16 text-center" aria-labelledby="newsletter-preferences-heading">
-            <div class="mx-auto max-w-4xl">
-                <p class="text-xs font-extrabold tracking-[0.2em] text-red-700 uppercase">Stay connected</p>
-                <h2 id="newsletter-preferences-heading" class="newsletter-serif mt-3 text-4xl text-sky-950 md:text-5xl">
-                    Get each edition by email.
-                </h2>
-                <p id="newsletter-preferences-description" class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-700">
-                    Enter your name and email below to subscribe, opt out, or update your newsletter preference.
-                    Requests may require staff review before they take effect.
-                </p>
+    <section id="newsletter-preferences" class="scroll-mt-8 bg-white px-4 py-16 text-center" aria-labelledby="newsletter-preferences-heading">
+        <div class="mx-auto max-w-4xl">
+            <p class="text-xs font-extrabold tracking-[0.2em] text-red-700 uppercase">Stay connected</p>
+            <h2 id="newsletter-preferences-heading" class="newsletter-serif mt-3 text-4xl text-sky-950 md:text-5xl">
+                Get each edition by email.
+            </h2>
+            <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-700">
+                Submit your preference, then use the single-use link we email you. After verification,
+                we safely update one matching Breeze profile or send an ambiguous request for staff review.
+            </p>
 
-                <div class="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-xl shadow-sky-950/10">
-                    <iframe
-                        class="block h-[72rem] w-full border-0 bg-white md:h-[64rem]"
-                        src={preferencesHref}
-                        title="Newsletter subscription and preferences form"
-                        aria-describedby="newsletter-preferences-description"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                    ></iframe>
-                </div>
-
-                <p class="mt-5 text-sm text-slate-600">
-                    Trouble using the embedded form?{" "}
-                    <a
-                        class="font-bold text-red-700 underline decoration-2 underline-offset-4 hover:text-red-800"
-                        href={preferencesHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >Open it in a new tab<span class="sr-only"> (opens in a new tab)</span></a>.
-                </p>
+            <div class="mt-8 [--newsletter-form-accent:#dc2626] [--newsletter-form-accent-soft:#fef2f2] [--newsletter-form-border:#cbd5e1] [--newsletter-form-muted:#475569] [--newsletter-form-text:#082f49]">
+                <NewsletterPreferencesForm siteLabel="RCCG Cornerstone Assembly" />
             </div>
-        </section>
-    )}
+        </div>
+    </section>
 </Layout>
