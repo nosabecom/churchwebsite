@@ -2258,6 +2258,14 @@
     font-size: clamp(4rem, 8vw, 7rem);
 }
 
+.cew-newsletters__latest-copy h1,
+.cew-newsletters__archive-copy h3,
+.cew-newsletter-article__copy h1,
+.cew-newsletter-article__cover > div span {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
 .cew-newsletters__latest-copy time,
 .cew-newsletters__archive-copy time,
 .cew-newsletter-article__copy time {
