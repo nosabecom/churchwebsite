@@ -1,15 +1,421 @@
 ---
-import Layout from "../layouts/layout.astro";
+import Analytics from "@vercel/analytics/astro";
+import "../styles/global.css";
+
+const year = new Date().getFullYear();
+
+// Meeting days/times are intentionally not stated here — they still need to be
+// confirmed by the fellowship leads before going on the site.
+const highlights = [
+    {
+        title: "Who we are",
+        detail: "The women’s fellowship of RCCG Cornerstone Assembly — inspiring, empowering, and supporting women to excel in God’s purpose.",
+    },
+    {
+        title: "Gatherings",
+        detail: "Our regular meetups are being planned right now — dates and times will be shared here soon.",
+    },
+];
+
+const email = "connect@rccgcornerstoneassembly.com";
 ---
 
-<!-- Holding page. The Women's Fellowship homepage gets built here; the
-     conference content it replaced now lives at /conference/2026. -->
-<Layout title="Home">
-    <div class="flex flex-col items-center justify-center text-center gap-6 px-4 py-24">
-        <img class="w-full max-w-xl" src="/images/logo-full.png" alt="Woman Excel">
-        <p class="text-navy text-lg md:text-2xl max-w-2xl">A new Women's Fellowship site is on the way.</p>
-        <a
-            class="border-none rounded-xl bg-navy text-white text-lg md:text-xl px-6 py-3 hover:bg-navy/70"
-            href="/conference/2026">View the 2026 Conference</a>
-    </div>
-</Layout>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content={Astro.generator} />
+        <meta
+            name="description"
+            content="A new website for Cornerstone Excellent Women is on the way. Learn who we are and how to reach us in the meantime."
+        />
+        <meta name="theme-color" content="#082a4e" />
+        <meta property="og:title" content="A new online home is on the way | Cornerstone Excellent Women" />
+        <meta
+            property="og:description"
+            content="The women’s fellowship of RCCG Cornerstone Assembly is getting a new website. In the meantime, explore the 2026 Woman Excel Conference."
+        />
+        <meta property="og:type" content="website" />
+        <link rel="shortcut icon" href="/images/logo-full.png" type="image/png" />
+        <title>Coming Soon | Cornerstone Excellent Women</title>
+    </head>
+
+    <body class="coming-soon-page min-h-dvh bg-navy text-white antialiased">
+        <Analytics />
+
+        <div class="page-shell relative isolate flex min-h-dvh flex-col overflow-hidden">
+            <div class="ambient ambient-one" aria-hidden="true"></div>
+            <div class="ambient ambient-two" aria-hidden="true"></div>
+
+            <header class="relative z-20 px-5 py-5 sm:px-8 lg:px-12">
+                <div class="mx-auto flex max-w-360 items-center justify-between gap-6">
+                    <a class="logo-card" href="/" aria-label="Cornerstone Excellent Women home">
+                        <img
+                            src="/images/logo-full.png"
+                            alt="Woman Excel"
+                            width="1090"
+                            height="780"
+                            class="h-auto w-40 sm:w-48"
+                        />
+                    </a>
+
+                    <a
+                        class="hidden items-center gap-2 text-sm font-bold tracking-[0.12em] text-blush uppercase transition-colors hover:text-white sm:flex"
+                        href={`mailto:${email}?subject=${encodeURIComponent("Woman Excel enquiry")}`}
+                    >
+                        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-11Z" />
+                            <path d="m4 6 8 6 8-6" />
+                        </svg>
+                        Get in touch
+                    </a>
+                </div>
+            </header>
+
+            <main class="relative z-10 flex flex-1 items-center px-5 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14">
+                <div class="mx-auto grid w-full max-w-360 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(30rem,0.82fr)] lg:gap-16 xl:gap-24">
+                    <section class="hero-copy max-w-3xl" aria-labelledby="page-heading">
+                        <div class="eyebrow reveal reveal-one">
+                            <span class="eyebrow-pulse" aria-hidden="true"></span>
+                            New fellowship site in progress
+                        </div>
+
+                        <h1 class="reveal reveal-two mt-7 text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-balance sm:text-6xl lg:text-7xl xl:text-[5.4rem]" id="page-heading">
+                            A new online home is <span class="text-coral-pink">on the way.</span>
+                        </h1>
+
+                        <p class="reveal reveal-three mt-7 max-w-2xl text-lg leading-8 text-white/80 sm:text-xl sm:leading-9">
+                            We’re preparing a new website for Cornerstone Excellent Women, the women’s
+                            fellowship of RCCG Cornerstone Assembly. While we build it, our story continues —
+                            and there is a seat here with your name on it.
+                        </p>
+
+                        <div class="reveal reveal-four mt-9 flex flex-col gap-3 sm:flex-row">
+                            <a class="primary-button" href="/conference/2026">
+                                Explore the 2026 Conference
+                                <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </a>
+                            <a class="secondary-button" href={`mailto:${email}`}>
+                                Email us
+                            </a>
+                        </div>
+                    </section>
+
+                    <section class="visit-card reveal reveal-three" aria-labelledby="visit-heading">
+                        <div class="photo-panel">
+                            <img
+                                src="/images/banner.jpeg"
+                                alt="Poster for the Woman Excel International Conference 2026 — The Word, John 1:1"
+                                width="1920"
+                                height="1080"
+                                loading="eager"
+                            />
+                            <div class="photo-shade" aria-hidden="true"></div>
+                            <div class="photo-copy">
+                                <p class="text-xs font-extrabold tracking-[0.18em] text-blush uppercase">While you wait</p>
+                                <h2 class="mt-2 text-3xl font-semibold tracking-tight" id="visit-heading">Don’t settle for ordinary.</h2>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <ul class="divide-y divide-slate-200" aria-label="About the fellowship">
+                                {highlights.map((highlight) => (
+                                    <li class="service-row">
+                                        <div>
+                                            <p class="font-bold text-slate-950">{highlight.title}</p>
+                                            <p class="mt-0.5 text-sm leading-5 text-slate-500">{highlight.detail}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <a class="address-row" href="/contact" aria-label="Reach out through our contact page">
+                                <span class="address-icon" aria-hidden="true">
+                                    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-11Z" />
+                                        <path d="m4 6 8 6 8-6" />
+                                    </svg>
+                                </span>
+                                <span>
+                                    <span class="block text-sm font-bold text-slate-950">Questions? We’d love to hear from you.</span>
+                                    <span class="mt-0.5 block text-sm leading-5 text-slate-500">{email}</span>
+                                </span>
+                                <svg class="ml-auto size-4 shrink-0 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M7 17 17 7M8 7h9v9" />
+                                </svg>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <footer class="relative z-10 px-5 py-6 sm:px-8 lg:px-12">
+                <div class="mx-auto flex max-w-360 flex-col gap-5 border-t border-white/10 pt-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
+                    <p>© {year} RCCG Cornerstone Assembly</p>
+
+                    <div class="flex items-center gap-2">
+                        <span class="mr-2 hidden sm:inline">Stay connected</span>
+                        <a class="social-link" href="https://www.instagram.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer" aria-label="Follow RCCG Cornerstone Assembly on Instagram">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <rect x="3" y="3" width="18" height="18" rx="5" />
+                                <circle cx="12" cy="12" r="4" />
+                                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                            </svg>
+                        </a>
+                        <a class="social-link" href="https://www.facebook.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer" aria-label="Follow RCCG Cornerstone Assembly on Facebook">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M13.6 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.5 1.6-1.5H17V4a22 22 0 0 0-2.4-.1c-2.4 0-4.1 1.5-4.1 4.2V10H7.8v3h2.7v8h3.1Z" />
+                            </svg>
+                        </a>
+                        <a class="social-link" href={`mailto:${email}`} aria-label="Email RCCG Cornerstone Assembly">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="14" rx="2" />
+                                <path d="m4 7 8 6 8-6" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
+
+<style>
+    .coming-soon-page {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page-shell {
+        background:
+            linear-gradient(115deg, rgb(8 42 78 / 0.98) 0%, rgb(7 36 68 / 0.96) 45%, rgb(147 49 99 / 0.28) 100%),
+            radial-gradient(circle at 75% 40%, rgb(226 51 121 / 0.22), transparent 38%);
+    }
+
+    .page-shell::before {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgb(255 255 255 / 0.026) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.026) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: linear-gradient(to right, black, transparent 72%);
+        content: "";
+        pointer-events: none;
+    }
+
+    .ambient {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(2px);
+        pointer-events: none;
+    }
+
+    .ambient-one {
+        top: -13rem;
+        right: -10rem;
+        width: 35rem;
+        height: 35rem;
+        border: 1px solid rgb(242 95 154 / 0.18);
+        box-shadow: 0 0 0 7rem rgb(226 51 121 / 0.03), 0 0 0 14rem rgb(226 51 121 / 0.02);
+    }
+
+    .ambient-two {
+        bottom: -22rem;
+        left: 28%;
+        width: 34rem;
+        height: 34rem;
+        background: rgb(226 51 121 / 0.08);
+        filter: blur(60px);
+    }
+
+    .logo-card {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgb(255 255 255 / 0.9);
+        border-radius: 0.85rem;
+        background: rgb(255 255 255 / 0.96);
+        padding: 0.5rem 0.75rem;
+        box-shadow: 0 10px 40px rgb(0 0 0 / 0.12);
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: var(--color-blush);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+
+    .eyebrow-pulse {
+        width: 0.55rem;
+        height: 0.55rem;
+        border-radius: 999px;
+        background: var(--color-pink);
+        box-shadow: 0 0 0 0.35rem rgb(226 51 121 / 0.15);
+    }
+
+    .primary-button,
+    .secondary-button {
+        display: inline-flex;
+        min-height: 3.25rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        border-radius: 999px;
+        padding: 0.8rem 1.45rem;
+        font-weight: 750;
+        transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    }
+
+    .primary-button {
+        background: white;
+        color: rgb(8 42 78);
+        box-shadow: 0 12px 32px rgb(0 0 0 / 0.18);
+    }
+
+    .secondary-button {
+        border: 1px solid rgb(255 255 255 / 0.2);
+        background: rgb(255 255 255 / 0.06);
+        color: white;
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover {
+        transform: translateY(-2px);
+    }
+
+    .secondary-button:hover {
+        border-color: rgb(255 255 255 / 0.4);
+        background: rgb(255 255 255 / 0.11);
+    }
+
+    .visit-card {
+        overflow: hidden;
+        border: 1px solid rgb(255 255 255 / 0.16);
+        border-radius: 1.5rem;
+        background: white;
+        box-shadow: 0 32px 90px rgb(2 16 28 / 0.38);
+        transform: rotate(0.65deg);
+    }
+
+    .photo-panel {
+        position: relative;
+        height: 12rem;
+        overflow: hidden;
+        background: rgb(147 49 99);
+    }
+
+    .photo-panel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 42%;
+        transform: scale(1.02);
+    }
+
+    .photo-shade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgb(2 20 35 / 0.92), rgb(2 20 35 / 0.1) 75%);
+    }
+
+    .photo-copy {
+        position: absolute;
+        right: 1.5rem;
+        bottom: 1.3rem;
+        left: 1.5rem;
+    }
+
+    .card-content {
+        color: rgb(15 23 42);
+        padding: 0 1.5rem 1.25rem;
+    }
+
+    .service-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+
+    .address-row {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-top: 0.35rem;
+        border-radius: 1rem;
+        background: rgb(253 242 248);
+        padding: 0.9rem;
+        transition: background-color 180ms ease;
+    }
+
+    .address-row:hover {
+        background: rgb(252 231 243);
+    }
+
+    .address-icon {
+        display: grid;
+        width: 2.5rem;
+        height: 2.5rem;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 999px;
+        background: rgb(8 42 78);
+        color: white;
+    }
+
+    .social-link {
+        display: grid;
+        width: 2.5rem;
+        height: 2.5rem;
+        place-items: center;
+        border: 1px solid rgb(255 255 255 / 0.12);
+        border-radius: 999px;
+        color: rgb(244 194 208);
+        transition: background-color 180ms ease, color 180ms ease;
+    }
+
+    .social-link:hover {
+        background: rgb(255 255 255 / 0.1);
+        color: white;
+    }
+
+    .reveal {
+        animation: reveal 650ms both cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .reveal-two { animation-delay: 80ms; }
+    .reveal-three { animation-delay: 160ms; }
+    .reveal-four { animation-delay: 240ms; }
+
+    @keyframes reveal {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1023px) {
+        .hero-copy { text-align: center; margin-inline: auto; }
+        .eyebrow { justify-content: center; }
+        .hero-copy > div:last-child { justify-content: center; }
+        .visit-card { max-width: 38rem; margin-inline: auto; transform: none; }
+    }
+
+    @media (max-width: 639px) {
+        .primary-button,
+        .secondary-button { width: 100%; }
+        .photo-panel { height: 10rem; }
+        .card-content { padding-inline: 1.1rem; }
+        .photo-copy { right: 1.1rem; left: 1.1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .reveal { animation: none; }
+        .primary-button,
+        .secondary-button { transition: none; }
+    }
+</style>
