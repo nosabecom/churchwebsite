@@ -4,8 +4,9 @@ Breeze is the source of truth for people, newsletter consent, Do Not Email statu
 recipient tag. Sanity owns only the public newsletter issues. Do not copy names, email addresses,
 form entries, consent values, or Breeze tags into Sanity.
 
-The repository links both websites to one public Breeze-hosted form. An authenticated Breeze
-administrator must complete and verify the account-side setup below before the link is enabled in a
+The repository embeds one public Breeze-hosted form on both newsletter pages. The Church Main home
+page links to the embedded form, and each embed includes a new-tab fallback. An authenticated Breeze
+administrator must complete and verify the account-side setup below before the form is enabled in a
 deployed environment.
 
 ## Canonical Breeze configuration
@@ -38,8 +39,8 @@ this document and update staff training before launch.
    and then hourly.
 6. Review every pre-existing recipient before enabling removal. Set the opt-in profile field first or
    the automation can remove legitimate recipients from the tag.
-7. In **Share Form**, copy the public **Form Address**. Do not use an API endpoint, API key, session
-   URL, or a staff-only Breeze URL.
+7. In **Share Form**, copy the public **Form Address** used as the iframe source. Do not use an API
+   endpoint, API key, session URL, or a staff-only Breeze URL.
 8. Add the form address to the root `.env.development` for local testing:
 
    ```dotenv
@@ -94,7 +95,7 @@ label the profiles when verification is complete.
 
 | Path                        | Test                                                                              | Expected result                                                                                                                                                   |
 | --------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Website link                | Open the preferences CTA from Church Main and Woman Excel on mobile and desktop   | The HTTPS Breeze form opens in a new tab; no email address or credential passes through either site                                                               |
+| Website embed               | Open the newsletter page from Church Main and Woman Excel on mobile and desktop   | The HTTPS Breeze form renders on the page, remains usable at each viewport, and the new-tab fallback works; no credential passes through either site              |
 | Validation                  | Submit with required Name, Email, or preference missing and with an invalid email | Breeze keeps the form open, identifies the invalid field, and creates no completed entry                                                                          |
 | Subscribe, existing profile | Submit matching Name and Email with the opt-in value                              | Entry connects to the intended profile, the profile field is opt-in, and the Smart Tag contains it after the automation runs                                      |
 | Subscribe, new person       | Submit an email not present in Breeze                                             | Entry is retained for review; staff can create one non-duplicate profile, connect it, and confirm tag membership                                                  |
@@ -105,7 +106,7 @@ label the profiles when verification is complete.
 | Send                        | Send a test newsletter to a test-only tag                                         | Correct issue URL renders, the preferences links work, and Do Not Email profiles receive no bulk message                                                          |
 
 Record the test date, tester, Breeze field/form/tag names, and result for every row. Do not launch the
-website links until all rows pass and a second staff member confirms the active tag selection.
+website form until all rows pass and a second staff member confirms the active tag selection.
 
 ## References
 

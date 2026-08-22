@@ -159,18 +159,36 @@ const coverThemes = [
     )}
 
     {preferencesHref && (
-        <section class="cew-section text-center" aria-labelledby="newsletter-preferences-heading">
-            <p class="cew-eyebrow">Stay connected</p>
-            <h2 id="newsletter-preferences-heading" class="cew-heading mt-3">Get each edition by email.</h2>
-            <p class="cew-prose mx-auto mt-4 max-w-2xl">
-                Subscribe, opt out, or update your newsletter preference through our secure Breeze form.
-            </p>
-            <a
-                class="cew-btn mt-7"
-                href={preferencesHref}
-                target="_blank"
-                rel="noopener noreferrer"
-            >Manage newsletter preferences<span class="sr-only"> (opens in a new tab)</span></a>
+        <section id="newsletter-preferences" class="cew-section scroll-mt-8 text-center" aria-labelledby="newsletter-preferences-heading">
+            <div class="mx-auto max-w-4xl">
+                <p class="cew-eyebrow">Stay connected</p>
+                <h2 id="newsletter-preferences-heading" class="cew-heading mt-3">Get each edition by email.</h2>
+                <p id="newsletter-preferences-description" class="cew-prose mx-auto mt-4 max-w-2xl">
+                    Enter your name and email below to subscribe, opt out, or update your newsletter preference.
+                    Requests may require staff review before they take effect.
+                </p>
+
+                <div class="mt-8 overflow-hidden rounded-3xl border border-sand bg-cream-soft shadow-xl shadow-charcoal/10">
+                    <iframe
+                        class="block h-[72rem] w-full border-0 bg-white md:h-[64rem]"
+                        src={preferencesHref}
+                        title="Newsletter subscription and preferences form"
+                        aria-describedby="newsletter-preferences-description"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                    ></iframe>
+                </div>
+
+                <p class="cew-prose mx-auto mt-5 text-sm">
+                    Trouble using the embedded form?{" "}
+                    <a
+                        class="font-semibold underline decoration-2 underline-offset-4"
+                        href={preferencesHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >Open it in a new tab<span class="sr-only"> (opens in a new tab)</span></a>.
+                </p>
+            </div>
         </section>
     )}
 </Layout>
