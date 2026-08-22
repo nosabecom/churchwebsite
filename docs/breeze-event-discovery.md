@@ -1,12 +1,12 @@
 # Breeze event API discovery
 
-RCC-56 is a read-only discovery gate for the later Breeze-to-Sanity event synchronization in RCC-59. It does not change the Church Main calendar, write to Breeze, or write to Sanity.
+RCC-56 is the read-only discovery foundation for the Breeze-to-Sanity event synchronization in RCC-59. The discovery command does not change the Church Main calendar, write to Breeze, or write to Sanity.
 
 ## Current status
 
-The safe discovery client and redacted report generator are ready. An account-specific report has not been committed because this worktree does not contain Breeze credentials, and no human approval is recorded on RCC-56.
+The safe discovery client, redacted report generator, and development-only mirror implementation are ready. An account-specific report has not been committed because this worktree does not contain Breeze credentials, and no production approval is recorded on RCC-56.
 
-Production synchronization must remain blocked until an account owner or ministry lead reviews a locally generated report, approves the calendar IDs, and records that approval in Linear.
+Production synchronization remains blocked until an account owner or ministry lead reviews a locally generated report, approves the calendar IDs, and records that approval in Linear. The sole-calendar invariant allows development testing to stop safely if another calendar is added.
 
 ## Official API constraints
 
@@ -75,11 +75,11 @@ The generated report records counts and field presence/types without retaining s
 
 Sanity should generate normal document `_id` values. RCC-59 should look up and upsert documents through explicit source metadata rather than copying Breeze IDs into `_id`.
 
-The proposed authority split follows RCC-59:
+The implemented authority split follows RCC-59 and the one-entry workflow decision:
 
-- Breeze owns operational title, start/end, all-day state, calendar, operational location, and source status.
-- Sanity owns slug, summary, image, featured state, site assignment, registration URL, directions/presentation, and SEO.
-- A Breeze update must not overwrite Sanity-owned fields.
+- Breeze owns title, description, start/end, all-day state, calendar, operational location, event link, recurrence instances, and source status.
+- Sanity generates a stable slug and owns optional website-only summary, image, featured state, registration-link override, directions/presentation, and SEO.
+- A Breeze update must not overwrite those optional Sanity presentation overrides.
 
 ## Edge-case decisions
 
@@ -113,4 +113,4 @@ This overlap and confirmation window accommodates the documented 15-minute event
 - [ ] Polling and reconciliation strategy approved.
 - [ ] Approver name, approval date, and Linear comment/link recorded.
 
-Until every item is complete, RCC-59 may use the package for local design and tests but must not run a production synchronization.
+Until every item is complete, the mirror may run only against the guarded development dataset and must not run a production synchronization. See [`breeze-event-sync.md`](breeze-event-sync.md) for the implemented schedule, reconciliation, configuration, and rollback path.

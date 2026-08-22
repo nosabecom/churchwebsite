@@ -100,6 +100,42 @@ export type Slug = {
   source?: string;
 };
 
+export type Event = {
+  _id: string;
+  _type: "event";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  site?: string;
+  title: string;
+  description?: string;
+  startsAt: string;
+  endsAt?: string;
+  allDay?: boolean;
+  operationalLocation?: string;
+  calendarName?: string;
+  sourceUrl?: string;
+  slug?: Slug;
+  websiteSummary?: string;
+  image?: EditorialImage;
+  featured?: boolean;
+  registrationUrl?: string;
+  seo?: Seo;
+  source?: {
+    system?: string;
+    instanceId?: string;
+    seriesId?: string;
+    calendarId?: string;
+    locationId?: string;
+    isModified?: boolean;
+    status?: "active" | "suspect" | "archived";
+    missingSince?: string;
+    archivedAt?: string;
+    lastChangedAt?: string;
+    lastSyncRunId?: string;
+  };
+};
+
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
   top: number;
@@ -222,6 +258,7 @@ export type AllSanitySchemaTypes =
   | SanityImageAssetReference
   | EditorialImage
   | Slug
+  | Event
   | SanityImageCrop
   | SanityImageHotspot
   | SanityImagePaletteSwatch
@@ -232,6 +269,24 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: ../churchmain/src/data/events.ts
+// Variable: CHURCH_MAIN_EVENTS_QUERY
+// Query: *[    _type == "event" &&    site == "churchMain" &&    source.system == "breeze" &&    source.status in ["active", "suspect"] &&    startsAt >= $today &&    startsAt < $end  ] | order(startsAt asc, title asc) {    _id,    title,    "slug": slug.current,    description,    websiteSummary,    startsAt,    endsAt,    allDay,    operationalLocation,    calendarName,    sourceUrl,    registrationUrl  }
+export type CHURCH_MAIN_EVENTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: string | null;
+  description: string | null;
+  websiteSummary: string | null;
+  startsAt: string;
+  endsAt: string | null;
+  allDay: boolean | null;
+  operationalLocation: string | null;
+  calendarName: string | null;
+  sourceUrl: string | null;
+  registrationUrl: string | null;
+}>;
 
 // Source: ../churchmain/src/data/newsletters.ts
 // Variable: CHURCH_MAIN_NEWSLETTERS_QUERY
@@ -353,6 +408,7 @@ export type WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    '\n  *[\n    _type == "event" &&\n    site == "churchMain" &&\n    source.system == "breeze" &&\n    source.status in ["active", "suspect"] &&\n    startsAt >= $today &&\n    startsAt < $end\n  ] | order(startsAt asc, title asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    description,\n    websiteSummary,\n    startsAt,\n    endsAt,\n    allDay,\n    operationalLocation,\n    calendarName,\n    sourceUrl,\n    registrationUrl\n  }\n': CHURCH_MAIN_EVENTS_QUERY_RESULT;
     '\n  *[\n    _type == "newsletterIssue" &&\n    site == "churchMain" &&\n    defined(slug.current) &&\n    defined(publishedAt)\n  ] | order(issue desc, publishedAt desc, slug.current asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    issue,\n    excerpt,\n    coverImage {\n      alt,\n      decorative,\n      "url": asset->url,\n      "dimensions": asset->metadata.dimensions\n    },\n    relatedLink {\n      label,\n      href\n    },\n    seo {\n      title,\n      description\n    },\n    body[] {\n      ...,\n      _type == "editorialImage" => {\n        alt,\n        decorative,\n        "url": asset->url,\n        "dimensions": asset->metadata.dimensions\n      }\n    }\n  }\n': CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT;
     '\n  *[_type == "newsletterIssue" && site == "womanExcel" && defined(slug.current) && defined(publishedAt)]\n    | order(issue desc, publishedAt desc, slug.current asc) {\n      _id,\n      title,\n      "slug": slug.current,\n      publishedAt,\n      issue,\n      excerpt,\n      coverImage {\n        alt,\n        decorative,\n        "url": asset->url,\n        "dimensions": asset->metadata.dimensions\n      },\n      relatedLink { label, href },\n      seo { title, description },\n      body[] {\n        ...,\n        _type == "editorialImage" => {\n          alt,\n          decorative,\n          "url": asset->url,\n          "dimensions": asset->metadata.dimensions\n        }\n      }\n    }\n': WOMAN_EXCEL_NEWSLETTERS_QUERY_RESULT;
   }

@@ -1,4 +1,5 @@
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
+import {CalendarIcon} from '@sanity/icons/Calendar'
 import {HeartIcon} from '@sanity/icons/Heart'
 import {HomeIcon} from '@sanity/icons/Home'
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
@@ -19,6 +20,23 @@ const siteSection = (S: StructureBuilder, site: (typeof sites)[number]) =>
         .id(`${site.value}-content`)
         .title(site.title)
         .items([
+          ...(site.value === 'churchMain'
+            ? [
+                S.listItem()
+                  .id('churchMain-events')
+                  .title('Events from Breeze')
+                  .icon(CalendarIcon)
+                  .child(
+                    S.documentList()
+                      .id('churchMain-event-documents')
+                      .title('Church Main events')
+                      .schemaType('event')
+                      .filter('_type == "event" && site == "churchMain"')
+                      .defaultOrdering([{field: 'startsAt', direction: 'asc'}])
+                      .menuItems(S.documentTypeList('event').getMenuItems()),
+                  ),
+              ]
+            : []),
           S.listItem()
             .id(`${site.value}-newsletter-issues`)
             .title('Newsletter issues')

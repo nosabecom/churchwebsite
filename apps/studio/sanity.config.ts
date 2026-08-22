@@ -24,7 +24,9 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
     templates: (previousTemplates) => [
-      ...previousTemplates.filter(({schemaType}) => schemaType !== 'newsletterIssue'),
+      ...previousTemplates.filter(
+        ({schemaType}) => schemaType !== 'newsletterIssue' && schemaType !== 'event',
+      ),
       ...newsletterIssueTemplates,
     ],
   },
