@@ -1,30 +1,13 @@
 ---
-import { Quote } from "@churchwebsite/ui";
-
 export interface Props {
-    quote?: {
-        text: string;
-        citation: string;
-    };
+    quote?: { text: string; citation: string; };
     date: string;
     address: string;
 }
-
 const { quote, date, address } = Astro.props;
 ---
 
-<div class="flex w-full max-w-4xl flex-col items-center gap-3 px-4 font-sans">
-    {quote && (
-        <Quote
-            quote={quote.text}
-            citation={quote.citation}
-            class="conference-hero-card w-full"
-        />
-    )}
-
-    <div class="conference-hero-card flex w-full flex-col items-center justify-center gap-2 px-6 py-4 text-sm font-semibold text-white sm:flex-row sm:gap-6 md:text-base">
-        <p>{date}</p>
-        <span class="hidden text-white/50 sm:inline" aria-hidden="true">•</span>
-        <p>{address}</p>
-    </div>
+<div class="conference-hero-details">
+    {quote && <blockquote><p>“{quote.text}”</p><cite>{quote.citation}</cite></blockquote>}
+    <div class="conference-hero-details__meta"><p>{date}</p><span aria-hidden="true"></span><p>{address}</p></div>
 </div>

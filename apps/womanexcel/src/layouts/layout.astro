@@ -17,6 +17,8 @@ interface Props {
 
 const { title, description, variant = "fellowship", bodyClass } = Astro.props as Props;
 const isConference = variant === "conference";
+const currentPath = Astro.url.pathname;
+const isActiveLink = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 
 const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
 const favicon = isConference ? ConferenceMark : FellowshipLogo;
@@ -67,18 +69,21 @@ const footerTheme = isConference
 		{description && <meta name="description" content={description} />}
 	</head>
 
-	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream", bodyClass]}>
+	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "conference-shell" : "bg-cream cew-shell", bodyClass]}>
 		<Analytics/>
 
-		<nav aria-label="Primary" class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
+		<nav aria-label="Primary" class:list={[
+			"flex justify-between items-center px-4 py-2 md:px-10",
+			isConference ? "conference-site-nav" : "cew-site-nav",
+		]}>
 			<a href="/" class="shrink-0 flex items-center gap-3">
 				{isConference
-					? <Image src={ConferenceLogo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/>
+					? <Image src={ConferenceLogo} alt="Woman Excel Conference" width="200" height="67" class="conference-site-nav__logo w-36 h-auto md:w-50"/>
 					: <>
-						<Image src={FellowshipLogo} alt="Cornerstone Excellent Women" width="120" height="120" class="w-12 md:w-16 h-auto rounded-full"/>
+						<Image src={FellowshipLogo} alt="Cornerstone Excellent Women" width="120" height="120" class="cew-site-nav__mark w-12 md:w-16 h-auto rounded-full"/>
 						{/* The mark's own lettering is unreadable at nav size, so the
 						    name is set in type beside it once there's room. */}
-						<span class="hidden sm:flex flex-col leading-tight">
+						<span class="cew-site-nav__lockup hidden sm:flex flex-col leading-tight">
 							<span class="font-sans uppercase text-[0.65rem] tracking-[0.3em] text-orchid-deep">Cornerstone</span>
 							<span class="text-lg md:text-xl text-charcoal">Excellent Women</span>
 						</span>
@@ -115,8 +120,14 @@ const footerTheme = isConference
 						{navLinks.map((link) => (
 							<li>
 								<a
-									class:list={["max-xs:block max-xs:py-2", !isConference && "transition-colors hover:text-orchid-deep max-xs:hover:text-blush"]}
+									class:list={[
+										"max-xs:block max-xs:py-2",
+										!isConference && "cew-site-nav__link transition-colors hover:text-orchid-deep max-xs:hover:text-blush",
+										!isConference && link.label === "Contact Us" && "cew-site-nav__cta",
+										isActiveLink(link.href) && "is-active",
+									]}
 									href={link.href}
+									aria-current={isActiveLink(link.href) ? "page" : undefined}
 								>{link.label}</a>
 							</li>
 						))}
@@ -142,7 +153,7 @@ const footerTheme = isConference
         	<slot/>
 		</main>
 
-		<footer class:list={[footerTheme.wrap]}>
+		<footer class:list={[footerTheme.wrap, isConference ? "conference-site-footer" : "cew-site-footer"]}>
 			<div class="mx-auto w-full max-w-6xl px-4 md:px-8 py-12 flex flex-col gap-8">
 				<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
 					<div class="max-w-md flex flex-col gap-3">

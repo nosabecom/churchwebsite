@@ -119,15 +119,15 @@ const gallery = galleryAlts.map((alt, index) => ({
         <Slideshow
             slides={heroSlides}
             label="Woman Excel 2025 conference highlights"
-            class="woman-excel-slideshow mx-4 mb-20 mt-6 max-w-400 rounded-3xl 2xl:mx-auto"
+            class="conference-cinema-hero conference-cinema-hero--2025 woman-excel-slideshow"
         >
-            <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
+            <div class="conference-cinema-hero__scrim" aria-hidden="true"></div>
 
-            <div class="relative z-10 flex min-h-[34rem] flex-col items-center justify-center gap-4 px-5 py-16 text-center text-white md:min-h-[43rem] md:gap-6">
+            <div class="conference-cinema-hero__content">
                 <HeroLabels year="2025" />
-                <h1 class="flex w-full justify-center">
+                <h1 class="conference-cinema-hero__theme">
                     <img
-                        class="w-[85%] max-w-3xl drop-shadow-xl"
+                        class="conference-cinema-hero__art conference-cinema-hero__art--excel"
                         src={`${imageRoot}/excel-theme.png`}
                         alt="Excel"
                     />
@@ -143,21 +143,20 @@ const gallery = galleryAlts.map((alt, index) => ({
             </div>
         </Slideshow>
 
-        <section class="relative px-4 pb-20 md:px-8" aria-labelledby="conference-2025-intro">
-            <div class="absolute inset-x-0 top-1/2 h-72 -translate-y-1/2 bg-[#ef2a88]/55 blur-3xl"></div>
-            <div class="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-3xl bg-[#4b086a] text-white shadow-2xl lg:grid-cols-[minmax(18rem,0.8fr)_1.2fr]">
+        <section class="conference-year-intro" aria-labelledby="conference-2025-intro">
+            <div class="conference-year-intro__inner">
                 <img
-                    class="h-full max-h-[50rem] w-full object-cover object-top"
+                    class="conference-year-intro__poster"
                     src={`${imageRoot}/poster.jpg`}
                     alt="Woman Excel Conference 2025 poster for the theme Excel"
                 />
-                <div class="flex flex-col justify-center gap-5 p-7 md:p-12">
-                    <p class="font-sans text-sm uppercase tracking-[0.28em] text-[#ff9aa7]">May 17–18, 2025</p>
-                    <h2 id="conference-2025-intro" class="text-4xl md:text-6xl">A weekend to Excel</h2>
-                    <p class="text-lg text-white/90 md:text-xl">
+                <div class="conference-year-intro__copy">
+                    <div class="conference-slate"><span></span><b>01</b><p>May 17–18, 2025</p></div>
+                    <h2 id="conference-2025-intro">A weekend<br /><em>to Excel.</em></h2>
+                    <p>
                         Woman Excel 2025 brought women together for worship, prayer, practical teaching, brunch, and meaningful connection under the theme “Excel.”
                     </p>
-                    <p class="text-lg text-white/90 md:text-xl">
+                    <p>
                         The two-day gathering explored spiritual growth, family life, wellness, parenting, finance, career, and business before closing with a special Sunday service.
                     </p>
                 </div>
@@ -166,19 +165,19 @@ const gallery = galleryAlts.map((alt, index) => ({
 
         <Schedule year="2025" items={schedule} />
 
-        <section class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8 md:py-24" aria-labelledby="conference-2025-original-programme">
-            <div class="mb-8 text-center">
-                <p class="font-sans text-sm uppercase tracking-[0.25em] text-[#6b167f]">From the archive</p>
-                <h2 id="conference-2025-original-programme" class="mt-2 text-4xl text-[#30004f] md:text-6xl">Original Programme</h2>
+        <section class="conference-programme" aria-labelledby="conference-2025-original-programme">
+            <div class="conference-programme__heading">
+                <div class="conference-slate"><span></span><b>Archive</b><p>Original programme</p></div>
+                <h2 id="conference-2025-original-programme">The weekend,<br /><em>as planned.</em></h2>
             </div>
-            <div class="grid items-start gap-6 md:grid-cols-2">
-                <figure class="overflow-hidden rounded-3xl bg-[#4b086a] p-3 shadow-xl">
-                    <img class="w-full rounded-2xl" src={`${imageRoot}/agenda-saturday.jpg`} alt="Saturday May 17 Woman Excel 2025 programme" loading="lazy" decoding="async" />
-                    <figcaption class="px-3 py-4 text-center text-xl text-white">Saturday · May 17</figcaption>
+            <div class="conference-programme__grid">
+                <figure>
+                    <img src={`${imageRoot}/agenda-saturday.jpg`} alt="Saturday May 17 Woman Excel 2025 programme" loading="lazy" decoding="async" />
+                    <figcaption>01 · Saturday · May 17</figcaption>
                 </figure>
-                <figure class="overflow-hidden rounded-3xl bg-[#4b086a] p-3 shadow-xl">
-                    <img class="w-full rounded-2xl" src={`${imageRoot}/agenda-sunday.jpg`} alt="Sunday May 18 Woman Excel 2025 programme" loading="lazy" decoding="async" />
-                    <figcaption class="px-3 py-4 text-center text-xl text-white">Sunday · May 18</figcaption>
+                <figure>
+                    <img src={`${imageRoot}/agenda-sunday.jpg`} alt="Sunday May 18 Woman Excel 2025 programme" loading="lazy" decoding="async" />
+                    <figcaption>02 · Sunday · May 18</figcaption>
                 </figure>
             </div>
         </section>
@@ -214,39 +213,3 @@ const gallery = galleryAlts.map((alt, index) => ({
         />
     </div>
 </Layout>
-
-<style is:global>
-    .conference-2025-shell,
-    .conference-2025-shell > nav {
-        background: #fff2f0;
-    }
-
-    .conference-2025 {
-        --we25-violet: #30004f;
-        --we25-plum: #4b086a;
-        --we25-pink: #e51482;
-        background: linear-gradient(145deg, #fff2f0 0%, #f7d9ee 38%, #eee1ff 72%, #fff7f3 100%);
-    }
-
-    .conference-2025 .bg-navy,
-    .conference-2025 .speaker-nametag {
-        background-color: var(--we25-violet);
-    }
-
-    .conference-2025 .bg-berry {
-        background-color: var(--we25-plum);
-    }
-
-    .conference-2025 .bg-pink {
-        background-color: var(--we25-pink);
-    }
-
-    .conference-2025 .text-navy {
-        color: var(--we25-violet);
-    }
-
-    .conference-2025 .woman-excel-slideshow {
-        --slideshow-control-bg: rgb(48 0 79 / 70%);
-        --slideshow-control-bg-hover: rgb(48 0 79 / 95%);
-    }
-</style>
