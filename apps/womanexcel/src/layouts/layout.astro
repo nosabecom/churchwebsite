@@ -71,6 +71,8 @@ const footerTheme = isConference
 
 	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "conference-shell" : "bg-cream cew-shell", bodyClass]}>
 		<Analytics/>
+		<div class="site-motion-aura" aria-hidden="true"></div>
+		<div class="site-motion-progress" aria-hidden="true"></div>
 
 		<nav aria-label="Primary" class:list={[
 			"flex justify-between items-center px-4 py-2 md:px-10",
@@ -196,6 +198,8 @@ const footerTheme = isConference
 		</footer>
 
 		<script>
+			import "../scripts/site-motion";
+
 			const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
 			const openBtn = document.querySelector<HTMLButtonElement>("[data-sidebar-open]");
 			const panel = sidebar?.querySelector<HTMLElement>("[data-sidebar-panel]");
