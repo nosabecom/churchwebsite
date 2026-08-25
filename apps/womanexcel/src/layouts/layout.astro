@@ -67,12 +67,25 @@ const footerTheme = isConference
 		<link rel="shortcut icon" href={favicon.src} type={isConference ? "image/png" : "image/jpeg"}>
 		<title>{title} | {siteName}</title>
 		{description && <meta name="description" content={description} />}
+		<script is:inline>
+			try {
+				if (sessionStorage.getItem("cew-motion-navigation") === "1") {
+					document.documentElement.dataset.motionContinuation = "true";
+					sessionStorage.removeItem("cew-motion-navigation");
+				}
+			} catch {}
+		</script>
 	</head>
 
 	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "conference-shell" : "bg-cream cew-shell", bodyClass]}>
 		<Analytics/>
+		<div class:list={["site-motion-curtain", isConference && "site-motion-curtain--conference"]} data-motion-curtain aria-hidden="true">
+			<span>{isConference ? "Woman Excel" : "Cornerstone"}</span>
+			<strong>{isConference ? "Conference" : "Excellent Women"}</strong>
+		</div>
 		<div class="site-motion-aura" aria-hidden="true"></div>
 		<div class="site-motion-progress" aria-hidden="true"></div>
+		<div class="site-motion-cursor" data-motion-cursor aria-hidden="true"><span>View</span></div>
 
 		<nav aria-label="Primary" class:list={[
 			"flex justify-between items-center px-4 py-2 md:px-10",

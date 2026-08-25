@@ -2760,9 +2760,88 @@
 
    Motion is progressive: content is visible without JavaScript and becomes
    animated only after the runtime has prepared every target. The language is
-   intentionally cinematic and restrained—scroll-linked media, masked reveals,
-   tactile controls, and a quiet ambient pointer glow.
+   intentionally cinematic—scroll-linked media, masked typography, tactile
+   controls, perspective, and an ambient pointer layer.
    ---------------------------------------------------------------------- */
+
+.site-motion-curtain {
+    position: fixed;
+    z-index: 200;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    overflow: hidden;
+    color: white;
+    background:
+        radial-gradient(circle at 18% 24%, rgb(205 78 155 / 42%), transparent 31%),
+        radial-gradient(circle at 82% 70%, rgb(111 172 205 / 25%), transparent 34%),
+        #27162f;
+    text-align: center;
+    animation: motion-curtain-open 1.3s cubic-bezier(.76, 0, .24, 1) both;
+    will-change: transform;
+}
+
+.site-motion-curtain::before {
+    position: absolute;
+    width: min(58vw, 48rem);
+    aspect-ratio: 1;
+    border: 1px solid rgb(255 255 255 / 15%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4rem rgb(255 255 255 / 2%), 0 0 0 9rem rgb(255 255 255 / 1%);
+    content: "";
+    animation: motion-curtain-orbit 1.3s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.site-motion-curtain > span,
+.site-motion-curtain > strong {
+    position: relative;
+    z-index: 1;
+}
+
+.site-motion-curtain > span {
+    font-family: "Manrope", sans-serif;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .42em;
+    text-transform: uppercase;
+}
+
+.site-motion-curtain > strong {
+    margin-top: .5rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 500;
+    letter-spacing: -.055em;
+    line-height: .8;
+}
+
+.site-motion-curtain--conference > strong { font-style: italic; }
+
+html[data-motion-continuation="true"] .site-motion-curtain {
+    animation-duration: .72s;
+}
+
+.site-motion-curtain[data-exit] {
+    visibility: visible;
+    animation: motion-curtain-close .46s cubic-bezier(.76, 0, .24, 1) both;
+}
+
+@keyframes motion-curtain-open {
+    0%, 32% { visibility: visible; transform: translate3d(0, 0, 0); }
+    100% { visibility: hidden; transform: translate3d(0, -102%, 0); }
+}
+
+@keyframes motion-curtain-close {
+    from { transform: translate3d(0, 102%, 0); }
+    to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes motion-curtain-orbit {
+    from { opacity: 0; transform: scale(.7) rotate(-12deg); }
+    38% { opacity: 1; }
+    to { opacity: .2; transform: scale(1.25) rotate(7deg); }
+}
 
 .site-motion-progress {
     position: fixed;
@@ -2792,6 +2871,41 @@
     mix-blend-mode: soft-light;
     transform: translate(-50%, -50%);
     transition: top .22s cubic-bezier(.2, .8, .2, 1), left .22s cubic-bezier(.2, .8, .2, 1), opacity .4s ease;
+}
+
+.site-motion-cursor {
+    position: fixed;
+    z-index: 120;
+    top: var(--motion-pointer-y, 50vh);
+    left: var(--motion-pointer-x, 50vw);
+    display: grid;
+    width: 4.5rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    color: white;
+    background: rgb(44 20 55 / 72%);
+    box-shadow: 0 14px 40px rgb(31 14 39 / 24%);
+    font-family: "Manrope", sans-serif;
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+    opacity: 0;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+    transform: translate(-50%, -50%) scale(.35) rotate(-12deg);
+    transition:
+        top .12s cubic-bezier(.2, .8, .2, 1),
+        left .12s cubic-bezier(.2, .8, .2, 1),
+        opacity .25s ease,
+        transform .35s cubic-bezier(.16, 1, .3, 1);
+}
+
+.site-motion-cursor[data-active] {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0);
 }
 
 @media (pointer: fine) and (hover: hover) {
@@ -2837,6 +2951,34 @@ html[data-motion-ready="true"] [data-motion-intro].is-visible {
     filter: none;
     clip-path: inset(0 0 0 0);
     transform: none;
+}
+
+.motion-word-mask {
+    display: inline-block;
+    margin-block: -.08em;
+    padding-block: .08em;
+    overflow: clip;
+    vertical-align: bottom;
+}
+
+.motion-word {
+    display: inline-block;
+    will-change: transform;
+}
+
+html[data-motion-ready="true"] [data-motion-words] .motion-word {
+    filter: blur(4px);
+    transform: translate3d(0, 118%, 0) rotate(3deg);
+    transform-origin: left bottom;
+    transition:
+        transform 1.05s cubic-bezier(.16, 1, .3, 1),
+        filter .75s ease;
+    transition-delay: calc(var(--motion-delay, 0ms) + var(--motion-word-delay, 0ms));
+}
+
+html[data-motion-ready="true"] [data-motion-words].is-visible .motion-word {
+    filter: none;
+    transform: translate3d(0, 0, 0) rotate(0);
 }
 
 html[data-motion-ready="true"] [data-reveal] {
@@ -2902,6 +3044,23 @@ html[data-motion-ready="true"] .conference-cinema-hero__content {
     will-change: transform;
 }
 
+html[data-motion-ready="true"] :is(.cew-cinematic-hero, .conference-archive-hero, .conference-cinema-hero) [data-motion-hero-copy].is-visible {
+    opacity: calc(1 - var(--motion-hero-progress, 0) * 1.65);
+    filter: blur(calc(var(--motion-hero-progress, 0) * 6px));
+}
+
+html[data-motion-ready="true"] [data-motion-kinetic].is-visible {
+    transform: translate3d(var(--motion-headline-x, 0), 0, 0);
+    transition: opacity .65s linear var(--motion-delay, 0ms), transform .18s linear;
+    will-change: transform;
+}
+
+html[data-motion-ready="true"] .cew-mission__ghost,
+html[data-motion-ready="true"] .conference-recap__year {
+    transform: translate3d(var(--motion-ornament-x, 0), 0, 0) rotate(var(--motion-ornament-rotate, 0deg));
+    will-change: transform;
+}
+
 [data-motion-parallax] {
     --motion-parallax-y: 0px;
 }
@@ -2916,11 +3075,23 @@ html[data-motion-ready="true"] [data-motion-parallax]:hover > img {
     transform: translate3d(0, var(--motion-parallax-y), 0) scale(1.11);
 }
 
-[data-motion-tilt] > a,
-[data-motion-tilt] > figure {
-    transform: perspective(1000px) rotateX(var(--motion-tilt-x, 0deg)) rotateY(var(--motion-tilt-y, 0deg));
+[data-motion-card] > a,
+[data-motion-card] > figure {
+    transform:
+        perspective(1000px)
+        translate3d(0, var(--motion-card-y, 0), 0)
+        rotateX(var(--motion-tilt-x, 0deg))
+        rotateY(var(--motion-tilt-y, 0deg))
+        rotateZ(var(--motion-card-rotation, 0deg))
+        scale(var(--motion-card-scale, 1));
     transform-style: preserve-3d;
     transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+}
+
+[data-motion-card]:hover > a,
+[data-motion-card]:hover > figure {
+    --motion-card-rotation: 0deg;
+    --motion-card-scale: 1.015;
 }
 
 [data-magnetic] {
@@ -2964,15 +3135,21 @@ html[data-motion-ready="true"] [data-reveal="image"][data-motion-parallax].is-vi
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .site-motion-curtain,
     .site-motion-aura,
-    .site-motion-progress { display: none; }
+    .site-motion-progress,
+    .site-motion-cursor { display: none; }
 
     body > nav[data-motion-nav],
     [data-motion-intro],
     [data-reveal],
     [data-motion-parallax] > img,
-    [data-motion-tilt] > a,
-    [data-motion-tilt] > figure,
+    [data-motion-card] > a,
+    [data-motion-card] > figure,
+    [data-motion-words] .motion-word,
+    [data-motion-kinetic],
+    .cew-section-label__line,
+    .conference-slate > span,
     [data-magnetic] {
         opacity: 1 !important;
         filter: none !important;

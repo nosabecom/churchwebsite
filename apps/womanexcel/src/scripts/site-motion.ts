@@ -3,6 +3,42 @@ const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, v
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const finePointer = window.matchMedia("(pointer: fine) and (hover: hover)");
 
+const splitHeadingIntoWords = (heading: HTMLElement) => {
+    if (heading.dataset.motionWords) return;
+
+    const accessibleLabel = heading.textContent?.replace(/\s+/g, " ").trim();
+    if (accessibleLabel) heading.setAttribute("aria-label", accessibleLabel);
+
+    const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+    const textNodes: Text[] = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode as Text);
+
+    let wordIndex = 0;
+    textNodes.forEach((textNode) => {
+        const fragment = document.createDocumentFragment();
+        (textNode.textContent ?? "").split(/(\s+)/).forEach((part) => {
+            if (!part || /^\s+$/.test(part)) {
+                fragment.append(part);
+                return;
+            }
+
+            const mask = document.createElement("span");
+            const word = document.createElement("span");
+            mask.className = "motion-word-mask";
+            word.className = "motion-word";
+            word.textContent = part;
+            word.setAttribute("aria-hidden", "true");
+            word.style.setProperty("--motion-word-delay", `${Math.min(wordIndex, 12) * 42}ms`);
+            mask.append(word);
+            fragment.append(mask);
+            wordIndex += 1;
+        });
+        textNode.replaceWith(fragment);
+    });
+
+    heading.dataset.motionWords = "";
+};
+
 const reveal = (element: Element, kind = "up") => {
     if (!(element instanceof HTMLElement) || element.dataset.reveal) return;
     element.dataset.reveal = kind;
@@ -38,6 +74,9 @@ const initialiseMotion = () => {
         element.dataset.motionIntro = "";
         element.dataset.motionKind = element.matches("h1, h2") ? "headline" : "up";
         element.style.setProperty("--motion-delay", `${Math.min(index, 5) * 95}ms`);
+        if (element.closest(".cew-cinematic-hero, .conference-archive-hero, .conference-cinema-hero")) {
+            element.dataset.motionHeroCopy = "";
+        }
     });
 
     [
@@ -84,6 +123,14 @@ const initialiseMotion = () => {
         ".cew-newsletter-article__cover",
     ].join(",")).forEach((element) => reveal(element, "image"));
 
+    const kineticHeadlines = document.querySelectorAll<HTMLElement>("main h1, main h2");
+    kineticHeadlines.forEach((heading, index) => {
+        if (!heading.dataset.reveal && !heading.dataset.motionIntro) reveal(heading);
+        splitHeadingIntoWords(heading);
+        heading.dataset.motionKinetic = "";
+        heading.style.setProperty("--motion-kinetic-direction", index % 2 === 0 ? "1" : "-1");
+    });
+
     const parallaxMedia = document.querySelectorAll<HTMLElement>([
         ".cew-story-grid figure",
         ".cew-conference-feature__media",
@@ -100,6 +147,14 @@ const initialiseMotion = () => {
     ].join(","));
     parallaxMedia.forEach((element) => element.setAttribute("data-motion-parallax", ""));
 
+    const motionCards = document.querySelectorAll<HTMLElement>(
+        ".conference-gallery__grid li, .cew-newsletters__archive li",
+    );
+    motionCards.forEach((element, index) => {
+        element.dataset.motionCard = "";
+        element.style.setProperty("--motion-card-rotation", `${(index % 2 === 0 ? -1 : 1) * (1.1 + (index % 3) * 0.45)}deg`);
+    });
+
     const revealTargets = document.querySelectorAll<HTMLElement>("[data-reveal]");
     if (reducedMotion.matches || !("IntersectionObserver" in window)) {
         revealTargets.forEach((element) => element.classList.add("is-visible"));
@@ -115,15 +170,18 @@ const initialiseMotion = () => {
     }
 
     document.documentElement.dataset.motionReady = "true";
-    requestAnimationFrame(() => {
+    window.setTimeout(() => requestAnimationFrame(() => {
         nav?.classList.add("is-visible");
         introTargets.forEach((element) => element.classList.add("is-visible"));
-    });
+    }), reducedMotion.matches ? 0 : 480);
 
     if (reducedMotion.matches) return;
 
     const heroes = document.querySelectorAll<HTMLElement>(
         ".cew-cinematic-hero, .conference-archive-hero, .conference-cinema-hero",
+    );
+    const motionOrnaments = document.querySelectorAll<HTMLElement>(
+        ".cew-mission__ghost, .conference-recap__year",
     );
     let lastScrollY = window.scrollY;
     let frame = 0;
@@ -142,11 +200,37 @@ const initialiseMotion = () => {
             hero.style.setProperty("--motion-hero-progress", progress.toFixed(4));
         });
 
+        kineticHeadlines.forEach((heading) => {
+            const rect = heading.getBoundingClientRect();
+            if (rect.bottom < -100 || rect.top > viewportHeight + 100) return;
+            const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height));
+            const direction = Number(heading.style.getPropertyValue("--motion-kinetic-direction")) || 1;
+            heading.style.setProperty("--motion-headline-x", `${((progress - 0.5) * 46 * direction).toFixed(2)}px`);
+        });
+
         parallaxMedia.forEach((element) => {
             const rect = element.getBoundingClientRect();
             if (rect.bottom < -100 || rect.top > viewportHeight + 100) return;
             const centerOffset = (rect.top + rect.height / 2 - viewportHeight / 2) / (viewportHeight + rect.height);
             element.style.setProperty("--motion-parallax-y", `${clamp(centerOffset * -70, -28, 28).toFixed(2)}px`);
+        });
+
+        motionCards.forEach((element) => {
+            const rect = element.getBoundingClientRect();
+            if (rect.bottom < -100 || rect.top > viewportHeight + 100) return;
+            const centerOffset = clamp((rect.top + rect.height / 2 - viewportHeight / 2) / viewportHeight, -1, 1);
+            element.style.setProperty("--motion-card-y", `${(centerOffset * -18).toFixed(2)}px`);
+            element.style.setProperty("--motion-card-scale", String(1 - Math.abs(centerOffset) * 0.035));
+        });
+
+        motionOrnaments.forEach((element) => {
+            const section = element.parentElement;
+            if (!section) return;
+            const rect = section.getBoundingClientRect();
+            if (rect.bottom < -100 || rect.top > viewportHeight + 100) return;
+            const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height));
+            element.style.setProperty("--motion-ornament-x", `${((progress - 0.5) * 90).toFixed(2)}px`);
+            element.style.setProperty("--motion-ornament-rotate", `${((progress - 0.5) * 3).toFixed(2)}deg`);
         });
 
         if (nav) {
@@ -166,7 +250,31 @@ const initialiseMotion = () => {
     window.addEventListener("scroll", requestScrollUpdate, { passive: true });
     window.addEventListener("resize", requestScrollUpdate, { passive: true });
 
+    const curtain = document.querySelector<HTMLElement>("[data-motion-curtain]");
+    document.addEventListener("click", (event) => {
+        if (!(event instanceof MouseEvent) || event.defaultPrevented || event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
+        if (!link || link.target || link.hasAttribute("download")) return;
+
+        const destination = new URL(link.href, window.location.href);
+        if (destination.origin !== window.location.origin) return;
+        if (destination.pathname === window.location.pathname && destination.search === window.location.search) return;
+        if (!curtain || curtain.hasAttribute("data-exit")) return;
+
+        event.preventDefault();
+        try { sessionStorage.setItem("cew-motion-navigation", "1"); } catch {}
+        curtain.setAttribute("data-exit", "");
+        window.setTimeout(() => window.location.assign(destination.href), 460);
+    });
+
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) curtain?.removeAttribute("data-exit");
+    });
+
     if (finePointer.matches) {
+        const cursor = document.querySelector<HTMLElement>("[data-motion-cursor]");
         document.addEventListener("pointermove", (event) => {
             document.documentElement.style.setProperty("--motion-pointer-x", `${event.clientX}px`);
             document.documentElement.style.setProperty("--motion-pointer-y", `${event.clientY}px`);
@@ -191,10 +299,14 @@ const initialiseMotion = () => {
             });
         });
 
-        document.querySelectorAll<HTMLElement>(
-            ".conference-gallery__grid li, .cew-newsletters__archive li",
-        ).forEach((element) => {
+        motionCards.forEach((element) => {
             element.setAttribute("data-motion-tilt", "");
+            const cursorLabel = element.closest(".cew-newsletters__archive") ? "Read" : "View";
+            element.addEventListener("pointerenter", () => {
+                if (!cursor) return;
+                cursor.querySelector("span")!.textContent = cursorLabel;
+                cursor.setAttribute("data-active", "");
+            });
             element.addEventListener("pointermove", (event) => {
                 const rect = element.getBoundingClientRect();
                 const x = (event.clientX - rect.left) / rect.width - 0.5;
@@ -205,6 +317,7 @@ const initialiseMotion = () => {
             element.addEventListener("pointerleave", () => {
                 element.style.removeProperty("--motion-tilt-x");
                 element.style.removeProperty("--motion-tilt-y");
+                cursor?.removeAttribute("data-active");
             });
         });
     }
