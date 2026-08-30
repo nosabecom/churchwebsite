@@ -3159,6 +3159,481 @@ html[data-motion-ready="true"] [data-reveal="image"][data-motion-parallax].is-vi
     }
 }
 
+/* -------------------------------------------------------------------------
+   Bold evaluation direction
+
+   This layer is intentionally easy to remove as one block after evaluation.
+   It trades template symmetry for framed canvases, overlap, mixed radii,
+   floating surfaces, and a more recognisable editorial silhouette.
+   ---------------------------------------------------------------------- */
+
+.cew-shell,
+.conference-shell {
+    background:
+        radial-gradient(circle at 8% 18%, rgb(225 206 232 / 58%), transparent 27rem),
+        radial-gradient(circle at 92% 52%, rgb(206 227 238 / 58%), transparent 30rem),
+        #eee7e3;
+}
+
+body > nav.cew-site-nav,
+body > nav.conference-site-nav {
+    top: .75rem;
+    width: calc(100% - 1.5rem);
+    min-height: 4.65rem;
+    margin: .75rem auto;
+    border: 1px solid rgb(255 255 255 / 72%);
+    border-radius: 999px;
+    padding-inline: clamp(1rem, 3vw, 2.35rem);
+    background: rgb(251 247 242 / 82%);
+    box-shadow: 0 18px 55px rgb(43 25 52 / 12%);
+    backdrop-filter: blur(24px) saturate(1.35);
+}
+
+.conference-site-nav__logo {
+    transition: transform .45s cubic-bezier(.16, 1, .3, 1);
+}
+
+.conference-site-nav > a:hover .conference-site-nav__logo,
+.cew-site-nav > a:hover .cew-site-nav__mark {
+    transform: rotate(-4deg) scale(1.04);
+}
+
+.cew-site-nav__cta {
+    padding-inline: 1.35rem;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 15%), 0 8px 22px rgb(79 40 94 / 22%);
+}
+
+.cew-cinematic-hero,
+.conference-archive-hero,
+.conference-cinema-hero,
+.cew-contact__hero {
+    min-height: calc(100svh - 7rem);
+    margin: 0 .75rem 1.25rem;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 38%);
+    border-radius: 2.75rem;
+    box-shadow: 0 32px 90px rgb(38 21 47 / 18%);
+}
+
+.cew-cinematic-hero__content,
+.conference-archive-hero__content {
+    padding-left: clamp(2rem, 8vw, 8rem);
+}
+
+.cew-cinematic-hero h1,
+.conference-archive-hero h1 {
+    text-shadow: 0 10px 45px rgb(18 8 24 / 24%);
+}
+
+.cew-cinematic-hero__content::before,
+.conference-archive-hero__content::before {
+    display: block;
+    width: clamp(4rem, 9vw, 8rem);
+    height: 1px;
+    margin-bottom: 1.2rem;
+    background: rgb(255 255 255 / 68%);
+    content: "";
+}
+
+.cew-editorial,
+.conference-years,
+.conference-story,
+.conference-schedule,
+.conference-programme,
+.conference-gallery {
+    width: calc(100% - 1.5rem);
+    max-width: 88rem;
+    margin-inline: auto;
+}
+
+.cew-editorial__intro h2,
+.conference-section-heading h2,
+.conference-gallery__heading h2 {
+    max-width: 10ch;
+    text-wrap: balance;
+}
+
+.cew-editorial__intro > p {
+    position: relative;
+    z-index: 2;
+    width: min(44rem, 82%);
+    margin-top: -1rem;
+    border-left: 1px solid rgb(79 40 94 / 28%);
+    padding-left: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 901px) {
+    .cew-story-grid {
+        grid-template-columns: minmax(0, 1.4fr) minmax(18rem, .72fr);
+        gap: 0;
+    }
+
+    .cew-story-grid__main {
+        clip-path: polygon(0 0, 94% 0, 100% 12%, 100% 100%, 0 100%);
+    }
+
+    .cew-story-grid__main img {
+        border-radius: 5rem 1.5rem 5rem 1.5rem;
+    }
+
+    .cew-story-grid__copy {
+        z-index: 3;
+        margin-left: -7rem;
+        border: 1px solid rgb(255 255 255 / 75%);
+        border-radius: 1.25rem 4rem 1.25rem 4rem;
+        padding: clamp(2.25rem, 4vw, 4rem);
+        background: rgb(251 247 242 / 91%);
+        box-shadow: 0 30px 75px rgb(46 28 55 / 18%);
+        backdrop-filter: blur(18px);
+    }
+
+    .cew-story-grid__small {
+        z-index: 4;
+        width: 82%;
+        margin-top: -3rem !important;
+        margin-right: -1.5rem !important;
+        border: .65rem solid white;
+        border-radius: 1.8rem;
+        box-shadow: 0 20px 55px rgb(47 33 56 / 20%);
+    }
+}
+
+.cew-mission,
+.cew-scripture,
+.cew-conference-feature,
+.cew-join,
+.conference-speakers,
+.conference-recap,
+.conference-mailing,
+.cew-newsletters__archive {
+    width: calc(100% - 1.5rem);
+    margin: 1.25rem auto;
+    overflow: hidden;
+    border-radius: 3rem;
+}
+
+.cew-mission {
+    border: 1px solid rgb(255 255 255 / 70%);
+    box-shadow: inset 0 1px rgb(255 255 255 / 60%);
+}
+
+.cew-pillar-list li {
+    margin-inline: -.9rem;
+    border-radius: 1.15rem;
+    padding-inline: .9rem;
+    transition: padding .4s cubic-bezier(.16, 1, .3, 1), background .35s ease;
+}
+
+.cew-pillar-list li:hover {
+    padding-inline: 1.5rem;
+    background: rgb(255 255 255 / 47%);
+}
+
+.cew-scripture {
+    min-height: 84svh;
+}
+
+.cew-scripture__inner::before {
+    display: block;
+    margin-bottom: -2rem;
+    color: rgb(255 255 255 / 10%);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(10rem, 25vw, 22rem);
+    font-weight: 600;
+    line-height: .45;
+    content: "“";
+}
+
+.cew-conference-feature__card {
+    border-radius: 1.25rem 4.5rem 1.25rem 4.5rem;
+    box-shadow: 0 40px 100px rgb(47 33 56 / 26%);
+}
+
+.cew-join__inner {
+    position: relative;
+}
+
+.cew-join__inner::before,
+.cew-join__inner::after {
+    position: absolute;
+    z-index: -1;
+    width: 9rem;
+    aspect-ratio: 1;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 50%;
+    content: "";
+}
+
+.cew-join__inner::before { top: 12%; left: 2%; }
+.cew-join__inner::after { right: 1%; bottom: 10%; width: 15rem; }
+
+.conference-year-list {
+    gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.conference-year-card {
+    border: 1px solid rgb(255 255 255 / 64%);
+    border-radius: 4rem 1.35rem 4rem 1.35rem;
+    box-shadow: 0 26px 60px rgb(36 21 47 / 18%);
+}
+
+.conference-year-card:nth-child(even) {
+    border-radius: 1.35rem 4rem 1.35rem 4rem;
+}
+
+.conference-year-card__top > span:first-child,
+.conference-gallery__index {
+    border: 1px solid rgb(255 255 255 / 38%);
+    box-shadow: 0 8px 22px rgb(23 10 31 / 16%);
+}
+
+.conference-year-card__body h3 {
+    max-width: 7ch;
+    font-size: clamp(3rem, 7vw, 6.2rem);
+    line-height: .76;
+}
+
+.conference-story__grid figure,
+.conference-programme figure {
+    border: .55rem solid white;
+    border-radius: 1.5rem 4rem 1.5rem 4rem;
+    box-shadow: 0 28px 75px rgb(36 21 47 / 20%);
+}
+
+.conference-gallery__grid li {
+    border: .45rem solid rgb(255 255 255 / 88%);
+    border-radius: 1rem 3rem 1rem 3rem;
+    box-shadow: 0 20px 50px rgb(36 21 47 / 16%);
+}
+
+.conference-gallery__grid li:nth-child(even) {
+    border-radius: 3rem 1rem 3rem 1rem;
+}
+
+.conference-recap__media li:nth-child(2) {
+    margin-top: 3.5rem;
+}
+
+.conference-recap__media img {
+    border: .45rem solid rgb(255 255 255 / 75%);
+    border-radius: 3rem 1rem 3rem 1rem;
+}
+
+.cew-newsletters__masthead {
+    width: calc(100% - 1.5rem);
+    margin: 0 auto .75rem;
+    border: 1px solid rgb(255 255 255 / 65%);
+    border-radius: 2rem;
+    background: rgb(251 247 242 / 72%);
+    box-shadow: 0 15px 45px rgb(47 33 56 / 9%);
+    backdrop-filter: blur(16px);
+}
+
+.cew-newsletters__latest,
+.cew-newsletter-article__hero {
+    width: calc(100% - 1.5rem);
+    margin-inline: auto;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 75%);
+    border-radius: 3rem;
+    background: rgb(251 247 242 / 75%);
+    box-shadow: 0 28px 75px rgb(47 33 56 / 13%);
+}
+
+.cew-newsletters__cover,
+.cew-newsletter-article__cover {
+    border-radius: 0 5rem 5rem 0;
+}
+
+.cew-newsletters__latest-copy h1,
+.cew-newsletter-article__copy h1 { line-height: .78; }
+
+@media (min-width: 761px) {
+    .cew-newsletters__latest {
+        grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    }
+
+    .cew-newsletters__latest-copy h1 {
+        max-width: none;
+        font-size: clamp(3.5rem, 6vw, 6.25rem);
+    }
+
+    .cew-newsletter-article__copy h1 {
+        max-width: 12ch;
+        font-size: clamp(3.5rem, 6vw, 6.25rem);
+    }
+}
+
+.cew-newsletters__archive-cover {
+    border: .4rem solid rgb(255 255 255 / 16%);
+    border-radius: 3rem 1rem 3rem 1rem;
+}
+
+.cew-newsletters__archive li:nth-child(even) .cew-newsletters__archive-cover {
+    border-radius: 1rem 3rem 1rem 3rem;
+}
+
+.cew-contact__body {
+    width: calc(100% - 1.5rem);
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 5vw, 4rem);
+}
+
+.cew-contact__body aside {
+    top: 8rem;
+}
+
+.cew-contact-form {
+    border: 1px solid rgb(255 255 255 / 78%);
+    border-radius: 1.25rem 4rem 1.25rem 4rem;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    background: rgb(255 255 255 / 62%);
+    box-shadow: 0 30px 80px rgb(47 33 56 / 13%);
+    backdrop-filter: blur(20px);
+}
+
+.cew-contact-form__field input,
+.cew-contact-form__field textarea {
+    border-radius: .85rem .85rem 0 0;
+    padding-inline: .85rem;
+    background: rgb(255 255 255 / 48%);
+}
+
+.site-editorial-ribbon {
+    position: relative;
+    z-index: 6;
+    width: 102%;
+    margin: 1rem -1% -1.25rem;
+    overflow: hidden;
+    color: white;
+    background: var(--cew-violet-deep, #4f285e);
+    box-shadow: 0 18px 45px rgb(36 21 47 / 20%);
+    transform: rotate(-1.15deg);
+}
+
+.site-editorial-ribbon--conference {
+    background: var(--conf-pink, #d73782);
+}
+
+.site-editorial-ribbon > div {
+    display: flex;
+    width: max-content;
+    animation: site-editorial-ribbon 28s linear infinite;
+}
+
+.site-editorial-ribbon span {
+    padding: .85rem 1.5rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.5rem, 3vw, 2.65rem);
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    white-space: nowrap;
+}
+
+@keyframes site-editorial-ribbon {
+    to { transform: translateX(-50%); }
+}
+
+@media (max-width: 900px) {
+    .cew-story-grid__copy { margin-left: 0; }
+    .conference-recap__media li:nth-child(2) { margin-top: 0; }
+}
+
+@media (max-width: 449px) {
+    body > nav.cew-site-nav,
+    body > nav.conference-site-nav {
+        top: .4rem;
+        width: calc(100% - .8rem);
+        min-height: 4.15rem;
+        margin: .4rem auto;
+        padding-inline: .8rem;
+    }
+
+    .cew-cinematic-hero,
+    .conference-archive-hero,
+    .conference-cinema-hero,
+    .cew-contact__hero {
+        min-height: calc(100svh - 5.5rem);
+        margin: 0 .4rem .8rem;
+        border-radius: 1.5rem;
+    }
+
+    .cew-cinematic-hero__content::before,
+    .conference-archive-hero__content::before { display: none; }
+
+    .cew-editorial,
+    .conference-years,
+    .conference-story,
+    .conference-schedule,
+    .conference-programme,
+    .conference-gallery,
+    .cew-mission,
+    .cew-scripture,
+    .cew-conference-feature,
+    .cew-join,
+    .conference-speakers,
+    .conference-recap,
+    .conference-mailing,
+    .cew-newsletters__masthead,
+    .cew-newsletters__latest,
+    .cew-newsletter-article__hero,
+    .cew-newsletters__archive,
+    .cew-contact__body {
+        width: calc(100% - .8rem);
+    }
+
+    .cew-mission,
+    .cew-scripture,
+    .cew-conference-feature,
+    .cew-join,
+    .conference-speakers,
+    .conference-recap,
+    .conference-mailing,
+    .cew-newsletters__archive {
+        border-radius: 1.7rem;
+    }
+
+    .cew-editorial__intro > p { width: 100%; }
+
+    .conference-year-card,
+    .conference-year-card:nth-child(even) {
+        border-radius: 2.5rem 1rem 2.5rem 1rem;
+    }
+
+    .conference-gallery__grid li,
+    .conference-gallery__grid li:nth-child(even) {
+        border-width: .3rem;
+        border-radius: 1rem 2.25rem 1rem 2.25rem;
+    }
+
+    .cew-newsletters__cover,
+    .cew-newsletter-article__cover {
+        border-radius: 0 0 3rem 3rem;
+    }
+
+    .cew-newsletters__cover {
+        min-height: min(50svh, 28rem);
+    }
+
+    .cew-newsletters__latest-copy h1,
+    .cew-newsletter-article__copy h1 {
+        max-width: none;
+        font-size: clamp(3rem, 15vw, 4.5rem);
+        line-height: .82;
+    }
+
+    .cew-contact-form {
+        border-radius: 1rem 2.5rem 1rem 2.5rem;
+        padding: 1.5rem 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-editorial-ribbon > div { animation: none; }
+}
+
 @utility main-gradient {
     background: linear-gradient(45deg, var(--color-coral-pink) 20%, var(--color-rose) 60%, var(--color-fuchsia) 90%, var(--color-magenta) 100%);
 }

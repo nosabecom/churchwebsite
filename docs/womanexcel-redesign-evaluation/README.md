@@ -2,7 +2,9 @@
 
 These captures are included for design evaluation only. They are not a final design approval.
 
-The pages were captured from the local Woman Excel app using the connected Sanity development dataset on August 22, 2026. Newsletter screenshots therefore reflect the current development content, including test copy and imagery.
+The pages were captured from the local Woman Excel app using the connected Sanity development dataset on August 30, 2026. Newsletter screenshots therefore reflect the current development content, including test copy and imagery.
+
+The screenshots show the settled state of the entrance animations. Motion, hover, scroll, and marquee behavior should be evaluated in the browser preview.
 
 ## Viewports
 

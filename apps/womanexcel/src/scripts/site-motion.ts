@@ -166,7 +166,38 @@ const initialiseMotion = () => {
                 observer.unobserve(entry.target);
             });
         }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
-        revealTargets.forEach((element) => observer.observe(element));
+
+        const clippedRevealTargets = Array.from(revealTargets).filter(
+            (element) => element.dataset.reveal === "image",
+        );
+        let revealFrame = 0;
+
+        // A fully clipped element has a zero intersection area in Chromium, so it
+        // cannot wake its own IntersectionObserver. Measure the unclipped layout
+        // box for image masks and let the observer handle every other reveal.
+        const revealClippedMedia = () => {
+            revealFrame = 0;
+            const viewportBottom = window.innerHeight * 0.94;
+
+            clippedRevealTargets.forEach((element) => {
+                if (element.classList.contains("is-visible")) return;
+                const rect = element.getBoundingClientRect();
+                if (rect.top < viewportBottom && rect.bottom > 0) {
+                    element.classList.add("is-visible");
+                }
+            });
+        };
+        const scheduleClippedMediaReveal = () => {
+            if (revealFrame) return;
+            revealFrame = window.requestAnimationFrame(revealClippedMedia);
+        };
+
+        revealTargets.forEach((element) => {
+            if (element.dataset.reveal !== "image") observer.observe(element);
+        });
+        revealClippedMedia();
+        window.addEventListener("scroll", scheduleClippedMediaReveal, { passive: true });
+        window.addEventListener("resize", scheduleClippedMediaReveal);
     }
 
     document.documentElement.dataset.motionReady = "true";

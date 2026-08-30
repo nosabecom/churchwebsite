@@ -168,6 +168,14 @@ const footerTheme = isConference
         	<slot/>
 		</main>
 
+		<div class:list={["site-editorial-ribbon", isConference && "site-editorial-ribbon--conference"]} aria-hidden="true">
+			<div>
+				{Array.from({ length: 4 }).map(() => (
+					<span>{isConference ? "Word · Worship · Sisterhood · Purpose" : "Faith in motion · Women in purpose · Room for every story"}</span>
+				))}
+			</div>
+		</div>
+
 		<footer class:list={[footerTheme.wrap, isConference ? "conference-site-footer" : "cew-site-footer"]}>
 			<div class="mx-auto w-full max-w-6xl px-4 md:px-8 py-12 flex flex-col gap-8">
 				<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
