@@ -1,42 +1,35 @@
 ---
-// The three points below are the mission as written in the RCC-7 vision statement.
 const pillars = [
-    {
-        number: "01",
-        title: "Rooted in the Word",
-        body: "To empower women to lead a Christ-like life and encourage growth in knowledge and application of the Word of faith.",
-    },
-    {
-        number: "02",
-        title: "Excelling in Every Area",
-        body: "To raise women who strive to excel in everything and every area of life.",
-    },
-    {
-        number: "03",
-        title: "Home and Family",
-        body: "To address issues and matters relevant to women as wives and mothers, and families as a whole.",
-    },
+    { number: "01", title: "Rooted in the Word", body: "To empower women to lead a Christ-like life and encourage growth in knowledge and application of the Word of faith." },
+    { number: "02", title: "Excelling in Every Area", body: "To raise women who strive to excel in everything and every area of life." },
+    { number: "03", title: "Home and Family", body: "To address issues and matters relevant to women as wives and mothers, and families as a whole." },
 ];
 ---
 
-<section id="mission" class="cew-section scroll-mt-8 flex flex-col gap-10 md:gap-14">
-    <div class="flex flex-col items-center text-center gap-4">
-        <div class="flex items-center gap-3 md:gap-4">
-            <span class="cew-rule"></span>
-            <p class="cew-eyebrow">Our Mission</p>
-            <span class="cew-rule"></span>
+<section id="mission" class="cew-mission cew-anchor-section">
+    <span class="cew-mission__ghost" aria-hidden="true">02</span>
+    <div class="cew-mission__inner">
+        <div class="cew-section-label">
+            <span class="cew-section-label__line"></span>
+            <span class="cew-section-label__number">02</span>
+            <span>Our mission</span>
         </div>
-        <h2 class="cew-heading text-balance max-w-3xl">What we are believing God for</h2>
-    </div>
+        <div class="cew-mission__heading">
+            <h2>Faith that<br /><em>moves with us.</em></h2>
+            <p>
+                We are believing God for women whose inner life and everyday life tell the same story:
+                grounded, growing, and generous.
+            </p>
+        </div>
 
-    <ul class="grid md:grid-cols-3 gap-5 md:gap-6">
-        {pillars.map((pillar) => (
-            <li class="cew-card">
-                <p class="font-sans text-sm tracking-[0.25em] text-orchid-deep">{pillar.number}</p>
-                <h3 class="text-2xl md:text-3xl text-charcoal">{pillar.title}</h3>
-                <div class="h-px w-12 bg-sand"></div>
-                <p class="text-charcoal/80 text-pretty">{pillar.body}</p>
-            </li>
-        ))}
-    </ul>
+        <ol class="cew-pillar-list">
+            {pillars.map((pillar) => (
+                <li>
+                    <span class="cew-pillar-list__number">{pillar.number}</span>
+                    <div><h3>{pillar.title}</h3><p>{pillar.body}</p></div>
+                    <span class="cew-pillar-list__arrow" aria-hidden="true">↗</span>
+                </li>
+            ))}
+        </ol>
+    </div>
 </section>

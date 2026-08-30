@@ -1,88 +1,73 @@
-<div class="flex justify-center px-4 py-12 md:py-16 font-sans">
-    <div class="w-full max-w-3xl bg-cream-soft border border-sand text-charcoal rounded-2xl p-6 md:p-10">
-        <div class="flex items-center gap-3 md:gap-4 mb-4">
-            <span class="cew-rule"></span>
-            <p class="cew-eyebrow">Cornerstone Excellent Women</p>
+<section class="cew-contact" aria-labelledby="contact-heading">
+    <header class="cew-contact__hero">
+        <img src="/images/conference/2026/day-two-08.jpg" alt="Two women sharing an embrace at Woman Excel" fetchpriority="high" />
+        <div aria-hidden="true"></div>
+        <div>
+            <p class="cew-kicker cew-kicker--light">Prayer · Testimony · Connection</p>
+            <h1 id="contact-heading">Let’s begin a<br /><em>conversation.</em></h1>
+            <p>However you arrived here, you do not have to walk the next part alone.</p>
         </div>
+    </header>
 
-        <h1 class="font-serif text-4xl md:text-5xl mb-3">Contact Us</h1>
-        <p class="text-charcoal/80">Kindly fill the contact form.</p>
-        <p class="text-charcoal/80">For enquiries send an email: <a href="mailto:connect@rccgcornerstoneassembly.com" class="text-orchid-deep underline break-all hover:text-orchid">connect@rccgcornerstoneassembly.com</a></p>
+    <div class="cew-contact__body">
+        <aside>
+            <div class="cew-section-label"><span class="cew-section-label__line"></span><span>Reach out</span></div>
+            <h2>We would love<br />to hear from you.</h2>
+            <p>
+                Share a testimony, ask for prayer, send a suggestion, or simply introduce yourself.
+                A member of the team will receive your message.
+            </p>
+            <a href="mailto:connect@rccgcornerstoneassembly.com">
+                <span>Email us directly</span>
+                connect@rccgcornerstoneassembly.com
+            </a>
+        </aside>
 
-        <hr class="border-sand my-6">
-
-        <form method="POST" class="flex flex-col gap-5">
+        <form method="POST" class="cew-contact-form">
             <fieldset>
-                <legend class="contact-label mb-2">What would you like to share?</legend>
-                <div class="flex flex-wrap gap-x-6 gap-y-2">
-                    <label class="flex items-center gap-2">
-                        <input type="radio" name="category" value="Testimony" class="accent-orchid" checked>
-                        Testimony
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input type="radio" name="category" value="Prayer" class="accent-orchid">
-                        Prayer
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <input type="radio" name="category" value="Suggestion" class="accent-orchid">
-                        Suggestion
-                    </label>
+                <legend>What would you like to share?</legend>
+                <div class="cew-contact-form__choices">
+                    <label><input type="radio" name="category" value="Testimony" checked /><span>Testimony</span></label>
+                    <label><input type="radio" name="category" value="Prayer" /><span>Prayer</span></label>
+                    <label><input type="radio" name="category" value="Suggestion" /><span>Suggestion</span></label>
                 </div>
             </fieldset>
 
-            <div class="contact-field">
-                <label for="fullname" class="contact-label">Full Name</label>
-                <input id="fullname" name="fullname" type="text" autocomplete="name" required
-                    placeholder="e.g. Jane Doe" class="contact-input">
+            <div class="cew-contact-form__field cew-contact-form__field--wide">
+                <label for="fullname">Full name</label>
+                <input id="fullname" name="fullname" type="text" autocomplete="name" required placeholder="Jane Doe" />
             </div>
 
-            <div class="grid sm:grid-cols-2 gap-5">
-                <div class="contact-field">
-                    <label for="email" class="contact-label">Email</label>
-                    <input id="email" name="email" type="email" autocomplete="email" required
-                        placeholder="you@example.com" class="contact-input">
-                </div>
-                <div class="contact-field">
-                    <label for="phone" class="contact-label">Phone</label>
-                    <input id="phone" name="phone" type="tel" autocomplete="tel"
-                        placeholder="(555) 123-4567" class="contact-input">
-                </div>
+            <div class="cew-contact-form__field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            </div>
+            <div class="cew-contact-form__field">
+                <label for="phone">Phone <span>Optional</span></label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(306) 555-0123" />
+            </div>
+            <div class="cew-contact-form__field cew-contact-form__field--wide">
+                <label for="address">Address <span>Optional</span></label>
+                <input id="address" name="address" type="text" autocomplete="street-address" placeholder="123 Main Street" />
+            </div>
+            <div class="cew-contact-form__field">
+                <label for="city">City</label>
+                <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Saskatoon" />
+            </div>
+            <div class="cew-contact-form__field">
+                <label for="province">Province</label>
+                <input id="province" name="province" type="text" autocomplete="address-level1" placeholder="Saskatchewan" />
+            </div>
+            <div class="cew-contact-form__field cew-contact-form__field--wide">
+                <label for="postalcode">Postal code</label>
+                <input id="postalcode" name="postalcode" type="text" autocomplete="postal-code" placeholder="S7K 3J7" />
+            </div>
+            <div class="cew-contact-form__field cew-contact-form__field--wide">
+                <label for="message">Your message</label>
+                <textarea id="message" name="message" rows="6" required placeholder="Tell us what is on your heart"></textarea>
             </div>
 
-            <div class="contact-field">
-                <label for="address" class="contact-label">Address</label>
-                <input id="address" name="address" type="text" autocomplete="street-address"
-                    placeholder="123 Main Street" class="contact-input">
-            </div>
-
-            <div class="grid sm:grid-cols-3 gap-5">
-                <div class="contact-field">
-                    <label for="city" class="contact-label">City</label>
-                    <input id="city" name="city" type="text" autocomplete="address-level2"
-                        placeholder="Toronto" class="contact-input">
-                </div>
-                <div class="contact-field">
-                    <label for="province" class="contact-label">Province</label>
-                    <input id="province" name="province" type="text" autocomplete="address-level1"
-                        placeholder="Ontario" class="contact-input">
-                </div>
-                <div class="contact-field">
-                    <label for="postalcode" class="contact-label">Postal Code</label>
-                    <input id="postalcode" name="postalcode" type="text" autocomplete="postal-code"
-                        placeholder="A1A 1A1" class="contact-input">
-                </div>
-            </div>
-
-            <div class="contact-field">
-                <label for="message" class="contact-label">Your Message</label>
-                <textarea id="message" name="message" rows="6" required
-                    placeholder="Type your feedback here" class="contact-input resize-y"></textarea>
-            </div>
-
-            <button type="submit"
-                class="cew-btn w-full text-center text-lg cursor-pointer">
-                Send
-            </button>
+            <button type="submit">Send your message <span aria-hidden="true">→</span></button>
         </form>
     </div>
-</div>
+</section>

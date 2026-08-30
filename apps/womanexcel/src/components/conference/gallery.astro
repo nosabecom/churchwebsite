@@ -17,24 +17,28 @@ const { year, heading = "Gallery & Media", items, sectionId = `conference-${year
 ---
 
 {items.length > 0 && (
-    <section class="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24" aria-labelledby={sectionId}>
-        <h2 id={sectionId} class="mb-8 text-center text-4xl text-navy md:text-6xl">
-            {heading}
-        </h2>
+    <section class="conference-gallery" aria-labelledby={sectionId}>
+        <div class="conference-gallery__heading">
+            <div class="conference-slate"><span></span><b>Gallery</b><p>{year}</p></div>
+            <h2 id={sectionId}>{heading}</h2>
+            <p>Faces, faith, and the moments we carried home.</p>
+        </div>
 
-        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-                <li class="overflow-hidden rounded-2xl bg-berry text-white">
+        <ul class="conference-gallery__grid">
+            {items.map((item, index) => (
+                <li>
                     {item.href ? (
-                        <a class="group block" href={item.href}>
-                            <img class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-                            {item.caption && <p class="p-4">{item.caption}</p>}
+                        <a href={item.href}>
+                            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                            <span class="conference-gallery__index">{String(index + 1).padStart(2, "0")}</span>
+                            {item.caption && <p>{item.caption}</p>}
                         </a>
                     ) : (
-                        <>
-                            <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-                            {item.caption && <p class="p-4">{item.caption}</p>}
-                        </>
+                        <figure>
+                            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                            <span class="conference-gallery__index">{String(index + 1).padStart(2, "0")}</span>
+                            {item.caption && <figcaption>{item.caption}</figcaption>}
+                        </figure>
                     )}
                 </li>
             ))}

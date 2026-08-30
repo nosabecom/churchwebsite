@@ -1,54 +1,29 @@
 ---
-// Split Canvas hero: a charcoal panel carries the type while the photograph
-// keeps a clean half with nothing laid over it. Chosen over the treatments
-// that set type on top of an image, since the real photography is still to be
-// shot and this one does not depend on it cooperating with the text.
-import Logo from '../../assets/excellent-women-logo.jpg';
-import { Slideshow } from '@churchwebsite/ui';
-import { Image } from 'astro:assets';
-
-// Placeholder photography until the fellowship's own images are supplied.
-// Empty alt throughout: these are decorative, the headline carries the meaning.
-const slides = [
-    { src: "/images/placeholds/photo-10.jpg", alt: "" },
-    { src: "/images/placeholds/photo-4.jpg", alt: "" },
-    { src: "/images/placeholds/photo-7.jpg", alt: "" },
-    { src: "/images/placeholds/photo-1.jpg", alt: "" },
-];
+// One honest, full-bleed image from the women's gathering opens the site.
 ---
 
-<section class="grid lg:grid-cols-2 min-h-[38rem] md:min-h-[44rem]">
-    <div class="bg-charcoal text-cream flex flex-col justify-center gap-6 px-6 md:px-12 lg:px-16 py-16 md:py-20 order-2 lg:order-1">
-        <Image src={Logo} alt="Cornerstone Excellent Women" width="200" height="200" class="w-20 md:w-24 h-auto rounded-full" />
+<section class="cew-cinematic-hero" aria-labelledby="home-hero-title">
+    <img
+        src="/images/conference/2025/gallery-09.jpg"
+        alt="Women holding hands in prayer at a Woman Excel gathering"
+        fetchpriority="high"
+        class="cew-cinematic-hero__image"
+    />
+    <div class="cew-cinematic-hero__wash" aria-hidden="true"></div>
 
-        <div class="flex items-center gap-3 md:gap-4">
-            <span class="h-px w-10 md:w-16 bg-blush/60 shrink-0"></span>
-            <p class="font-sans uppercase text-xs md:text-sm tracking-[0.25em] text-blush">Proverbs 31:10</p>
-        </div>
-
-        <h1 class="text-4xl md:text-5xl lg:text-6xl leading-tight text-balance">
-            Inspire, empower, and support women to <em class="text-blush not-italic">excel</em> in God’s purpose.
-        </h1>
-
-        <p class="text-lg md:text-xl text-cream/80 text-pretty max-w-lg">
-            The women’s fellowship of RCCG Cornerstone Assembly — growing together in the Word,
-            in prayer, and in the calling God has placed on our lives.
+    <div class="cew-cinematic-hero__content">
+        <p class="cew-kicker cew-kicker--light">Cornerstone Excellent Women · Saskatoon</p>
+        <h1 id="home-hero-title">Called to<br /><em>excel.</em></h1>
+        <p class="cew-cinematic-hero__lede">
+            A community of women growing in the Word, walking in purpose, and making room for one another.
         </p>
-
-        <div class="flex flex-wrap gap-3 md:gap-4 pt-2">
-            <a class="cew-btn" href="/#mission">Our Mission</a>
-            <a
-                class="inline-block font-sans text-sm md:text-base rounded-full border border-cream/50 text-cream px-7 py-3 transition-colors hover:bg-cream hover:text-charcoal"
-                href="/conference"
-            >Woman Excel Conference</a>
+        <div class="cew-cinematic-hero__actions">
+            <a class="cew-button cew-button--light" href="#about">Discover our community</a>
+            <a class="cew-text-link cew-text-link--light" href="/conference">
+                Woman Excel Conference <span aria-hidden="true">→</span>
+            </a>
         </div>
     </div>
 
-    <Slideshow
-        slides={slides}
-        interval={6000}
-        label="Cornerstone Excellent Women"
-        class="cew-slideshow min-h-80 lg:min-h-0 order-1 lg:order-2"
-    />
-
+    <a class="cew-scroll-cue" href="#about" aria-label="Scroll to learn more"><span></span></a>
 </section>

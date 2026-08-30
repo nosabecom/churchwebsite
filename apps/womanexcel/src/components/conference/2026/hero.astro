@@ -4,52 +4,24 @@ import HeroDetails from "../hero-details.astro";
 import HeroLabels from "../hero-labels.astro";
 
 const imageRoot = "/images/conference/2026";
-
 const slides = [
-    {
-        src: `${imageRoot}/day-one-08.jpg`,
-        alt: "A panel of women seated on stage at Woman Excel 2026",
-    },
-    {
-        src: `${imageRoot}/day-two-01.jpg`,
-        alt: "Three women leading worship on stage at Woman Excel 2026",
-    },
-    {
-        src: `${imageRoot}/day-one-02.jpg`,
-        alt: "Women sharing a stage ministration during Woman Excel 2026",
-    },
-    {
-        src: `${imageRoot}/day-two-07.jpg`,
-        alt: "The Woman Excel congregation standing together in worship",
-    },
-    {
-        src: `${imageRoot}/day-one-05.jpg`,
-        alt: "Attendees gathered around decorated tables on day one",
-    },
-    {
-        src: `${imageRoot}/day-two-10.jpg`,
-        alt: "Women gathered before the stage during the closing service",
-    },
+    { src: `${imageRoot}/day-two-01.jpg`, alt: "Three women leading worship on stage at Woman Excel 2026" },
+    { src: `${imageRoot}/day-one-08.jpg`, alt: "A panel of women seated on stage at Woman Excel 2026" },
+    { src: `${imageRoot}/day-two-08.jpg`, alt: "Two attendees embracing during a prayerful moment" },
+    { src: `${imageRoot}/day-one-05.jpg`, alt: "Attendees gathered around decorated tables on day one" },
 ];
 ---
 
-<Slideshow
-    slides={slides}
-    label="Woman Excel conference highlights"
-    class="woman-excel-slideshow mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl"
->
-    <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
-
-    <div class="relative z-10 mt-1.5 flex flex-col items-center gap-4 pb-20 pt-10 md:m-0 md:gap-6">
+<Slideshow slides={slides} interval={6500} label="Woman Excel 2026 highlights" class="conference-cinema-hero woman-excel-slideshow">
+    <div class="conference-cinema-hero__scrim" aria-hidden="true"></div>
+    <div class="conference-cinema-hero__content">
         <HeroLabels year="2026" />
-        <img class="w-[85%] max-w-350" src="/images/the-word.svg" alt="The Word">
+        <img class="conference-cinema-hero__art" src="/images/the-word.svg" alt="The Word" />
         <HeroDetails
-            quote={{
-                text: "In the beginning was the Word, and the Word was with God, and the Word was God",
-                citation: "John 1:1",
-            }}
+            quote={{ text: "In the beginning was the Word, and the Word was with God, and the Word was God", citation: "John 1:1" }}
             date="May 9–10, 2026"
             address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
         />
     </div>
+    <a class="conference-cinema-hero__scroll" href="#conference-2026-story" aria-label="Read about the conference"><span></span></a>
 </Slideshow>
