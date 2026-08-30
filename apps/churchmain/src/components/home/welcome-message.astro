@@ -3,68 +3,63 @@ import { Image } from "astro:assets";
 import ReubenAdeleye from "../../assets/pastors/reuben-adeleye.png";
 import ToyinAdeleye from "../../assets/pastors/toyin-adeleye.png";
 
-// Headshots came across from the Woman Excel site. Their formal titles still
-// need confirming, so only the names are shown for now.
 const pastors = [
     { name: "Pst. Reuben Adeleye", image: ReubenAdeleye },
     { name: "Pst. Toyin Adeleye", image: ToyinAdeleye },
 ];
 ---
 
-<section class="px-4 py-16" aria-labelledby="welcome-heading">
-    <div class="mx-auto grid max-w-400 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-16 2xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-        <div>
-            <p class="mb-4 text-xs font-extrabold tracking-[0.16em] text-red-400 uppercase">
-                Welcome
-            </p>
+<section class="welcome-section" id="welcome" aria-labelledby="welcome-heading">
+    <div class="welcome-orbit" aria-hidden="true"><span>YOU BELONG HERE · YOU BELONG HERE · </span></div>
 
-            <h2 class="text-3xl leading-tight font-bold text-balance text-white sm:text-4xl 2xl:text-5xl" id="welcome-heading">
-                There is a place for you at Cornerstone
+    <div class="page-shell welcome-grid">
+        <div class="welcome-heading-wrap" data-reveal>
+            <p class="section-kicker">More than a Sunday</p>
+            <h2 class="welcome-heading" id="welcome-heading">
+                You weren’t made to
+                <em>watch from the edges.</em>
             </h2>
+        </div>
 
-            <p class="mt-6 text-lg leading-relaxed text-sky-100">
-                With joy in our hearts, we welcome you specially to RCCG Cornerstone
-                Assembly Saskatoon. A place of building people of purpose, power, and
-                praise. We are committed to raising role models patterned after Christ in
-                all spheres of life and endeavors. We seek to teach and preach the undiluted
-                word of faith capable of igniting a burning fire of the passion and love of
-                Jesus Christ in you and through you to your world.
+        <div class="welcome-copy" data-reveal style="--reveal-delay: .12s">
+            <p class="welcome-lead">
+                Cornerstone is a family learning to live with purpose, walk in power,
+                and make praise our everyday posture.
             </p>
-
-            <p class="mt-4 text-lg leading-relaxed text-sky-100">
-                We trust God enough for your total turn-around and transformational change
-                as you explore all the resources available for you on this site. Welcome!
-                Joint heirs with Christ.
+            <p>
+                Whether faith is familiar or you are asking your first questions, there
+                is room to breathe, belong, and take your next step here. Come exactly as
+                you are—we will save you a seat.
             </p>
-
-            <a
-                class="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-white no-underline underline-offset-4 hover:underline focus-visible:underline"
-                href="#"
-            >
-                More about who we are
-                <span
-                    class="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
-                    aria-hidden="true"
-                >→</span>
+            <a class="text-link" href="/new-to-church">
+                Here for the first time? <span aria-hidden="true">→</span>
             </a>
         </div>
 
-        <ul class="mx-auto grid w-full max-w-xs list-none grid-cols-2 gap-3 p-0 sm:gap-4 lg:max-w-none">
-            {pastors.map((pastor) => (
-                <li class="min-w-0 overflow-hidden rounded-xl bg-linear-to-b from-sky-700/50 to-sky-950 shadow-xl shadow-sky-950/40">
+        <div class="pastors-composition" data-reveal style="--reveal-delay: .2s">
+            <span class="pastors-composition__shape" aria-hidden="true"></span>
+            {pastors.map((pastor, index) => (
+                <figure class:list={["pastor-card", { "pastor-card--offset": index === 1 }]}>
                     <Image
-                        class="aspect-square w-full object-cover object-top"
+                        class="pastor-card__image"
                         src={pastor.image}
                         alt={pastor.name}
-                        widths={[160, 240, 320]}
-                        sizes="(min-width: 1024px) 10rem, (min-width: 352px) 9.5rem, 44vw"
+                        widths={[300, 450, 600]}
+                        sizes="(min-width: 1024px) 18rem, 42vw"
                     />
-
-                    <p class="border-t border-white/10 bg-sky-950/60 px-2 py-2 text-center text-xs leading-snug font-bold text-white sm:text-sm">
+                    <figcaption>
+                        <span>{String(index + 1).padStart(2, "0")}</span>
                         {pastor.name}
-                    </p>
-                </li>
+                    </figcaption>
+                </figure>
             ))}
-        </ul>
+        </div>
+    </div>
+
+    <div class="belief-marquee" aria-hidden="true">
+        <div>
+            <span>PURPOSE</span><i>✦</i><span>POWER</span><i>✦</i><span>PRAISE</span><i>✦</i>
+            <span>PURPOSE</span><i>✦</i><span>POWER</span><i>✦</i><span>PRAISE</span><i>✦</i>
+        </div>
     </div>
 </section>

@@ -1,10 +1,9 @@
 ---
-import '../styles/global.css'
-import { Image } from 'astro:assets'
-import Analytics from '@vercel/analytics/astro'
-import { getLatestNewsletter, getNewsletterHref } from '../data/newsletters'
-import Logo from '../assets/logo.png'
-import Wordmark from '../assets/cornerstone-logo-horizontal.png'
+import "../styles/global.css";
+import { Image } from "astro:assets";
+import Analytics from "@vercel/analytics/astro";
+import { getLatestNewsletter, getNewsletterHref } from "../data/newsletters";
+import Logo from "../assets/logo.png";
 
 interface Props {
     title?: string;
@@ -12,417 +11,195 @@ interface Props {
 }
 
 const {
-    title = "RCCG Cornerstone Assembly",
-    description = "RCCG Cornerstone Assembly in Saskatoon, Saskatchewan.",
+    title = "RCCG Cornerstone Assembly | Saskatoon",
+    description = "A vibrant church family in Saskatoon growing in purpose, power, and praise.",
 } = Astro.props;
 
 const year = new Date().getFullYear();
 const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
 const currentPath = Astro.url.pathname;
+const isHome = currentPath === "/";
 
-const services = [
-    { title: "Sunday Service", day: "Every Sunday", time: "9:00 AM" },
-    { title: "Mid-week Service", day: "Every Wednesday", time: "7:00 PM" },
-    { title: "Power Night", day: "Last Friday of the month", time: "10:00 PM" },
-];
-
-// The "#" entries are pages that have not been built yet.
-const explore = [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "#" },
-    { label: "New to Church?", href: "/new-to-church" },
+const navLinks = [
+    { label: "New here", href: "/new-to-church" },
     { label: "Events", href: "/events" },
-    { label: "Newsletters", href: "/newsletters" },
-    { label: "Sermons", href: "/messages" },
-    { label: "Contact Us", href: "/contact" },
-];
-
-const getInvolved = [
-    { label: "Join the team", href: "/#join" },
-    { label: "Send a prayer request", href: "/contact" },
     { label: "Ministries", href: "/ministries" },
-    { label: "Departments", href: "/departments" },
+    { label: "Messages", href: "/messages" },
+    { label: "Contact", href: "/contact" },
 ];
 
-// One source of truth for the nav, so the desktop bar and the mobile drawer
-// can never drift apart.
 const ministries = [
-    { label: "Men's", href: "/ministries/men" },
-    { label: "Women's", href: "/ministries/women" },
+    { label: "Women", href: "/ministries/women" },
+    { label: "Men", href: "/ministries/men" },
+    { label: "Youth & Teenagers", href: "/ministries/youths-teenagers" },
     { label: "Children", href: "/ministries/children" },
-    { label: "Youths & Teenagers", href: "/ministries/youths-teenagers" },
-];
-
-const departments = [
-    { label: "Music", href: "/departments/music" },
-    { label: "Prayer", href: "/departments/prayer" },
-    { label: "Bible Study", href: "/departments/bible-study" },
-    { label: "Evangelism", href: "/departments/evangelism" },
-    { label: "Welfare", href: "/departments/welfare" },
-    { label: "Multimedia", href: "/departments/multimedia" },
-    { label: "Sanctuary Helpers", href: "/departments/sanctuary-helpers" },
-];
-
-const primaryLinks = [
-    { label: "New to Church?", href: "/new-to-church" },
-    { label: "Events", href: "/events" },
-    { label: "Sermons", href: "/messages" },
-    { label: "Contact Us", href: "/contact" },
 ];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="generator" content={Astro.generator} />
-        <link rel="shortcut icon" href={Logo.src} type="image/png">
-		<title>{title}</title>
+        <meta name="theme-color" content="#07182d" />
+        <link rel="shortcut icon" href={Logo.src} type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,500;1,6..72,600&display=swap" rel="stylesheet" />
+        <title>{title}</title>
         <meta name="description" content={description} />
-	</head>
-	<body class="bg-sky-900 min-h-dvh flex flex-col">
+    </head>
+    <body class:list={["site-body", { "site-body--home": isHome }]}>
         <Analytics />
+        <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
 
-        <!-- The bar shares `px-4` + `mx-auto max-w-400` with every page section,
-             so the header, body and footer all sit on one gutter. -->
-        <nav class="bg-white px-4 text-lg" aria-label="Main">
-            <div class="mx-auto flex max-w-400 items-center justify-between gap-4 py-2.5 xl:grid xl:grid-cols-[1fr_auto_1fr]">
-                <a class="shrink-0 xl:justify-self-start" href="/"><Image class="w-18 h-auto" src={Logo} alt="RCCG Cornerstone Assembly — home" /></a>
+        <header class:list={["site-header", { "site-header--home": isHome }]} data-site-header>
+            <nav class="page-shell site-nav" aria-label="Main navigation">
+                <a class="site-brand" href="/" aria-label="RCCG Cornerstone Assembly home">
+                    <span class="site-brand__mark"><Image src={Logo} alt="" widths={[80, 120]} /></span>
+                    <span class="site-brand__type">
+                        <strong>Cornerstone</strong>
+                        <small>RCCG · Saskatoon</small>
+                    </span>
+                </a>
 
-                <ul class="hidden gap-5 xl:flex xl:items-center xl:justify-self-center">
-                    <li><a href="/">Home</a></li>
-                    <li class="context-menu-trigger">
-                        <button
-                            class="flex cursor-pointer items-center gap-1"
-                            type="button"
-                            aria-expanded="false"
-                            data-menu-trigger
-                        >
-                            Who We Are
-                            <span class="text-sm" aria-hidden="true">▾</span>
-                        </button>
-
-                        <ul class="context-menu left-0 top-full z-10">
-                            <li><a class="context-menu-item" href="#">About Us</a></li>
-                            <li><a class="context-menu-item" href="/newsletters">Newsletters</a></li>
-                            <li class="context-menu-trigger">
-                                <a class="context-menu-item w-full cursor-pointer text-left" href="/ministries">
-                                    Ministries
-                                </a>
-
-                                <ul class="context-menu left-full -top-2 z-20">
-                                    {ministries.map((item) => (
-                                        <li><a class="context-menu-item whitespace-nowrap" href={item.href}>{item.label}</a></li>
-                                    ))}
-                                </ul>
-                            </li>
-                            <li class="context-menu-trigger">
-                                <a class="context-menu-item w-full cursor-pointer text-left" href="/departments">
-                                    Departments
-                                </a>
-
-                                <ul class="context-menu left-full -top-2 z-20 grid w-max grid-cols-2 gap-1 space-y-0">
-                                    {departments.map((item) => (
-                                        <li><a class="context-menu-item whitespace-nowrap" href={item.href}>{item.label}</a></li>
-                                    ))}
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    {primaryLinks.map((link) => (
+                <ul class="site-nav__links">
+                    {navLinks.map((link) => (
                         <li>
-                            <a
-                                class:list={{ "font-semibold text-sky-900": currentPath === link.href }}
-                                href={link.href}
-                                aria-current={currentPath === link.href ? "page" : undefined}
-                            >{link.label}</a>
+                            <a href={link.href} aria-current={currentPath === link.href ? "page" : undefined}>
+                                {link.label}
+                            </a>
                         </li>
                     ))}
                 </ul>
 
-                <div class="flex shrink-0 items-center gap-2 xl:justify-self-end">
-                    <a
-                        class="hidden items-center justify-center rounded-lg bg-sky-900 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-sky-950 xl:inline-flex"
-                        href={latestNewsletterHref}
-                    >View latest newsletter</a>
-                    <a
-                        class="hidden items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-red-700 xl:inline-flex"
-                        href="#"
-                    >Give</a>
-
-                    <button
-                        class="grid size-11 cursor-pointer place-items-center rounded-lg text-sky-900 hover:bg-slate-100 xl:hidden"
-                        type="button"
-                        aria-label="Open menu"
-                        aria-expanded="false"
-                        aria-controls="mobile-nav"
-                        data-nav-open
-                    >
-                        <svg class="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                            <path d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                <div class="site-nav__actions">
+                    <a class="site-nav__give" href="#">Give</a>
+                    <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav" data-nav-open>
+                        <span></span><span></span>
                     </button>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
-        <!-- Off-canvas drawer, mirroring the pattern already proven on the
-             Woman Excel site. Fixed and translated off-screen, so it never
-             contributes to page width while closed. -->
-        <div class="group xl:hidden" id="mobile-nav" data-nav>
-            <div
-                class="fixed inset-0 z-30 bg-sky-950/70 opacity-0 pointer-events-none transition-opacity duration-300 group-data-open:opacity-100 group-data-open:pointer-events-auto"
-                data-nav-backdrop
-            ></div>
-
-            <div class="fixed top-0 right-0 z-40 flex h-dvh w-80 max-w-[85vw] translate-x-full flex-col overflow-y-auto bg-white p-6 transition-transform duration-300 ease-in-out group-data-open:translate-x-0">
-                <button
-                    class="grid size-11 shrink-0 cursor-pointer place-items-center self-end rounded-lg text-sky-900 hover:bg-slate-100"
-                    type="button"
-                    aria-label="Close menu"
-                    data-nav-close
-                >
-                    <svg class="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                        <path d="M6 6l12 12M18 6L6 18" />
-                    </svg>
-                </button>
-
-                <ul class="mt-4 list-none space-y-1 p-0 text-lg text-sky-900">
-                    <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/">Home</a></li>
-
-                    <li>
-                        <details class="drawer-group">
-                            <summary class="drawer-summary">Who We Are</summary>
-
-                            <ul class="list-none space-y-1 p-0 pl-3">
-                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="#">About Us</a></li>
-                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/newsletters">Newsletters</a></li>
-
-                                <li>
-                                    <details class="drawer-group">
-                                        <summary class="drawer-summary">Ministries</summary>
-                                        <ul class="list-none space-y-1 p-0 pl-3">
-                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/ministries">All Ministries</a></li>
-                                            {ministries.map((item) => (
-                                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
-                                            ))}
-                                        </ul>
-                                    </details>
-                                </li>
-
-                                <li>
-                                    <details class="drawer-group">
-                                        <summary class="drawer-summary">Departments</summary>
-                                        <ul class="list-none space-y-1 p-0 pl-3">
-                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/departments">All Departments</a></li>
-                                            {departments.map((item) => (
-                                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
-                                            ))}
-                                        </ul>
-                                    </details>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>
-
-                    {primaryLinks.map((link) => (
-                        <li>
-                            <a
-                                class:list={[
-                                    "block rounded-md py-2.5 hover:bg-slate-100",
-                                    { "font-semibold text-sky-900": currentPath === link.href },
-                                ]}
-                                href={link.href}
-                                aria-current={currentPath === link.href ? "page" : undefined}
-                            >{link.label}</a>
-                        </li>
+        <div class="mobile-nav" id="mobile-nav" aria-hidden="true" data-nav>
+            <button class="mobile-nav__backdrop" type="button" aria-label="Close menu" data-nav-close></button>
+            <div class="mobile-nav__panel">
+                <div class="mobile-nav__top">
+                    <span>Explore Cornerstone</span>
+                    <button class="mobile-nav__close" type="button" aria-label="Close menu" data-nav-close>×</button>
+                </div>
+                <ul>
+                    <li><a href="/">Home <span>01</span></a></li>
+                    {navLinks.map((link, index) => (
+                        <li><a href={link.href}>{link.label} <span>{String(index + 2).padStart(2, "0")}</span></a></li>
                     ))}
                 </ul>
-
-                <div class="mt-6 grid gap-3">
-                    <a
-                        class="shrink-0 rounded-lg bg-sky-900 px-4 py-3 text-center text-base font-semibold text-white hover:bg-sky-950"
-                        href={latestNewsletterHref}
-                    >View latest newsletter</a>
-                    <a
-                        class="shrink-0 rounded-lg bg-red-600 px-4 py-3 text-center text-lg text-white hover:bg-red-700"
-                        href="#"
-                    >Give</a>
+                <div class="mobile-nav__footer">
+                    <p>Sunday · 9:00 AM</p>
+                    <a href="/new-to-church">Plan a visit →</a>
                 </div>
             </div>
         </div>
 
-        <main class="flex-1">
-            <slot/>
-        </main>
+        <main class="site-main"><slot /></main>
 
-        <footer class="bg-black px-4 text-white">
-            <div class="mx-auto max-w-400">
-                <div class="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
+        <footer class="site-footer">
+            <div class="page-shell">
+                <div class="site-footer__lead">
+                    <a class="site-brand site-brand--footer" href="/">
+                        <span class="site-brand__mark"><Image src={Logo} alt="" widths={[80, 120]} /></span>
+                        <span class="site-brand__type"><strong>Cornerstone</strong><small>RCCG · Saskatoon</small></span>
+                    </a>
+                    <p>Come as you are.<br /><em>Leave with purpose.</em></p>
+                </div>
+
+                <div class="site-footer__grid">
                     <div>
-                        <Image
-                            class="h-auto w-full max-w-64"
-                            src={Wordmark}
-                            alt="RCCG Cornerstone Assembly"
-                            widths={[256, 512]}
-                            sizes="16rem"
-                        />
-
-                        <address class="mt-5 text-base leading-relaxed text-slate-300 not-italic">
-                            70-3904 Millar Avenue<br />
-                            Saskatoon, SK S7P 0B1
-                        </address>
-
-                        <a
-                            class="mt-3 inline-block py-2 text-base text-slate-300 underline-offset-4 hover:text-white hover:underline"
-                            href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
-                            target="_blank"
-                            rel="noreferrer"
-                        >Find us on the map</a>
+                        <p class="site-footer__label">Meet with us</p>
+                        <p>Sunday Service · 9:00 AM</p>
+                        <p>Mid-week Service · Wed 7:00 PM</p>
+                        <p>Power Night · Last Friday 10:00 PM</p>
                     </div>
-
                     <div>
-                        <h2 class="text-sm font-extrabold tracking-[0.16em] uppercase">Service Times</h2>
-
-                        <ul class="mt-5 list-none space-y-4 p-0 text-base text-slate-300">
-                            {services.map((service) => (
-                                <li>
-                                    <span class="block font-semibold text-white">{service.title}</span>
-                                    {service.day}
-                                    <span class="mx-1.5 text-slate-500" aria-hidden="true">•</span>
-                                    {service.time}
-                                </li>
-                            ))}
-                        </ul>
+                        <p class="site-footer__label">Find us</p>
+                        <address>70–3904 Millar Avenue<br />Saskatoon, SK S7P 0B1</address>
+                        <a href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">Open in Maps →</a>
                     </div>
-
                     <div>
-                        <h2 class="text-sm font-extrabold tracking-[0.16em] uppercase">Explore</h2>
-
-                        <ul class="mt-5 list-none space-y-1 p-0 text-base text-slate-300">
-                            {explore.map((link) => (
-                                <li>
-                                    <a
-                                        class="block py-2 underline-offset-4 hover:text-white hover:underline"
-                                        href={link.href}
-                                        aria-current={currentPath === link.href ? "page" : undefined}
-                                    >
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                        <p class="site-footer__label">Ministries</p>
+                        {ministries.map((item) => <a href={item.href}>{item.label}</a>)}
                     </div>
-
                     <div>
-                        <h2 class="text-sm font-extrabold tracking-[0.16em] uppercase">Get Involved</h2>
-
-                        <ul class="mt-5 list-none space-y-1 p-0 text-base text-slate-300">
-                            {getInvolved.map((link) => (
-                                <li>
-                                    <a class="block py-2 underline-offset-4 hover:text-white hover:underline" href={link.href}>
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <a
-                            class="mt-6 inline-block rounded-lg bg-sky-900 px-4 py-2 font-semibold text-white ring-1 ring-white/25 hover:bg-sky-800"
-                            href={latestNewsletterHref}
-                        >View latest newsletter</a>
-
-                        <a
-                            class="mt-3 block w-fit rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
-                            href="#"
-                        >Give</a>
+                        <p class="site-footer__label">Stay connected</p>
+                        <a href={latestNewsletterHref}>Latest newsletter →</a>
+                        <a href="mailto:connect@rccgcornerstoneassembly.com">Email us →</a>
+                        <a href="https://www.instagram.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer">Instagram →</a>
+                        <a href="https://www.facebook.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer">Facebook →</a>
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center justify-between gap-4 border-t border-white/15 py-6">
-                    <div>
-                        <p>© {year} RCCG Cornerstone Assembly</p>
-                    </div>
-
-                    <div class="flex gap-1">
-                        <a class="grid size-11 place-items-center rounded-lg hover:bg-white/10" href="mailto:connect@rccgcornerstoneassembly.com" aria-label="Email connect@rccgcornerstoneassembly.com"><svg class="fill-white w-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <title>Email</title>
-                            <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/>
-                        </svg></a>
-
-                        <a class="grid size-11 place-items-center rounded-lg hover:bg-white/10" href="https://www.instagram.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg class="fill-white w-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <title>Instagram</title>
-                            <path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/>
-                        </svg></a>
-
-                        <a class="grid size-11 place-items-center rounded-lg hover:bg-white/10" href="https://www.facebook.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer" aria-label="Facebook"><svg class="fill-white w-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <title>Facebook</title>
-                            <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/>
-                        </svg></a>
-                    </div>
+                <div class="site-footer__base">
+                    <p>© {year} RCCG Cornerstone Assembly</p>
+                    <p>Purpose · Power · Praise</p>
                 </div>
             </div>
         </footer>
 
         <script>
-            // Off-canvas drawer.
             const drawer = document.querySelector<HTMLElement>("[data-nav]");
-            const openBtn = document.querySelector<HTMLElement>("[data-nav-open]");
+            const openButton = document.querySelector<HTMLButtonElement>("[data-nav-open]");
 
-            if (drawer && openBtn) {
-                const setOpen = (open: boolean) => {
-                    drawer.toggleAttribute("data-open", open);
-                    openBtn.setAttribute("aria-expanded", String(open));
-                    document.body.classList.toggle("overflow-hidden", open);
-                };
-
-                openBtn.addEventListener("click", () => setOpen(true));
-                drawer.querySelectorAll("[data-nav-close], [data-nav-backdrop], a").forEach((el) => {
-                    el.addEventListener("click", () => setOpen(false));
-                });
-                document.addEventListener("keydown", (event) => {
-                    if (event.key === "Escape") setOpen(false);
-                });
-
-                // The drawer is display:none from xl up; drop the open state too so
-                // the scroll lock cannot outlive the panel.
-                window.matchMedia("(min-width: 80rem)").addEventListener("change", (event) => {
-                    if (event.matches) setOpen(false);
-                });
-            }
-
-            // Desktop dropdowns. Hover alone is unreachable on a touchscreen, so the
-            // triggers are buttons that toggle on click; :hover stays as an
-            // enhancement for fine pointers only (see global.css).
-            const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-menu-trigger]"));
-
-            const closeMenus = (except?: Element) => {
-                triggers.forEach((trigger) => {
-                    const parent = trigger.parentElement;
-                    if (!parent || parent === except || parent.contains(except ?? null)) return;
-                    parent.removeAttribute("data-open");
-                    trigger.setAttribute("aria-expanded", "false");
-                });
+            const setDrawer = (open: boolean) => {
+                if (!drawer || !openButton) return;
+                drawer.toggleAttribute("data-open", open);
+                drawer.setAttribute("aria-hidden", String(!open));
+                openButton.setAttribute("aria-expanded", String(open));
+                document.body.classList.toggle("nav-open", open);
             };
 
-            triggers.forEach((trigger) => {
-                trigger.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    const parent = trigger.parentElement;
-                    if (!parent) return;
-                    const open = !parent.hasAttribute("data-open");
-                    closeMenus(open ? parent : undefined);
-                    parent.toggleAttribute("data-open", open);
-                    trigger.setAttribute("aria-expanded", String(open));
-                });
+            openButton?.addEventListener("click", () => setDrawer(true));
+            drawer?.querySelectorAll("[data-nav-close], a").forEach((element) => {
+                element.addEventListener("click", () => setDrawer(false));
+            });
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") setDrawer(false);
             });
 
-            document.addEventListener("click", () => closeMenus());
-            document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape") closeMenus();
-            });
+            const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
+            const hero = document.querySelector<HTMLElement>("[data-hero]");
+            let ticking = false;
+
+            const syncScroll = () => {
+                const maximum = document.documentElement.scrollHeight - window.innerHeight;
+                if (progress) progress.style.transform = `scaleX(${maximum > 0 ? window.scrollY / maximum : 0})`;
+                if (hero && window.scrollY < window.innerHeight) hero.style.setProperty("--hero-shift", `${window.scrollY * .12}px`);
+                ticking = false;
+            };
+
+            window.addEventListener("scroll", () => {
+                if (!ticking) {
+                    requestAnimationFrame(syncScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+            syncScroll();
+
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const revealItems = document.querySelectorAll<HTMLElement>("[data-reveal]");
+            if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+                revealItems.forEach((item) => item.setAttribute("data-visible", ""));
+            } else {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        entry.target.setAttribute("data-visible", "");
+                        observer.unobserve(entry.target);
+                    });
+                }, { threshold: .14, rootMargin: "0px 0px -5%" });
+                revealItems.forEach((item) => observer.observe(item));
+            }
         </script>
-	</body>
+    </body>
 </html>
