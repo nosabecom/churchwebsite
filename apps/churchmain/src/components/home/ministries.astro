@@ -12,7 +12,7 @@ const ministries = [
     <div class="page-shell">
         <header class="ministries-header" data-reveal>
             <p class="section-kicker section-kicker--light">There’s a circle for you</p>
-            <h2 id="ministries-heading">Find your people.<br /><em>Grow your faith.</em></h2>
+            <h2 id="ministries-heading">Small circles.<br /><em>Big becoming.</em></h2>
             <a class="text-link text-link--light" href="/ministries">Meet every ministry <span aria-hidden="true">→</span></a>
         </header>
 
@@ -24,6 +24,7 @@ const ministries = [
                     data-reveal
                     style={`--reveal-delay: ${index * .08}s`}
                 >
+                    <span class="ministry-tile__ghost" aria-hidden="true">{ministry.title}</span>
                     <span class="ministry-tile__number">{ministry.number}</span>
                     <span class="ministry-tile__label">{ministry.label}</span>
                     <span class="ministry-tile__title">{ministry.title}</span>

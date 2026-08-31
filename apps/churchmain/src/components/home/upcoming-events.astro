@@ -5,11 +5,12 @@ const events = churchEvents.slice(0, 5);
 ---
 
 <section class="events-section" id="upcoming-events" aria-labelledby="events-heading">
+    <span class="events-ghost" aria-hidden="true">NEXT / NEXT / NEXT</span>
     <div class="page-shell">
         <header class="events-header" data-reveal>
             <div>
                 <p class="section-kicker section-kicker--dark">What’s happening</p>
-                <h2 id="events-heading">Make room<br /><em>for more.</em></h2>
+                <h2 id="events-heading">Show up.<br /><em>Something shifts.</em></h2>
             </div>
             <div class="events-header__aside">
                 <p>Worship. Community. Moments that move us forward together.</p>
@@ -36,6 +37,7 @@ const events = churchEvents.slice(0, 5);
                         <p>{formatEventTime(event.startTime)} · {event.location}</p>
                         <a href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`} aria-label={`View details for ${event.title}`}>→</a>
                     </div>
+                    <span class="event-card__barcode" aria-hidden="true"></span>
                 </article>
             ))}
         </div>
