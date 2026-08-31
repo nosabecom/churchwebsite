@@ -1,94 +1,37 @@
 ---
-import CardRail from "./card-rail.astro";
-
-// Placeholder content only. These entries will later be pulled from the
-// church YouTube channel; no API work is wired up yet.
-const ministrations = [
-    {
-        title: "The Stone The Builders Rejected",
-        speaker: "Pastor in charge",
-        published: "This week",
-        duration: "48:12",
-        current: true,
-    },
-    {
-        title: "Walking In Step With The Spirit",
-        speaker: "Assistant Pastor",
-        published: "1 week ago",
-        duration: "52:40",
-    },
-    {
-        title: "Sunday Worship — Full Service",
-        speaker: "Cornerstone Choir",
-        published: "1 week ago",
-        duration: "1:24:05",
-    },
-    {
-        title: "Foundations: Prayer That Moves",
-        speaker: "Prayer Department",
-        published: "2 weeks ago",
-        duration: "39:57",
-    },
-    {
-        title: "Youth Night: Chosen Generation",
-        speaker: "Youths & Teenagers",
-        published: "3 weeks ago",
-        duration: "45:20",
-    },
-    {
-        title: "Bible Study: The Book Of Acts",
-        speaker: "Bible Study Department",
-        published: "1 month ago",
-        duration: "1:02:33",
-    },
+const ministries = [
+    { number: "01", title: "Women", label: "Grow boldly", description: "A community of women becoming excellent in faith, family, and purpose.", href: "/ministries/women", style: "coral" },
+    { number: "02", title: "Men", label: "Lead faithfully", description: "Brotherhood, accountability, and practical faith for every season of life.", href: "/ministries/men", style: "blue" },
+    { number: "03", title: "Youth", label: "Live unfiltered", description: "A space for young people to ask real questions and build resilient faith.", href: "/ministries/youths-teenagers", style: "lime" },
+    { number: "04", title: "Children", label: "Wonder out loud", description: "Safe, energetic, age-appropriate environments where little faith grows big.", href: "/ministries/children", style: "cream" },
 ];
 ---
 
-<CardRail
-    id="ministries"
-    heading="Ministries"
-    description="The most recent ministrations first, straight from our YouTube channel."
-    previousLabel="Newer ministrations"
-    nextLabel="Older ministrations"
-    linkLabel="See all ministrations"
-    linkHref="#"
->
-    {ministrations.map((ministration) => (
-        <li class="flex w-[min(20rem,85vw)] shrink-0 snap-start flex-col overflow-hidden rounded-2xl bg-slate-50 text-slate-900 shadow-xl shadow-sky-950/30 md:w-88">
-            <div class="relative grid aspect-video place-items-center bg-linear-to-br from-sky-800 to-sky-950">
-                {/* Placeholder for the YouTube thumbnail. */}
-                <span
-                    class="grid size-14 place-items-center rounded-full bg-red-600 text-lg text-white"
-                    aria-hidden="true"
-                >▶</span>
+<section class="ministries-section" id="ministries" aria-labelledby="ministries-heading">
+    <div class="ministries-noise" aria-hidden="true"></div>
+    <div class="page-shell">
+        <header class="ministries-header" data-reveal>
+            <p class="section-kicker section-kicker--light">There’s a circle for you</p>
+            <h2 id="ministries-heading">Small circles.<br /><em>Big becoming.</em></h2>
+            <a class="text-link text-link--light" href="/ministries">Meet every ministry <span aria-hidden="true">→</span></a>
+        </header>
 
-                <span class="absolute right-3 bottom-3 rounded-md bg-black/70 px-2 py-1 text-xs font-semibold text-white">
-                {ministration.duration}
-                </span>
-
-                {ministration.current && (
-                    <span class="absolute top-3 left-3 rounded-md bg-red-600 px-2 py-1 text-xs font-extrabold tracking-widest text-white uppercase">
-                        Latest
-                    </span>
-                )}
-            </div>
-
-            <div class="flex flex-1 flex-col p-8">
-                <h3 class="mb-3 text-2xl leading-snug font-bold text-sky-900">{ministration.title}</h3>
-
-                <p class="mb-4 text-sm font-semibold tracking-wide text-red-700">
-                    {ministration.speaker}
-                    <span class="mx-2 text-slate-400" aria-hidden="true">•</span>
-                    {ministration.published}
-                </p>
-
+        <div class="ministry-grid">
+            {ministries.map((ministry, index) => (
                 <a
-                    class="mt-auto inline-flex items-center gap-2 self-start text-base font-semibold text-sky-900 no-underline underline-offset-4 hover:underline focus-visible:underline"
-                    href="#"
+                    class:list={["ministry-tile", `ministry-tile--${ministry.style}`]}
+                    href={ministry.href}
+                    data-reveal
+                    style={`--reveal-delay: ${index * .08}s`}
                 >
-                    Watch this ministration →
+                    <span class="ministry-tile__ghost" aria-hidden="true">{ministry.title}</span>
+                    <span class="ministry-tile__number">{ministry.number}</span>
+                    <span class="ministry-tile__label">{ministry.label}</span>
+                    <span class="ministry-tile__title">{ministry.title}</span>
+                    <span class="ministry-tile__description">{ministry.description}</span>
+                    <span class="ministry-tile__arrow" aria-hidden="true">→</span>
                 </a>
-            </div>
-        </li>
-    ))}
-</CardRail>
+            ))}
+        </div>
+    </div>
+</section>

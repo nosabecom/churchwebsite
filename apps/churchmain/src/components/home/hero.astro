@@ -1,42 +1,82 @@
 ---
 import { Image } from "astro:assets";
-import { Quote, Slideshow } from "@churchwebsite/ui";
-import Welcome from "./welcome.astro";
-import Wordmark from "../../assets/cornerstone-logo-horizontal.png";
-
-// Add more church-owned images here as they are placed in public/images.
-const slides = [
-    {
-        src: "/images/placeholds/1.jpg",
-        alt: "RCCG Cornerstone Assembly congregation",
-    },
-];
+import HeroImage from "../../assets/cornerstone-worship-hero.png";
 ---
 
-<div class="px-4 py-8">
-    <section class="mx-auto grid max-w-400 overflow-hidden rounded-2xl shadow-2xl shadow-sky-950/40 lg:grid-cols-[minmax(0,1fr)_26rem] 2xl:grid-cols-[minmax(0,1fr)_32rem]">
-        <Slideshow
-            slides={slides}
-            label="RCCG Cornerstone Assembly highlights"
-            class="churchmain-slideshow h-full w-full min-h-96 md:min-h-80"
-        >
-            <div class="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-4 py-8 md:px-12 md:py-10 lg:gap-8 lg:py-7">
-                <Image
-                    src={Wordmark}
-                    alt="RCCG Cornerstone Assembly"
-                    class="h-auto w-full max-w-3xl drop-shadow-2xl lg:max-w-lg"
-                    widths={[320, 640, 768]}
-                    sizes="(min-width: 1024px) 32rem, 90vw"
-                />
+<section class="home-hero" aria-labelledby="hero-heading" data-hero>
+    <Image
+        class="home-hero__image"
+        src={HeroImage}
+        alt="A joyful, multicultural congregation worshipping together"
+        widths={[768, 1200, 1672]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+    />
+    <div class="home-hero__wash" aria-hidden="true"></div>
+    <div class="home-hero__glow" aria-hidden="true"></div>
+    <div class="home-hero__cornerstones" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <span class="home-hero__ghost" aria-hidden="true">PRAISE</span>
 
-                <Quote
-                    quote="The stone which the builders rejected has become the chief cornerstone."
-                    citation="Mark 12:10"
-                    class="churchmain-quote max-w-3xl"
-                />
+    <div class="home-hero__content page-shell">
+        <p class="hero-eyebrow hero-reveal" style="--delay: .12s">
+            <span class="hero-eyebrow__dot" aria-hidden="true"></span>
+            RCCG Cornerstone Assembly · Saskatoon
+        </p>
+
+        <h1 class="home-hero__title" id="hero-heading">
+            <span class="hero-line"><span style="--delay: .18s">Faith</span></span>
+            <span class="hero-line hero-line--accent"><span style="--delay: .3s">with a</span></span>
+            <span class="hero-line"><span style="--delay: .42s">pulse.</span></span>
+        </h1>
+
+        <div class="home-hero__intro hero-reveal" style="--delay: .68s">
+            <p>
+                Purpose in our bones. Praise on our lips. Power for real life.
+                Come meet Jesus, find your people, and move forward alive.
+            </p>
+
+            <div class="home-hero__actions">
+                <a class="button button--coral" href="/new-to-church">
+                    Plan your visit <span aria-hidden="true">→</span>
+                </a>
+                <a class="text-link text-link--light" href="/messages">
+                    Watch a message <span aria-hidden="true">→</span>
+                </a>
             </div>
-        </Slideshow>
+        </div>
+    </div>
 
-        <Welcome />
-    </section>
-</div>
+    <p class="home-hero__verse hero-reveal" style="--delay: .82s">
+        <span>Mark 12:10</span>
+        “The stone the builders rejected has become the cornerstone.”
+    </p>
+
+    <div class="home-hero__services hero-reveal" style="--delay: .92s">
+        <div class="page-shell home-hero__services-inner">
+            <p class="service-callout">
+                <span class="service-callout__label">This Sunday</span>
+                <strong>9:00 AM</strong>
+            </p>
+            <p class="service-callout service-callout--address">
+                <span class="service-callout__label">In person</span>
+                <span>70–3904 Millar Ave, Saskatoon</span>
+            </p>
+            <a
+                class="service-map"
+                href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
+                target="_blank"
+                rel="noreferrer"
+            >
+                Get directions <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+
+    <span class="home-hero__side-note" aria-hidden="true">COME AS YOU ARE · LEAVE WITH PURPOSE</span>
+    <div class="home-hero__palette" aria-label="Experimental Electric Sanctuary palette">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+</section>
