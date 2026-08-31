@@ -1,0 +1,24 @@
+---
+interface Props {
+    class?: string;
+    id: string;
+    text: string;
+}
+
+const { class: className, id, text } = Astro.props;
+const pathId = `${id}-path`;
+---
+
+<div class:list={["orbit-badge", className]} aria-hidden="true">
+    <svg viewBox="0 0 120 120" focusable="false">
+        <defs>
+            <path id={pathId} d="M 60 15 A 45 45 0 1 1 59.99 15"></path>
+        </defs>
+        <circle class="orbit-badge__rail" cx="60" cy="60" r="53"></circle>
+        <circle class="orbit-badge__dash" cx="60" cy="60" r="39"></circle>
+        <text textLength="282" lengthAdjust="spacing">
+            <textPath href={`#${pathId}`}>{text}</textPath>
+        </text>
+    </svg>
+    <span class="orbit-badge__core"></span>
+</div>

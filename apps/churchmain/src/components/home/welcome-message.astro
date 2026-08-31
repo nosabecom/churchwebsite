@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import ReubenAdeleye from "../../assets/pastors/reuben-adeleye.png";
 import ToyinAdeleye from "../../assets/pastors/toyin-adeleye.png";
+import OrbitBadge from "./orbit-badge.astro";
 
 const pastors = [
     { name: "Pst. Reuben Adeleye", image: ReubenAdeleye },
@@ -11,7 +12,11 @@ const pastors = [
 
 <section class="welcome-section" id="welcome" aria-labelledby="welcome-heading">
     <span class="welcome-ghost" aria-hidden="true">BELONG</span>
-    <div class="welcome-orbit" aria-hidden="true"><span>YOU BELONG HERE · YOU BELONG HERE · </span></div>
+    <OrbitBadge
+        class="welcome-orbit"
+        id="welcome-orbit"
+        text="YOU BELONG HERE · YOU BELONG HERE · YOU BELONG HERE · "
+    />
 
     <div class="page-shell welcome-grid">
         <div class="welcome-heading-wrap" data-reveal>

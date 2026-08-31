@@ -897,21 +897,58 @@ body.nav-open {
 .pastor-card figcaption { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .85rem 1rem; color: white; background: var(--ink); font-size: .72rem; font-weight: 700; }
 .pastor-card figcaption span { color: var(--lime); }
 
+.orbit-badge {
+    display: grid;
+    place-items: center;
+    color: var(--ink);
+}
+
+.orbit-badge svg,
+.orbit-badge__core { grid-area: 1 / 1; }
+
+.orbit-badge svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    transform-origin: center;
+    animation: orbit-spin 18s linear infinite;
+}
+
+.orbit-badge circle { fill: none; stroke: currentColor; }
+.orbit-badge__rail { opacity: .32; stroke-width: .75; }
+.orbit-badge__dash { opacity: .22; stroke-dasharray: 1 5; stroke-linecap: round; stroke-width: 1; }
+.orbit-badge text { fill: currentColor; font-family: "DM Sans", sans-serif; font-size: 6.5px; font-weight: 800; letter-spacing: 1px; }
+
+.orbit-badge__core {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 2.9rem;
+    height: 2.9rem;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    color: var(--paper);
+    background: var(--blue);
+    box-shadow: 0 .5rem 1.5rem rgb(36 19 49 / 16%);
+}
+
+.orbit-badge__core::before {
+    width: 1.05rem;
+    aspect-ratio: 1;
+    background: currentColor;
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+    content: "";
+}
+
 .welcome-orbit {
     position: absolute;
     top: 7rem;
     right: 5%;
-    display: grid;
     width: 9rem;
     height: 9rem;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    animation: orbit-spin 16s linear infinite;
 }
-
-.welcome-orbit::after { content: "✦"; color: var(--blue); font-size: 2rem; }
-.welcome-orbit span { position: absolute; width: 13rem; font-size: .56rem; font-weight: 800; letter-spacing: .16em; text-align: center; transform: rotate(-18deg); }
 
 .belief-marquee {
     width: 100%;
@@ -1122,8 +1159,9 @@ body.nav-open {
 .stay-connected h2 em { color: var(--blue); }
 .stay-connected__copy { position: relative; z-index: 2; max-width: 26rem; padding-bottom: 1rem; }
 .stay-connected__copy p { margin: 0 0 2rem; font-size: 1.12rem; line-height: 1.6; }
-.stay-connected__orbit { position: absolute; top: 3rem; right: 3rem; width: 10rem; height: 10rem; margin: 0; color: rgb(36 19 49 / 55%); border: 1px solid rgb(36 19 49 / 35%); border-radius: 50%; font-size: .55rem; font-weight: 800; letter-spacing: .16em; line-height: 10rem; text-align: center; animation: orbit-spin 18s linear infinite; }
-.stay-connected__orbit::after { content: "✦"; position: absolute; inset: 0; color: var(--coral); font-size: 2rem; }
+.stay-connected__orbit { position: absolute; top: 3rem; right: 3rem; width: 10rem; height: 10rem; color: rgb(36 19 49 / 66%); }
+.stay-connected__orbit svg { animation-direction: reverse; animation-duration: 22s; }
+.stay-connected__orbit .orbit-badge__core { color: var(--paper); background: var(--coral); }
 
 /* Footer */
 .site-footer {
@@ -1213,7 +1251,7 @@ body.nav-open {
     .ministry-tile { min-height: 24rem; grid-column: 1; }
     .stay-connected { padding-inline: .8rem; }
     .stay-connected__inner { min-height: 37rem; align-content: end; gap: 2rem; padding: 3rem 1.5rem; border-radius: 9rem 9rem .8rem .8rem / 5rem 5rem .8rem .8rem; box-shadow: .55rem .55rem 0 var(--ink); }
-    .stay-connected__orbit { top: 2rem; right: 50%; width: 8rem; height: 8rem; line-height: 8rem; transform: translateX(50%); }
+    .stay-connected__orbit { top: 1rem; right: 1rem; width: 6rem; height: 6rem; }
     .site-footer__grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -1372,7 +1410,7 @@ body.nav-open {
 
 .pastors-composition {
     grid-column: 6 / 13;
-    margin-top: -6rem;
+    margin-top: clamp(2rem, 4vw, 4rem);
 }
 
 .pastors-composition__shape {
