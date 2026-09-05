@@ -12,6 +12,12 @@ This repository is a pnpm workspace containing multiple Astro websites for RCCG 
 - Static public assets live in each app's `public/` directory.
 - Astro-imported assets live in each app's `src/assets/` directory.
 
+The main church site's Vercel deployment temporarily redirects all paths to
+https://rccgcornerstonesk.wixsite.com/site using `apps/churchmain/vercel.json`.
+Remove that redirect when the new site is ready to launch. The redirect runs on
+Vercel; local Astro development and preview still show the site being built.
+The Woman Excel deployment is unaffected.
+
 ## Requirements
 
 - Node.js `>=22.12.0`
