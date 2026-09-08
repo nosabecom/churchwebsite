@@ -1,0 +1,27 @@
+<script>
+  // Content is visible by default; animation is a progressive enhancement.
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  if (!reducedMotion.matches && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.animate(
+            [
+              { opacity: 0, transform: "translateY(24px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            { duration: 650, easing: "cubic-bezier(.2,.7,.2,1)" },
+          );
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12 },
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
+  }
+  document.querySelectorAll<HTMLImageElement>("[data-image-with-fallback]").forEach((img) => {
+    if (img.complete && img.naturalWidth === 0) img.remove();
+    else img.addEventListener("error", () => img.remove());
+  });
+</script>

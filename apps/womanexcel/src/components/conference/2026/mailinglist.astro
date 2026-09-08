@@ -1,19 +1,50 @@
-<div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 my-12 px-4">
-    <div class="flex flex-col justify-center gap-2 w-full max-w-sm lg:w-auto lg:max-w-none">
-        <h1 class="self-start max-xs:self-center text-2xl max-xs:text-4xl md:text-4xl text-navy">Join our Community!</h1>
-        <div class="flex gap-2">
-            <input
-                class="border-2 rounded-md w-full min-w-0 lg:w-xs px-2 user-invalid:border-red-700 user-valid:border-green-600 border-navy bg-white"
-                autocomplete="email"
-                type="email"
-                placeholder="you@example.com"
-                name="Mailing-List"
-                id="mailinglist">
-            <button
-                class="bg-navy text-white text-xl border-none rounded-full px-4 py-1 shrink-0 hover:cursor-pointer hover:bg-navy/70"
-                type="submit">Submit
-            </button>
-        </div>
-    </div>
-    <img class="w-full max-w-sm lg:w-100 lg:max-w-none border-none rounded-2xl" src="/images/banner.jpeg" alt="">
-</div>
+<section class="conference-keep-close">
+  <p class="eyebrow">THE GATHERING ENDS. THE SISTERHOOD CONTINUES.</p><h2>
+    Keep growing.<br /><em>Stay connected.</em>
+  </h2><p>
+    Find encouragement in our community journal, or get in touch to hear about future gatherings.
+  </p><div>
+    <a class="w-button" href="/newsletters">Read the journal →</a><a class="w-link" href="/contact"
+      >Let’s stay in touch →</a>
+  </div>
+</section>
+<style>
+  .conference-keep-close {
+    text-align: center;
+    background: var(--butter);
+    padding: 75px var(--gutter);
+  }
+  .conference-keep-close h2 {
+    font: 400 70px/1.05 var(--display);
+    margin: 25px 0;
+  }
+  .conference-keep-close h2 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .conference-keep-close > p:not(.eyebrow) {
+    max-width: 400px;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 0 auto;
+  }
+  .conference-keep-close > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .conference-keep-close .w-button {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  @media (max-width: 700px) {
+    .conference-keep-close h2 {
+      font-size: 50px;
+    }
+    .conference-keep-close > div {
+      gap: 10px 25px;
+    }
+  }
+</style>

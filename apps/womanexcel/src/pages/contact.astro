@@ -1,8 +1,93 @@
 ---
 import Layout from "../layouts/layout.astro";
-import Contactus from "../components/contact/contactus.astro"
+import { ContactPanel } from "@churchwebsite/ui";
 ---
 
-<Layout title="Contact Us">
-    <Contactus/>
+<Layout title="Say hello">
+  <section class="contact-page">
+    <div class="contact-intro">
+      <p class="eyebrow">A CONVERSATION IS A BEAUTIFUL START</p><h1>
+        There’s room<br /><em>for your story.</em>
+      </h1><p>
+        New here? Looking for prayer? Have a testimony to share? We’d love to get to know you.
+      </p><a href="mailto:connect@rccgcornerstoneassembly.com"
+        >connect@rccgcornerstoneassembly.com</a
+      ><figure>
+        <img
+          src="/images/conference/2025/gallery-11.jpg"
+          alt="Two friends smiling together at Woman Excel"
+          width="900"
+          height="600"
+        /><figcaption>A sisterhood for every season.</figcaption>
+      </figure>
+    </div><ContactPanel
+      topics={[
+        "Get connected",
+        "Prayer request",
+        "Share a testimony",
+        "Conference inquiry",
+        "Suggestion",
+      ]}
+    />
+  </section>
 </Layout>
+<style>
+  .contact-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8vw;
+    padding: 75px var(--gutter) !important;
+    align-items: start;
+  }
+  .contact-intro h1 {
+    font-size: clamp(53px, 5.5vw, 84px) !important;
+    margin: 25px 0;
+  }
+  .contact-intro h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .contact-intro > p:not(.eyebrow) {
+    font-size: 14px;
+    line-height: 1.8;
+    max-width: 330px;
+    margin-bottom: 20px;
+  }
+  .contact-intro > a {
+    font-size: 10px;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 7px;
+    overflow-wrap: anywhere;
+  }
+  .contact-intro figure {
+    margin: 45px 0 0;
+    width: 75%;
+    transform: rotate(-4deg);
+    padding: 8px 8px 16px;
+    background: #ece4d6;
+  }
+  .contact-intro img {
+    width: 100%;
+    height: 235px;
+    object-fit: cover;
+    object-position: 50% 38%;
+  }
+  .contact-intro figcaption {
+    font: 400 20px var(--display);
+    text-align: center;
+    padding-top: 12px;
+  }
+  @media (max-width: 800px) {
+    .contact-page {
+      grid-template-columns: 1fr;
+      gap: 35px;
+      padding: 45px var(--gutter) !important;
+    }
+    .contact-intro h1 {
+      font-size: 62px !important;
+    }
+    .contact-intro figure {
+      display: none;
+    }
+  }
+</style>

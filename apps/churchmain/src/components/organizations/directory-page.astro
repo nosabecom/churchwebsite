@@ -1,64 +1,168 @@
 ---
 import Icon from "./icon.astro";
 import type { Organization, OrganizationKind } from "../../data/organizations";
-
 interface Props {
-    kind: OrganizationKind;
-    organizations: Organization[];
+  kind: OrganizationKind;
+  organizations: Organization[];
 }
-
 const { kind, organizations } = Astro.props;
-const isMinistry = kind === "ministry";
-const title = isMinistry ? "Our ministries" : "Our departments";
-const kicker = isMinistry ? "There is a place for you" : "Serving the house together";
-const basePath = isMinistry ? "/ministries" : "/departments";
+const ministry = kind === "ministry";
+const basePath = ministry ? "/ministries" : "/departments";
 ---
 
-<section class="bg-slate-100 px-4 py-16 sm:py-20" aria-labelledby="directory-heading">
-    <div class="mx-auto max-w-400">
-        <div class="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
-            <div>
-                <p class="text-xs font-extrabold tracking-[0.16em] text-red-700 uppercase">{kicker}</p>
-                <h1 class="mt-4 text-4xl leading-tight font-extrabold tracking-tight text-sky-900 sm:text-5xl lg:text-6xl" id="directory-heading">
-                    {title}
-                </h1>
-                <p class="mt-5 max-w-2xl text-lg leading-relaxed text-slate-700">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet etiam ultricies nisi vel augue.
-                </p>
-            </div>
-
-        </div>
-
-        <ul class="mt-12 grid list-none gap-5 p-0 sm:grid-cols-2 xl:grid-cols-4">
-            {organizations.map((organization, index) => (
-                <li>
-                    <a
-                        class="group flex min-h-72 flex-col rounded-t-[4.5rem] rounded-b-2xl bg-slate-50 p-7 text-center shadow-xl shadow-sky-950/15 transition duration-200 hover:-translate-y-1 hover:shadow-2xl hover:shadow-sky-950/25 focus-visible:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600 motion-reduce:transition-none"
-                        href={`${basePath}/${organization.slug}`}
-                    >
-                        <span
-                            class:list={[
-                                "mx-auto grid size-20 shrink-0 place-items-center rounded-full text-white",
-                                index % 4 === 0 && "bg-sky-900",
-                                index % 4 === 1 && "bg-sky-700",
-                                index % 4 === 2 && "bg-sky-800",
-                                index % 4 === 3 && "bg-slate-700",
-                            ]}
-                            aria-hidden="true"
-                        >
-                            <Icon name={organization.icon} class="size-9" />
-                        </span>
-
-                        <h2 class="mt-7 text-xl leading-snug font-extrabold text-sky-900">{organization.name}</h2>
-                        <p class="mt-3 text-sm leading-relaxed text-slate-600">{organization.summary}</p>
-
-                        <span class="mt-auto inline-flex items-center justify-center gap-2 pt-6 text-sm font-bold text-sky-900">
-                            Explore
-                            <span class="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" aria-hidden="true">→</span>
-                        </span>
-                    </a>
-                </li>
-            ))}
-        </ul>
-    </div>
+<section class="community-directory" aria-labelledby="directory-heading">
+  <header>
+    <p class="eyebrow">
+      {ministry ? "FAITH GROWS IN GOOD COMPANY" : "YOUR GIFTS HAVE A HOME HERE"}
+    </p><h1 id="directory-heading">
+      {ministry ? "FIND YOUR" : "BRING YOUR"}<br /><span>{ministry ? "PEOPLE." : "PURPOSE."}</span>
+    </h1><p>
+      {
+        ministry
+          ? "A community for every season of life. Explore our ministries and find a place to grow, connect, and belong."
+          : "There are many ways to be part of the life of our church. Explore the teams that serve our community."
+      }
+    </p>
+  </header>
+  <ul>
+    {
+      organizations.map((organization, i) => (
+        <li>
+          <a href={`${basePath}/${organization.slug}`}>
+            <>
+              <span class="directory-number">{String(i + 1).padStart(2, "0")}</span>
+              <div class="directory-icon" aria-hidden="true">
+                <Icon name={organization.icon} class="size-9" />
+              </div>
+              <h2>{organization.name}</h2>
+              <p>{organization.summary}</p>
+              <span class="directory-link">
+                Meet the {kind}
+                <svg
+                  class="arrow-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M5 19 19 5M5 5h14v14" />
+                </svg>
+              </span>
+            </>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </section>
+<style>
+  .community-directory {
+    padding: 75px var(--gutter) !important;
+    background: var(--paper) !important;
+  }
+  .community-directory header {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 25px 12vw;
+    align-items: end;
+    margin-bottom: 55px;
+  }
+  .community-directory header > .eyebrow {
+    grid-column: 1/-1;
+  }
+  .community-directory h1 {
+    font-size: clamp(80px, 9vw, 135px) !important;
+    margin: 0;
+  }
+  .community-directory h1 span {
+    color: var(--accent);
+  }
+  .community-directory header > p:not(.eyebrow) {
+    font-size: 14px;
+    line-height: 1.9;
+    max-width: 350px;
+    margin: 0;
+  }
+  .community-directory ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+  }
+  .community-directory li > a {
+    display: flex;
+    flex-direction: column;
+    background: #e9eadf;
+    padding: 30px;
+    min-height: 345px;
+    position: relative;
+    text-decoration: none;
+    transition: transform 0.25s;
+  }
+  .community-directory li:nth-child(3n + 2) > a {
+    background: #d7dfbf;
+  }
+  .community-directory li:nth-child(3n) > a {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .community-directory li > a:hover {
+    transform: translateY(-5px);
+  }
+  .directory-number {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    font-size: 10px;
+  }
+  .directory-icon {
+    margin: 5px 0 35px;
+  }
+  .community-directory h2 {
+    font: 600 35px/1.1 var(--display);
+    margin: 0 0 16px;
+  }
+  .community-directory li p {
+    font-size: 12px;
+    line-height: 1.8;
+    margin: 0 0 30px;
+  }
+  .directory-link {
+    border-top: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 15px;
+    font-size: 10px;
+    margin-top: auto;
+  }
+  .directory-link svg {
+    font-size: 23px;
+  }
+  @media (max-width: 1000px) {
+    .community-directory ul {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 700px) {
+    .community-directory {
+      padding: 45px var(--gutter) !important;
+    }
+    .community-directory header {
+      grid-template-columns: 1fr;
+      gap: 25px;
+      margin-bottom: 35px;
+    }
+    .community-directory h1 {
+      font-size: 23vw !important;
+    }
+    .community-directory ul {
+      grid-template-columns: 1fr;
+    }
+    .community-directory li > a {
+      min-height: 290px;
+    }
+  }
+</style>

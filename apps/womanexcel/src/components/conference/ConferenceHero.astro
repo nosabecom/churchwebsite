@@ -1,0 +1,139 @@
+---
+interface Props {
+  year: string;
+  theme: string;
+  date: string;
+  scripture: string;
+  image: string;
+  alt: string;
+}
+const { year, theme, date, scripture, image, alt } = Astro.props;
+---
+
+<section class="conference-opening">
+  <div class="conference-meta">
+    <a href="/conference">← All gatherings</a><span>WOMAN EXCEL / {year}</span>
+  </div>
+  <div class="conference-title">
+    <div>
+      <p class="eyebrow">THE GATHERING. THE MEMORIES. THE GROWTH.</p><h1>{theme}<em>.</em></h1>
+    </div><p>{date}<br />Saskatoon, Saskatchewan<br /><span>{scripture}</span></p>
+  </div>
+  <figure>
+    <img src={image} alt={alt} width="1600" height="1067" fetchpriority="high" /><figcaption>
+      <span>Rooted in faith. Connected for life.</span><a href="#conference-memories"
+        >Step into the memories ↓</a>
+    </figcaption><span class="conference-year" aria-hidden="true">{year}</span>
+  </figure>
+</section>
+<style>
+  .conference-opening {
+    padding: 25px var(--gutter) 0 !important;
+  }
+  .conference-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    padding-bottom: 35px;
+  }
+  .conference-meta > a {
+    text-decoration: none;
+  }
+  .conference-meta > span {
+    letter-spacing: 1.5px;
+  }
+  .conference-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    padding-bottom: 35px;
+  }
+  .conference-title h1 {
+    font-size: clamp(100px, 14vw, 200px) !important;
+    line-height: 0.9 !important;
+    letter-spacing: -5px !important;
+    margin: 22px 0 0;
+  }
+  .conference-title h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .conference-title > p {
+    font-size: 12px;
+    line-height: 1.9;
+    text-align: right;
+  }
+  .conference-title > p > span {
+    display: block;
+    margin-top: 12px;
+    letter-spacing: 1px;
+    font-size: 9px;
+  }
+  .conference-opening figure {
+    position: relative;
+    margin: 0;
+    background: var(--ink);
+    overflow: hidden;
+  }
+  .conference-opening figure > img {
+    width: 100%;
+    height: 530px;
+    object-fit: cover;
+    object-position: 50% 40%;
+  }
+  .conference-opening figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 25px;
+    color: var(--paper);
+    font-size: 10px;
+  }
+  .conference-year {
+    position: absolute;
+    right: 25px;
+    bottom: 65px;
+    font: 400 110px/1 var(--display);
+    color: var(--paper);
+    text-shadow: 0 1px 18px #0008;
+  }
+  @media (max-width: 700px) {
+    .conference-opening {
+      padding-top: 20px !important;
+    }
+    .conference-meta {
+      font-size: 8px;
+    }
+    .conference-title {
+      display: block;
+    }
+    .conference-title h1 {
+      font-size: 25vw !important;
+      letter-spacing: -3px !important;
+    }
+    .conference-title > p {
+      text-align: left;
+      margin-top: 25px;
+      font-size: 11px;
+    }
+    .conference-title > p > span {
+      margin-top: 8px;
+    }
+    .conference-opening figure > img {
+      height: 330px;
+    }
+    .conference-opening figcaption {
+      font-size: 8px;
+      padding: 15px;
+    }
+    .conference-opening figcaption > span {
+      max-width: 130px;
+    }
+    .conference-year {
+      font-size: 70px;
+      bottom: 60px;
+      right: 15px;
+    }
+  }
+</style>

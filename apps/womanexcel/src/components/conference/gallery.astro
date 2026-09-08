@@ -1,43 +1,284 @@
 ---
 export interface GalleryItem {
-    src: string;
-    alt: string;
-    caption?: string;
-    href?: string;
+  src: string;
+  alt: string;
+  caption?: string;
+  href?: string;
 }
-
 interface Props {
-    year: string | number;
-    heading?: string;
-    items: GalleryItem[];
-    sectionId?: string;
+  year: string | number;
+  heading?: string;
+  items: GalleryItem[];
+  sectionId?: string;
 }
-
-const { year, heading = "Gallery & Media", items, sectionId = `conference-${year}-gallery` } = Astro.props as Props;
+const {
+  year,
+  heading = "Gallery & Media",
+  items,
+  sectionId = `conference-${year}-gallery`,
+} = Astro.props as Props;
 ---
 
-{items.length > 0 && (
-    <section class="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24" aria-labelledby={sectionId}>
-        <h2 id={sectionId} class="mb-8 text-center text-4xl text-navy md:text-6xl">
-            {heading}
-        </h2>
-
-        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-                <li class="overflow-hidden rounded-2xl bg-berry text-white">
-                    {item.href ? (
-                        <a class="group block" href={item.href}>
-                            <img class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-                            {item.caption && <p class="p-4">{item.caption}</p>}
-                        </a>
-                    ) : (
-                        <>
-                            <img class="aspect-video w-full object-cover" src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-                            {item.caption && <p class="p-4">{item.caption}</p>}
-                        </>
-                    )}
-                </li>
-            ))}
-        </ul>
+{
+  items.length > 0 && (
+    <section class="photo-essay" aria-labelledby={sectionId}>
+      <header>
+        <>
+          <div>
+            <>
+              <p class="eyebrow">THE MOMENTS WE CARRY WITH US / {year}</p>
+              <h2 id={sectionId}>{heading}</h2>
+            </>
+          </div>
+          <span>{String(items.length).padStart(2, "0")} PHOTOGRAPHS</span>
+        </>
+      </header>
+      <ul>
+        {items.map((item, i) => (
+          <li>
+            {item.href ? (
+              <a href={item.href}>
+                <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+              </a>
+            ) : (
+              <button
+                type="button"
+                data-photo={item.src}
+                data-caption={item.alt}
+                aria-label={`View photo: ${item.alt}`}
+              >
+                <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                <span class="photo-expand" aria-hidden="true">
+                  +
+                </span>
+              </button>
+            )}
+            <p>
+              <span>{String(i + 1).padStart(2, "0")}</span>
+              {item.caption ?? item.alt}
+            </p>
+          </li>
+        ))}
+      </ul>
+      <dialog class="photo-viewer" aria-label={`${heading} photo viewer`}>
+        <>
+          <button class="photo-close" type="button" aria-label="Close photo">
+            Close ×
+          </button>
+          <img src={items[0].src} alt={items[0].alt} loading="lazy" />
+          <p class="photo-description" />
+          <div class="photo-controls">
+            <>
+              <button class="photo-previous" type="button" aria-label="Previous photo">
+                ← Previous
+              </button>
+              <span class="photo-count" aria-live="polite" />
+              <button class="photo-next" type="button" aria-label="Next photo">
+                Next →
+              </button>
+            </>
+          </div>
+        </>
+      </dialog>
     </section>
-)}
+  )
+}
+<script>
+  document.querySelectorAll<HTMLElement>(".photo-essay").forEach((section) => {
+    const dialog = section.querySelector<HTMLDialogElement>(".photo-viewer");
+    const image = dialog?.querySelector<HTMLImageElement>("img");
+    const photos = Array.from(section.querySelectorAll<HTMLButtonElement>("[data-photo]"));
+    if (!dialog || !image || !photos.length) return;
+    let index = 0;
+    let previousOverflow = "";
+    const show = (next: number) => {
+      index = (next + photos.length) % photos.length;
+      image.src = photos[index].dataset.photo!;
+      image.alt = photos[index].dataset.caption!;
+      dialog.querySelector(".photo-description")!.textContent = image.alt;
+      dialog.querySelector(".photo-count")!.textContent = `${index + 1} / ${photos.length}`;
+    };
+    photos.forEach((button, i) =>
+      button.addEventListener("click", () => {
+        show(i);
+        previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        dialog.showModal();
+      }),
+    );
+    dialog.querySelector(".photo-close")?.addEventListener("click", () => dialog.close());
+    dialog.querySelector(".photo-previous")?.addEventListener("click", () => show(index - 1));
+    dialog.querySelector(".photo-next")?.addEventListener("click", () => show(index + 1));
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener("close", () => {
+      document.body.style.overflow = previousOverflow;
+      photos[index].focus();
+    });
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        show(index + 1);
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        show(index - 1);
+      }
+    });
+  });
+</script>
+<style>
+  .photo-essay {
+    padding: 65px var(--gutter);
+    border-top: 1px solid var(--line);
+  }
+  .photo-essay header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+  .photo-essay h2 {
+    font: 400 55px var(--display);
+    margin: 15px 0 0;
+  }
+  .photo-essay header > span {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  .photo-essay ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .photo-essay li:nth-child(5n + 1) {
+    grid-column: span 2;
+  }
+  .photo-essay li button,
+  .photo-essay li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--ink);
+  }
+  .photo-essay li img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.45s;
+  }
+  .photo-essay li button:hover img,
+  .photo-essay li a:hover img {
+    transform: scale(1.035);
+  }
+  .photo-expand {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    background: var(--paper);
+    color: var(--ink);
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+  }
+  .photo-essay li > p {
+    display: flex;
+    gap: 17px;
+    font-size: 9px;
+    line-height: 1.7;
+    margin: 12px 0 0;
+  }
+  .photo-essay li > p > span {
+    opacity: 0.75;
+  }
+  .photo-viewer {
+    background: var(--ink);
+    color: var(--paper);
+    border: 0;
+    width: min(1100px, 94vw);
+    max-width: 94vw;
+    max-height: 94dvh;
+    margin: auto;
+    padding: 50px 25px 20px;
+  }
+  .photo-viewer::backdrop {
+    background: #1e151ee8;
+    backdrop-filter: blur(8px);
+  }
+  .photo-viewer > img {
+    display: block;
+    width: 100%;
+    height: 65dvh;
+    object-fit: contain;
+  }
+  .photo-close {
+    position: absolute;
+    right: 20px;
+    top: 12px;
+    font-size: 12px;
+    padding: 8px;
+    cursor: pointer;
+  }
+  .photo-description {
+    font-size: 11px;
+    text-align: center;
+    margin: 15px 0;
+    line-height: 1.6;
+  }
+  .photo-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+  }
+  .photo-controls button {
+    padding: 12px;
+    cursor: pointer;
+  }
+  @media (max-width: 700px) {
+    .photo-essay h2 {
+      font-size: 35px;
+    }
+    .photo-essay header {
+      align-items: start;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .photo-essay ul {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 13px;
+    }
+    .photo-essay li:nth-child(5n + 1) {
+      grid-column: span 2;
+    }
+    .photo-essay li img {
+      height: 180px;
+    }
+    .photo-essay li:nth-child(5n + 1) img {
+      height: 240px;
+    }
+    .photo-essay li > p {
+      font-size: 8px;
+      gap: 8px;
+    }
+    .photo-viewer {
+      padding: 50px 15px 15px;
+    }
+    .photo-viewer > img {
+      height: 55dvh;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .photo-essay li img {
+      transition: none;
+    }
+  }
+</style>

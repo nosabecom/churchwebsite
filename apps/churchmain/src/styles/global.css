@@ -1,206 +1,223 @@
 @import "tailwindcss";
+@import "./redesign.css";
 
-html, body {
-    margin: 0;
-    width: 100%;
+html,
+body {
+  margin: 0;
+  width: 100%;
 }
 
 /* The selected newsletter direction uses a publication-style display face.
    System serifs keep it dependency-free and render immediately. */
 .newsletter-serif {
-    font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
 /* Newsletter bodies come from Markdown. Tailwind's reset removes the default
    document rhythm, so editors get predictable headings, lists, quotes, and links here. */
 .newsletter-prose {
-    color: rgb(51 65 85);
-    font-size: 1.125rem;
-    line-height: 1.8;
+  color: rgb(51 65 85);
+  font-size: 1.125rem;
+  line-height: 1.8;
 }
 
 .newsletter-prose > * + * {
-    margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .newsletter-prose h2 {
-    margin-top: 3rem;
-    color: rgb(8 47 73);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.15;
+  margin-top: 3rem;
+  color: rgb(8 47 73);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.15;
 }
 
 .newsletter-prose h3 {
-    margin-top: 2.25rem;
-    color: rgb(8 47 73);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.5rem;
-    line-height: 1.25;
+  margin-top: 2.25rem;
+  color: rgb(8 47 73);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  line-height: 1.25;
 }
 
 .newsletter-prose ul,
 .newsletter-prose ol {
-    padding-left: 1.5rem;
+  padding-left: 1.5rem;
 }
 
 .newsletter-prose ul {
-    list-style: disc;
+  list-style: disc;
 }
 
 .newsletter-prose ol {
-    list-style: decimal;
+  list-style: decimal;
 }
 
 .newsletter-prose blockquote {
-    padding: 1.25rem 1.5rem;
-    color: rgb(15 23 42);
-    background: rgb(240 249 255);
-    border-left: 0.25rem solid rgb(220 38 38);
-    border-radius: 0 1rem 1rem 0;
+  padding: 1.25rem 1.5rem;
+  color: rgb(15 23 42);
+  background: rgb(240 249 255);
+  border-left: 0.25rem solid rgb(220 38 38);
+  border-radius: 0 1rem 1rem 0;
 }
 
 .newsletter-prose a {
-    color: rgb(185 28 28);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+  color: rgb(185 28 28);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 @media (min-width: 768px) {
-    .newsletter-prose {
-        font-size: 1.25rem;
-    }
+  .newsletter-prose {
+    font-size: 1.25rem;
+  }
 }
 
 /* Safety net so an absolutely-positioned menu can never pan the page sideways.
    `clip` rather than `hidden` so it does not trap the fixed drawer. */
 html {
-    overflow-x: clip;
+  overflow-x: clip;
 }
 
 /* No aspect ratio: joined to the announcement panel the slideshow takes the
    row height, and stacked above it the logo and quote set the height. */
 .churchmain-slideshow {
-    --slideshow-control-bg: rgb(12 74 110 / 65%);
-    --slideshow-control-bg-hover: rgb(12 74 110 / 90%);
+  --slideshow-control-bg: rgb(12 74 110 / 65%);
+  --slideshow-control-bg-hover: rgb(12 74 110 / 90%);
 }
 
 .churchmain-quote {
-    --quote-bg: rgb(12 74 110 / 85%);
-    --quote-color: white;
-    --quote-padding: 1rem 1.25rem;
+  --quote-bg: rgb(12 74 110 / 85%);
+  --quote-color: white;
+  --quote-padding: 1rem 1.25rem;
 }
 
 @media (min-width: 768px) {
-    .churchmain-quote {
-        --quote-padding: 1.5rem 2rem;
-    }
+  .churchmain-quote {
+    --quote-padding: 1.5rem 2rem;
+  }
 }
 
 /* Joined to the announcement panel the hero is height-constrained, so the quote
    stops scaling with the viewport and holds a fixed size. */
 @media (min-width: 1024px) {
-    .churchmain-quote {
-        --quote-font-size: 1.125rem;
-        --quote-padding: 1rem 1.5rem;
-    }
+  .churchmain-quote {
+    --quote-font-size: 1.125rem;
+    --quote-padding: 1rem 1.5rem;
+  }
 }
 
 @utility form-field {
-    @apply flex flex-col gap-1
+  @apply flex flex-col gap-1;
 }
 
 @utility form-label {
-    @apply text-sm font-semibold tracking-wide text-sky-900
+  @apply text-sm font-semibold tracking-wide text-sky-900;
 }
 
 @utility form-input {
-    @apply w-full rounded-md border-2 border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-sky-900 focus:outline-none user-invalid:border-red-600 user-valid:border-green-600
+  @apply w-full rounded-md border-2 border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-sky-900 focus:outline-none user-invalid:border-red-600 user-valid:border-green-600;
 }
 
 @utility form-submit {
-    @apply w-full rounded-full bg-red-600 px-6 py-2.5 text-xl text-white hover:cursor-pointer hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600
+  @apply w-full rounded-full bg-red-600 px-6 py-2.5 text-xl text-white hover:cursor-pointer hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600;
 }
 
 @utility context-menu {
-    @apply invisible absolute min-w-44 pt-2 opacity-0 space-y-1 rounded-lg bg-white p-2 shadow-lg ring-1 ring-black/10;
-    transition-property: opacity, visibility;
-    transition-duration: 150ms;
-    transition-delay: 0ms;
+  @apply invisible absolute min-w-44 pt-2 opacity-0 space-y-1 rounded-lg bg-white p-2 shadow-lg ring-1 ring-black/10;
+  transition-property: opacity, visibility;
+  transition-duration: 150ms;
+  transition-delay: 0ms;
 }
 
 @utility context-menu-trigger {
-    @apply relative
+  @apply relative;
 }
 
 /* Hover is an enhancement for mice only. Touch devices have no hover, so the
    click toggle in layout.astro is the mechanism that actually opens these. */
 @media (hover: hover) and (pointer: fine) {
-    .context-menu-trigger:hover > .context-menu {
-        @apply visible opacity-100;
-        transition-delay: 0ms;
-    }
+  .context-menu-trigger:hover > .context-menu {
+    @apply visible opacity-100;
+    transition-delay: 0ms;
+  }
 
-    .context-menu > .context-menu-trigger:hover > .context-menu {
-        transition-duration: 0ms;
-    }
+  .context-menu > .context-menu-trigger:hover > .context-menu {
+    transition-duration: 0ms;
+  }
 
-    .context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu {
-        @apply invisible opacity-0;
-        transition-duration: 0ms;
-        transition-delay: 0ms;
-    }
+  .context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu {
+    @apply invisible opacity-0;
+    transition-duration: 0ms;
+    transition-delay: 0ms;
+  }
 }
 
 .context-menu-trigger[data-open] > .context-menu {
-    @apply visible opacity-100;
-    transition-delay: 0ms;
+  @apply visible opacity-100;
+  transition-delay: 0ms;
 }
 
 @utility context-menu-item {
-    @apply block rounded-md px-3 py-2 hover:bg-slate-100 focus:bg-slate-100
+  @apply block rounded-md px-3 py-2 hover:bg-slate-100 focus:bg-slate-100;
 }
 
 .context-menu > .context-menu-trigger > .context-menu-item {
-    @apply flex items-center justify-between gap-4;
+  @apply flex items-center justify-between gap-4;
 }
 
 .context-menu > .context-menu-trigger > .context-menu-item::after {
-    content: "›";
-    @apply opacity-0 transition-opacity;
+  content: "›";
+  @apply opacity-0 transition-opacity;
 }
 
 .context-menu > .context-menu-trigger:hover > .context-menu-item::after,
 .context-menu > .context-menu-trigger[data-open] > .context-menu-item::after {
-    @apply opacity-100;
+  @apply opacity-100;
 }
 
 /* Grows a small control's touch area without growing its layout box, so a
    row of dots stays narrow enough for a 320px screen. */
 @utility tap-target {
-    position: relative;
+  position: relative;
 }
 
 .tap-target::after {
-    content: "";
-    position: absolute;
-    inset: -17px -6px;
+  content: "";
+  position: absolute;
+  inset: -17px -6px;
 }
 
 /* Mobile drawer accordions. */
 @utility drawer-summary {
-    @apply flex cursor-pointer items-center justify-between rounded-md py-2.5 marker:content-none
+  @apply flex cursor-pointer items-center justify-between rounded-md py-2.5 marker:content-none;
 }
 
 .drawer-summary::-webkit-details-marker {
-    display: none;
+  display: none;
 }
 
 .drawer-summary::after {
-    content: "›";
-    @apply rotate-90 text-xl transition-transform;
+  content: "›";
+  @apply rotate-90 text-xl transition-transform;
 }
 
 .drawer-group[open] > .drawer-summary::after {
-    @apply -rotate-90;
+  @apply -rotate-90;
+}
+
+@theme {
+  --font-sans: "DM Sans", Arial, sans-serif;
+  --color-sky-950: #18251e;
+  --color-sky-900: #243e31;
+  --color-sky-800: #385643;
+  --color-sky-700: #41674e;
+  --color-sky-100: #edf0e7;
+  --color-sky-50: #f6f5ee;
+  --color-red-700: #a63a20;
+  --color-red-600: #b33e23;
+  --color-red-400: #eda68d;
+  --color-slate-50: #faf9f4;
+  --color-slate-100: #f1f0e9;
 }

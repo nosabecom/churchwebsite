@@ -1,18 +1,289 @@
 ---
 import Layout from "../layouts/layout.astro";
-import Hero from "../components/home/hero.astro";
-import About from "../components/home/about.astro";
-import Mission from "../components/home/mission.astro";
-import Scripture from "../components/home/scripture.astro";
-import Conference from "../components/home/conference.astro";
-import Join from "../components/home/join.astro";
+const pillars = [
+  {
+    n: "01",
+    title: "Rooted in faith.",
+    text: "Growing in the knowledge of God’s Word — and finding the courage to live it, every day.",
+  },
+  {
+    n: "02",
+    title: "Alive with purpose.",
+    text: "Encouraging one another to embrace our God-given potential and excel in every area of life.",
+  },
+  {
+    n: "03",
+    title: "Connected in love.",
+    text: "Walking through the joys and questions of womanhood, home, and family. Together.",
+  },
+];
 ---
 
 <Layout title="Home">
-    <Hero />
-    <About />
-    <Mission />
-    <Scripture />
-    <Conference />
-    <Join />
+  <section class="w-hero" aria-labelledby="hero-heading">
+    <div class="w-hero-meta">
+      <p class="eyebrow">FAITH. PURPOSE. SISTERHOOD.</p><p class="eyebrow">SASKATOON, CANADA</p>
+    </div>
+    <div class="w-hero-heading">
+      <h1 id="hero-heading">Becoming,<br /><em>together.</em></h1><div class="w-hero-note">
+        <span class="w-flower" aria-hidden="true"
+          ><svg class="flower-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+            ><ellipse cx="50" cy="27" rx="9" ry="24" transform="rotate(0 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(45 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(90 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(135 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(180 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(225 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(270 50 50)"></ellipse><ellipse
+              cx="50"
+              cy="27"
+              rx="9"
+              ry="24"
+              transform="rotate(315 50 50)"></ellipse></svg
+          ></span
+        ><p>
+          You were made for a life<br />of faith, fullness, and purpose.<br />Let’s grow into it
+          together.
+        </p><a href="/contact"
+          >Find your people <span aria-hidden="true"
+            ><svg
+              class="arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+            ></span
+          ></a>
+      </div>
+    </div>
+    <div class="w-hero-gallery">
+      <figure class="w-photo-left">
+        <img
+          src="/images/conference/2025/gallery-11.jpg"
+          alt="Two women smiling together at Woman Excel 2025"
+          width="800"
+          height="1000"
+          fetchpriority="high"
+        /><figcaption>Room to be yourself.</figcaption>
+      </figure><figure class="w-photo-center">
+        <img
+          src="/images/conference/2026/day-one-05.jpg"
+          alt="Women gathered around a table for conversation and fellowship"
+          width="1600"
+          height="1067"
+          fetchpriority="high"
+        /><figcaption>
+          <span>Real women. Shared stories. A beautiful sisterhood.</span><span>WE / 2026</span>
+        </figcaption>
+      </figure><figure class="w-photo-right">
+        <img
+          src="/images/conference/2026/day-two-03.jpg"
+          alt="A woman worshipping during the 2026 gathering"
+          width="800"
+          height="1000"
+        /><figcaption>Space to grow.</figcaption>
+      </figure><div class="w-hero-seal" aria-hidden="true">
+        ROOTED<br />& RISING<span
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span>
+      </div>
+    </div>
+    <div class="w-hero-caption">
+      <span>A COMMUNITY BY CORNERSTONE EXCELLENT WOMEN</span><a href="#about"
+        >A little more about us ↓</a>
+    </div>
+  </section>
+  <section class="w-story w-section" id="about">
+    <p class="eyebrow">01 / A SISTERHOOD FOR EVERY SEASON</p><div data-reveal>
+      <h2>Life is a little richer<br />when we <em>grow together.</em></h2><div
+        class="w-story-copy"
+      >
+        <p>
+          We are Cornerstone Excellent Women. A community of women deepening our faith, discovering
+          our purpose, and making room for each other along the way.
+        </p><p>
+          Married or single, a mother or not yet, finding your feet or stepping into something new —
+          you don’t need to have it all figured out to belong here.
+        </p><a class="w-link" href="/contact"
+          >Get to know us <span aria-hidden="true"
+            ><svg
+              class="arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+            ></span
+          ></a>
+      </div>
+    </div>
+  </section>
+  <section class="w-values w-section" id="mission">
+    <div class="w-values-intro" data-reveal>
+      <p class="eyebrow">02 / WHAT BRINGS US TOGETHER</p><h2>
+        Deep roots.<br /><em>Beautiful growth.</em>
+      </h2><span class="w-flower" aria-hidden="true"
+        ><svg class="flower-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+          ><ellipse cx="50" cy="27" rx="9" ry="24" transform="rotate(0 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(45 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(90 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(135 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(180 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(225 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(270 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(315 50 50)"></ellipse></svg
+        ></span>
+    </div><div class="w-values-list">
+      {
+        pillars.map((p) => (
+          <article data-reveal>
+            <>
+              <span>{p.n}</span>
+              <div>
+                <>
+                  <h3>{p.title}</h3>
+                  <p>{p.text}</p>
+                </>
+              </div>
+              <span aria-hidden="true">
+                <svg
+                  class="arrow-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M5 19 19 5M5 5h14v14" />
+                </svg>
+              </span>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <section class="w-conference-feature">
+    <div class="w-conference-photo">
+      <img
+        src="/images/conference/2026/day-two-01.jpg"
+        alt="Three women leading worship at the Woman Excel Conference"
+        loading="lazy"
+        width="1600"
+        height="1067"
+      /><span>THE WOMAN EXCEL CONFERENCE</span>
+    </div><div class="w-conference-copy" data-reveal>
+      <p class="eyebrow">03 / WHEN WE GATHER</p><h2>
+        A room full<br />of women.<br /><em>A world of<br />possibility.</em>
+      </h2><p>
+        Once a year, we open our doors wider. Worship, honest conversations, powerful teaching, and
+        the kind of connection that stays with you.
+      </p><a class="w-button" href="/conference/2026"
+        >Revisit Woman Excel 2026 <span aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span
+        ></a
+      ><a class="w-small-link" href="/conference"
+        >Explore all our gatherings <svg
+          class="arrow-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+        ></a>
+    </div>
+  </section>
+  <section class="w-verse w-section" data-reveal>
+    <span class="eyebrow">A WORD TO GROW WITH</span><blockquote>
+      “Who can find a virtuous woman?<br />For her price is <em>far above rubies.</em>”
+    </blockquote><cite>PROVERBS 31:10 · KJV</cite>
+  </section>
+  <section class="w-journal w-section">
+    <div>
+      <p class="eyebrow">04 / LETTERS FROM OUR COMMUNITY</p><h2>
+        A little faith.<br /><em>For your everyday.</em>
+      </h2>
+    </div><div>
+      <p>
+        Stories, reflections, and encouragement from women walking this journey with you. Pour a
+        cup. Stay a while.
+      </p><a class="w-link" href="/newsletters"
+        >Open the journal <span aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span
+        ></a>
+    </div>
+  </section>
 </Layout>

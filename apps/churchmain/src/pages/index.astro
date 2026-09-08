@@ -1,16 +1,346 @@
 ---
 import Layout from "../layouts/layout.astro";
-import Hero from "../components/home/hero.astro";
-import WelcomeMessage from "../components/home/welcome-message.astro";
-import UpcomingEvents from "../components/home/upcoming-events.astro";
-import Ministries from "../components/home/ministries.astro";
-import Newsletter from "../components/home/newsletter.astro";
+import { churchEvents, formatEventDate, formatEventTime } from "../data/events";
+import { getLatestNewsletter, getNewsletterHref } from "../data/newsletters";
+const events = churchEvents.slice(0, 3);
+const newsletter = await getLatestNewsletter();
 ---
 
 <Layout>
-    <Hero />
-    <WelcomeMessage />
-    <UpcomingEvents />
-    <Ministries />
-    <Newsletter />
+  <section class="c-hero" aria-labelledby="hero-title">
+    <div class="c-hero-top">
+      <p class="eyebrow"><span class="status-dot"></span> A church for every chapter</p><p
+        class="eyebrow"
+      >
+        Saskatoon, SK <span aria-hidden="true">↓</span>
+      </p>
+    </div>
+    <div class="c-hero-stage">
+      <div class="c-hero-type">
+        <h1 id="hero-title">FAITH.<br />FAMILY.<br /><span>FORWARD.</span></h1>
+      </div>
+      <figure class="c-hero-photo">
+        <img
+          src="/images/community/worship.jpg"
+          alt="The Cornerstone congregation worshipping together at the Woman Excel Sunday service"
+          width="1600"
+          height="1067"
+          fetchpriority="high"
+        /><figcaption>
+          <span>Many stories. One family.</span><span>01 / LIFE AT CORNERSTONE</span>
+        </figcaption>
+      </figure>
+      <a class="c-hero-stamp" href="/new-to-church"
+        ><span>YOU BELONG<br />HERE.</span><b aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></b
+        ></a
+      >
+    </div>
+    <div class="c-hero-bottom">
+      <p>Rooted in Christ.<br />Growing together. Living with purpose.</p><a
+        class="c-button"
+        href="/new-to-church"
+        >Make yourself at home <span aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span
+        ></a
+      ><a class="c-scroll" href="#our-church"
+        >A little more about us <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+  <section class="c-service-strip" aria-label="Sunday service details">
+    <p><span class="status-dot"></span> THERE’S A PLACE FOR YOU THIS SUNDAY</p><p>
+      <strong>9:00 AM</strong> Every Sunday
+    </p><a
+      href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
+      target="_blank"
+      rel="noreferrer"
+      >70-3904 Millar Avenue <span aria-hidden="true"
+        ><svg
+          class="arrow-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+        ></span
+      ></a>
+  </section>
+  <section class="c-intro c-section" id="our-church">
+    <div class="section-index">
+      <span>01 / OUR HEART</span><span aria-hidden="true"
+        ><svg class="flower-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+          ><ellipse cx="50" cy="27" rx="9" ry="24" transform="rotate(0 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(45 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(90 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(135 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(180 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(225 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(270 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(315 50 50)"></ellipse></svg
+        ></span>
+    </div>
+    <div class="c-intro-main" data-reveal>
+      <h2>A BIG FAITH.<br />AN OPEN DOOR.<br /><span>A PLACE FOR YOU.</span></h2><div
+        class="c-intro-copy"
+      >
+        <p>
+          We’re a community of ordinary people discovering an extraordinary life in Jesus. Different
+          backgrounds, different stories — growing together in purpose, power, and praise.
+        </p><p>
+          New to faith, new to Saskatoon, or simply looking for a church to call home? There’s room
+          for you at Cornerstone.
+        </p><a class="text-link" href="/new-to-church"
+          >Let’s get to know each other <span aria-hidden="true"
+            ><svg
+              class="arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+            ></span
+          ></a>
+      </div>
+    </div>
+  </section>
+  <section class="c-gather c-section" aria-labelledby="gather-heading">
+    <div class="c-section-heading" data-reveal>
+      <div>
+        <p class="eyebrow">02 / LIFE HAPPENS TOGETHER</p><h2 id="gather-heading">
+          GOOD THINGS<br /><span>ARE GATHERING.</span>
+        </h2>
+      </div><a class="text-link" href="/events"
+        >The full calendar <span aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span
+        ></a>
+    </div>
+    <div class="c-events">
+      {
+        events.map((event, i) => (
+          <a
+            class="c-event"
+            href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`}
+            data-reveal
+          >
+            <>
+              <div class="c-event-top">
+                <>
+                  <span>{event.category}</span>
+                  <span aria-hidden="true">
+                    <svg
+                      class="arrow-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 19 19 5M5 5h14v14" />
+                    </svg>
+                  </span>
+                </>
+              </div>
+              <div class="c-event-date">
+                <>
+                  <span>{formatEventDate(event.date, { month: "short" })}</span>
+                  <time datetime={event.date}>
+                    {formatEventDate(event.date, { day: "2-digit" })}
+                  </time>
+                </>
+              </div>
+              <div class="c-event-info">
+                <>
+                  <span class="event-number">0{i + 1}</span>
+                  <h3>{event.title}</h3>
+                  <p>
+                    {formatEventTime(event.startTime)} · {event.location}
+                  </p>
+                </>
+              </div>
+            </>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+  <section class="c-community" id="join">
+    <div class="c-community-image">
+      <img
+        src="/images/community/fellowship.jpg"
+        alt="Women sharing a meal and fellowship at Cornerstone"
+        width="1600"
+        height="1067"
+        loading="lazy"
+      /><span class="photo-label">A shared table. A stronger community.</span>
+    </div>
+    <div class="c-community-copy" data-reveal>
+      <p class="eyebrow">03 / FIND YOUR PEOPLE</p><h2>BETTER.<br /><span>TOGETHER.</span></h2><p>
+        Faith grows in good company. Find a community to grow with, a team to serve with, and people
+        to walk beside you.
+      </p><div class="c-community-links">
+        <a href="/ministries"
+          >Find your community <span
+            ><svg
+              class="arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+            ></span
+          ></a
+        ><a href="/departments"
+          >Bring your gifts. Join a team. <span
+            ><svg
+              class="arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+            ></span
+          ></a
+        ><a href="/ministries/women"
+          >Meet Excellent Women <span
+            ><svg
+              class="arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+            ></span
+          ></a>
+      </div>
+    </div>
+  </section>
+  <section class="c-word c-section">
+    <div class="section-index">
+      <span>04 / SOMETHING TO CARRY WITH YOU</span><span aria-hidden="true"
+        ><svg class="flower-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+          ><ellipse cx="50" cy="27" rx="9" ry="24" transform="rotate(0 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(45 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(90 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(135 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(180 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(225 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(270 50 50)"></ellipse><ellipse
+            cx="50"
+            cy="27"
+            rx="9"
+            ry="24"
+            transform="rotate(315 50 50)"></ellipse></svg
+        ></span>
+    </div><div data-reveal>
+      <p class="eyebrow">THE WORD FOR YOUR EVERYDAY</p><h2>
+        BUILD YOUR LIFE<br />ON <span>SOMETHING<br />THAT LASTS.</span>
+      </h2><p>
+        Make space for the Word. Explore messages, scriptures, and encouragement for a life rooted
+        in Christ.
+      </p><a class="c-button" href="/messages"
+        >Explore the messages <span aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span
+        ></a>
+    </div><div class="c-word-art" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </section>
+  <section class="c-journal c-section">
+    <p class="eyebrow">THE CORNERSTONE LETTER</p><h2>
+      LIFE IN OUR<br /><span>LITTLE CORNER.</span>
+    </h2><div>
+      <p>
+        Stories from our community. Words to encourage you. Stay connected to the life of the
+        church.
+      </p><a class="text-link" href={getNewsletterHref(newsletter)}
+        >Read the newsletter <span aria-hidden="true"
+          ><svg
+            class="arrow-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+          ></span
+        ></a>
+    </div>
+  </section>
 </Layout>

@@ -1,79 +1,127 @@
 ---
 export interface Speaker {
-    name: string;
-    role?: string;
-    image: {
-        src: string;
-        alt: string;
-        crop?: {
-            position: string;
-            size?: string;
-        };
-    };
+  name: string;
+  role?: string;
+  image: { src: string; alt: string; crop?: { position: string; size?: string } };
 }
-
 interface Props {
-    speakers: Speaker[];
+  speakers: Speaker[];
 }
-
-const { speakers } = Astro.props as Props;
+const { speakers } = Astro.props;
 ---
 
-{speakers.length > 0 && (
-    <section class="flex flex-col items-center py-8" aria-labelledby="conference-speakers-heading">
-        <h2 id="conference-speakers-heading" class="mb-8.5 rounded-3xl bg-navy px-4 py-2.5 font-sans text-3xl text-white md:mb-5.5 md:text-4xl">
-            Speakers &amp; Guests
-        </h2>
-
-        <div class="w-full max-w-400 overflow-hidden mask-x-from-87% mask-x-to-100%">
-            <div class="flex w-max animate-speaker-scroll hover:[animation-play-state:paused] data-paused:[animation-play-state:paused] motion-reduce:animate-none" data-speaker-track>
-                {speakers.map((speaker) => (
-                    <article class="speaker-card">
-                        {speaker.image.crop ? (
-                            <div
-                                class="speaker-image aspect-[4/5] bg-no-repeat"
-                                style={`background-image: url("${speaker.image.src}"); background-position: ${speaker.image.crop.position}; background-size: ${speaker.image.crop.size ?? "cover"};`}
-                                role="img"
-                                aria-label={speaker.image.alt}
-                            ></div>
-                        ) : (
-                            <img class="speaker-image" src={speaker.image.src} alt={speaker.image.alt} />
-                        )}
-                        <div class="speaker-nametag">
-                            <h3>{speaker.name}</h3>
-                            {speaker.role && <p class="mt-1 font-sans text-xs text-white/75 md:text-sm">{speaker.role}</p>}
-                        </div>
-                    </article>
-                ))}
-
-                <div class="contents" aria-hidden="true">
-                    {speakers.map((speaker) => (
-                        <article class="speaker-card">
-                            {speaker.image.crop ? (
-                                <div
-                                    class="speaker-image aspect-[4/5] bg-no-repeat"
-                                    style={`background-image: url("${speaker.image.src}"); background-position: ${speaker.image.crop.position}; background-size: ${speaker.image.crop.size ?? "cover"};`}
-                                ></div>
-                            ) : (
-                                <img class="speaker-image" src={speaker.image.src} alt="" />
-                            )}
-                            <div class="speaker-nametag">
-                                <h3>{speaker.name}</h3>
-                                {speaker.role && <p class="mt-1 font-sans text-xs text-white/75 md:text-sm">{speaker.role}</p>}
-                            </div>
-                        </article>
-                    ))}
-                </div>
-            </div>
+{
+  speakers.length > 0 && (
+    <section class="conference-voices" aria-labelledby="conference-speakers-heading">
+      <>
+        <header>
+          <>
+            <p class="eyebrow">VOICES THAT INSPIRE US</p>
+            <h2 id="conference-speakers-heading">
+              Wisdom. Faith. <em>Real stories.</em>
+            </h2>
+            <p>Meet our speakers & guests.</p>
+          </>
+        </header>
+        <div
+          class="voices-rail"
+          tabindex="0"
+          role="region"
+          aria-label="Speakers and guests, scroll for more"
+        >
+          <div class="voices-track">
+            {speakers.map((speaker) => (
+              <article>
+                {speaker.image.crop ? (
+                  <div
+                    class="voice-photo"
+                    style={`background-image:url('${speaker.image.src}');background-position:${speaker.image.crop.position};background-size:${speaker.image.crop.size ?? "cover"}`}
+                    role="img"
+                    aria-label={speaker.image.alt}
+                  />
+                ) : (
+                  <img
+                    class="voice-photo"
+                    src={speaker.image.src}
+                    alt={speaker.image.alt}
+                    loading="lazy"
+                  />
+                )}
+                <h3>{speaker.name}</h3>
+                {speaker.role && <p>{speaker.role}</p>}
+              </article>
+            ))}
+          </div>
         </div>
+        <p class="voices-hint">SCROLL TO MEET EVERYONE →</p>
+      </>
     </section>
-)}
-
-<script>
-    // Desktop pauses on hover; touch devices have no hover, so tap toggles the scroll.
-    document.querySelectorAll<HTMLElement>("[data-speaker-track]").forEach((track) => {
-        track.addEventListener("pointerdown", (event) => {
-            if (event.pointerType !== "mouse") track.toggleAttribute("data-paused");
-        });
-    });
-</script>
+  )
+}
+<style>
+  .conference-voices {
+    padding: 65px var(--gutter);
+    background: #f0eadd;
+  }
+  .conference-voices header {
+    margin-bottom: 35px;
+  }
+  .conference-voices h2 {
+    font: 400 clamp(38px, 4.5vw, 70px)/1.1 var(--display);
+    margin: 20px 0;
+  }
+  .conference-voices h2 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .conference-voices header > p:last-child {
+    font-size: 12px;
+  }
+  .voices-rail {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    scrollbar-color: var(--ink) transparent;
+  }
+  .voices-track {
+    display: flex;
+    gap: 24px;
+    width: max-content;
+  }
+  .voices-track article {
+    width: 245px;
+    scroll-snap-align: start;
+  }
+  .voice-photo {
+    width: 245px;
+    height: 310px;
+    object-fit: cover;
+    object-position: top;
+    background-color: var(--rose);
+    background-repeat: no-repeat;
+    display: block;
+    border-radius: 120px 120px 0 0;
+  }
+  .voices-track h3 {
+    font: 400 25px/1.2 var(--display);
+    margin: 17px 0 8px;
+  }
+  .voices-track p {
+    font-size: 10px;
+    line-height: 1.7;
+  }
+  .voices-hint {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    margin-top: 18px;
+  }
+  @media (max-width: 700px) {
+    .voices-track article,
+    .voice-photo {
+      width: 210px;
+    }
+    .voice-photo {
+      height: 270px;
+    }
+  }
+</style>

@@ -1,0 +1,160 @@
+---
+interface Props {
+  topics?: string[];
+}
+const { topics = ["General inquiry", "Prayer request", "Get connected"] } = Astro.props;
+---
+
+<div class="contact-panel">
+  <p class="contact-kicker">LET’S START A CONVERSATION</p>
+  <form data-contact-compose>
+    <div class="contact-row">
+      <label
+        >Your name<input name="name" autocomplete="name" placeholder="Your name" required /></label
+      ><label
+        >Email address<input
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+          required
+        /></label>
+    </div>
+    <label
+      >What’s on your heart?<select name="topic"
+        >{topics.map((topic) => <option>{topic}</option>)}</select
+      ></label
+    >
+    <label
+      >Your message<textarea name="message" rows="6" placeholder="We’re here to listen." required
+      ></textarea></label
+    >
+    <button type="submit"
+      >Open email draft <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"></path></svg
+      ></button
+    >
+    <p class="contact-note">This opens your email app. Review your message before sending.</p>
+    <p class="contact-status" role="status" hidden>
+      Continue in your email app to send your message. If it didn’t open, email <a
+        href="mailto:connect@rccgcornerstoneassembly.com">connect@rccgcornerstoneassembly.com</a
+      >.
+    </p>
+  </form>
+  <noscript
+    ><p>
+      Email <a href="mailto:connect@rccgcornerstoneassembly.com"
+        >connect@rccgcornerstoneassembly.com</a
+      > to get in touch.
+    </p><style>
+      form[data-contact-compose] {
+        display: none;
+      }
+    </style></noscript
+  >
+</div>
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-contact-compose]").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const body = `${data.get("message")}\n\nFrom: ${data.get("name")}\nEmail: ${data.get("email")}`;
+      const href = `mailto:connect@rccgcornerstoneassembly.com?subject=${encodeURIComponent(String(data.get("topic")))}&body=${encodeURIComponent(body)}`;
+      const status = form.querySelector<HTMLElement>(".contact-status");
+      if (status) status.hidden = false;
+      window.location.href = href;
+    });
+  });
+</script>
+<style>
+  .contact-panel {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 42px;
+    border: 1px solid var(--line);
+  }
+  .contact-kicker {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin: 0 0 35px;
+  }
+  .contact-panel form {
+    display: grid;
+    gap: 27px;
+  }
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+  .contact-panel label {
+    display: grid;
+    gap: 10px;
+    font-size: 11px;
+  }
+  .contact-panel input,
+  .contact-panel textarea,
+  .contact-panel select {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    border-radius: 0;
+    padding: 12px 0;
+    color: var(--ink);
+    font: 400 14px var(--font-sans);
+    outline-offset: 4px;
+  }
+  .contact-panel textarea {
+    resize: vertical;
+  }
+  .contact-panel button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 12px;
+    cursor: pointer;
+    border: 0;
+  }
+  .contact-panel button:hover {
+    background: var(--accent);
+  }
+  .contact-panel button svg {
+    width: 22px;
+    height: 22px;
+  }
+  .contact-note {
+    font-size: 10px;
+    line-height: 1.7;
+    margin: -12px 0 0;
+    opacity: 0.75;
+  }
+  .contact-status {
+    font-size: 12px;
+    line-height: 1.8;
+    margin: 0;
+  }
+  .contact-status a {
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+  }
+  @media (max-width: 700px) {
+    .contact-panel {
+      padding: 27px 22px;
+    }
+    .contact-row {
+      grid-template-columns: 1fr;
+      gap: 27px;
+    }
+  }
+</style>
