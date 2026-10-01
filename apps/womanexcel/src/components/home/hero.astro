@@ -1,14 +1,33 @@
 ---
 import HostLink from "../host-link.astro";
+import { Slideshow } from "@churchwebsite/ui";
+
+const slides = [
+    {
+        src: "/images/conference/2025/gallery-24.jpg",
+        alt: "The Woman Excel community smiling together in a conference group photo",
+        objectPosition: "center 48%",
+    },
+    {
+        src: "/images/conference/2025/gallery-21.jpg",
+        alt: "Women posing together in purple Woman Excel sweatshirts",
+        objectPosition: "center 45%",
+    },
+    {
+        src: "/images/conference/2026/day-one-08.jpg",
+        alt: "Five women sharing a panel discussion at the Woman Excel International Conference",
+        objectPosition: "center 45%",
+    },
+];
 ---
 
-<section class="cew-cinematic-hero" aria-labelledby="home-hero-title">
-    <img
-        src="/images/conference/2025/gallery-09.jpg"
-        alt="Women holding hands in prayer at a Woman Excel gathering"
-        fetchpriority="high"
-        class="cew-cinematic-hero__image"
-    />
+<Slideshow
+    slides={slides}
+    interval={3000}
+    pauseControl
+    label="Meet the Woman Excel community"
+    class="cew-cinematic-hero cew-community-carousel"
+>
     <div class="cew-cinematic-hero__wash" aria-hidden="true"></div>
 
     <div class="cew-cinematic-hero__content">
@@ -27,4 +46,4 @@ import HostLink from "../host-link.astro";
     </div>
 
     <a class="cew-scroll-cue" href="#about" aria-label="Scroll to learn more"><span></span></a>
-</section>
+</Slideshow>

@@ -3889,6 +3889,87 @@ html { overflow-x: clip; }
     --slideshow-control-bg-hover: rgb(8 42 78 / 90%);
 }
 
+/* Keep the framed welcome, with actual group photos and visible controls. */
+.slideshow.cew-community-carousel > .overlay {
+    display: flex;
+    width: 100%;
+    min-height: inherit;
+    align-items: flex-end;
+}
+
+.slideshow.cew-community-carousel .arrow {
+    top: auto;
+    bottom: 1.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    opacity: 1;
+    transform: none;
+}
+
+.slideshow.cew-community-carousel .previous { left: auto; right: 5rem; }
+.slideshow.cew-community-carousel .next { right: 1.5rem; }
+.slideshow.cew-community-carousel .playback { right: 8.5rem; bottom: 1.5rem; }
+.slideshow.cew-community-carousel .dots {
+    right: 14rem;
+    bottom: 1.5rem;
+    left: auto;
+    align-items: center;
+    height: 2.75rem;
+    gap: .25rem;
+    opacity: 1;
+}
+
+.slideshow.cew-community-carousel[data-shared-slideshow] [data-dot] {
+    width: 2rem;
+    height: 2.75rem;
+    background: radial-gradient(circle, rgb(255 255 255 / 45%) 0 4px, transparent 5px);
+}
+
+.slideshow.cew-community-carousel[data-shared-slideshow] [data-dot][aria-current="true"],
+.slideshow.cew-community-carousel[data-shared-slideshow] [data-dot]:hover {
+    background: radial-gradient(circle, white 0 5px, transparent 6px);
+}
+
+.cew-community-carousel .scroll-cue,
+.cew-community-carousel .cew-scroll-cue { display: none; }
+
+@media (max-width: 760px) {
+    .cew-community-carousel {
+        --community-photo-height: clamp(14rem, 75vw, 32rem);
+    }
+
+    .slideshow.cew-community-carousel > .slides {
+        height: var(--community-photo-height);
+    }
+
+    .slideshow.cew-community-carousel > .overlay {
+        padding-top: calc(var(--community-photo-height) - 2rem);
+    }
+
+    .cew-community-carousel .cew-cinematic-hero__wash {
+        background: linear-gradient(to bottom, transparent 0, transparent calc(var(--community-photo-height) - 7rem), var(--cew-violet-deep) var(--community-photo-height));
+    }
+
+    .cew-community-carousel .cew-cinematic-hero__content {
+        padding-top: 2.5rem;
+        padding-bottom: 3rem;
+    }
+
+    .slideshow.cew-community-carousel .dots { left: 1rem; right: auto; }
+    .slideshow.cew-community-carousel .previous { right: 4.25rem; }
+    .slideshow.cew-community-carousel .next { right: 1rem; }
+    .slideshow.cew-community-carousel .playback { right: 7.5rem; min-width: 4rem; }
+
+    .slideshow.cew-community-carousel :is(.arrow, .dots, .playback) {
+        top: calc(var(--community-photo-height) - 3.5rem);
+        bottom: auto;
+    }
+}
+
+@media (max-width: 360px) {
+    .slideshow.cew-community-carousel[data-shared-slideshow] [data-dot] { width: 1.5rem; }
+}
+
 /* Fellowship hero slideshow. The shared component always renders arrows
    alongside the dots; this hero is dots-only, so the arrows are hidden here
    rather than adding a prop upstream. They stay in the DOM and focusable, so
