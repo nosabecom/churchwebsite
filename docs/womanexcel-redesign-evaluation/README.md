@@ -19,6 +19,7 @@ The homepage, conference archive, both conference years, contact, and newsletter
 | --- | --- | --- |
 | Home | [home-desktop.jpg](./home-desktop.jpg) | [home-mobile.jpg](./home-mobile.jpg) |
 | Pastor Toyin host section | [host-desktop.jpg](./host-desktop.jpg) | [host-mobile.jpg](./host-mobile.jpg) |
+| Who we are photo | [about-desktop.jpg](./about-desktop.jpg) | [about-mobile.jpg](./about-mobile.jpg) |
 | Conference archive | [conference-desktop.jpg](./conference-desktop.jpg) | [conference-mobile.jpg](./conference-mobile.jpg) |
 | Conference 2025 | [conference-2025-desktop.jpg](./conference-2025-desktop.jpg) | — |
 | Conference 2026 | [conference-2026-desktop.jpg](./conference-2026-desktop.jpg) | — |

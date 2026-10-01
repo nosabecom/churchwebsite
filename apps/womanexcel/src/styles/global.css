@@ -367,9 +367,57 @@
     font-weight: 500;
 }
 
+.cew-editorial__intro {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 1.5rem clamp(2rem, 5vw, 5rem);
+    align-items: start;
+    margin-bottom: clamp(3.5rem, 7vw, 6rem);
+}
+
+.cew-editorial__intro > .cew-section-label { grid-column: 1 / -1; }
+
+.cew-editorial__intro h2 { margin-block: .5rem 0; }
+
+.cew-editorial__image {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: .45rem solid rgb(255 255 255 / 80%);
+    border-radius: 1.5rem 4rem 1.5rem 4rem;
+    box-shadow: 0 20px 55px rgb(47 33 56 / 14%);
+}
+
+.cew-editorial__image img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 60% center;
+}
+
+.cew-editorial__image figcaption {
+    position: absolute;
+    z-index: 1;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    width: fit-content;
+    border-radius: 999px;
+    padding: .65rem 1rem;
+    color: white;
+    background: rgb(47 33 56 / 80%);
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
 .cew-editorial__intro > p {
+    grid-column: 2;
     max-width: 48rem;
-    margin: 0 0 clamp(3.5rem, 8vw, 7rem) auto;
+    margin: 0;
     color: var(--cew-muted);
     font-size: clamp(1rem, 1.3vw, 1.15rem);
     line-height: 1.75;
@@ -3256,10 +3304,17 @@ body > nav.conference-site-nav {
 .cew-editorial__intro > p {
     position: relative;
     z-index: 2;
-    width: min(44rem, 82%);
-    margin-top: -1rem;
+    width: 100%;
     border-left: 1px solid rgb(79 40 94 / 28%);
     padding-left: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+@media (max-width: 760px) {
+    .cew-editorial__intro { grid-template-columns: minmax(0, 1fr); }
+    .cew-editorial__intro > p { grid-column: 1; }
+    .cew-editorial__intro h2 { max-width: 15ch; }
+    .cew-editorial__image { border-radius: 1rem 2.5rem 1rem 2.5rem; }
+    .cew-editorial__image img { aspect-ratio: 4 / 3; }
 }
 
 @media (min-width: 901px) {
