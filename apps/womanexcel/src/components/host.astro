@@ -1,3 +1,8 @@
+---
+import { Image } from "astro:assets";
+import portrait from "../../public/images/speakers/toyin-adeleye.png";
+---
+
 <section id="meet-your-host" class="woman-excel-host" aria-labelledby="host-heading">
     <div class="woman-excel-host__copy">
         <p class="woman-excel-host__eyebrow">The woman behind the welcome</p>
@@ -14,13 +19,17 @@
     </div>
     <figure class="woman-excel-host__portrait">
         <span class="woman-excel-host__orbit" aria-hidden="true"></span>
-        <img
-            src="/images/speakers/toyin-adeleye.png"
+        <Image
+            src={portrait}
             alt="Pastor Toyin Adeleye, host of the Woman Excel International Conference"
             width="1000"
             height="1000"
             loading="lazy"
             decoding="async"
+            format="webp"
+            quality={80}
+            widths={[320, 640, 960]}
+            sizes="(max-width: 760px) 85vw, 480px"
         />
         <figcaption>Faith. Purpose. Sisterhood.</figcaption>
     </figure>

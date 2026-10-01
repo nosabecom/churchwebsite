@@ -15,6 +15,12 @@ The homepage opens with three supplied group photos, crossfading every three sec
 
 The homepage, conference archive, both conference years, contact, and newsletters were also checked at 320px and 430px widths. No horizontal page overflow or heading overflow was detected.
 
+## Image performance and edges
+
+Homepage content photos and host portraits use generated, responsive WebP assets with explicit dimensions. The 2.4 MB portrait is replaced by roughly 10–40 KB portrait variants and 1–3 KB badge variants. Lazy loading remains for lower content, but photos are no longer fully hidden behind the one-second scroll-reveal mask. Text entrances and photo parallax remain.
+
+The two story photos are clipped by rounded outer containers, including during parallax. The small photo's white border has been removed. Desktop and 320px, 390px, and 430px checks confirmed rounded clipping, no white border, loaded images, and no page overflow.
+
 ## Captures
 
 | Page | Desktop | Mobile |
@@ -22,6 +28,7 @@ The homepage, conference archive, both conference years, contact, and newsletter
 | Home | [home-desktop.jpg](./home-desktop.jpg) | [home-mobile.jpg](./home-mobile.jpg) |
 | Pastor Toyin host section | [host-desktop.jpg](./host-desktop.jpg) | [host-mobile.jpg](./host-mobile.jpg) |
 | Who we are photo | [about-desktop.jpg](./about-desktop.jpg) | [about-mobile.jpg](./about-mobile.jpg) |
+| Rounded story photos | [story-desktop.jpg](./story-desktop.jpg) | [story-mobile.jpg](./story-mobile.jpg) |
 | Conference archive | [conference-desktop.jpg](./conference-desktop.jpg) | [conference-mobile.jpg](./conference-mobile.jpg) |
 | Conference 2025 | [conference-2025-desktop.jpg](./conference-2025-desktop.jpg) | — |
 | Conference 2026 | [conference-2026-desktop.jpg](./conference-2026-desktop.jpg) | — |

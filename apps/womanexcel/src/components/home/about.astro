@@ -1,3 +1,10 @@
+---
+import { Image } from "astro:assets";
+import gathering from "../../../public/images/conference/2026/day-one-03.jpg";
+import worship from "../../../public/images/conference/2025/gallery-03.jpg";
+import prayer from "../../../public/images/conference/2025/gallery-25.jpg";
+---
+
 <section id="about" class="cew-editorial cew-anchor-section">
     <div class="cew-editorial__intro">
         <div class="cew-section-label">
@@ -7,13 +14,17 @@
         </div>
         <h2>A place to become<br /><em>all God imagined.</em></h2>
         <figure class="cew-editorial__image" data-reveal="image">
-            <img
-                src="/images/conference/2026/day-one-03.jpg"
+            <Image
+                src={gathering}
                 alt="Women gathered around tables at the Woman Excel International Conference"
                 width="1600"
                 height="900"
                 loading="lazy"
                 decoding="async"
+                format="webp"
+                quality={75}
+                widths={[480, 960, 1600]}
+                sizes="(max-width: 760px) 90vw, 50vw"
             />
             <figcaption>Faith · Fellowship · Together</figcaption>
         </figure>
@@ -25,7 +36,7 @@
 
     <div class="cew-story-grid">
         <figure class="cew-story-grid__main">
-            <img src="/images/conference/2025/gallery-03.jpg" alt="Women worshipping together at a Woman Excel gathering" loading="lazy" />
+            <Image src={worship} alt="Women worshipping together at a Woman Excel gathering" loading="lazy" decoding="async" format="webp" quality={75} widths={[360, 720, 1080]} sizes="(max-width: 900px) 90vw, 60vw" />
             <figcaption>Worship · The Word · Community</figcaption>
         </figure>
 
@@ -48,7 +59,7 @@
         </div>
 
         <figure class="cew-story-grid__small">
-            <img src="/images/conference/2025/gallery-25.jpg" alt="Women praying during a Woman Excel gathering" loading="lazy" />
+            <Image src={prayer} alt="Women praying during a Woman Excel gathering" loading="lazy" decoding="async" format="webp" quality={75} widths={[360, 720, 1080]} sizes="(max-width: 900px) 75vw, 35vw" />
         </figure>
     </div>
 </section>

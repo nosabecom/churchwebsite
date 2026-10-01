@@ -1,11 +1,17 @@
+---
+import { Image } from "astro:assets";
+import gathering from "../../../public/images/conference/2026/day-one-05.jpg";
+import logo from "../../../public/images/logo-full.png";
+---
+
 <section class="cew-conference-feature">
     <div class="cew-conference-feature__media">
-        <img src="/images/conference/2026/day-one-05.jpg" alt="Women gathered around tables at the Woman Excel International Conference" loading="lazy" />
+        <Image src={gathering} alt="Women gathered around tables at the Woman Excel International Conference" loading="lazy" decoding="async" format="webp" quality={75} widths={[480, 960, 1600]} sizes="100vw" />
         <span>Our annual gathering</span>
     </div>
 
     <div class="cew-conference-feature__card">
-        <img src="/images/logo-full.png" alt="The Woman Excel International Conference" loading="lazy" />
+        <Image src={logo} alt="The Woman Excel International Conference" loading="lazy" decoding="async" format="webp" widths={[240, 480]} sizes="240px" />
         <p class="cew-kicker">Woman Excel 2026</p>
         <h2>One room.<br /><em>Many stories.</em></h2>
         <p>

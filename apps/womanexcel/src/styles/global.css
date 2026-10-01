@@ -443,6 +443,8 @@
 .cew-story-grid__main {
     position: relative;
     height: clamp(28rem, 58vw, 46rem);
+    overflow: hidden;
+    border-radius: 1.75rem;
 }
 
 .cew-story-grid__main img {
@@ -508,6 +510,8 @@
     height: 17rem;
     margin-top: -1rem !important;
     justify-self: end;
+    overflow: hidden;
+    border-radius: 1.25rem;
 }
 
 .cew-story-grid__small img {
@@ -3040,13 +3044,6 @@ html[data-motion-ready="true"] [data-reveal] {
         clip-path 1.1s cubic-bezier(.16, 1, .3, 1) var(--motion-delay, 0ms);
 }
 
-html[data-motion-ready="true"] [data-reveal="image"] {
-    opacity: 1;
-    filter: none;
-    clip-path: inset(0 0 100% 0 round 1.4rem);
-    transform: none;
-}
-
 html[data-motion-ready="true"] [data-reveal].is-visible {
     opacity: 1;
     filter: none;
@@ -3054,9 +3051,20 @@ html[data-motion-ready="true"] [data-reveal].is-visible {
     transform: none;
 }
 
+/* Do not hide loaded photos behind a delayed scroll-reveal mask. The rounded
+   media container clips the moving image, including its enlarged corners. */
+html[data-motion-ready="true"] [data-reveal="image"],
+html[data-motion-ready="true"] [data-reveal="image"].is-visible {
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+    transform: none;
+    transition: none;
+}
+
 html[data-motion-ready="true"] [data-reveal="image"] > img {
     transform: scale(1.13);
-    transition: transform 1.45s cubic-bezier(.16, 1, .3, 1);
+    transition: transform .4s ease;
 }
 
 html[data-motion-ready="true"] [data-reveal="image"].is-visible > img {
@@ -3323,14 +3331,6 @@ body > nav.conference-site-nav {
         gap: 0;
     }
 
-    .cew-story-grid__main {
-        clip-path: polygon(0 0, 94% 0, 100% 12%, 100% 100%, 0 100%);
-    }
-
-    .cew-story-grid__main img {
-        border-radius: 5rem 1.5rem 5rem 1.5rem;
-    }
-
     .cew-story-grid__copy {
         z-index: 3;
         margin-left: -7rem;
@@ -3347,8 +3347,6 @@ body > nav.conference-site-nav {
         width: 82%;
         margin-top: -3rem !important;
         margin-right: -1.5rem !important;
-        border: .65rem solid white;
-        border-radius: 1.8rem;
         box-shadow: 0 20px 55px rgb(47 33 56 / 20%);
     }
 }
