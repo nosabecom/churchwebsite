@@ -1,0 +1,12 @@
+---
+interface Props {
+    year: string | number;
+}
+
+const { year } = Astro.props;
+---
+
+<p class="rounded-full border border-white/35 bg-black/20 px-4 py-2 font-sans text-xs uppercase tracking-[0.28em] text-white backdrop-blur-sm md:text-sm">
+    Woman Excel Conference · {year}
+</p>
+<p class="text-sm font-bold uppercase tracking-[0.35em] text-white md:text-base">Theme</p>
