@@ -1,6 +1,8 @@
 ---
 import { Slideshow } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
+import Host from "../../components/host.astro";
+import HostLink from "../../components/host-link.astro";
 import Gallery from "../../components/conference/gallery.astro";
 import HeroDetails from "../../components/conference/hero-details.astro";
 import HeroLabels from "../../components/conference/hero-labels.astro";
@@ -103,10 +105,10 @@ const previewProps: Props = {
     introduction: {
         heading: "Who are we?",
         paragraphs: [
-            "The Woman Excel Conference is a gathering of women who refuse to settle for ordinary. Born from the conviction that every woman carries God-given purpose, it calls that purpose out of her.",
+            "The Woman Excel International Conference is a gathering of women who refuse to settle for ordinary. Born from the conviction that every woman carries God-given purpose, it calls that purpose out of her.",
             "Come expectant for powerful teaching, Spirit-led worship, and a sisterhood that cheers you on long after the final session.",
         ],
-        image: { src: "/images/logo-full.png", alt: "Woman Excel Conference" },
+        image: { src: "/images/logo-full.png", alt: "Woman Excel International Conference" },
     },
     schedule: [
         {
@@ -217,9 +219,12 @@ const introductionHeading = introduction.heading ?? "Who are we?";
                 date={eventDetails.date}
                 address={eventDetails.address}
             />
+            <HostLink />
         </div>
         <a class="conference-cinema-hero__scroll" href={`#conference-${year}-intro`} aria-label="Read about the conference"><span></span></a>
     </Slideshow>
+
+    <Host />
 
     <section class="conference-year-intro" aria-labelledby={`conference-${year}-intro`}>
         <div class="conference-year-intro__inner">

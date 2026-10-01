@@ -20,7 +20,7 @@ const isConference = variant === "conference";
 const currentPath = Astro.url.pathname;
 const isActiveLink = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 
-const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
+const siteName = isConference ? "Woman Excel International Conference" : "Cornerstone Excellent Women";
 const favicon = isConference ? ConferenceMark : FellowshipLogo;
 
 const navLinks = [
@@ -40,10 +40,10 @@ const footerTheme = isConference
 		faint: "text-white/60",
 		rule: "bg-white/15",
 		icon: "fill-white/70 hover:fill-white",
-		name: "The Woman Excel Conference",
+		name: "Woman Excel International Conference",
 		tagline: "A gathering of women who refuse to settle for ordinary.",
 		parent: "A ministry of RCCG Cornerstone Assembly.",
-		copyright: "© 2026 Woman Excel Conference",
+		copyright: "© 2026 Woman Excel International Conference",
 	}
 	: {
 		wrap: "bg-charcoal text-cream",
@@ -93,7 +93,7 @@ const footerTheme = isConference
 		]}>
 			<a href="/" class="shrink-0 flex items-center gap-3">
 				{isConference
-					? <Image src={ConferenceLogo} alt="Woman Excel Conference" width="200" height="67" class="conference-site-nav__logo w-36 h-auto md:w-50"/>
+					? <Image src={ConferenceLogo} alt="Woman Excel International Conference" width="200" height="67" class="conference-site-nav__logo w-36 h-auto md:w-50"/>
 					: <>
 						<Image src={FellowshipLogo} alt="Cornerstone Excellent Women" width="120" height="120" class="cew-site-nav__mark w-12 md:w-16 h-auto rounded-full"/>
 						{/* The mark's own lettering is unreadable at nav size, so the

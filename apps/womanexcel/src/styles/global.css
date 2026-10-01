@@ -263,10 +263,10 @@
 .cew-cinematic-hero h1 {
     max-width: 9ch;
     margin: 1rem 0 1.35rem;
-    font-size: clamp(4.5rem, 12vw, 10rem);
+    font-size: clamp(3.5rem, 8vw, 7rem);
     font-weight: 600;
     letter-spacing: -.055em;
-    line-height: .72;
+    line-height: .95;
     text-wrap: balance;
 }
 
@@ -353,10 +353,10 @@
 .cew-join h2 {
     margin: 1.75rem 0 1.5rem;
     color: var(--cew-ink);
-    font-size: clamp(3.5rem, 8vw, 7.8rem);
+    font-size: clamp(2.5rem, 5.5vw, 5rem);
     font-weight: 600;
     letter-spacing: -.055em;
-    line-height: .82;
+    line-height: 1;
 }
 
 .cew-editorial__intro h2 em,
@@ -371,7 +371,7 @@
     max-width: 48rem;
     margin: 0 0 clamp(3.5rem, 8vw, 7rem) auto;
     color: var(--cew-muted);
-    font-size: clamp(1.08rem, 2vw, 1.4rem);
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
     line-height: 1.75;
 }
 
@@ -421,7 +421,7 @@
 .cew-story-grid__copy h3 {
     margin: 0;
     color: var(--cew-ink);
-    font-size: clamp(2.5rem, 5vw, 4.6rem);
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
     font-weight: 600;
     letter-spacing: -.04em;
     line-height: .92;
@@ -616,10 +616,10 @@
 
 .cew-scripture blockquote {
     margin: 2rem 0;
-    font-size: clamp(2.8rem, 7vw, 6.2rem);
+    font-size: clamp(2rem, 4.5vw, 4rem);
     font-weight: 500;
     letter-spacing: -.045em;
-    line-height: .95;
+    line-height: 1.15;
 }
 
 .cew-scripture blockquote em {
@@ -693,7 +693,7 @@
 
 .cew-conference-feature__card h2 {
     margin-block: 1rem 1.5rem;
-    font-size: clamp(3.2rem, 6vw, 5.8rem);
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
 }
 
 /* Join */
@@ -806,7 +806,7 @@
     }
 
     .cew-cinematic-hero h1 {
-        font-size: clamp(4rem, 23vw, 6.2rem);
+        font-size: clamp(3rem, 14vw, 4.25rem);
     }
 
     .cew-scroll-cue {
@@ -1059,10 +1059,10 @@
 .conference-archive-hero h1 {
     max-width: 11ch;
     margin: 1rem 0 1.5rem;
-    font-size: clamp(4.4rem, 11vw, 9.5rem);
+    font-size: clamp(3.25rem, 7.5vw, 6.75rem);
     font-weight: 600;
     letter-spacing: -.055em;
-    line-height: .77;
+    line-height: .98;
 }
 
 .conference-archive-hero h1 em {
@@ -1116,10 +1116,10 @@
 .conference-mailing__content h2 {
     margin: 0;
     color: var(--conf-ink);
-    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    font-size: clamp(2.5rem, 5.5vw, 5rem);
     font-weight: 600;
     letter-spacing: -.055em;
-    line-height: .82;
+    line-height: 1;
 }
 
 .conference-section-heading h2 em,
@@ -1293,10 +1293,10 @@
     max-width: 10ch;
     margin: 0;
     color: white;
-    font-size: clamp(4.5rem, 10vw, 8rem);
+    font-size: clamp(3.25rem, 7.5vw, 6rem);
     font-weight: 600;
     letter-spacing: -.05em;
-    line-height: .82;
+    line-height: 1;
 }
 
 .conference-hero-labels {
@@ -1325,7 +1325,7 @@
 .conference-hero-details blockquote p {
     margin: 0 0 .5rem;
     color: rgb(255 255 255 / 88%);
-    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
     font-style: italic;
     font-weight: 500;
     line-height: 1.35;
@@ -1484,7 +1484,7 @@
 
 .conference-year-intro__copy h2 {
     margin: 1.5rem 0;
-    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
 }
 
 .conference-section-heading--compact {
@@ -1976,10 +1976,10 @@
 .cew-newsletters-empty h1 {
     max-width: 10ch;
     margin: 1rem 0 1.25rem;
-    font-size: clamp(4rem, 10vw, 8.5rem);
+    font-size: clamp(2.75rem, 6.5vw, 5.5rem);
     font-weight: 600;
     letter-spacing: -.055em;
-    line-height: .8;
+    line-height: 1;
 }
 
 .cew-contact__hero h1 em,
@@ -2012,7 +2012,7 @@
 .cew-contact__body aside h2 {
     margin: 1.5rem 0;
     color: var(--cew-ink);
-    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
     font-weight: 600;
     letter-spacing: -.04em;
     line-height: .9;
@@ -2255,7 +2255,7 @@
 
 .cew-newsletters__latest-copy h1 {
     color: var(--cew-ink);
-    font-size: clamp(4rem, 8vw, 7rem);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
 }
 
 .cew-newsletters__latest-copy h1,
@@ -2324,7 +2324,7 @@
 .cew-newsletters__archive > header h2 {
     margin: 0;
     color: white;
-    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
     font-weight: 600;
     letter-spacing: -.055em;
     line-height: .82;
@@ -2479,7 +2479,7 @@
 
 .cew-newsletter-article__copy h1 {
     color: var(--cew-ink);
-    font-size: clamp(4rem, 8vw, 7.2rem);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
 }
 
 .cew-newsletter-article__copy > p:last-child {
@@ -2517,7 +2517,7 @@
 
 .cew-newsletter-article__cover > div span {
     font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-size: clamp(2rem, 3.5vw, 3.25rem);
     font-style: italic;
     line-height: .9;
     text-align: center;
@@ -2694,7 +2694,7 @@
     }
 
     .conference-archive-hero h1 {
-        font-size: clamp(4rem, 22vw, 6.5rem);
+        font-size: clamp(2.75rem, 12vw, 3.75rem);
     }
 
     .conference-cinema-hero__art,
@@ -2739,7 +2739,7 @@
     .cew-newsletter-article__copy h1,
     .cew-newsletters__latest-copy h1,
     .cew-newsletters-empty h1 {
-        font-size: clamp(3.8rem, 20vw, 6rem);
+        font-size: clamp(2.5rem, 11vw, 3.5rem);
     }
 
     .cew-contact-form {
@@ -3389,8 +3389,8 @@ body > nav.conference-site-nav {
 
 .conference-year-card__body h3 {
     max-width: 7ch;
-    font-size: clamp(3rem, 7vw, 6.2rem);
-    line-height: .76;
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    line-height: 1;
 }
 
 .conference-story__grid figure,
@@ -3446,7 +3446,7 @@ body > nav.conference-site-nav {
 }
 
 .cew-newsletters__latest-copy h1,
-.cew-newsletter-article__copy h1 { line-height: .78; }
+.cew-newsletter-article__copy h1 { line-height: 1.05; }
 
 @media (min-width: 761px) {
     .cew-newsletters__latest {
@@ -3455,12 +3455,12 @@ body > nav.conference-site-nav {
 
     .cew-newsletters__latest-copy h1 {
         max-width: none;
-        font-size: clamp(3.5rem, 6vw, 6.25rem);
+        font-size: clamp(2.5rem, 4vw, 4rem);
     }
 
     .cew-newsletter-article__copy h1 {
         max-width: 12ch;
-        font-size: clamp(3.5rem, 6vw, 6.25rem);
+        font-size: clamp(2.5rem, 4vw, 4rem);
     }
 }
 
@@ -3620,8 +3620,8 @@ body > nav.conference-site-nav {
     .cew-newsletters__latest-copy h1,
     .cew-newsletter-article__copy h1 {
         max-width: none;
-        font-size: clamp(3rem, 15vw, 4.5rem);
-        line-height: .82;
+        font-size: clamp(2rem, 9vw, 2.75rem);
+        line-height: 1.1;
     }
 
     .cew-contact-form {
@@ -3632,6 +3632,197 @@ body > nav.conference-site-nav {
 
 @media (prefers-reduced-motion: reduce) {
     .site-editorial-ribbon > div { animation: none; }
+}
+
+/* Clip rotated decorative surfaces at the viewport without adding a scrollbar. */
+html { overflow-x: clip; }
+
+/* The host is introduced immediately after the opening hero. */
+.woman-excel-host {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: center;
+    width: calc(100% - 1.5rem);
+    margin: 1rem auto 2rem;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 70%);
+    border-radius: 3rem 3rem 7rem 3rem;
+    color: #2f2138;
+    background: linear-gradient(125deg, #f3d6df, #e5d8ee 55%, #d9e9f2);
+    scroll-margin-top: 7rem;
+}
+
+.woman-excel-host__copy {
+    padding: clamp(2rem, 6vw, 6rem);
+}
+
+.woman-excel-host__eyebrow,
+.woman-excel-host__role {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+
+.woman-excel-host__eyebrow { color: #77428c; }
+
+.woman-excel-host__copy h2 {
+    margin: 1.5rem 0 2rem;
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -.055em;
+    line-height: .98;
+}
+
+.woman-excel-host__copy h3 {
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.05;
+}
+
+.woman-excel-host__role { margin-top: .8rem; }
+
+.woman-excel-host__description {
+    max-width: 30rem;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.woman-excel-host__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: .6rem;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.woman-excel-host__portrait {
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.woman-excel-host__portrait > img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    max-height: 42rem;
+    object-fit: contain;
+    object-position: bottom;
+}
+
+.woman-excel-host__orbit {
+    position: absolute;
+    top: 15%;
+    left: 5%;
+    width: 90%;
+    aspect-ratio: 1;
+    border: 1px solid rgb(119 66 140 / 22%);
+    border-radius: 50%;
+    background: rgb(251 247 242 / 35%);
+    box-shadow: 0 0 0 2rem rgb(251 247 242 / 12%);
+}
+
+.woman-excel-host__portrait figcaption {
+    position: absolute;
+    z-index: 2;
+    bottom: 1.5rem;
+    left: 50%;
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    transform: translateX(-50%) rotate(-3deg);
+    border-radius: 999px;
+    padding: .75rem 1.2rem;
+    color: #2f2138;
+    background: #fbf7f2;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+}
+
+.woman-excel-host-link {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 1.5rem;
+    border: 1px solid rgb(255 255 255 / 30%);
+    border-radius: 999px;
+    padding: .45rem 1rem .45rem .45rem;
+    color: white;
+    background: rgb(47 33 56 / 45%);
+    backdrop-filter: blur(12px);
+}
+
+.woman-excel-host-link > img {
+    width: 3.25rem;
+    height: 3.25rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 15%;
+    background: #e5d8ee;
+}
+
+.woman-excel-host-link small,
+.woman-excel-host-link strong { display: block; }
+.woman-excel-host-link small {
+    font-size: .6rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+.woman-excel-host-link strong {
+    margin-top: .2rem;
+    font-size: .8rem;
+    font-weight: 600;
+}
+.woman-excel-host-link__arrow { margin-left: .5rem; }
+
+.woman-excel-host-link:focus-visible,
+.woman-excel-host__link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 5px;
+}
+
+@media (max-width: 760px) {
+    .woman-excel-host {
+        grid-template-columns: 1fr;
+        border-radius: 2rem 2rem 4rem 2rem;
+    }
+    .woman-excel-host__copy { padding: 2.5rem 1.5rem 1.5rem; }
+    .woman-excel-host__copy h2 { font-size: clamp(3rem, 11vw, 4rem); }
+    .woman-excel-host__portrait {
+        order: -1;
+        width: 100%;
+        max-width: 30rem;
+        margin: 1rem auto 0;
+    }
+    .woman-excel-host__portrait > img { max-height: 22rem; }
+}
+
+@media (max-width: 449px) {
+    .woman-excel-host { width: calc(100% - .8rem); }
+
+    /* Keep the fixed menu attached to the viewport instead of the capsule. */
+    body > nav[data-motion-nav] {
+        will-change: auto;
+        backdrop-filter: none;
+        transform: none !important;
+        background: #fbf7f2;
+    }
 }
 
 @utility main-gradient {

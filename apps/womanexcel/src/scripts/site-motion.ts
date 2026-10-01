@@ -81,6 +81,7 @@ const initialiseMotion = () => {
 
     [
         ".cew-editorial__intro",
+        ".woman-excel-host__copy",
         ".cew-story-grid__copy",
         ".cew-mission__heading",
         ".cew-scripture__inner",
@@ -115,6 +116,7 @@ const initialiseMotion = () => {
 
     document.querySelectorAll<HTMLElement>([
         ".cew-story-grid__main",
+        ".woman-excel-host__portrait",
         ".cew-story-grid__small",
         ".cew-conference-feature__media",
         ".conference-story__grid figure",

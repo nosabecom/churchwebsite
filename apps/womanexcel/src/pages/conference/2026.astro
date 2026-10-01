@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/layout.astro";
 import Hero from "../../components/conference/2026/hero.astro";
+import Host from "../../components/host.astro";
 import Aboutus from "../../components/conference/2026/aboutus.astro";
 import Mailinglist from "../../components/conference/2026/mailinglist.astro";
 import Gallery from "../../components/conference/gallery.astro";
@@ -91,6 +92,7 @@ const dayTwoGallery = [
 
 <Layout title="2026: The Word" variant="conference" bodyClass="conference-2026-page">
     <Hero />
+    <Host />
     <Aboutus />
     <Speakers speakers={speakers} />
     <Gallery

@@ -1,6 +1,8 @@
 ---
 import { Slideshow } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
+import Host from "../../components/host.astro";
+import HostLink from "../../components/host-link.astro";
 import Gallery from "../../components/conference/gallery.astro";
 import HeroDetails from "../../components/conference/hero-details.astro";
 import HeroLabels from "../../components/conference/hero-labels.astro";
@@ -14,7 +16,7 @@ const imageRoot = "/images/conference/2025";
 const heroSlides = [
     {
         src: `${imageRoot}/gallery-24.jpg`,
-        alt: "Women gathered on stage at the 2025 Woman Excel Conference",
+        alt: "Women gathered on stage at the 2025 Woman Excel International Conference",
     },
     {
         src: `${imageRoot}/gallery-20.jpg`,
@@ -22,7 +24,7 @@ const heroSlides = [
     },
     {
         src: `${imageRoot}/gallery-16.jpg`,
-        alt: "Two women together at the 2025 Woman Excel Conference",
+        alt: "Two women together at the 2025 Woman Excel International Conference",
     },
     {
         src: `${imageRoot}/gallery-11.jpg`,
@@ -140,15 +142,18 @@ const gallery = galleryAlts.map((alt, index) => ({
                     date="May 17–18, 2025"
                     address="RCCG Cornerstone Assembly · 70-3904 Millar Avenue"
                 />
+                <HostLink />
             </div>
         </Slideshow>
+
+        <Host />
 
         <section class="conference-year-intro" aria-labelledby="conference-2025-intro">
             <div class="conference-year-intro__inner">
                 <img
                     class="conference-year-intro__poster"
                     src={`${imageRoot}/poster.jpg`}
-                    alt="Woman Excel Conference 2025 poster for the theme Excel"
+                    alt="Woman Excel International Conference 2025 poster for the theme Excel"
                 />
                 <div class="conference-year-intro__copy">
                     <div class="conference-slate"><span></span><b>01</b><p>May 17–18, 2025</p></div>
