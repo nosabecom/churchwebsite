@@ -3889,7 +3889,7 @@ html { overflow-x: clip; }
     --slideshow-control-bg-hover: rgb(8 42 78 / 90%);
 }
 
-/* Keep the framed welcome, with actual group photos and visible controls. */
+/* The photos lead; carousel controls are deliberately understated. */
 .slideshow.cew-community-carousel > .overlay {
     display: flex;
     width: 100%;
@@ -3898,37 +3898,85 @@ html { overflow-x: clip; }
 }
 
 .slideshow.cew-community-carousel .arrow {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.slideshow.cew-community-carousel .arrow:focus {
     top: auto;
-    bottom: 1.5rem;
+    bottom: 1.25rem;
     width: 2.75rem;
     height: 2.75rem;
+    clip-path: none;
     opacity: 1;
     transform: none;
 }
 
-.slideshow.cew-community-carousel .previous { left: auto; right: 5rem; }
-.slideshow.cew-community-carousel .next { right: 1.5rem; }
-.slideshow.cew-community-carousel .playback { right: 8.5rem; bottom: 1.5rem; }
+.slideshow.cew-community-carousel .previous { left: auto; right: 9rem; }
+.slideshow.cew-community-carousel .next { right: 12rem; }
+.slideshow.cew-community-carousel .playback {
+    display: grid;
+    right: 1rem;
+    bottom: 1.25rem;
+    width: 2.75rem;
+    min-width: 0;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    opacity: .7;
+    place-items: center;
+}
+
+.slideshow.cew-community-carousel .playback:hover,
+.slideshow.cew-community-carousel .playback:focus-visible { opacity: 1; }
+
+.slideshow.cew-community-carousel .playback [data-playback-label] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+
+.slideshow.cew-community-carousel .playback svg {
+    width: .8rem;
+    height: .8rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.75;
+}
+
+.slideshow.cew-community-carousel .playback[aria-pressed="false"] .playback-pause,
+.slideshow.cew-community-carousel .playback[aria-pressed="true"] .playback-play { display: block; }
+
 .slideshow.cew-community-carousel .dots {
-    right: 14rem;
-    bottom: 1.5rem;
+    right: 3.75rem;
+    bottom: 1.25rem;
     left: auto;
     align-items: center;
     height: 2.75rem;
-    gap: .25rem;
-    opacity: 1;
+    gap: 0;
+    opacity: .7;
 }
 
 .slideshow.cew-community-carousel[data-shared-slideshow] [data-dot] {
-    width: 2rem;
+    width: 1.5rem;
     height: 2.75rem;
-    background: radial-gradient(circle, rgb(255 255 255 / 45%) 0 4px, transparent 5px);
+    background: radial-gradient(circle, rgb(255 255 255 / 55%) 0 2px, transparent 3px);
 }
 
 .slideshow.cew-community-carousel[data-shared-slideshow] [data-dot][aria-current="true"],
 .slideshow.cew-community-carousel[data-shared-slideshow] [data-dot]:hover {
-    background: radial-gradient(circle, white 0 5px, transparent 6px);
+    background: radial-gradient(circle, white 0 3px, transparent 4px);
 }
+
+.slideshow.cew-community-carousel .dots:focus-within { opacity: 1; }
 
 .cew-community-carousel .scroll-cue,
 .cew-community-carousel .cew-scroll-cue { display: none; }
@@ -3955,19 +4003,10 @@ html { overflow-x: clip; }
         padding-bottom: 3rem;
     }
 
-    .slideshow.cew-community-carousel .dots { left: 1rem; right: auto; }
-    .slideshow.cew-community-carousel .previous { right: 4.25rem; }
-    .slideshow.cew-community-carousel .next { right: 1rem; }
-    .slideshow.cew-community-carousel .playback { right: 7.5rem; min-width: 4rem; }
-
     .slideshow.cew-community-carousel :is(.arrow, .dots, .playback) {
-        top: calc(var(--community-photo-height) - 3.5rem);
+        top: calc(var(--community-photo-height) - 2.75rem);
         bottom: auto;
     }
-}
-
-@media (max-width: 360px) {
-    .slideshow.cew-community-carousel[data-shared-slideshow] [data-dot] { width: 1.5rem; }
 }
 
 /* Fellowship hero slideshow. The shared component always renders arrows
