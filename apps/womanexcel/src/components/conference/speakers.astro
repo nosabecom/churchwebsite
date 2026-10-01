@@ -1,0 +1,79 @@
+---
+export interface Speaker {
+    name: string;
+    role?: string;
+    image: {
+        src: string;
+        alt: string;
+        crop?: {
+            position: string;
+            size?: string;
+        };
+    };
+}
+
+interface Props {
+    speakers: Speaker[];
+}
+
+const { speakers } = Astro.props as Props;
+---
+
+{speakers.length > 0 && (
+    <section class="flex flex-col items-center py-8" aria-labelledby="conference-speakers-heading">
+        <h2 id="conference-speakers-heading" class="mb-8.5 rounded-3xl bg-navy px-4 py-2.5 font-sans text-3xl text-white md:mb-5.5 md:text-4xl">
+            Speakers &amp; Guests
+        </h2>
+
+        <div class="w-full max-w-400 overflow-hidden mask-x-from-87% mask-x-to-100%">
+            <div class="flex w-max animate-speaker-scroll hover:[animation-play-state:paused] data-paused:[animation-play-state:paused] motion-reduce:animate-none" data-speaker-track>
+                {speakers.map((speaker) => (
+                    <article class="speaker-card">
+                        {speaker.image.crop ? (
+                            <div
+                                class="speaker-image aspect-[4/5] bg-no-repeat"
+                                style={`background-image: url("${speaker.image.src}"); background-position: ${speaker.image.crop.position}; background-size: ${speaker.image.crop.size ?? "cover"};`}
+                                role="img"
+                                aria-label={speaker.image.alt}
+                            ></div>
+                        ) : (
+                            <img class="speaker-image" src={speaker.image.src} alt={speaker.image.alt} />
+                        )}
+                        <div class="speaker-nametag">
+                            <h3>{speaker.name}</h3>
+                            {speaker.role && <p class="mt-1 font-sans text-xs text-white/75 md:text-sm">{speaker.role}</p>}
+                        </div>
+                    </article>
+                ))}
+
+                <div class="contents" aria-hidden="true">
+                    {speakers.map((speaker) => (
+                        <article class="speaker-card">
+                            {speaker.image.crop ? (
+                                <div
+                                    class="speaker-image aspect-[4/5] bg-no-repeat"
+                                    style={`background-image: url("${speaker.image.src}"); background-position: ${speaker.image.crop.position}; background-size: ${speaker.image.crop.size ?? "cover"};`}
+                                ></div>
+                            ) : (
+                                <img class="speaker-image" src={speaker.image.src} alt="" />
+                            )}
+                            <div class="speaker-nametag">
+                                <h3>{speaker.name}</h3>
+                                {speaker.role && <p class="mt-1 font-sans text-xs text-white/75 md:text-sm">{speaker.role}</p>}
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </section>
+)}
+
+<script>
+    // Desktop pauses on hover; touch devices have no hover, so tap toggles the scroll.
+    document.querySelectorAll<HTMLElement>("[data-speaker-track]").forEach((track) => {
+        track.addEventListener("pointerdown", (event) => {
+            if (event.pointerType !== "mouse") track.toggleAttribute("data-paused");
+        });
+    });
+</script>
