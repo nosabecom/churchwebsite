@@ -748,6 +748,10 @@
     font-size: clamp(2.5rem, 4.5vw, 4rem);
 }
 
+.cew-conference-feature__card > .cew-button {
+    margin-top: 1.5rem;
+}
+
 /* Join */
 .cew-join {
     isolation: isolate;

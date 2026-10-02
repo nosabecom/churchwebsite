@@ -1,6 +1,8 @@
-# Woman Excel redesign evaluation screenshots
+# Woman Excel redesign screenshots
 
-These captures are included for design evaluation only. They are not a final design approval.
+This redesign is now production-bound through the PR targeting `main`. The PR remains unmerged; a production release will be cut separately once `main` is ready.
+
+These captures document earlier review states. The host biography now appears only on the homepage; conference pages keep a compact link to that biography instead of repeating it. The homepage conference card also has 24px of spacing above its button. Older captures may not show those refinements.
 
 The framed design was captured through the T3 Code collaborative preview using the connected Sanity development dataset on October 1, 2026. The homepage captures show the refined, understated carousel controls. Newsletter screenshots therefore reflect the current development content, including test copy and imagery.
 

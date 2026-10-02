@@ -1,7 +1,6 @@
 ---
 import { Slideshow } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
-import Host from "../../components/host.astro";
 import HostLink from "../../components/host-link.astro";
 import Gallery from "../../components/conference/gallery.astro";
 import HeroDetails from "../../components/conference/hero-details.astro";
@@ -145,8 +144,6 @@ const gallery = galleryAlts.map((alt, index) => ({
                 <HostLink />
             </div>
         </Slideshow>
-
-        <Host />
 
         <section class="conference-year-intro" aria-labelledby="conference-2025-intro">
             <div class="conference-year-intro__inner">

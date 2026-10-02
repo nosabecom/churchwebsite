@@ -1,9 +1,11 @@
 ---
 import { Image } from "astro:assets";
 import portrait from "../../public/images/speakers/toyin-adeleye.png";
+
+const hostHref = Astro.url.pathname === "/" ? "#meet-your-host" : "/#meet-your-host";
 ---
 
-<a class="woman-excel-host-link" href="#meet-your-host">
+<a class="woman-excel-host-link" href={hostHref}>
     <Image src={portrait} alt="" width="64" height="64" widths={[64, 128]} sizes="64px" format="webp" quality={80} loading="eager" decoding="async" />
     <span><small>Meet your host</small><strong>Pastor Toyin Adeleye</strong></span>
     <span class="woman-excel-host-link__arrow" aria-hidden="true">↘</span>
