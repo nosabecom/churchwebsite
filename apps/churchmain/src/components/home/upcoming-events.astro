@@ -7,17 +7,25 @@ const events = churchEvents.slice(0, 3);
 
 <section class="events-section page-shell" id="upcoming-events" aria-labelledby="events-heading">
     <header class="section-header">
-        <div><p class="section-kicker">Make a little room in your week</p><h2 id="events-heading">Let’s come together.</h2></div>
-        <a class="button button--outline" href="/events">Full church calendar <span><ArrowIcon /></span></a>
+        <div><p class="section-kicker">In the life of our church</p><h2 id="events-heading">Let’s gather <em>again.</em></h2></div>
+        <a class="text-link" href="/events">View the church calendar <ArrowIcon /></a>
     </header>
     <div class="event-grid">
-        {events.map((event, index) => (
-            <article class:list={["event-card", { "event-card--featured": index === 0 }]}>
-                <div class="event-card__topline"><span>{event.category}</span><span aria-hidden="true">0{index + 1}</span></div>
-                <time class="event-card__date" datetime={event.date}><strong>{formatEventDate(event.date, { day: "2-digit" })}</strong><span>{formatEventDate(event.date, { month: "short", weekday: "short" })}</span></time>
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
-                <div class="event-card__footer"><span>{formatEventTime(event.startTime)} · {event.location}</span><a href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`} aria-label={`View ${event.title} on ${formatEventDate(event.date, { month: "long", day: "numeric" })}`}><ArrowIcon /></a></div>
+        {events.map(event => (
+            <article class="event-card">
+                <time class="event-card__date" datetime={event.date}>
+                    <span>{formatEventDate(event.date, { month: "short" })}</span>
+                    <strong>{formatEventDate(event.date, { day: "2-digit" })}</strong>
+                </time>
+                <div class="event-card__body">
+                    <p class="event-card__category">{event.category} · {formatEventDate(event.date, { weekday: "long" })}</p>
+                    <h3>{event.title}</h3>
+                    <p>{event.description}</p>
+                </div>
+                <div class="event-card__footer">
+                    <span>{formatEventTime(event.startTime)}<small>{event.location}</small></span>
+                    <a class="text-link" href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`} aria-label={`View ${event.title} on ${formatEventDate(event.date, { month: "long", day: "numeric" })}`}>Details <ArrowIcon /></a>
+                </div>
             </article>
         ))}
     </div>

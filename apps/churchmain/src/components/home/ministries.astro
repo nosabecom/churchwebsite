@@ -1,28 +1,37 @@
 ---
-import MinistryArt from "./ministry-art.astro";
+import { Image } from "astro:assets";
+import Prayer from "../../assets/community/prayer.jpg";
+import Fellowship from "../../assets/community/fellowship.jpg";
 import ArrowIcon from "../arrow-icon.astro";
+
 const ministries = [
-    { title: "Women", kind: "women" as const, description: "Faith, friendship, and encouragement through every season.", href: "/ministries/women", style: "coral" },
-    { title: "Men", kind: "men" as const, description: "Growing together in faith, purpose, and everyday life.", href: "/ministries/men", style: "blue" },
-    { title: "Youth", kind: "youth" as const, description: "Real questions. Real friendships. A faith of your own.", href: "/ministries/youths-teenagers", style: "lime" },
-    { title: "Children", kind: "children" as const, description: "A little wonder, a lot of joy, and room to grow in Jesus.", href: "/ministries/children", style: "cream" },
+    { title: "Women", description: "Faith & friendship", href: "/ministries/women" },
+    { title: "Men", description: "Purpose & brotherhood", href: "/ministries/men" },
+    { title: "Youth", description: "Questions & possibility", href: "/ministries/youths-teenagers" },
+    { title: "Children", description: "Wonder & growing faith", href: "/ministries/children" },
 ];
 ---
 
 <section class="ministries-section" id="ministries" aria-labelledby="ministries-heading">
-    <div class="page-shell">
-        <header class="section-header">
-            <div><p class="section-kicker">Life is better together</p><h2 id="ministries-heading">Find your people.</h2></div>
-            <a class="text-link" href="/ministries">Explore our ministries <span><ArrowIcon /></span></a>
-        </header>
-        <div class="ministry-grid">
-            {ministries.map((ministry) => (
-                <a class:list={["ministry-tile", `ministry-tile--${ministry.style}`]} href={ministry.href}>
-                    <span class="ministry-tile__stage"><MinistryArt kind={ministry.kind} /></span>
-                    <span class="ministry-tile__heading"><span class="ministry-tile__title">{ministry.title}</span><span class="ministry-tile__arrow"><ArrowIcon /></span></span>
-                    <span class="ministry-tile__description">{ministry.description}</span>
-                </a>
-            ))}
+    <div class="page-shell ministries-layout">
+        <div class="community-photos">
+            <figure class="community-photos__prayer"><Image src={Prayer} alt="Women from the Cornerstone community joining hands in prayer at Woman Excel" widths={[400, 650, 900]} sizes="(min-width: 900px) 32vw, 64vw" /><figcaption>Faith that brings us together.</figcaption></figure>
+            <figure class="community-photos__table"><Image src={Fellowship} alt="The Woman Excel community sharing fellowship around tables at the 2026 conference" widths={[350, 550, 800]} sizes="(min-width: 900px) 24vw, 50vw" /></figure>
+            <span class="community-photos__detail" aria-hidden="true">Together<br /><em>is a good place.</em></span>
+        </div>
+        <div class="ministries-copy">
+            <p class="section-kicker">More than a Sunday</p>
+            <h2 id="ministries-heading">Life is better<br /><em>together.</em></h2>
+            <p>There’s room for every generation, every story, and every season of life. Find a community to grow with.</p>
+            <div class="ministry-grid">
+                {ministries.map(ministry => (
+                    <a class="ministry-tile" href={ministry.href}>
+                        <span class="ministry-tile__heading"><span class="ministry-tile__title">{ministry.title}</span><ArrowIcon /></span>
+                        <span class="ministry-tile__description">{ministry.description}</span>
+                    </a>
+                ))}
+            </div>
+            <a class="text-link" href="/ministries">Explore our ministries <ArrowIcon /></a>
         </div>
     </div>
 </section>

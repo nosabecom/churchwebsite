@@ -12,20 +12,20 @@ const pastors = [
 
 <section class="welcome-section page-shell" id="welcome" aria-labelledby="welcome-heading">
     <div class="welcome-copy">
-        <p class="section-kicker">A little about us</p>
-        <h2 id="welcome-heading">Good things grow<br />in good company.</h2>
+        <p class="section-kicker">Our church. Your family.</p>
+        <h2 id="welcome-heading">Rooted in faith.<br /><em>Open to everyone.</em></h2>
         <p class="welcome-lead">We’re a family of people of purpose, power, and praise.</p>
         <p>At Cornerstone, we’re building our lives on Jesus and learning to carry our faith into the everyday. Whether church feels familiar or you’re asking your first questions, you are welcome here.</p>
         <a class="text-link" href="/new-to-church">Get to know Cornerstone <span><ArrowIcon /></span></a>
-        <p class="welcome-signoff">With love, <span>Pastors Reuben & Toyin</span></p>
+        <p class="welcome-signoff">We look forward to welcoming you.<span>Pastors Reuben & Toyin</span></p>
     </div>
     <div class="pastors-composition">
-        <div class="pastors-composition__label"><span class="detail-label">Your pastors</span><span><ArrowIcon direction="down" /></span></div>
+        <div class="pastors-composition__label"><span class="detail-label">A warm welcome from our pastors</span><span><ArrowIcon direction="down" /></span></div>
         <div class="pastors-portraits">
             {pastors.map((pastor) => (
                 <figure class="pastor-card">
                     <Image class="pastor-card__image" src={pastor.image} alt={pastor.name} widths={[300, 450, 600]} sizes="(min-width: 900px) 22vw, 44vw" />
-                    <figcaption>{pastor.name}</figcaption>
+                    <figcaption><span>Meet your pastor</span>{pastor.name}</figcaption>
                 </figure>
             ))}
         </div>
