@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+import portrait from "../../public/images/speakers/toyin-adeleye.png";
+---
+
+<section id="meet-your-host" class="woman-excel-host" aria-labelledby="host-heading">
+    <div class="woman-excel-host__copy">
+        <p class="woman-excel-host__eyebrow">The woman behind the welcome</p>
+        <h2 id="host-heading">Meet your<br /><em>host.</em></h2>
+        <h3>Pastor Toyin Adeleye</h3>
+        <p class="woman-excel-host__role">Host · Woman Excel International Conference</p>
+        <p class="woman-excel-host__description">
+            <em>Pastor Toyin Adeleye</em> is a visionary minister of the Gospel, dynamic leader,
+            gifted worshipper, and passionate intercessor. She is widely recognized for her commitment
+            to women’s empowerment, family transformation, and purposeful living, inspiring believers
+            to fulfill their God-given destinies and live impactful lives.
+        </p>
+        <p class="woman-excel-host__description">
+            Together with her husband, <em>Pastor Reuben Adeleye</em>, she serves as Co-Pastor of{" "}
+            <em>RCCG Cornerstone Assembly, Saskatoon, Saskatchewan, Canada.</em> She is also the visionary
+            host of the Woman Excel International Conference, a transformational platform dedicated
+            to raising women who excel in every area of life.
+        </p>
+        <p class="woman-excel-host__description">
+            An accomplished entrepreneur and professional, Pastor Toyin holds credentials in
+            Project Management, Financial Advisory, and Early Childhood Care, alongside degrees in
+            Statistics and Business Administration. Through her ministry and leadership, she continues
+            to empower lives, build families, and raise purpose-driven leaders for global impact.
+        </p>
+        <a class="woman-excel-host__link" href="/contact">
+            Connect with us <span aria-hidden="true">↗</span>
+        </a>
+    </div>
+    <figure class="woman-excel-host__portrait">
+        <span class="woman-excel-host__orbit" aria-hidden="true"></span>
+        <Image
+            src={portrait}
+            alt="Pastor Toyin Adeleye, host of the Woman Excel International Conference"
+            width="1000"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+            format="webp"
+            quality={80}
+            widths={[320, 640, 960]}
+            sizes="(max-width: 760px) 85vw, 480px"
+        />
+        <figcaption>Faith. Purpose. Sisterhood.</figcaption>
+    </figure>
+</section>
