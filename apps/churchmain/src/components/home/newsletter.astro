@@ -1,29 +1,18 @@
 ---
 import { getLatestNewsletter, getNewsletterHref } from "../../data/newsletters";
-import OrbitBadge from "./orbit-badge.astro";
+import ArrowIcon from "../arrow-icon.astro";
 
 const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
 ---
 
-<section class="stay-connected" aria-labelledby="newsletter-heading">
-    <div class="stay-connected__ticker" aria-hidden="true">
-        <span>THE STORY IS STILL MOVING · THE STORY IS STILL MOVING · THE STORY IS STILL MOVING ·</span>
-    </div>
-    <div class="page-shell stay-connected__inner" data-reveal>
-        <OrbitBadge
-            class="stay-connected__orbit"
-            id="stay-close-orbit"
-            text="STAY CLOSE · STAY CLOSE · STAY CLOSE · STAY CLOSE · "
-        />
-        <div>
-            <p class="section-kicker section-kicker--dark">The week at Cornerstone</p>
-            <h2 id="newsletter-heading">News worth<br /><em>opening.</em></h2>
-        </div>
+<section class="stay-connected page-shell" aria-labelledby="newsletter-heading">
+    <div class="stay-connected__inner">
         <div class="stay-connected__copy">
-            <p>Announcements, stories, event updates, and everything you need for the week ahead.</p>
-            <a class="button button--ink" href={latestNewsletterHref}>
-                Read the latest newsletter <span aria-hidden="true">→</span>
-            </a>
+            <p class="section-kicker">The Cornerstone Chronicle</p>
+            <h2 id="newsletter-heading">A little closer.<br />A little more connected.</h2>
+            <p>Church news, stories, and what’s ahead. A little of our life together, all in one place.</p>
+            <a class="button button--ink" href={latestNewsletterHref}>Read the latest newsletter <span><ArrowIcon /></span></a>
         </div>
+        <div class="newsletter-art" aria-hidden="true"><div class="newsletter-art__paper"><span>CORNERSTONE</span><i></i><i></i><i></i><b>Good news<br />travels.</b></div><div class="newsletter-art__envelope"></div><span class="newsletter-art__seal">C</span></div>
     </div>
 </section>
