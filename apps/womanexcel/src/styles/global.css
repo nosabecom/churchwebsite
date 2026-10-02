@@ -3757,7 +3757,7 @@ html { overflow-x: clip; }
 
 .woman-excel-host__portrait {
     position: relative;
-    align-self: stretch;
+    align-self: center;
     display: flex;
     align-items: flex-end;
     justify-content: center;
