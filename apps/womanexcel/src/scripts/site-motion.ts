@@ -66,7 +66,7 @@ const initialiseMotion = () => {
         ".cew-cinematic-hero__content > *",
         ".conference-archive-hero__content > *",
         ".conference-cinema-hero__content > *",
-        ".cew-contact__hero > *",
+        ".cew-contact__hero > div:not([aria-hidden])",
         ".cew-newsletters__masthead > *",
     ].join(","));
 
@@ -136,12 +136,9 @@ const initialiseMotion = () => {
     const parallaxMedia = document.querySelectorAll<HTMLElement>([
         ".cew-story-grid figure",
         ".cew-conference-feature__media",
-        ".conference-year-card",
         ".conference-story__grid figure",
         ".conference-year-intro__media",
         ".conference-programme figure",
-        ".conference-gallery__grid a",
-        ".conference-gallery__grid figure",
         ".conference-recap__media li",
         ".cew-newsletters__cover",
         ".cew-newsletters__archive-cover",
@@ -150,7 +147,7 @@ const initialiseMotion = () => {
     parallaxMedia.forEach((element) => element.setAttribute("data-motion-parallax", ""));
 
     const motionCards = document.querySelectorAll<HTMLElement>(
-        ".conference-gallery__grid li, .cew-newsletters__archive li",
+        ".cew-newsletters__archive li",
     );
     motionCards.forEach((element, index) => {
         element.dataset.motionCard = "";

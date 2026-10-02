@@ -1,23 +1,26 @@
 ---
 import { Image } from "astro:assets";
-import gathering from "../../../public/images/conference/2026/day-one-05.jpg";
 import logo from "../../../public/images/logo-full.png";
+import { latestConference } from "./latest-conference";
 ---
 
-<section class="cew-conference-feature">
+<section id="conference-recap" class="cew-conference-feature cew-conference-feature--recap" aria-labelledby="home-conference-recap-heading">
     <div class="cew-conference-feature__media">
-        <Image src={gathering} alt="Women gathered around tables at the Woman Excel International Conference" loading="lazy" decoding="async" format="webp" quality={75} widths={[480, 960, 1600]} sizes="100vw" />
-        <span>Our annual gathering</span>
+        {latestConference.photos.map((photo, index) => (
+            <figure>
+                <a href={`${latestConference.href}#conference-${latestConference.year}-day-${index === 1 ? "two" : "one"}-gallery`}>
+                    <Image src={photo.src} alt={photo.alt} loading="lazy" decoding="async" format="webp" quality={75} widths={[360, 720, 1200]} sizes={index === 0 ? "(max-width: 1000px) 90vw, 55vw" : "(max-width: 1000px) 45vw, 28vw"} />
+                </a>
+                <figcaption>{photo.caption}</figcaption>
+            </figure>
+        ))}
     </div>
 
     <div class="cew-conference-feature__card">
         <Image src={logo} alt="The Woman Excel International Conference" loading="lazy" decoding="async" format="webp" widths={[240, 480]} sizes="240px" />
-        <p class="cew-kicker">Woman Excel 2026</p>
-        <h2>One room.<br /><em>Many stories.</em></h2>
-        <p>
-            Once a year we open our doors wider. Women from every walk of life come together to worship,
-            sit under powerful teaching, and be reminded Whose they are.
-        </p>
-        <a class="cew-button" href="/conference/2026">Explore the conference</a>
+        <p class="cew-kicker">{latestConference.year} Conference recap</p>
+        <h2 id="home-conference-recap-heading">One room.<br /><em>Many stories.</em></h2>
+        <p>{latestConference.summary}</p>
+        <a class="cew-button" href={latestConference.href}>Explore the conference</a>
     </div>
 </section>

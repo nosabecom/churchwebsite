@@ -48,7 +48,7 @@
    Cornerstone Excellent Women · editorial fellowship experience
    ---------------------------------------------------------------------- */
 
-.cew-shell {
+:root {
     --cew-paper: #fbf7f2;
     --cew-paper-deep: #f2e9df;
     --cew-ink: #2f2138;
@@ -60,6 +60,9 @@
     --cew-sky: #d9e9f2;
     --cew-blush: #f3d6df;
     --cew-gold: #e9d39f;
+}
+
+.cew-shell {
     color: var(--cew-ink);
     background: var(--cew-paper);
     font-family: "Manrope", sans-serif;
@@ -70,7 +73,7 @@
 .cew-shell h2,
 .cew-shell h3,
 .cew-shell blockquote,
-.cew-shell .cew-site-nav__lockup > :last-child {
+.cew-site-nav__lockup > :last-child {
     font-family: "Cormorant Garamond", Georgia, serif;
 }
 
@@ -112,7 +115,7 @@
     bottom: -.45rem;
     left: 0;
     height: 1px;
-    background: var(--cew-orchid);
+    background: var(--cew-violet);
     content: "";
     transform: scaleX(0);
     transform-origin: right;
@@ -120,6 +123,7 @@
 }
 
 .cew-site-nav__link:not(.cew-site-nav__cta):hover::after,
+.cew-site-nav__link:not(.cew-site-nav__cta):focus-visible::after,
 .cew-site-nav__link.is-active:not(.cew-site-nav__cta)::after {
     transform: scaleX(1);
     transform-origin: left;
@@ -752,6 +756,61 @@
     margin-top: 1.5rem;
 }
 
+/* A homepage-only recap: one lead photograph with two smaller moments,
+   rather than repeating a three-card recap on every conference page. */
+.cew-conference-feature.cew-conference-feature--recap {
+    min-height: auto;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.cew-conference-feature--recap .cew-conference-feature__media {
+    position: relative;
+    inset: auto;
+    display: grid;
+    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.cew-conference-feature--recap .cew-conference-feature__media::after { display: none; }
+
+.cew-conference-feature--recap figure { min-width: 0; margin: 0; }
+.cew-conference-feature--recap figure:first-child { grid-column: 1 / -1; }
+.cew-conference-feature--recap figure a {
+    display: block;
+    overflow: hidden;
+    border-radius: 1.5rem;
+}
+.cew-conference-feature--recap figure img {
+    display: block;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    transition: transform .3s ease;
+}
+.cew-conference-feature--recap figure a:hover img { transform: scale(1.025); }
+.cew-conference-feature--recap figcaption {
+    margin-top: .6rem;
+    color: var(--cew-ink);
+    font-size: .72rem;
+    font-weight: 600;
+}
+.cew-conference-feature--recap .cew-conference-feature__card {
+    width: 100%;
+    margin: 0;
+    padding: clamp(1.5rem, 3vw, 3rem);
+}
+
+@media (max-width: 1000px) {
+    .cew-conference-feature.cew-conference-feature--recap {
+        grid-template-columns: 1fr;
+    }
+    .cew-conference-feature--recap .cew-conference-feature__card {
+        grid-column: 1;
+    }
+}
+
 /* Join */
 .cew-join {
     isolation: isolate;
@@ -847,10 +906,13 @@
         background: #261b2d;
     }
 
-    .cew-site-nav__link,
-    .cew-site-nav__cta {
+    .cew-site-nav__link {
         color: white;
-        background: transparent;
+    }
+
+    .cew-site-nav__cta {
+        margin-top: .75rem;
+        background: var(--cew-violet);
     }
 
     .cew-cinematic-hero {
@@ -995,7 +1057,11 @@
 }
 
 .conference-kicker {
-    color: var(--conf-pink);
+    color: var(--conf-purple);
+}
+
+.conference-archive-hero .conference-kicker {
+    color: #f0def7;
 }
 
 .conference-line-link {
@@ -1240,7 +1306,8 @@
 
 .conference-year-card__scrim {
     z-index: -1;
-    background: linear-gradient(0deg, rgb(28 13 37 / 94%), rgb(28 13 37 / 15%) 72%);
+    border-radius: inherit;
+    background: linear-gradient(0deg, rgb(28 13 37 / 94%), rgb(28 13 37 / 18%) 55%, rgb(28 13 37 / 60%));
 }
 
 .conference-year-card--upcoming {
@@ -1727,42 +1794,38 @@
     display: grid;
     margin: 0;
     padding: 0;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: .75rem;
     list-style: none;
 }
 
 .conference-gallery__grid li {
     position: relative;
-    grid-column: span 4;
+    min-width: 0;
     overflow: hidden;
     border-radius: 1rem;
 }
 
-.conference-gallery__grid li:nth-child(7n + 1),
-.conference-gallery__grid li:nth-child(7n + 5) {
-    grid-column: span 8;
-}
-
-.conference-gallery__grid li:nth-child(7n + 1) img,
-.conference-gallery__grid li:nth-child(7n + 5) img {
-    aspect-ratio: 16 / 9;
-}
-
 .conference-gallery__grid a,
-.conference-gallery__grid figure {
+.conference-gallery__grid button {
     position: relative;
     display: block;
     height: 100%;
     margin: 0;
     overflow: hidden;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: var(--conf-lilac);
+    cursor: zoom-in;
 }
 
 .conference-gallery__grid img {
     display: block;
     width: 100%;
     height: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
     transition: transform .5s ease;
 }
@@ -1782,7 +1845,6 @@
     backdrop-filter: blur(10px);
 }
 
-.conference-gallery__grid figcaption,
 .conference-gallery__grid a > p {
     position: absolute;
     right: 1rem;
@@ -1791,6 +1853,108 @@
     margin: 0;
     color: white;
     text-shadow: 0 2px 12px rgb(0 0 0 / 60%);
+}
+
+.conference-gallery__view {
+    position: absolute;
+    right: .75rem;
+    bottom: .75rem;
+    border-radius: 999px;
+    padding: .45rem .7rem;
+    color: white;
+    background: rgb(36 21 47 / 80%);
+    font-size: .7rem;
+    font-weight: 700;
+}
+
+.conference-gallery__grid button:focus-visible {
+    outline: 3px solid var(--conf-purple);
+    outline-offset: -5px;
+}
+
+.conference-photo-viewer {
+    position: fixed;
+    inset: 0;
+    width: min(70rem, calc(100% - 2rem));
+    max-width: calc(100% - 2rem);
+    max-height: calc(100svh - 2rem);
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 1.5rem;
+    color: white;
+    background: #261b2d;
+    overflow: auto;
+}
+
+.conference-photo-viewer::backdrop {
+    background: rgb(17 10 24 / 90%);
+}
+
+.conference-photo-viewer__content {
+    position: relative;
+}
+
+.conference-photo-viewer img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: min(70svh, 48rem);
+    border-radius: .75rem;
+    object-fit: contain;
+}
+
+.conference-photo-viewer button {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(255 255 255 / 35%);
+    border-radius: 50%;
+    color: white;
+    background: #35243f;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.conference-photo-viewer button:focus-visible {
+    outline: 2px solid #ead8ef;
+    outline-offset: 3px;
+}
+
+.conference-photo-viewer__close {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+}
+
+.conference-photo-viewer__footer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+}
+
+.conference-photo-viewer__footer p {
+    margin: 0;
+    font-size: .85rem;
+}
+
+.conference-photo-viewer__footer > div {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    flex-shrink: 0;
+    font-size: .8rem;
+}
+
+@media (max-width: 600px) {
+    .conference-photo-viewer__footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }
 
 .conference-recap {
@@ -2044,10 +2208,34 @@
     font-weight: 500;
 }
 
-.cew-contact__hero > div:last-child > p:last-child {
+.cew-contact__hero > div:last-child > p:last-of-type {
     max-width: 33rem;
     color: rgb(255 255 255 / 78%);
     font-size: 1.08rem;
+}
+
+.cew-contact__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    border-bottom: 1px solid rgb(255 255 255 / 65%);
+    padding-bottom: .5rem;
+    color: white;
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+.cew-contact__scroll span {
+    animation: contact-scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes contact-scroll-cue {
+    50% { transform: translateY(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cew-contact__scroll span { animation: none; }
 }
 
 .cew-contact__body {
@@ -2687,16 +2875,8 @@
         grid-column: 2;
     }
 
-    .conference-gallery__grid li,
-    .conference-gallery__grid li:nth-child(7n + 1),
-    .conference-gallery__grid li:nth-child(7n + 5) {
-        grid-column: span 6;
-    }
-
-    .conference-gallery__grid img,
-    .conference-gallery__grid li:nth-child(7n + 1) img,
-    .conference-gallery__grid li:nth-child(7n + 5) img {
-        aspect-ratio: 4 / 5;
+    .conference-gallery__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .conference-recap__media img {
@@ -2772,10 +2952,8 @@
         height: 27rem;
     }
 
-    .conference-gallery__grid li,
-    .conference-gallery__grid li:nth-child(7n + 1),
-    .conference-gallery__grid li:nth-child(7n + 5) {
-        grid-column: 1 / -1;
+    .conference-gallery__grid {
+        grid-template-columns: 1fr;
     }
 
     .conference-mailing__form {
@@ -3051,7 +3229,7 @@ html[data-motion-ready="true"] [data-reveal] {
 html[data-motion-ready="true"] [data-reveal].is-visible {
     opacity: 1;
     filter: none;
-    clip-path: inset(0 0 0 0 round 0);
+    clip-path: none;
     transform: none;
 }
 
@@ -3204,6 +3382,8 @@ html[data-motion-ready="true"] [data-reveal="image"][data-motion-parallax].is-vi
     [data-motion-intro],
     [data-reveal],
     [data-motion-parallax] > img,
+    .conference-gallery__grid img,
+    .cew-conference-feature--recap figure img,
     [data-motion-card] > a,
     [data-motion-card] > figure,
     [data-motion-words] .motion-word,
@@ -3220,10 +3400,9 @@ html[data-motion-ready="true"] [data-reveal="image"][data-motion-parallax].is-vi
 }
 
 /* -------------------------------------------------------------------------
-   Bold evaluation direction
+   Framed editorial direction
 
-   This layer is intentionally easy to remove as one block after evaluation.
-   It trades template symmetry for framed canvases, overlap, mixed radii,
+   The selected direction uses framed canvases, overlap, mixed radii,
    floating surfaces, and a more recognisable editorial silhouette.
    ---------------------------------------------------------------------- */
 
@@ -3438,7 +3617,6 @@ body > nav.conference-site-nav {
     border-radius: 1.35rem 4rem 1.35rem 4rem;
 }
 
-.conference-year-card__top > span:first-child,
 .conference-gallery__index {
     border: 1px solid rgb(255 255 255 / 38%);
     box-shadow: 0 8px 22px rgb(23 10 31 / 16%);
@@ -3458,7 +3636,7 @@ body > nav.conference-site-nav {
 }
 
 .conference-gallery__grid li {
-    border: .45rem solid rgb(255 255 255 / 88%);
+    border: 0;
     border-radius: 1rem 3rem 1rem 3rem;
     box-shadow: 0 20px 50px rgb(36 21 47 / 16%);
 }
@@ -3661,7 +3839,7 @@ body > nav.conference-site-nav {
 
     .conference-gallery__grid li,
     .conference-gallery__grid li:nth-child(even) {
-        border-width: .3rem;
+        border-width: 0;
         border-radius: 1rem 2.25rem 1rem 2.25rem;
     }
 

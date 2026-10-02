@@ -5,7 +5,6 @@ import HostLink from "../../components/host-link.astro";
 import Gallery from "../../components/conference/gallery.astro";
 import HeroDetails from "../../components/conference/hero-details.astro";
 import HeroLabels from "../../components/conference/hero-labels.astro";
-import Recap from "../../components/conference/recap.astro";
 import Registration from "../../components/conference/registration.astro";
 import Schedule from "../../components/conference/schedule.astro";
 import Speakers from "../../components/conference/speakers.astro";
@@ -66,12 +65,6 @@ export interface Props {
     gallery?: {
         heading?: string;
         items: GalleryItem[];
-    };
-    recap?: {
-        heading?: string;
-        paragraphs: string[];
-        media?: GalleryItem[];
-        cta?: LinkDetails;
     };
 }
 
@@ -146,25 +139,6 @@ const previewProps: Props = {
             },
         ],
     },
-    recap: {
-        heading: "2026 Recap",
-        paragraphs: [
-            "Revisit the teaching, worship, and moments of connection that made this gathering unforgettable.",
-        ],
-        media: [
-            {
-                src: "/images/placeholds/photo-8.jpg",
-                alt: "Highlights from Woman Excel 2026",
-                caption: "Conference highlights",
-            },
-            {
-                src: "/images/placeholds/photo-9.jpg",
-                alt: "Women connecting at Woman Excel 2026",
-                caption: "A lasting sisterhood",
-            },
-        ],
-        cta: { href: "#recap", label: "Watch the recap" },
-    },
 };
 
 const props = Object.keys(Astro.props).length > 0 ? Astro.props as Props : previewProps;
@@ -180,7 +154,6 @@ const {
     registration,
     donation,
     gallery,
-    recap,
 } = props;
 
 const pageTitle = `${year}: ${theme.name}`;
@@ -251,13 +224,4 @@ const introductionHeading = introduction.heading ?? "Who are we?";
 
     {gallery && <Gallery year={year} heading={gallery.heading} items={gallery.items} />}
 
-    {recap && (
-        <Recap
-            year={year}
-            heading={recap.heading}
-            paragraphs={recap.paragraphs}
-            media={recap.media}
-            cta={recap.cta}
-        />
-    )}
 </Layout>

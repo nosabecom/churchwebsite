@@ -4,6 +4,25 @@ This redesign is now production-bound through the PR targeting `main`. The PR re
 
 These captures document earlier review states. The host biography now appears only on the homepage; conference pages keep a compact link to that biography instead of repeating it. The homepage conference card also has 24px of spacing above its button. Older captures may not show those refinements.
 
+## Latest refinements · October 2, 2026
+
+These captures show the unified homepage-style navigation, purple active underline and Contact Us button, functional gallery viewer, border-free rounded photos, contact scroll cue, and homepage-only recap. Desktop captures are 1280px wide; mobile captures are 390px wide.
+
+| Change | Desktop | Mobile |
+| --- | --- | --- |
+| Unified navigation | [Conference navigation](./navigation-conference-desktop.jpg) | [Open menu](./navigation-mobile.jpg) |
+| Gallery | [Gallery](./gallery-desktop.jpg) | [Gallery](./gallery-mobile.jpg) |
+| Photo viewer | — | [Photo viewer](./gallery-viewer-mobile.jpg) |
+| Homepage recap | [Recap](./recap-desktop.jpg) | [Recap](./recap-mobile.jpg) |
+| Contact scroll cue | [Contact](./contact-scroll-desktop.jpg) | — |
+| Rounded archive cards | [Archive cards](./archive-cards-desktop.jpg) | — |
+
+The two flagged 2026 photos are removed from the galleries, not deleted from the source asset library. The replacement curated photo set is still pending. The annual homepage recap is configured in `apps/womanexcel/src/components/home/latest-conference.ts`. Conference archive and gallery photos no longer translate during scroll, preventing exposed corners on smaller screens; other page motion remains.
+
+The build passes with 12 pages, and route checks pass for 12 Woman Excel pages and 34 Church Main pages. Homepage, conference archive, conference 2026, and contact were checked at 320px, 390px, 430px, and 1280px without horizontal overflow. Gallery opening, navigation, Escape dismissal, focus restoration, and scroll unlocking were verified, along with the mobile menu and contact scroll target.
+
+## Earlier captures
+
 The framed design was captured through the T3 Code collaborative preview using the connected Sanity development dataset on October 1, 2026. The homepage captures show the refined, understated carousel controls. Newsletter screenshots therefore reflect the current development content, including test copy and imagery.
 
 The screenshots show the settled state of the entrance animations. Motion, hover, scroll, and marquee behavior should be evaluated in the browser preview.

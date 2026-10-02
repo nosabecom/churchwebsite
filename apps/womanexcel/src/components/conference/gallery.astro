@@ -34,14 +34,78 @@ const { year, heading = "Gallery & Media", items, sectionId = `conference-${year
                             {item.caption && <p>{item.caption}</p>}
                         </a>
                     ) : (
-                        <figure>
+                        <button type="button" data-gallery-open data-gallery-src={item.src} data-gallery-caption={item.caption ?? item.alt} aria-label={`View photo: ${item.alt}`}>
                             <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
                             <span class="conference-gallery__index">{String(index + 1).padStart(2, "0")}</span>
-                            {item.caption && <figcaption>{item.caption}</figcaption>}
-                        </figure>
+                            <span class="conference-gallery__view">View photo <span aria-hidden="true">↗</span></span>
+                        </button>
                     )}
                 </li>
             ))}
         </ul>
+
+        <dialog class="conference-photo-viewer" data-gallery-dialog aria-label={`${heading} photo viewer`}>
+            <div class="conference-photo-viewer__content">
+                <button type="button" class="conference-photo-viewer__close" data-gallery-close aria-label="Close photo viewer">×</button>
+                <img data-gallery-image alt="" />
+                <div class="conference-photo-viewer__footer">
+                    <p data-gallery-description aria-live="polite"></p>
+                    <div>
+                        <button type="button" data-gallery-previous aria-label="Previous photo">←</button>
+                        <span data-gallery-count></span>
+                        <button type="button" data-gallery-next aria-label="Next photo">→</button>
+                    </div>
+                </div>
+            </div>
+        </dialog>
     </section>
 )}
+
+<script>
+    document.querySelectorAll<HTMLElement>(".conference-gallery").forEach((gallery) => {
+        const dialog = gallery.querySelector<HTMLDialogElement>("[data-gallery-dialog]");
+        const photos = Array.from(gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-open]"));
+        if (!dialog || photos.length === 0) return;
+
+        const image = dialog.querySelector<HTMLImageElement>("[data-gallery-image]")!;
+        const description = dialog.querySelector<HTMLElement>("[data-gallery-description]")!;
+        const count = dialog.querySelector<HTMLElement>("[data-gallery-count]")!;
+        let current = 0;
+        let previousOverflow = "";
+        let opener: HTMLButtonElement | undefined;
+
+        const showPhoto = (index: number) => {
+            current = (index + photos.length) % photos.length;
+            const photo = photos[current];
+            image.src = photo.dataset.gallerySrc!;
+            image.alt = photo.querySelector("img")!.alt;
+            description.textContent = photo.dataset.galleryCaption!;
+            count.textContent = `${current + 1} / ${photos.length}`;
+        };
+
+        photos.forEach((photo, index) => photo.addEventListener("click", () => {
+            if (dialog.open) return;
+            opener = photo;
+            showPhoto(index);
+            previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+            dialog.showModal();
+        }));
+        dialog.querySelector("[data-gallery-close]")!.addEventListener("click", () => dialog.close());
+        dialog.querySelector("[data-gallery-previous]")!.addEventListener("click", () => showPhoto(current - 1));
+        dialog.querySelector("[data-gallery-next]")!.addEventListener("click", () => showPhoto(current + 1));
+        dialog.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                event.preventDefault();
+                showPhoto(current + (event.key === "ArrowLeft" ? -1 : 1));
+            }
+        });
+        dialog.addEventListener("click", (event) => {
+            if (event.target === dialog) dialog.close();
+        });
+        dialog.addEventListener("close", () => {
+            document.body.style.overflow = previousOverflow;
+            opener?.focus({ preventScroll: true });
+        });
+    });
+</script>
