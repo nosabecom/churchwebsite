@@ -1,94 +1,37 @@
 ---
-import CardRail from "./card-rail.astro";
+import { Image } from "astro:assets";
+import Prayer from "../../assets/community/prayer.jpg";
+import Fellowship from "../../assets/community/fellowship.jpg";
+import ArrowIcon from "../arrow-icon.astro";
 
-// Placeholder content only. These entries will later be pulled from the
-// church YouTube channel; no API work is wired up yet.
-const ministrations = [
-    {
-        title: "The Stone The Builders Rejected",
-        speaker: "Pastor in charge",
-        published: "This week",
-        duration: "48:12",
-        current: true,
-    },
-    {
-        title: "Walking In Step With The Spirit",
-        speaker: "Assistant Pastor",
-        published: "1 week ago",
-        duration: "52:40",
-    },
-    {
-        title: "Sunday Worship — Full Service",
-        speaker: "Cornerstone Choir",
-        published: "1 week ago",
-        duration: "1:24:05",
-    },
-    {
-        title: "Foundations: Prayer That Moves",
-        speaker: "Prayer Department",
-        published: "2 weeks ago",
-        duration: "39:57",
-    },
-    {
-        title: "Youth Night: Chosen Generation",
-        speaker: "Youths & Teenagers",
-        published: "3 weeks ago",
-        duration: "45:20",
-    },
-    {
-        title: "Bible Study: The Book Of Acts",
-        speaker: "Bible Study Department",
-        published: "1 month ago",
-        duration: "1:02:33",
-    },
+const ministries = [
+    { title: "Women", description: "Faith & friendship", href: "/ministries/women" },
+    { title: "Men", description: "Purpose & brotherhood", href: "/ministries/men" },
+    { title: "Youth", description: "Questions & possibility", href: "/ministries/youths-teenagers" },
+    { title: "Children", description: "Wonder & growing faith", href: "/ministries/children" },
 ];
 ---
 
-<CardRail
-    id="ministries"
-    heading="Ministries"
-    description="The most recent ministrations first, straight from our YouTube channel."
-    previousLabel="Newer ministrations"
-    nextLabel="Older ministrations"
-    linkLabel="See all ministrations"
-    linkHref="#"
->
-    {ministrations.map((ministration) => (
-        <li class="flex w-[min(20rem,85vw)] shrink-0 snap-start flex-col overflow-hidden rounded-2xl bg-slate-50 text-slate-900 shadow-xl shadow-sky-950/30 md:w-88">
-            <div class="relative grid aspect-video place-items-center bg-linear-to-br from-sky-800 to-sky-950">
-                {/* Placeholder for the YouTube thumbnail. */}
-                <span
-                    class="grid size-14 place-items-center rounded-full bg-red-600 text-lg text-white"
-                    aria-hidden="true"
-                >▶</span>
-
-                <span class="absolute right-3 bottom-3 rounded-md bg-black/70 px-2 py-1 text-xs font-semibold text-white">
-                {ministration.duration}
-                </span>
-
-                {ministration.current && (
-                    <span class="absolute top-3 left-3 rounded-md bg-red-600 px-2 py-1 text-xs font-extrabold tracking-widest text-white uppercase">
-                        Latest
-                    </span>
-                )}
+<section class="ministries-section" id="ministries" aria-labelledby="ministries-heading">
+    <div class="page-shell ministries-layout">
+        <div class="community-photos">
+            <figure class="community-photos__prayer"><Image src={Prayer} alt="Women from the Cornerstone community joining hands in prayer at Woman Excel" widths={[400, 650, 900]} sizes="(min-width: 900px) 32vw, 64vw" /><figcaption>Faith that brings us together.</figcaption></figure>
+            <figure class="community-photos__table"><Image src={Fellowship} alt="The Woman Excel community sharing fellowship around tables at the 2026 conference" widths={[350, 550, 800]} sizes="(min-width: 900px) 24vw, 50vw" /></figure>
+            <span class="community-photos__detail" aria-hidden="true">Together<br /><em>is a good place.</em></span>
+        </div>
+        <div class="ministries-copy">
+            <p class="section-kicker">More than a Sunday</p>
+            <h2 id="ministries-heading">Life is better<br /><em>together.</em></h2>
+            <p>There’s room for every generation, every story, and every season of life. Find a community to grow with.</p>
+            <div class="ministry-grid">
+                {ministries.map(ministry => (
+                    <a class="ministry-tile" href={ministry.href}>
+                        <span class="ministry-tile__heading"><span class="ministry-tile__title">{ministry.title}</span><ArrowIcon /></span>
+                        <span class="ministry-tile__description">{ministry.description}</span>
+                    </a>
+                ))}
             </div>
-
-            <div class="flex flex-1 flex-col p-8">
-                <h3 class="mb-3 text-2xl leading-snug font-bold text-sky-900">{ministration.title}</h3>
-
-                <p class="mb-4 text-sm font-semibold tracking-wide text-red-700">
-                    {ministration.speaker}
-                    <span class="mx-2 text-slate-400" aria-hidden="true">•</span>
-                    {ministration.published}
-                </p>
-
-                <a
-                    class="mt-auto inline-flex items-center gap-2 self-start text-base font-semibold text-sky-900 no-underline underline-offset-4 hover:underline focus-visible:underline"
-                    href="#"
-                >
-                    Watch this ministration →
-                </a>
-            </div>
-        </li>
-    ))}
-</CardRail>
+            <a class="text-link" href="/ministries">Explore our ministries <ArrowIcon /></a>
+        </div>
+    </div>
+</section>

@@ -1,43 +1,32 @@
 ---
-import CardRail from "./card-rail.astro";
 import { churchEvents, formatEventDate, formatEventTime } from "../../data/events";
+import ArrowIcon from "../arrow-icon.astro";
 
-const events = churchEvents.slice(0, 6);
+const events = churchEvents.slice(0, 3);
 ---
 
-<CardRail
-    id="upcoming-events"
-    heading="Upcoming Events"
-    description="Everything happening at Cornerstone over the next few weeks."
-    previousLabel="Previous events"
-    nextLabel="More events"
-    linkLabel="See the full calendar"
-    linkHref="/events"
->
-    {events.map((event) => (
-        <li class="flex w-[min(20rem,85vw)] shrink-0 snap-start flex-col rounded-2xl bg-slate-50 p-8 text-slate-900 shadow-xl shadow-sky-950/30 md:w-88">
-            <p class="mb-3 px-3 py-2 flex flex-col items-center self-start rounded-xl bg-sky-900 leading-none text-white">
-                <time class="text-2xl font-bold tracking-tight uppercase" datetime={event.date}>
-                    {formatEventDate(event.date, { month: "short", day: "2-digit" })}
+<section class="events-section page-shell" id="upcoming-events" aria-labelledby="events-heading">
+    <header class="section-header">
+        <div><p class="section-kicker">In the life of our church</p><h2 id="events-heading">Let’s gather <em>again.</em></h2></div>
+        <a class="text-link" href="/events">View the church calendar <ArrowIcon /></a>
+    </header>
+    <div class="event-grid">
+        {events.map(event => (
+            <article class="event-card">
+                <time class="event-card__date" datetime={event.date}>
+                    <span>{formatEventDate(event.date, { month: "short" })}</span>
+                    <strong>{formatEventDate(event.date, { day: "2-digit" })}</strong>
                 </time>
-            </p>
-
-            <h3 class="mb-3 text-2xl leading-snug font-bold text-sky-900">{event.title}</h3>
-
-            <p class="mb-4 text-sm font-semibold tracking-wide text-red-700">
-                {formatEventTime(event.startTime)}–{formatEventTime(event.endTime)}
-                <span class="mx-2 text-slate-400" aria-hidden="true">•</span>
-                {event.location}
-            </p>
-
-            <p class="mb-8 leading-relaxed text-slate-700">{event.description}</p>
-
-            <a
-                class="mt-auto inline-flex items-center gap-2 self-start text-base font-semibold text-sky-900 no-underline underline-offset-4 hover:underline focus-visible:underline"
-                href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`}
-            >
-                Event details →
-            </a>
-        </li>
-    ))}
-</CardRail>
+                <div class="event-card__body">
+                    <p class="event-card__category">{event.category} · {formatEventDate(event.date, { weekday: "long" })}</p>
+                    <h3>{event.title}</h3>
+                    <p>{event.description}</p>
+                </div>
+                <div class="event-card__footer">
+                    <span>{formatEventTime(event.startTime)}<small>{event.location}</small></span>
+                    <a class="text-link" href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`} aria-label={`View ${event.title} on ${formatEventDate(event.date, { month: "long", day: "numeric" })}`}>Details <ArrowIcon /></a>
+                </div>
+            </article>
+        ))}
+    </div>
+</section>

@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/layout.astro";
+import ArrowIcon from "../components/arrow-icon.astro";
+const givingEmail = "rccg.cornerstonesk@gmail.com";
+---
+
+<Layout title="Give | RCCG Cornerstone Assembly" description="Support the life and work of RCCG Cornerstone Assembly. Give by Interac e-Transfer or in person at a service.">
+    <section class="give-page page-shell" aria-labelledby="give-heading">
+        <header class="give-page__intro">
+            <p class="section-kicker">A generous life, together</p>
+            <h1 id="give-heading">Small acts.<br />Lasting good.</h1>
+            <p>Your generosity supports our church and community. Thank you for being part of the work God is doing through Cornerstone.</p>
+        </header>
+        <div class="give-options">
+            <article class="give-option give-option--transfer" aria-labelledby="transfer-heading">
+                <span class="detail-label">From wherever you are</span>
+                <h2 id="transfer-heading">Interac e-Transfer</h2>
+                <p>Open your banking app or online banking and send your gift to the church’s giving email:</p>
+                <span class="give-option__email" data-giving-email>{givingEmail}</span>
+                <button type="button" class="button button--ink give-option__copy" data-copy-email hidden>Copy giving email <span><ArrowIcon /></span></button>
+                <p class="give-option__status" role="status" data-copy-status></p>
+                <p>Your bank handles the transfer. You won’t enter any payment details on this website.</p>
+            </article>
+            <article class="give-option" aria-labelledby="in-person-heading">
+                <span class="detail-label">When we come together</span>
+                <h2 id="in-person-heading">Give in person</h2>
+                <p>You’re welcome to give during a service. Ask a member of our welcome team if you need a hand.</p>
+                <p>Sunday · 9:00 AM<br />70–3904 Millar Avenue<br />Saskatoon, SK S7P 0B1</p>
+                <a class="button button--outline" href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">Get directions <span><ArrowIcon /></span></a>
+            </article>
+        </div>
+        <p class="give-page__help">Need help with giving? <a href="/contact">Contact the church team</a> and we’ll help you find the right next step.</p>
+    </section>
+</Layout>
+
+<script>
+    const copyButton = document.querySelector<HTMLButtonElement>("[data-copy-email]");
+    const email = document.querySelector<HTMLElement>("[data-giving-email]");
+    const status = document.querySelector<HTMLElement>("[data-copy-status]");
+    if (copyButton && email && status && navigator.clipboard) {
+        copyButton.hidden = false;
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(email.textContent?.trim() ?? "");
+                status.textContent = "Giving email copied. You can paste it into your banking app.";
+            } catch {
+                status.textContent = "Copy isn’t available here. Select the giving email above to copy it.";
+            }
+        });
+    }
+</script>
