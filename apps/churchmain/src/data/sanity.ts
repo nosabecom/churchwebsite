@@ -9,17 +9,21 @@ interface SanityEnv {
   readonly PUBLIC_SANITY_PROJECT_ID?: string;
   readonly PUBLIC_SANITY_DATASET?: string;
   readonly SANITY_API_READ_TOKEN?: string;
+  readonly VERCEL_ENV?: string;
 }
 
 export function getChurchMainSanityClient(
   env: SanityEnv = import.meta.env,
 ) {
+  if (!import.meta.env.SSR) {
+    throw new Error("The Church Main Sanity client is server-only.");
+  }
   const projectId = env.PUBLIC_SANITY_PROJECT_ID;
   const dataset = env.PUBLIC_SANITY_DATASET;
   const token = env.SANITY_API_READ_TOKEN;
 
   enforceSanityProductionConfig({
-    deployment: import.meta.env.VERCEL_ENV,
+    deployment: env.VERCEL_ENV,
     projectId,
     dataset,
     token,

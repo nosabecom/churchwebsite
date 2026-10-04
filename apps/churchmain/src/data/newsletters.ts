@@ -5,14 +5,14 @@ import {
 } from "@churchwebsite/newsletters";
 import { defineQuery } from "groq";
 
-import { getChurchMainSanityClient } from "./sanity";
+import { CHURCH_MAIN_SITE, getChurchMainSanityClient } from "./sanity";
 import {
   getSanityImageDimensions,
+  getSanityImageObjectPosition,
   getSanityImageUrl,
 } from "./sanity-image";
 import type { CHURCH_MAIN_NEWSLETTERS_QUERY_RESULT } from "../sanity.types";
 
-const CHURCH_MAIN_SITE = "churchMain";
 const COVER_IMAGE_WIDTH = 1536;
 
 export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
@@ -31,7 +31,7 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
     coverImage {
       alt,
       decorative,
-      "asset": { "_ref": asset._ref },
+      "asset": { "_ref": asset->_id },
       crop,
       hotspot,
       "dimensions": asset->metadata.dimensions
@@ -49,7 +49,7 @@ export const CHURCH_MAIN_NEWSLETTERS_QUERY = defineQuery(/* groq */ `
       _type == "editorialImage" => {
         alt,
         decorative,
-        "asset": { "_ref": asset._ref },
+        "asset": { "_ref": asset->_id },
         crop,
         hotspot,
         "dimensions": asset->metadata.dimensions
@@ -72,6 +72,7 @@ interface NewsletterBase {
     decorative: boolean;
     width?: number;
     height?: number;
+    objectPosition: string;
   };
   relatedLink?: {
     label: string;
@@ -121,6 +122,7 @@ function normalizeSanityNewsletter(
           decorative: newsletter.coverImage.decorative ?? false,
           width: coverDimensions.width,
           height: coverDimensions.height,
+          objectPosition: getSanityImageObjectPosition(newsletter.coverImage),
         }
       : undefined;
   const relatedHref = getSafeNewsletterHref(newsletter.relatedLink?.href);

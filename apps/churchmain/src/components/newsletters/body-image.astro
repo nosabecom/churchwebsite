@@ -2,19 +2,17 @@
 import {
   getSanityImageDimensions,
   getSanityImageUrl,
+  type SanityImageSource,
 } from "../../data/sanity-image";
 
 interface Props {
-  node: {
-    alt?: string;
-    decorative?: boolean;
-    asset?: { _ref?: string } | null;
-    crop?: unknown;
-    hotspot?: unknown;
+  node: SanityImageSource & {
+    alt?: string | null;
+    decorative?: boolean | null;
     dimensions?: {
       width?: number;
       height?: number;
-    };
+    } | null;
   };
 }
 
@@ -41,9 +39,8 @@ const dimensions = getSanityImageDimensions(node, {
   ) : (
     <figure
       class="my-6 rounded-lg border border-slate-300 bg-slate-100 px-4 py-8 text-center text-sm text-slate-600"
-      aria-label="Image unavailable"
     >
-      Image unavailable
+      <figcaption>{alt ? `Image unavailable: ${alt}` : "Image unavailable"}</figcaption>
     </figure>
   )
 }

@@ -3,8 +3,10 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "check": "astro check",
+    "test": "node --test test/*.test.mjs",
     "dev": "node --env-file-if-exists=../../.env.development ./node_modules/astro/bin/astro.mjs dev",
-    "build": "astro build",
+    "build": "pnpm check && pnpm test && astro build",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -22,6 +24,8 @@
     "vite": "catalog:"
   },
   "devDependencies": {
-    "@types/node": "catalog:"
+    "@astrojs/check": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   }
 }
