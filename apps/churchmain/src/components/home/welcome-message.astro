@@ -3,31 +3,28 @@ import { Image } from "astro:assets";
 import ReubenAdeleye from "../../assets/pastors/reuben-adeleye.png";
 import ToyinAdeleye from "../../assets/pastors/toyin-adeleye.jpg";
 import ArrowIcon from "../arrow-icon.astro";
-
-const pastors = [
-    { name: "Pastor Reuben Adeleye", image: ReubenAdeleye },
-    { name: "Pastor Toyin Adeleye", image: ToyinAdeleye },
-];
 ---
 
 <section class="welcome-section page-shell" id="welcome" aria-labelledby="welcome-heading">
     <div class="welcome-copy">
-        <p class="section-kicker">Our church. Your family.</p>
-        <h2 id="welcome-heading">Rooted in faith.<br /><em>Open to everyone.</em></h2>
-        <p class="welcome-lead">We’re a family of people of purpose, power, and praise.</p>
-        <p>At Cornerstone, we’re building our lives on Jesus and learning to carry our faith into the everyday. Whether church feels familiar or you’re asking your first questions, you are welcome here.</p>
-        <a class="text-link" href="/new-to-church">Get to know Cornerstone <span><ArrowIcon /></span></a>
-        <p class="welcome-signoff">We look forward to welcoming you.<span>Pastors Reuben & Toyin</span></p>
-    </div>
-    <div class="pastors-composition">
-        <div class="pastors-composition__label"><span class="detail-label">A warm welcome from our pastors</span><span><ArrowIcon direction="down" /></span></div>
-        <div class="pastors-portraits">
-            {pastors.map((pastor) => (
-                <figure class="pastor-card">
-                    <Image class="pastor-card__image" src={pastor.image} alt={pastor.name} widths={[300, 450, 600]} sizes="(min-width: 900px) 22vw, 44vw" />
-                    <figcaption><span>Meet your pastor</span>{pastor.name}</figcaption>
-                </figure>
-            ))}
+        <p class="section-kicker">No perfect people required</p>
+        <h2 id="welcome-heading">Church should feel like <span class="word-pill word-pill--coral">home</span>—not somewhere you have to pretend.</h2>
+        <div class="welcome-copy__body">
+            <p>At Cornerstone, we’re building our lives on Jesus and carrying our faith into the everyday.</p>
+            <p>Whether church feels familiar or you’re asking your first questions, there is room for your story here.</p>
+            <a class="button button--dark" href="/new-to-church">What to expect <ArrowIcon /></a>
         </div>
+    </div>
+
+    <div class="pastors-composition" aria-label="Our pastors">
+        <figure class="pastor-card pastor-card--reuben">
+            <div class="pastor-card__image-wrap"><Image class="pastor-card__image" src={ReubenAdeleye} alt="Pastor Reuben Adeleye" widths={[300, 450, 600]} sizes="(min-width: 900px) 28vw, 54vw" /></div>
+            <figcaption><span>Lead Pastor</span>Reuben Adeleye</figcaption>
+        </figure>
+        <p class="pastors-note"><span>“</span>We can’t wait<br />to meet you.</p>
+        <figure class="pastor-card pastor-card--toyin">
+            <div class="pastor-card__image-wrap"><Image class="pastor-card__image" src={ToyinAdeleye} alt="Pastor Toyin Adeleye" widths={[300, 450, 600]} sizes="(min-width: 900px) 25vw, 48vw" /></div>
+            <figcaption><span>Pastor</span>Toyin Adeleye</figcaption>
+        </figure>
     </div>
 </section>

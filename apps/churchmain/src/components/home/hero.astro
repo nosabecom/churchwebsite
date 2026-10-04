@@ -7,24 +7,33 @@ import ArrowIcon from "../arrow-icon.astro";
 <section class="home-hero" aria-labelledby="hero-heading">
     <div class="home-hero__opening">
         <div class="home-hero__content">
-            <p class="section-kicker">A church family in Saskatoon</p>
-            <h1 id="hero-heading">A place to<br /><em>belong.</em></h1>
-            <p class="home-hero__intro">Following Jesus. Growing together.<br />Making room for you.</p>
+            <p class="hero-eyebrow"><span></span> A church family in Saskatoon</p>
+            <h1 id="hero-heading"><span>You belong</span><strong>here.</strong></h1>
+            <p class="home-hero__intro">Come as you are. Meet Jesus, find your people, and grow into your purpose.</p>
             <div class="home-hero__actions">
-                <a class="button button--gold" href="/new-to-church">Join us this Sunday <ArrowIcon /></a>
-                <a class="text-link" href="#welcome">Our church <ArrowIcon direction="right" /></a>
+                <a class="button button--electric" href="/new-to-church">Plan your first Sunday <ArrowIcon /></a>
+                <a class="button button--ghost" href="#welcome">Meet Cornerstone</a>
             </div>
-            <p class="home-hero__signature">People of purpose, power & praise.</p>
         </div>
+
         <figure class="home-hero__photo">
-            <Image src={Gathering} alt="Members of the Cornerstone church family smiling and gathering together" widths={[540, 800, 1080]} sizes="(min-width: 900px) 52vw, 100vw" loading="eager" fetchpriority="high" />
-            <figcaption><span class="home-hero__photo-rule"></span>Make yourself at home.</figcaption>
-            <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>Pause animation</button>
+            <Image src={Gathering} alt="Members of the Cornerstone church family smiling and gathering together" widths={[540, 800, 1080]} sizes="(min-width: 900px) 42vw, 100vw" loading="eager" fetchpriority="high" />
+            <figcaption><span>Real people.</span><strong>Real family.</strong></figcaption>
+            <span class="hero-sticker" aria-hidden="true">WELCOME<br />HOME</span>
+            <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>Pause motion</button>
         </figure>
     </div>
+
     <div class="sunday-bar">
-        <div class="sunday-bar__time"><svg class="sunday-bar__sun" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 0C18 12 20 14 32 16C20 18 18 20 16 32C14 20 12 18 0 16C12 14 14 12 16 0Z" fill="currentColor" /></svg><div><span class="detail-label">See you on Sunday</span><strong>9:00 AM</strong></div></div>
-        <div class="sunday-bar__address"><span class="detail-label">RCCG Cornerstone Assembly</span><address>70–3904 Millar Avenue<br />Saskatoon, SK S7P 0B1</address></div>
-        <a class="text-link" href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
+        <div class="sunday-bar__time">
+            <span class="sunday-bar__pulse" aria-hidden="true"></span>
+            <div><span class="detail-label">This Sunday</span><strong>9:00 AM</strong></div>
+        </div>
+        <div class="sunday-bar__address"><span class="detail-label">Meet us here</span><address>70–3904 Millar Avenue · Saskatoon, SK</address></div>
+        <a class="button button--dark" href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
+    </div>
+
+    <div class="faith-ticker" aria-hidden="true">
+        <div><span>Purpose</span><i>✦</i><span>Power</span><i>✦</i><span>Praise</span><i>✦</i><span>Purpose</span><i>✦</i><span>Power</span><i>✦</i><span>Praise</span><i>✦</i></div>
     </div>
 </section>

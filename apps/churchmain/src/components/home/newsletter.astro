@@ -1,9 +1,6 @@
 ---
 import { getLatestNewsletter, getNewsletterHref } from "../../data/newsletters";
 import ArrowIcon from "../arrow-icon.astro";
-import { Image } from "astro:assets";
-import Logo from "../../assets/logo.png";
-
 const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
 ---
 
@@ -11,18 +8,13 @@ const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
     <div class="stay-connected__inner">
         <div class="stay-connected__copy">
             <p class="section-kicker">The Cornerstone Chronicle</p>
-            <h2 id="newsletter-heading">Good news.<br /><em>For the week ahead.</em></h2>
-            <p>Church news, stories, and what’s ahead. A little of our life together, all in one place.</p>
-            <a class="button button--ink" href={latestNewsletterHref}>Read the latest newsletter <span><ArrowIcon /></span></a>
+            <h2 id="newsletter-heading">Good news.<br /><span>Delivered.</span></h2>
+            <p>Stories, updates, and what’s next in the life of our church—all in one joyful little read.</p>
+            <a class="button button--light" href={latestNewsletterHref}>Read the latest issue <ArrowIcon /></a>
         </div>
         <div class="newsletter-art" aria-hidden="true">
-            <div class="newsletter-art__paper">
-                <div class="newsletter-art__masthead"><Image src={Logo} alt="" width={42} /><span>THE CORNERSTONE<br />CHRONICLE</span></div>
-                <p>A little of our life together.</p>
-                <b>Faith. Family.<br /><em>Everyday life.</em></b>
-                <i></i><i></i><i></i>
-                <span class="newsletter-art__footnote">Stories from our church family</span>
-            </div>
+            <div class="newsletter-art__orbit">NEW<br />ISSUE</div>
+            <div class="newsletter-art__paper"><small>THE CORNERSTONE CHRONICLE</small><strong>Faith.<br />Family.<br /><em>Everyday life.</em></strong><span>Stories from our church family →</span></div>
         </div>
     </div>
 </section>

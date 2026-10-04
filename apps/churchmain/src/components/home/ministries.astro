@@ -3,35 +3,31 @@ import { Image } from "astro:assets";
 import Prayer from "../../assets/community/prayer.jpg";
 import Fellowship from "../../assets/community/fellowship.jpg";
 import ArrowIcon from "../arrow-icon.astro";
-
 const ministries = [
-    { title: "Women", description: "Faith & friendship", href: "/ministries/women" },
-    { title: "Men", description: "Purpose & brotherhood", href: "/ministries/men" },
-    { title: "Youth", description: "Questions & possibility", href: "/ministries/youths-teenagers" },
-    { title: "Children", description: "Wonder & growing faith", href: "/ministries/children" },
+    { title: "Women", number: "01", href: "/ministries/women" },
+    { title: "Men", number: "02", href: "/ministries/men" },
+    { title: "Youth", number: "03", href: "/ministries/youths-teenagers" },
+    { title: "Children", number: "04", href: "/ministries/children" },
 ];
 ---
 
 <section class="ministries-section" id="ministries" aria-labelledby="ministries-heading">
     <div class="page-shell ministries-layout">
-        <div class="community-photos">
-            <figure class="community-photos__prayer"><Image src={Prayer} alt="Women from the Cornerstone community joining hands in prayer at Woman Excel" widths={[400, 650, 900]} sizes="(min-width: 900px) 32vw, 64vw" /><figcaption>Faith that brings us together.</figcaption></figure>
-            <figure class="community-photos__table"><Image src={Fellowship} alt="The Woman Excel community sharing fellowship around tables at the 2026 conference" widths={[350, 550, 800]} sizes="(min-width: 900px) 24vw, 50vw" /></figure>
-            <span class="community-photos__detail" aria-hidden="true">Together<br /><em>is a good place.</em></span>
-        </div>
         <div class="ministries-copy">
-            <p class="section-kicker">More than a Sunday</p>
-            <h2 id="ministries-heading">Life is better<br /><em>together.</em></h2>
-            <p>There’s room for every generation, every story, and every season of life. Find a community to grow with.</p>
+            <p class="section-kicker">Find your people</p>
+            <h2 id="ministries-heading">Faith grows<br /><span>together.</span></h2>
+            <p>Big church becomes family when you find your circle. There’s a place here for every age and every season.</p>
             <div class="ministry-grid">
                 {ministries.map(ministry => (
-                    <a class="ministry-tile" href={ministry.href}>
-                        <span class="ministry-tile__heading"><span class="ministry-tile__title">{ministry.title}</span><ArrowIcon /></span>
-                        <span class="ministry-tile__description">{ministry.description}</span>
-                    </a>
+                    <a class="ministry-tile" href={ministry.href}><small>{ministry.number}</small><span class="ministry-tile__title">{ministry.title}</span><ArrowIcon /></a>
                 ))}
             </div>
-            <a class="text-link" href="/ministries">Explore our ministries <ArrowIcon /></a>
+            <a class="button button--electric" href="/ministries">Explore every ministry <ArrowIcon /></a>
+        </div>
+        <div class="community-photos">
+            <figure class="community-photos__prayer"><Image src={Prayer} alt="Women from the Cornerstone community joining hands in prayer" widths={[500, 800, 1080]} sizes="(min-width: 900px) 50vw, 100vw" /><figcaption>We pray together.</figcaption></figure>
+            <figure class="community-photos__table"><Image src={Fellowship} alt="The Cornerstone community sharing fellowship around tables" widths={[400, 650, 900]} sizes="(min-width: 900px) 26vw, 55vw" /><figcaption>We do life together.</figcaption></figure>
+            <span class="community-sticker" aria-hidden="true">BETTER<br />TOGETHER</span>
         </div>
     </div>
 </section>
