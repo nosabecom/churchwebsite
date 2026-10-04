@@ -7,8 +7,8 @@ import ArrowIcon from "../arrow-icon.astro";
 <section class="home-hero" aria-labelledby="hero-heading">
     <div class="home-hero__opening">
         <div class="home-hero__content">
-            <p class="hero-eyebrow"><span></span> A church family in Saskatoon</p>
-            <h1 id="hero-heading"><span>You belong</span><strong>here.</strong></h1>
+            <p class="hero-eyebrow"><span></span> RCCG Cornerstone Assembly · Saskatoon</p>
+            <h1 id="hero-heading"><span>You belong</span><em>here.</em></h1>
             <p class="home-hero__intro">Come as you are. Meet Jesus, find your people, and grow into your purpose.</p>
             <div class="home-hero__actions">
                 <a class="button button--electric" href="/new-to-church">Plan your first Sunday <ArrowIcon /></a>
@@ -19,7 +19,6 @@ import ArrowIcon from "../arrow-icon.astro";
         <figure class="home-hero__photo">
             <Image src={Gathering} alt="Members of the Cornerstone church family smiling and gathering together" widths={[540, 800, 1080]} sizes="(min-width: 900px) 42vw, 100vw" loading="eager" fetchpriority="high" />
             <figcaption><span>Real people.</span><strong>Real family.</strong></figcaption>
-            <span class="hero-sticker" aria-hidden="true">WELCOME<br />HOME</span>
             <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>Pause motion</button>
         </figure>
     </div>
@@ -31,9 +30,5 @@ import ArrowIcon from "../arrow-icon.astro";
         </div>
         <div class="sunday-bar__address"><span class="detail-label">Meet us here</span><address>70–3904 Millar Avenue · Saskatoon, SK</address></div>
         <a class="button button--dark" href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
-    </div>
-
-    <div class="faith-ticker" aria-hidden="true">
-        <div><span>Purpose</span><i>✦</i><span>Power</span><i>✦</i><span>Praise</span><i>✦</i><span>Purpose</span><i>✦</i><span>Power</span><i>✦</i><span>Praise</span><i>✦</i></div>
     </div>
 </section>
