@@ -1,4 +1,8 @@
-import { defineBlueprint, defineDocumentFunction } from "@sanity/blueprints";
+import {
+  defineBlueprint,
+  defineDocumentFunction,
+  defineScheduledFunction,
+} from "@sanity/blueprints";
 
 import {
   SITE_DEPLOY_ROUTES,
@@ -24,6 +28,14 @@ export default defineBlueprint({
     datasetResource: projectId && dataset ? `${projectId}.${dataset}` : "",
   },
   resources: [
+    defineScheduledFunction({
+      name: "sync-breeze-events",
+      displayName: "Sync Breeze events to Sanity",
+      src: "functions/sync-breeze-events",
+      runtime: "nodejs24.x",
+      timeout: 120,
+      event: { expression: "*/30 * * * *" },
+    }),
     defineDocumentFunction({
       name: "route-site-deploy",
       displayName: "Route site content deployments",

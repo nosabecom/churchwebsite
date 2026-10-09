@@ -65,6 +65,15 @@ function createClientStub() {
 test("routes newsletter changes to the owning site", () => {
   assert.equal(
     getDeploymentRoute({
+      _id: "breeze-event",
+      _type: "event",
+      operation: "update",
+      site: "churchMain",
+    })?.hookEnvironmentVariable,
+    "CHURCH_MAIN_VERCEL_DEPLOY_HOOK_URL",
+  );
+  assert.equal(
+    getDeploymentRoute({
       _id: "church-issue",
       _type: "newsletterIssue",
       operation: "update",

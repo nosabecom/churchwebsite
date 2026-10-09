@@ -9,7 +9,7 @@ export const SITE_DEPLOY_ROUTES = {
   },
 } as const;
 
-export const SITE_OWNED_DOCUMENT_TYPES = ["newsletterIssue"] as const;
+export const SITE_OWNED_DOCUMENT_TYPES = ["newsletterIssue", "event"] as const;
 
 export type SiteId = keyof typeof SITE_DEPLOY_ROUTES;
 

@@ -1,4 +1,5 @@
 import {newsletterIssue} from './documents/newsletter-issue'
+import {event} from './documents/event'
 import {editorialImage} from './objects/editorial-image'
 import {link} from './objects/link'
 import {migrationMetadata} from './objects/migration-metadata'
@@ -11,5 +12,6 @@ export const schemaTypes = [
   seo,
   portableText,
   migrationMetadata,
+  event,
   newsletterIssue,
 ]
