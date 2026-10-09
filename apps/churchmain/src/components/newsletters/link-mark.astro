@@ -3,9 +3,9 @@ import type { MarkProps } from "astro-portabletext/types";
 
 import { getSafeNewsletterHref, isExternalNewsletterHref } from "@churchwebsite/newsletters";
 
-interface LinkMark {
+type LinkMark = {
   href?: string;
-}
+};
 
 const { node } = Astro.props as MarkProps<LinkMark>;
 const href = getSafeNewsletterHref(node.markDef.href);

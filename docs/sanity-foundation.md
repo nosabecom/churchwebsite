@@ -112,6 +112,8 @@ pnpm dev:studio
 pnpm schema:extract
 pnpm typegen
 pnpm typegen:check
+pnpm --filter @churchwebsite/churchmain check
+pnpm --filter @churchwebsite/churchmain test
 pnpm build:studio
 pnpm build:churchmain
 pnpm build:womanexcel
@@ -122,6 +124,18 @@ pnpm build
 the same complete generated contract to `apps/churchmain/src/sanity.types.ts` and
 `apps/womanexcel/src/sanity.types.ts`. Commit both files whenever either schema or query changes. The
 intermediate `apps/studio/schema.json` file is intentionally ignored.
+
+Church Main's `check` command validates TypeScript in both `.ts` and `.astro` files. Its `test`
+command checks image crop dimensions, hotspot delivery, missing-asset fallbacks, and production
+client configuration with local fixtures; no Sanity credentials or API requests are required. Both
+commands run in CI before the builds.
+
+For a visual image check, run `pnpm dev:churchmain` and `pnpm dev:studio` with the development
+configuration. Publish a newsletter image with an asymmetric crop and an off-center hotspot, then
+check its detail page and the cover cards at desktop and mobile widths. The detail image should
+retain the cropped aspect ratio, and cover cards should follow the hotspot. Body images with a
+missing asset show “Image unavailable” and retain informative alternative text; newsletters without
+a cover keep their existing title fallback.
 
 ## Newsletter publishing
 
