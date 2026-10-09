@@ -11,6 +11,7 @@ export interface Props {
     interval?: number;
     label?: string;
     aspectRatio?: string;
+    pauseControl?: boolean;
     class?: string;
 }
 
@@ -19,6 +20,7 @@ const {
     interval = 8000,
     label = "Featured images",
     aspectRatio,
+    pauseControl = false,
     class: className,
 } = Astro.props;
 
@@ -42,6 +44,7 @@ if (slides.length === 0) {
                 src={slide.src}
                 alt={slide.alt}
                 loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : "auto"}
                 data-slide
                 data-active={index === 0 ? "" : undefined}
                 aria-hidden={index === 0 ? "false" : "true"}
@@ -56,6 +59,17 @@ if (slides.length === 0) {
 
     {slides.length > 1 && (
         <>
+            {pauseControl && (
+                <button class="playback" type="button" aria-label="Pause slideshow" aria-pressed="false" data-pause>
+                    <svg class="playback-pause" aria-hidden="true" viewBox="0 0 16 16">
+                        <path d="M5 3v10M11 3v10" />
+                    </svg>
+                    <svg class="playback-play" aria-hidden="true" viewBox="0 0 16 16">
+                        <path d="m5 3 8 5-8 5Z" />
+                    </svg>
+                    <span data-playback-label>Pause</span>
+                </button>
+            )}
             <button class="arrow previous" type="button" aria-label="Previous image" data-prev>
                 <svg aria-hidden="true" viewBox="0 0 24 24">
                     <path d="m15 18-6-6 6-6" />
@@ -97,6 +111,8 @@ if (slides.length === 0) {
             let current = 0;
             let timer: number | undefined;
             let ignoreStickyInteraction = false;
+            let paused = false;
+            const pauseButton = root.querySelector<HTMLButtonElement>("[data-pause]");
             const controller = new AbortController();
             const { signal } = controller;
 
@@ -121,10 +137,22 @@ if (slides.length === 0) {
                 stop();
                 const userIsInteracting = !ignoreStickyInteraction
                     && (root.matches(":hover") || root.contains(document.activeElement));
-                if (slides.length > 1 && !reducedMotion.matches && !document.hidden && !userIsInteracting) {
+                if (slides.length > 1 && !paused && !reducedMotion.matches && !document.hidden && !userIsInteracting) {
                     timer = window.setInterval(() => show(current + 1), interval);
                 }
             };
+
+            pauseButton?.addEventListener("click", () => {
+                paused = !paused;
+                // An explicit Play request should work while its button still
+                // has pointer hover or keyboard focus.
+                if (!paused) ignoreStickyInteraction = true;
+                pauseButton.setAttribute("aria-pressed", String(paused));
+                pauseButton.setAttribute("aria-label", paused ? "Resume slideshow" : "Pause slideshow");
+                const label = pauseButton.querySelector("[data-playback-label]");
+                if (label) label.textContent = paused ? "Play" : "Pause";
+                start();
+            }, { signal });
 
             root.addEventListener("pointerdown", (event) => {
                 // Touch and pen taps can leave sticky :hover and button focus
@@ -222,12 +250,29 @@ if (slides.length === 0) {
     }
 
     .arrow,
+    .playback,
     .dots {
         position: absolute;
         z-index: 2;
         opacity: 0;
         transition: opacity 150ms ease-in-out, background-color 150ms ease-in-out;
     }
+
+    .playback {
+        right: 1.5rem;
+        bottom: 1rem;
+        min-width: 4.5rem;
+        min-height: 2.75rem;
+        padding: .5rem 1rem;
+        color: var(--slideshow-control-color, white);
+        background: var(--slideshow-control-bg, rgb(0 0 0 / 50%));
+        border: 1px solid rgb(255 255 255 / 40%);
+        border-radius: 9999px;
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .playback svg { display: none; }
 
     .arrow {
         top: 50%;

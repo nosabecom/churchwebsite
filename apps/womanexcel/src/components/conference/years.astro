@@ -1,66 +1,46 @@
 ---
-// Conference cards link only to year pages that have confirmed source content.
 const conferences = [
     {
-        year: "2027",
-        status: "Upcoming",
-        theme: null,
+        year: "2027", status: "Upcoming", theme: "To be revealed",
         blurb: "Dates, theme and speakers are still to be announced. Get in touch to be told first.",
-        href: null,
-        cta: null,
+        href: "/contact", cta: "Keep me informed", image: null,
     },
     {
-        year: "2026",
-        status: "This year",
-        theme: "The Word",
-        blurb: "Anchored in John 1:1. A full programme of Spirit-led worship and teaching on building a life on something unshakeable.",
-        href: "/conference/2026",
-        cta: "View the 2026 conference",
+        year: "2026", status: "Latest", theme: "The Word",
+        blurb: "Anchored in John 1:1. Spirit-led worship and teaching on building a life on something unshakeable.",
+        href: "/conference/2026", cta: "Relive 2026", image: "/images/conference/2026/day-two-08.jpg",
     },
     {
-        year: "2025",
-        status: "Past",
-        theme: "Excel",
+        year: "2025", status: "Archive", theme: "Excel",
         blurb: "A two-day gathering of worship, prayer, practical teaching, brunch and connection, grounded in 2 Corinthians 8:7.",
-        href: "/conference/2025",
-        cta: "Explore the 2025 conference",
+        href: "/conference/2025", cta: "Relive 2025", image: "/images/conference/2025/gallery-24.jpg",
     },
 ];
 ---
 
-<div class="px-4 md:px-8 pb-20 mx-auto w-full max-w-350">
-    <ul class="grid md:grid-cols-3 gap-5 md:gap-6">
-        {conferences.map((conference) => (
-            <li class="flex flex-col gap-4 bg-berry text-white rounded-2xl p-6 md:p-8">
-                <div class="flex items-center justify-between gap-3">
-                    <p class="text-5xl md:text-6xl leading-none">{conference.year}</p>
-                    <p class="border-none rounded-full bg-navy text-white font-sans text-xs px-3 py-1.5 shrink-0">
-                        {conference.status}
-                    </p>
+<section id="conference-years" class="conference-years" aria-labelledby="conference-years-heading">
+    <div class="conference-section-heading">
+        <div class="conference-slate"><span></span><b>01</b><p>Conference archive</p></div>
+        <h2 id="conference-years-heading">Choose a<br /><em>chapter.</em></h2>
+        <p>Step inside the themes, speakers, worship, and shared moments that shaped each gathering.</p>
+    </div>
+
+    <ol class="conference-year-list">
+        {conferences.map((conference, index) => (
+            <li class:list={["conference-year-card", !conference.image && "conference-year-card--upcoming"]}>
+                {conference.image && <img src={conference.image} alt="" loading={index === 0 ? "eager" : "lazy"} />}
+                <div class="conference-year-card__scrim" aria-hidden="true"></div>
+                <div class="conference-year-card__top">
+                    <span>{conference.status}</span>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
                 </div>
-
-                <div class="h-px bg-white/25"></div>
-
-                {conference.theme ? (
-                    <p class="text-2xl md:text-3xl">{conference.theme}</p>
-                ) : (
-                    <p class="text-2xl md:text-3xl text-white/65">Theme to be confirmed</p>
-                )}
-
-                <p class="text-white/85 text-pretty flex-1">{conference.blurb}</p>
-
-                {conference.href ? (
-                    <a
-                        class="inline-block self-start font-sans text-sm md:text-base rounded-full bg-pink text-white px-6 py-2.5 transition-colors hover:bg-pink/80"
-                        href={conference.href}
-                    >{conference.cta}</a>
-                ) : (
-                    <a
-                        class="inline-block self-start font-sans text-sm md:text-base rounded-full border border-white/40 text-white px-6 py-2.5 transition-colors hover:border-white hover:bg-white/10"
-                        href="/contact"
-                    >Ask us about {conference.year}</a>
-                )}
+                <div class="conference-year-card__body">
+                    <p>{conference.year}</p>
+                    <h3>{conference.theme}</h3>
+                    <p>{conference.blurb}</p>
+                    <a href={conference.href}>{conference.cta} <span aria-hidden="true">→</span></a>
+                </div>
             </li>
         ))}
-    </ul>
-</div>
+    </ol>
+</section>
