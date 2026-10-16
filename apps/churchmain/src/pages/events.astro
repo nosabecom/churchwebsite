@@ -2,12 +2,13 @@
 import Layout from "../layouts/layout.astro";
 import {
     calendarToday,
-    churchEvents,
     eventDate,
     formatEventDate,
-    formatEventTime,
-    type ChurchEvent,
+    eventTimeRange,
+    getChurchEvents,
 } from "../data/events";
+
+const churchEvents = await getChurchEvents();
 
 const monthFormatter = new Intl.DateTimeFormat("en-CA", {
     month: "long",
@@ -31,10 +32,7 @@ const dateKey = (date: Date) => [
 const addMonths = (date: Date, amount: number) =>
     new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + amount, 1));
 
-const eventTimeRange = (event: ChurchEvent) =>
-    `${formatEventTime(event.startTime)}–${formatEventTime(event.endTime)}`;
-
-const calendarMonths = Array.from({ length: 6 }, (_, index) => {
+const calendarMonths = Array.from({ length: 12 }, (_, index) => {
     const firstDay = addMonths(firstPublishedMonth, index);
     const monthKey = dateKey(firstDay).slice(0, 7);
     const leadingDays = firstDay.getUTCDay();
@@ -197,7 +195,7 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                                                                 <span
                                                                     class:list={[
                                                                         "calendar-day__event",
-                                                                        `calendar-day__event--${event.category.toLowerCase()}`,
+                                                                        `calendar-day__event--${event.categoryStyle}`,
                                                                     ]}
                                                                     data-event-filter-item
                                                                     data-event-id={event.id}
@@ -242,7 +240,7 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                                     <div>
                                         <dt>Time</dt>
                                         <dd>
-                                            <time datetime={`${event.date}T${event.startTime}:00-06:00`}>
+                                            <time datetime={event.startsAt}>
                                                 {eventTimeRange(event)}
                                             </time>
                                         </dd>
@@ -256,6 +254,12 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                                     Get directions
                                     <span aria-hidden="true">↗</span>
                                 </a>
+                                {event.registrationUrl && (
+                                    <a href={event.registrationUrl} target="_blank" rel="noreferrer">
+                                        Event link
+                                        <span aria-hidden="true">↗</span>
+                                    </a>
+                                )}
                             </article>
                         )) : (
                             <div class="selected-event__empty">
@@ -308,7 +312,7 @@ const categories = [...new Set(churchEvents.map((event) => event.category))];
                                     </div>
                                     <p class="event-list-row__meta">
                                         <span class="event-list-row__mobile-label">Time</span>
-                                        <time datetime={`${event.date}T${event.startTime}:00-06:00`}>
+                                        <time datetime={event.startsAt}>
                                             {eventTimeRange(event)}
                                         </time>
                                     </p>
