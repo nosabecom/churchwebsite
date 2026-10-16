@@ -6,7 +6,7 @@
   "main": "package.json",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "sanity build",
+    "build": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity build",
     "deploy": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
     "dev": "node --env-file-if-exists=../../.env.development ./node_modules/sanity/bin/sanity dev",

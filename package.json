@@ -35,6 +35,7 @@
     "build:womanexcel": "pnpm --filter @churchwebsite/womanexcel build",
     "b/w": "pnpm --filter @churchwebsite/womanexcel build",
     "verify:routes": "node scripts/verify-static-routes.mjs",
+    "test": "pnpm --filter @churchwebsite/newsletters test",
     "build": "pnpm -r build",
     "b": "pnpm -r build"
   },

@@ -96,6 +96,8 @@ See [`docs/sanity-foundation.md`](docs/sanity-foundation.md) for environment var
 authentication, SSH tunnelling, CORS, architecture, and rollback instructions. See
 [`docs/newsletter-deployments.md`](docs/newsletter-deployments.md) for the site-routed Sanity Function,
 Vercel hooks, retries, debounce behavior, and publishing verification.
+See [`docs/breeze-newsletter-consent.md`](docs/breeze-newsletter-consent.md) for the shared Breeze
+subscription form, active-recipient tag, consent handling, staff send workflow, and launch test matrix.
 
 The remaining Sanity commands also have short aliases:
 
