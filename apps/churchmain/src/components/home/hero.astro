@@ -1,42 +1,34 @@
 ---
 import { Image } from "astro:assets";
-import { Quote, Slideshow } from "@churchwebsite/ui";
-import Welcome from "./welcome.astro";
-import Wordmark from "../../assets/cornerstone-logo-horizontal.png";
-
-// Add more church-owned images here as they are placed in public/images.
-const slides = [
-    {
-        src: "/images/placeholds/1.jpg",
-        alt: "RCCG Cornerstone Assembly congregation",
-    },
-];
+import Gathering from "../../assets/community/cornerstone-gathering.jpg";
+import ArrowIcon from "../arrow-icon.astro";
 ---
 
-<div class="px-4 py-8">
-    <section class="mx-auto grid max-w-400 overflow-hidden rounded-2xl shadow-2xl shadow-sky-950/40 lg:grid-cols-[minmax(0,1fr)_26rem] 2xl:grid-cols-[minmax(0,1fr)_32rem]">
-        <Slideshow
-            slides={slides}
-            label="RCCG Cornerstone Assembly highlights"
-            class="churchmain-slideshow h-full w-full min-h-96 md:min-h-80"
-        >
-            <div class="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-4 py-8 md:px-12 md:py-10 lg:gap-8 lg:py-7">
-                <Image
-                    src={Wordmark}
-                    alt="RCCG Cornerstone Assembly"
-                    class="h-auto w-full max-w-3xl drop-shadow-2xl lg:max-w-lg"
-                    widths={[320, 640, 768]}
-                    sizes="(min-width: 1024px) 32rem, 90vw"
-                />
-
-                <Quote
-                    quote="The stone which the builders rejected has become the chief cornerstone."
-                    citation="Mark 12:10"
-                    class="churchmain-quote max-w-3xl"
-                />
+<section class="home-hero" aria-labelledby="hero-heading">
+    <div class="home-hero__opening">
+        <div class="home-hero__content">
+            <p class="hero-eyebrow"><span></span> RCCG Cornerstone Assembly · Saskatoon</p>
+            <h1 id="hero-heading"><span>You belong</span><em>here.</em></h1>
+            <p class="home-hero__intro">Come as you are. Meet Jesus, find your people, and grow into your purpose.</p>
+            <div class="home-hero__actions">
+                <a class="button button--electric" href="/new-to-church">Plan your first Sunday <ArrowIcon /></a>
+                <a class="button button--ghost" href="#welcome">Meet Cornerstone</a>
             </div>
-        </Slideshow>
+        </div>
 
-        <Welcome />
-    </section>
-</div>
+        <figure class="home-hero__photo">
+            <Image src={Gathering} alt="Members of the Cornerstone church family smiling and gathering together" widths={[540, 800, 1080]} sizes="(min-width: 900px) 42vw, 100vw" loading="eager" fetchpriority="high" />
+            <figcaption><span>Real people.</span><strong>Real family.</strong></figcaption>
+            <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>Pause motion</button>
+        </figure>
+    </div>
+
+    <div class="sunday-bar">
+        <div class="sunday-bar__time">
+            <span class="sunday-bar__pulse" aria-hidden="true"></span>
+            <div><span class="detail-label">This Sunday</span><strong>9:00 AM</strong></div>
+        </div>
+        <div class="sunday-bar__address"><span class="detail-label">Meet us here</span><address>70–3904 Millar Avenue · Saskatoon, SK</address></div>
+        <a class="button button--dark" href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
+    </div>
+</section>
