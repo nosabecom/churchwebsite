@@ -48,6 +48,7 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
                                 width={latest.coverImage.width}
                                 height={latest.coverImage.height}
                                 class="absolute inset-0 h-full w-full object-cover"
+                                style={{ objectPosition: latest.coverImage.objectPosition }}
                                 fetchpriority="high"
                             />
                         ) : (
@@ -118,7 +119,7 @@ const coverTextThemes = ["text-sky-950", "text-white", "text-sky-950", "text-whi
                                         <article class="relative aspect-[3/4] overflow-hidden rounded-sm shadow-[0.8rem_0.8rem_0_rgb(0_0_0_/_0.22)] transition-transform duration-300 group-hover:-translate-y-2 motion-reduce:transition-none">
                                             {entry.coverImage ? (
                                                 <>
-                                                    <img src={entry.coverImage.url} alt={entry.coverImage.alt} width={entry.coverImage.width} height={entry.coverImage.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+                                                    <img src={entry.coverImage.url} alt={entry.coverImage.alt} width={entry.coverImage.width} height={entry.coverImage.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: entry.coverImage.objectPosition }} />
                                                     <div class="absolute inset-0 bg-gradient-to-b from-sky-950/10 via-sky-950/10 to-sky-950/95"></div>
                                                 </>
                                             ) : (
