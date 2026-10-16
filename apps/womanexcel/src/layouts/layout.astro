@@ -2,7 +2,6 @@
 import '../styles/global.css'
 import Analytics from "@vercel/analytics/astro"
 import ConferenceMark from '../assets/logo.png'
-import ConferenceLogo from '../assets/logo.svg'
 import FellowshipLogo from '../assets/excellent-women-logo.jpg'
 import { Image } from 'astro:assets'
 
@@ -17,8 +16,10 @@ interface Props {
 
 const { title, description, variant = "fellowship", bodyClass } = Astro.props as Props;
 const isConference = variant === "conference";
+const currentPath = Astro.url.pathname;
+const isActiveLink = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 
-const siteName = isConference ? "Woman Excel Conference" : "Cornerstone Excellent Women";
+const siteName = isConference ? "Woman Excel International Conference" : "Cornerstone Excellent Women";
 const favicon = isConference ? ConferenceMark : FellowshipLogo;
 
 const navLinks = [
@@ -38,10 +39,10 @@ const footerTheme = isConference
 		faint: "text-white/60",
 		rule: "bg-white/15",
 		icon: "fill-white/70 hover:fill-white",
-		name: "The Woman Excel Conference",
+		name: "Woman Excel International Conference",
 		tagline: "A gathering of women who refuse to settle for ordinary.",
 		parent: "A ministry of RCCG Cornerstone Assembly.",
-		copyright: "© 2026 Woman Excel Conference",
+		copyright: "© 2026 Woman Excel International Conference",
 	}
 	: {
 		wrap: "bg-charcoal text-cream",
@@ -65,24 +66,38 @@ const footerTheme = isConference
 		<link rel="shortcut icon" href={favicon.src} type={isConference ? "image/png" : "image/jpeg"}>
 		<title>{title} | {siteName}</title>
 		{description && <meta name="description" content={description} />}
+		<script is:inline>
+			try {
+				if (sessionStorage.getItem("cew-motion-navigation") === "1") {
+					document.documentElement.dataset.motionContinuation = "true";
+					sessionStorage.removeItem("cew-motion-navigation");
+				}
+			} catch {}
+		</script>
 	</head>
 
-	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "main-gradient" : "bg-cream", bodyClass]}>
+	<body class:list={["font-serif min-h-dvh flex flex-col", isConference ? "conference-shell" : "bg-cream cew-shell", bodyClass]}>
 		<Analytics/>
+		<div class:list={["site-motion-curtain", isConference && "site-motion-curtain--conference"]} data-motion-curtain aria-hidden="true">
+			<span>{isConference ? "Woman Excel" : "Cornerstone"}</span>
+			<strong>{isConference ? "Conference" : "Excellent Women"}</strong>
+		</div>
+		<div class="site-motion-aura" aria-hidden="true"></div>
+		<div class="site-motion-progress" aria-hidden="true"></div>
+		<div class="site-motion-cursor" data-motion-cursor aria-hidden="true"><span>View</span></div>
 
-		<nav aria-label="Primary" class:list={["flex justify-between items-center px-4 py-2 md:px-10", !isConference && "border-b border-sand"]}>
+		<nav aria-label="Primary" class:list={[
+			"flex justify-between items-center px-4 py-2 md:px-10",
+			"cew-site-nav",
+		]}>
 			<a href="/" class="shrink-0 flex items-center gap-3">
-				{isConference
-					? <Image src={ConferenceLogo} alt="" width="200" height="67" class="w-36 h-auto md:w-50"/>
-					: <>
-						<Image src={FellowshipLogo} alt="Cornerstone Excellent Women" width="120" height="120" class="w-12 md:w-16 h-auto rounded-full"/>
-						{/* The mark's own lettering is unreadable at nav size, so the
-						    name is set in type beside it once there's room. */}
-						<span class="hidden sm:flex flex-col leading-tight">
-							<span class="font-sans uppercase text-[0.65rem] tracking-[0.3em] text-orchid-deep">Cornerstone</span>
-							<span class="text-lg md:text-xl text-charcoal">Excellent Women</span>
-						</span>
-					</>}
+				<Image src={FellowshipLogo} alt="Cornerstone Excellent Women" width="120" height="120" class="cew-site-nav__mark w-12 md:w-16 h-auto rounded-full"/>
+				{/* The mark's own lettering is unreadable at nav size, so the
+				    name is set in type beside it once there's room. */}
+				<span class="cew-site-nav__lockup hidden sm:flex flex-col leading-tight">
+					<span class="font-sans uppercase text-[0.65rem] tracking-[0.3em] text-orchid-deep">Cornerstone</span>
+					<span class="text-lg md:text-xl text-charcoal">Excellent Women</span>
+				</span>
 			</a>
 
 			<!-- One nav list. Above xs it renders inline here; below xs the
@@ -91,7 +106,7 @@ const footerTheme = isConference
 				<div
 					class:list={[
 						"xs:hidden fixed inset-0 z-30 opacity-0 pointer-events-none group-data-open:opacity-100 group-data-open:pointer-events-auto transition-opacity duration-300",
-						isConference ? "bg-navy/70" : "bg-charcoal/70",
+						"bg-charcoal/70",
 					]}
 					data-sidebar-backdrop
 				></div>
@@ -101,7 +116,7 @@ const footerTheme = isConference
 					data-sidebar-panel
 					class:list={[
 					"max-xs:fixed max-xs:top-0 max-xs:right-0 max-xs:z-40 max-xs:h-dvh max-xs:w-60 max-xs:flex max-xs:flex-col max-xs:p-6 max-xs:translate-x-full max-xs:group-data-open:translate-x-0 max-xs:transition-transform max-xs:duration-300 max-xs:ease-in-out",
-					isConference ? "max-xs:bg-navy" : "max-xs:bg-charcoal",
+						"max-xs:bg-charcoal",
 				]}>
 					<button type="button" aria-label="Close menu" data-sidebar-close class="xs:hidden self-end text-white cursor-pointer p-1">
 						<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -110,13 +125,19 @@ const footerTheme = isConference
 					</button>
 					<ul class:list={[
 						"flex gap-4 md:gap-6 max-xs:flex-col max-xs:gap-2 max-xs:mt-4 max-xs:text-white max-xs:text-xl",
-						isConference ? "text-navy" : "text-charcoal font-sans text-sm md:text-base",
+						"text-charcoal font-sans text-sm md:text-base",
 					]}>
 						{navLinks.map((link) => (
 							<li>
 								<a
-									class:list={["max-xs:block max-xs:py-2", !isConference && "transition-colors hover:text-orchid-deep max-xs:hover:text-blush"]}
+									class:list={[
+										"max-xs:block max-xs:py-2",
+										"cew-site-nav__link transition-colors",
+										link.label === "Contact Us" && "cew-site-nav__cta",
+										isActiveLink(link.href) && "is-active",
+									]}
 									href={link.href}
+									aria-current={isActiveLink(link.href) ? "page" : undefined}
 								>{link.label}</a>
 							</li>
 						))}
@@ -130,7 +151,7 @@ const footerTheme = isConference
 				aria-expanded="false"
 				aria-controls="primary-menu-panel"
 				data-sidebar-open
-				class:list={["xs:hidden cursor-pointer p-1", isConference ? "text-navy" : "text-charcoal"]}
+				class="xs:hidden cursor-pointer p-1 text-charcoal"
 			>
 				<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
 					<path d="M4 6h16M4 12h16M4 18h16" />
@@ -142,7 +163,15 @@ const footerTheme = isConference
         	<slot/>
 		</main>
 
-		<footer class:list={[footerTheme.wrap]}>
+		<div class:list={["site-editorial-ribbon", isConference && "site-editorial-ribbon--conference"]} aria-hidden="true">
+			<div>
+				{Array.from({ length: 4 }).map(() => (
+					<span>{isConference ? "Word · Worship · Sisterhood · Purpose" : "Faith in motion · Women in purpose · Room for every story"}</span>
+				))}
+			</div>
+		</div>
+
+		<footer class:list={[footerTheme.wrap, isConference ? "conference-site-footer" : "cew-site-footer"]}>
 			<div class="mx-auto w-full max-w-6xl px-4 md:px-8 py-12 flex flex-col gap-8">
 				<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
 					<div class="max-w-md flex flex-col gap-3">
@@ -185,6 +214,8 @@ const footerTheme = isConference
 		</footer>
 
 		<script>
+			import "../scripts/site-motion";
+
 			const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
 			const openBtn = document.querySelector<HTMLButtonElement>("[data-sidebar-open]");
 			const panel = sidebar?.querySelector<HTMLElement>("[data-sidebar-panel]");
