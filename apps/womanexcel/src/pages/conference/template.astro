@@ -1,10 +1,10 @@
 ---
 import { Slideshow } from "@churchwebsite/ui";
 import Layout from "../../layouts/layout.astro";
+import HostLink from "../../components/host-link.astro";
 import Gallery from "../../components/conference/gallery.astro";
 import HeroDetails from "../../components/conference/hero-details.astro";
 import HeroLabels from "../../components/conference/hero-labels.astro";
-import Recap from "../../components/conference/recap.astro";
 import Registration from "../../components/conference/registration.astro";
 import Schedule from "../../components/conference/schedule.astro";
 import Speakers from "../../components/conference/speakers.astro";
@@ -66,12 +66,6 @@ export interface Props {
         heading?: string;
         items: GalleryItem[];
     };
-    recap?: {
-        heading?: string;
-        paragraphs: string[];
-        media?: GalleryItem[];
-        cta?: LinkDetails;
-    };
 }
 
 /**
@@ -103,10 +97,10 @@ const previewProps: Props = {
     introduction: {
         heading: "Who are we?",
         paragraphs: [
-            "The Woman Excel Conference is a gathering of women who refuse to settle for ordinary. Born from the conviction that every woman carries God-given purpose, it calls that purpose out of her.",
+            "The Woman Excel International Conference is a gathering of women who refuse to settle for ordinary. Born from the conviction that every woman carries God-given purpose, it calls that purpose out of her.",
             "Come expectant for powerful teaching, Spirit-led worship, and a sisterhood that cheers you on long after the final session.",
         ],
-        image: { src: "/images/logo-full.png", alt: "Woman Excel Conference" },
+        image: { src: "/images/logo-full.png", alt: "Woman Excel International Conference" },
     },
     schedule: [
         {
@@ -145,25 +139,6 @@ const previewProps: Props = {
             },
         ],
     },
-    recap: {
-        heading: "2026 Recap",
-        paragraphs: [
-            "Revisit the teaching, worship, and moments of connection that made this gathering unforgettable.",
-        ],
-        media: [
-            {
-                src: "/images/placeholds/photo-8.jpg",
-                alt: "Highlights from Woman Excel 2026",
-                caption: "Conference highlights",
-            },
-            {
-                src: "/images/placeholds/photo-9.jpg",
-                alt: "Women connecting at Woman Excel 2026",
-                caption: "A lasting sisterhood",
-            },
-        ],
-        cta: { href: "#recap", label: "Watch the recap" },
-    },
 };
 
 const props = Object.keys(Astro.props).length > 0 ? Astro.props as Props : previewProps;
@@ -179,32 +154,31 @@ const {
     registration,
     donation,
     gallery,
-    recap,
 } = props;
 
 const pageTitle = `${year}: ${theme.name}`;
 const introductionHeading = introduction.heading ?? "Who are we?";
 ---
 
-<Layout title={pageTitle} variant="conference">
+<Layout title={pageTitle} variant="conference" bodyClass="conference-template-page">
     <Slideshow
         slides={heroSlides}
         label={`Woman Excel ${year} conference highlights`}
-        class="woman-excel-slideshow mt-6 mb-20 mx-4 2xl:mx-auto max-w-400 rounded-3xl"
+        class="conference-cinema-hero woman-excel-slideshow"
     >
-        <div class="absolute inset-0 bg-[linear-gradient(115deg,rgba(31,0,70,0.94),rgba(154,0,125,0.72),rgba(255,111,120,0.42))] opacity-70"></div>
+        <div class="conference-cinema-hero__scrim" aria-hidden="true"></div>
 
-        <div class="relative z-10 flex flex-col items-center gap-5 px-4 pb-20 pt-10 md:gap-6">
+        <div class="conference-cinema-hero__content">
             <HeroLabels year={year} />
 
             {theme.artwork ? (
                 <img
-                    class="w-[85%] max-w-350"
+                    class="conference-cinema-hero__art"
                     src={theme.artwork.src}
                     alt={theme.artwork.alt}
                 />
             ) : (
-                <h1 class="max-w-5xl text-center text-5xl leading-tight text-white drop-shadow-lg md:text-8xl">
+                <h1 class="conference-cinema-hero__title">
                     {theme.name}
                 </h1>
             )}
@@ -217,26 +191,26 @@ const introductionHeading = introduction.heading ?? "Who are we?";
                 date={eventDetails.date}
                 address={eventDetails.address}
             />
+            <HostLink />
         </div>
+        <a class="conference-cinema-hero__scroll" href={`#conference-${year}-intro`} aria-label="Read about the conference"><span></span></a>
     </Slideshow>
 
-    <section class="relative flex items-center justify-center px-4 pb-20 md:px-8" aria-labelledby={`conference-${year}-intro`}>
-        <div class="absolute inset-x-0 top-1/2 h-70 -translate-y-1/2 bg-pink blur-3xl"></div>
-        <div class="relative mx-auto flex w-full max-w-312 flex-col items-center gap-6 rounded-2xl bg-berry p-4 md:p-6 lg:flex-row lg:gap-12">
+    <section class="conference-year-intro" aria-labelledby={`conference-${year}-intro`}>
+        <div class="conference-year-intro__inner">
             {introduction.image && (
                 <img
-                    class="w-full max-w-xl lg:w-1/2"
+                    class="conference-year-intro__poster"
                     src={introduction.image.src}
                     alt={introduction.image.alt}
                 />
             )}
 
-            <div class:list={["flex w-full flex-col items-center text-white", introduction.image && "lg:w-1/2"]}>
-                <h2 id={`conference-${year}-intro`} class="mb-3 rounded-xl bg-navy px-5.5 py-3 text-3xl md:text-5xl">
-                    {introductionHeading}
-                </h2>
+            <div class="conference-year-intro__copy">
+                <div class="conference-slate"><span></span><b>01</b><p>Woman Excel · {year}</p></div>
+                <h2 id={`conference-${year}-intro`}>{introductionHeading}</h2>
                 {introduction.paragraphs.map((paragraph) => (
-                    <p class="mb-2 text-lg last:mb-0 md:text-2xl">{paragraph}</p>
+                    <p>{paragraph}</p>
                 ))}
             </div>
         </div>
@@ -250,13 +224,4 @@ const introductionHeading = introduction.heading ?? "Who are we?";
 
     {gallery && <Gallery year={year} heading={gallery.heading} items={gallery.items} />}
 
-    {recap && (
-        <Recap
-            year={year}
-            heading={recap.heading}
-            paragraphs={recap.paragraphs}
-            media={recap.media}
-            cta={recap.cta}
-        />
-    )}
 </Layout>
