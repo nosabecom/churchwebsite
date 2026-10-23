@@ -6,7 +6,7 @@ packages:
 
 catalog:
   "@sanity/client": ^7.27.0
-  "@types/node": ^24.19.2
+  "@types/node": ^26.6.5
   "@tailwindcss/vite": ^4.3.3
   "@vercel/analytics": ^2.0.1
   astro: 7.4.0
