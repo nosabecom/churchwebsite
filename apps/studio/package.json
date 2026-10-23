@@ -19,19 +19,19 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/icons": "^5.2.1",
-    "@sanity/vision": "^6.9.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "sanity": "^6.9.0",
-    "styled-components": "^6.1.18"
+    "@sanity/icons": "^5.2.3",
+    "@sanity/vision": "6.9.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sanity": "6.9.0",
+    "styled-components": "^6.6.0"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^6.0.0",
-    "@types/react": "^19.2.14",
-    "eslint": "^9.28",
-    "prettier": "^3.5",
-    "typescript": "^5.8"
+    "@types/react": "^19.3.0",
+    "eslint": "^9.39.5",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3"
   },
   "prettier": {
     "bracketSpacing": false,
