@@ -6,6 +6,6 @@
     ".": "./src/index.ts"
   },
   "peerDependencies": {
-    "astro": ">=5"
+    "astro": "^7.4.0"
   }
 }
