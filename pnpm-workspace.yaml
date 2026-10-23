@@ -9,7 +9,7 @@ catalog:
   "@types/node": ^24.19.2
   "@tailwindcss/vite": ^4.3.3
   "@vercel/analytics": ^2.0.1
-  astro: 7.4.0
+  astro: 7.4.1
   astro-portabletext: ^0.13.0
   groq: ^6.20.0
   sharp: ^0.35.5
