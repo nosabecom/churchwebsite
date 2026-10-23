@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node --env-file-if-exists=../../.env.development ./node_modules/astro/bin/astro.mjs dev",
-    "build": "astro build",
+    "build": "node --version && astro build",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -22,5 +22,8 @@
   },
   "devDependencies": {
     "@types/node": "catalog:"
+  },
+  "engines": {
+    "node": ">=24.22.1 <25"
   }
 }
