@@ -7,13 +7,13 @@ packages:
 catalog:
   "@sanity/client": ^7.27.0
   "@types/node": ^24.19.2
-  "@tailwindcss/vite": ^4.3.3
+  "@tailwindcss/vite": ^4.3.4
   "@vercel/analytics": ^2.0.1
-  astro: 7.4.0
+  astro: 7.4.5
   astro-portabletext: ^0.13.0
-  groq: ^6.20.0
+  groq: ^6.22.0
   sharp: ^0.35.5
-  tailwindcss: ^4.3.3
+  tailwindcss: ^4.3.4
   vite: ^8.3.5
 
 catalogMode: prefer
