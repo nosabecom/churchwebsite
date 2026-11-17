@@ -1,35 +1,26 @@
 ---
-// Hand-off to the Woman Excel Conference. The conference keeps its own navy /
-// pink identity, so this card deliberately uses those tokens rather than the
-// fellowship palette.
+import { Image } from "astro:assets";
+import logo from "../../../public/images/logo-full.png";
+import { latestConference } from "./latest-conference";
 ---
 
-<section class="cew-section">
-    <div class="rounded-3xl bg-navy text-white overflow-hidden grid lg:grid-cols-2 items-center gap-8 lg:gap-0">
-        <div class="bg-white/95 flex items-center justify-center p-8 md:p-12 h-full">
-            <img class="w-full max-w-sm" src="/images/logo-full.png" alt="The Woman Excel International Conference" loading="lazy" />
-        </div>
+<section id="conference-recap" class="cew-conference-feature cew-conference-feature--recap" aria-labelledby="home-conference-recap-heading">
+    <div class="cew-conference-feature__media">
+        {latestConference.photos.map((photo, index) => (
+            <figure>
+                <a href={`${latestConference.href}#conference-${latestConference.year}-day-${index === 1 ? "two" : "one"}-gallery`}>
+                    <Image src={photo.src} alt={photo.alt} loading="lazy" decoding="async" format="webp" quality={75} widths={[360, 720, 1200]} sizes={index === 0 ? "(max-width: 1000px) 90vw, 55vw" : "(max-width: 1000px) 45vw, 28vw"} />
+                </a>
+                <figcaption>{photo.caption}</figcaption>
+            </figure>
+        ))}
+    </div>
 
-        <div class="flex flex-col gap-4 p-8 md:p-12">
-            <div class="flex items-center gap-3 md:gap-4">
-                <span class="h-px w-10 md:w-16 bg-pink shrink-0"></span>
-                <p class="font-sans uppercase text-xs md:text-sm tracking-[0.25em] text-pink">Our Annual Gathering</p>
-            </div>
-
-            <h2 class="text-3xl md:text-5xl text-balance">The Woman Excel Conference</h2>
-
-            <p class="text-lg md:text-xl text-white/80 text-pretty">
-                Once a year we open our doors wider. Women from every walk of life come together to worship,
-                to sit under powerful teaching, and to be reminded Whose they are. In 2026 we are anchoring
-                everything in the Word.
-            </p>
-
-            <div class="pt-2">
-                <a
-                    class="inline-block font-sans text-sm md:text-base rounded-full bg-pink text-white px-7 py-3 transition-colors hover:bg-pink/80"
-                    href="/conference/2026"
-                >Explore the 2026 Conference</a>
-            </div>
-        </div>
+    <div class="cew-conference-feature__card">
+        <Image src={logo} alt="The Woman Excel International Conference" loading="lazy" decoding="async" format="webp" widths={[240, 480]} sizes="240px" />
+        <p class="cew-kicker">{latestConference.year} Conference recap</p>
+        <h2 id="home-conference-recap-heading">One room.<br /><em>Many stories.</em></h2>
+        <p>{latestConference.summary}</p>
+        <a class="cew-button" href={latestConference.href}>Explore the conference</a>
     </div>
 </section>
