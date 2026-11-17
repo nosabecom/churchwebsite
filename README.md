@@ -1,5 +1,7 @@
 # RCCG Cornerstone Assembly websites
 
+Sites: Church Main — still needs final approval · [Woman Excel](https://www.womanexcel.com/)
+
 This repository is a pnpm workspace containing multiple Astro websites for RCCG Cornerstone Assembly.
 
 ## Project Overview
