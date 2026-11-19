@@ -1,20 +1,74 @@
 ---
+import { Image } from "astro:assets";
 import { getLatestNewsletter, getNewsletterHref } from "../../data/newsletters";
+import Logo from "../../assets/logo.png";
 import ArrowIcon from "../arrow-icon.astro";
-const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
+
+const latest = await getLatestNewsletter();
+const latestNewsletterHref = getNewsletterHref(latest);
+const issueDate = latest
+    ? new Intl.DateTimeFormat("en-CA", { month: "long", year: "numeric" }).format(latest.publishedAt)
+    : "Saskatoon · Monthly";
 ---
 
-<section class="stay-connected page-shell" aria-labelledby="newsletter-heading">
-    <div class="stay-connected__inner">
-        <div class="stay-connected__copy">
-            <p class="section-kicker"><span>04</span> The Cornerstone Chronicle</p>
-            <h2 id="newsletter-heading">Good news.<br /><span>Delivered.</span></h2>
-            <p>Stories, updates, and what’s next in the life of our church—all in one joyful little read.</p>
-            <a class="button button--light" href={latestNewsletterHref}>Read the latest issue <ArrowIcon /></a>
+<section class="chronicle-section page-shell" aria-labelledby="newsletter-heading">
+    <div class="chronicle-card" data-animate data-spotlight>
+        <div class="chronicle-copy">
+            <p class="section-kicker"><span>05</span> The Cornerstone Chronicle</p>
+            <h2 id="newsletter-heading" class="section-title">
+                Good news.<br /><em>Delivered.</em>
+            </h2>
+            <p class="chronicle-intro">
+                Stories of grace, moments of gratitude, and what’s ahead in the life of Cornerstone—crafted into a warm, joyful monthly read.
+            </p>
+            <div class="chronicle-actions">
+                <a class="btn btn--navy" href={latestNewsletterHref} data-magnetic>
+                    <span>Read the latest issue</span>
+                    <span class="btn__icon"><ArrowIcon /></span>
+                </a>
+                <a class="text-link" href="/newsletters">
+                    <span>Browse past issues</span>
+                    <ArrowIcon />
+                </a>
+            </div>
         </div>
-        <div class="newsletter-art" aria-hidden="true">
-            <div class="newsletter-art__orbit">NEW<br />ISSUE</div>
-            <div class="newsletter-art__paper"><small>THE CORNERSTONE CHRONICLE</small><strong>Faith.<br />Family.<br /><em>Everyday life.</em></strong><span>Stories from our church family →</span></div>
-        </div>
+
+        <a
+            class="chronicle-object"
+            href={latestNewsletterHref}
+            aria-label="Read the latest issue of The Cornerstone Chronicle"
+            data-tilt
+        >
+            <div class="chronicle-sheet chronicle-sheet--back" aria-hidden="true"></div>
+            <div class="chronicle-sheet chronicle-sheet--mid" aria-hidden="true"></div>
+            <div class="chronicle-sheet chronicle-sheet--front">
+                <div class="chronicle-seal" aria-hidden="true">
+                    <span>NEW<br />ISSUE</span>
+                </div>
+
+                <div class="chronicle-masthead">
+                    <Image src={Logo} alt="" widths={[64, 96]} />
+                    <div>
+                        <span class="chronicle-masthead__name">The Cornerstone Chronicle</span>
+                        <small>{issueDate} · Saskatoon</small>
+                    </div>
+                </div>
+
+                <div class="chronicle-article">
+                    <span class="chronicle-article__kicker">Church Family Edition</span>
+                    <strong>Faith. Family.<br /><em>Everyday life.</em></strong>
+                    <p>Reflections, testimonies, upcoming gatherings, and encouraging stories from our community in Saskatoon.</p>
+                </div>
+
+                <div class="chronicle-lines" aria-hidden="true">
+                    <i></i><i></i><i></i>
+                </div>
+
+                <div class="chronicle-foot">
+                    <span>Open the latest edition</span>
+                    <ArrowIcon direction="right" />
+                </div>
+            </div>
+        </a>
     </div>
 </section>

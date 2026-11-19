@@ -3,31 +3,119 @@ import { Image } from "astro:assets";
 import Prayer from "../../assets/community/prayer.jpg";
 import Fellowship from "../../assets/community/fellowship.jpg";
 import ArrowIcon from "../arrow-icon.astro";
+
 const ministries = [
-    { title: "Women", number: "01", href: "/ministries/women" },
-    { title: "Men", number: "02", href: "/ministries/men" },
-    { title: "Youth", number: "03", href: "/ministries/youths-teenagers" },
-    { title: "Children", number: "04", href: "/ministries/children" },
+    {
+        title: "Women",
+        number: "01",
+        tagline: "Sisterhood, prayer & Cornerstone Excellent Women",
+        href: "/ministries/women",
+        focus: "prayer",
+    },
+    {
+        title: "Men",
+        number: "02",
+        tagline: "Brotherhood, purpose & courageous faith",
+        href: "/ministries/men",
+        focus: "fellowship",
+    },
+    {
+        title: "Youth & Teenagers",
+        number: "03",
+        tagline: "Real questions, bold friendships & mentorship",
+        href: "/ministries/youths-teenagers",
+        focus: "fellowship",
+    },
+    {
+        title: "Children",
+        number: "04",
+        tagline: "Joyful discovery & foundational Bible stories",
+        href: "/ministries/children",
+        focus: "prayer",
+    },
 ];
 ---
 
 <section class="ministries-section" id="ministries" aria-labelledby="ministries-heading">
+    <div class="ministries-ambient" aria-hidden="true">
+        <div class="ministries-glow ministries-glow--one"></div>
+        <div class="ministries-glow ministries-glow--two"></div>
+    </div>
+
     <div class="page-shell ministries-layout">
-        <div class="ministries-copy">
-            <p class="section-kicker"><span>03</span> Find your people</p>
-            <h2 id="ministries-heading">Faith grows<br /><span>together.</span></h2>
-            <p>Big church becomes family when you find your circle. There’s a place here for every age and every season.</p>
-            <div class="ministry-grid">
-                {ministries.map(ministry => (
-                    <a class="ministry-tile" href={ministry.href}><small>{ministry.number}</small><span class="ministry-tile__title">{ministry.title}</span><ArrowIcon /></a>
+        <div class="ministries-copy" data-animate>
+            <p class="section-kicker section-kicker--light"><span>04</span> Find your people</p>
+            <h2 id="ministries-heading" class="section-title section-title--light">
+                Faith grows<br /><em>together.</em>
+            </h2>
+            <p class="ministries-intro">
+                Sunday morning is where we gather—ministry circles are where you are known by name. Find your place for every generation and every season.
+            </p>
+
+            <div class="ministry-list" data-ministry-list>
+                {ministries.map((ministry) => (
+                    <a
+                        class="ministry-row"
+                        href={ministry.href}
+                        data-spotlight
+                        data-focus-photo={ministry.focus}
+                    >
+                        <span class="ministry-row__num">{ministry.number}</span>
+                        <span class="ministry-row__text">
+                            <strong class="ministry-row__title">{ministry.title}</strong>
+                            <small class="ministry-row__tag">{ministry.tagline}</small>
+                        </span>
+                        <span class="ministry-row__icon"><ArrowIcon /></span>
+                    </a>
                 ))}
             </div>
-            <a class="button button--electric" href="/ministries">Explore every ministry <ArrowIcon /></a>
+
+            <div class="ministries-actions">
+                <a class="btn btn--gold" href="/ministries" data-magnetic>
+                    <span>Explore all ministries</span>
+                    <span class="btn__icon"><ArrowIcon /></span>
+                </a>
+                <a class="btn btn--glass" href="/departments" data-magnetic>
+                    <span>Serve on a team</span>
+                    <span class="btn__icon"><ArrowIcon /></span>
+                </a>
+            </div>
         </div>
-        <div class="community-photos">
-            <figure class="community-photos__prayer"><Image src={Prayer} alt="Women from the Cornerstone community joining hands in prayer" widths={[500, 800, 1080]} sizes="(min-width: 900px) 50vw, 100vw" /><figcaption>We pray together.</figcaption></figure>
-            <figure class="community-photos__table"><Image src={Fellowship} alt="The Cornerstone community sharing fellowship around tables" widths={[400, 650, 900]} sizes="(min-width: 900px) 26vw, 55vw" /><figcaption>We do life together.</figcaption></figure>
-            <span class="community-sticker" aria-hidden="true">BETTER<br />TOGETHER</span>
+
+        <div class="community-collage" data-ministry-collage>
+            <figure class="collage-card collage-card--prayer" data-animate data-parallax="-0.05">
+                <div class="collage-card__media">
+                    <Image
+                        src={Prayer}
+                        alt="Women from the Cornerstone community joining hands in prayer during a Woman Excel gathering"
+                        widths={[500, 800, 1080]}
+                        sizes="(min-width: 900px) 34vw, 100vw"
+                    />
+                </div>
+                <figcaption>
+                    <strong>We pray together</strong>
+                    <span>Woman Excel gathering</span>
+                </figcaption>
+            </figure>
+
+            <figure class="collage-card collage-card--table" data-animate data-delay="130" data-parallax="0.06">
+                <div class="collage-card__media">
+                    <Image
+                        src={Fellowship}
+                        alt="Members of the Cornerstone community sharing joyful fellowship around tables at Woman Excel"
+                        widths={[400, 650, 900]}
+                        sizes="(min-width: 900px) 24vw, 65vw"
+                    />
+                </div>
+                <figcaption>
+                    <strong>We share life</strong>
+                    <span>Around the table</span>
+                </figcaption>
+            </figure>
+
+            <div class="collage-seal" aria-hidden="true">
+                <span>BETTER<br />TOGETHER</span>
+            </div>
         </div>
     </div>
 </section>

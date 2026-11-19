@@ -1,31 +1,91 @@
 ---
-import { churchEvents, formatEventDate, formatEventTime } from "../../data/events";
+import { churchEvents, formatEventDate, formatEventTime, type ChurchEvent } from "../../data/events";
 import ArrowIcon from "../arrow-icon.astro";
-const events = churchEvents.slice(0, 3);
-const accents = ["butter", "blue", "coral"];
+
+// Showcase the next occurrence of each distinct church gathering (Sunday Service, Mid-week Service, Power Night)
+// so visitors immediately see the full breadth of church life rather than duplicate recurring rows.
+const seenTitles = new Set<string>();
+const distinctEvents: ChurchEvent[] = [];
+for (const item of churchEvents) {
+    if (!seenTitles.has(item.title)) {
+        seenTitles.add(item.title);
+        distinctEvents.push(item);
+    }
+    if (distinctEvents.length === 3) break;
+}
+const events = distinctEvents.length === 3 ? distinctEvents : churchEvents.slice(0, 3);
+const themes = ["champagne", "sanctuary", "terracotta"];
+const rhythm = [
+    { day: "Every Sunday", title: "Worship Service", time: "9:00 AM", tone: "gold" },
+    { day: "Every Wednesday", title: "Mid-Week Word", time: "7:00 PM", tone: "navy" },
+    { day: "Last Friday Monthly", title: "Power Night Prayer", time: "10:00 PM", tone: "coral" },
+];
 ---
 
 <section class="events-section page-shell" id="upcoming-events" aria-labelledby="events-heading">
-    <header class="section-header">
-        <div><p class="section-kicker"><span>02</span> In the life of our church</p><h2 id="events-heading">There’s always<br />something <span class="scribble">happening.</span></h2></div>
-        <a class="button button--outline" href="/events">See every event <ArrowIcon /></a>
+    <header class="section-header" data-animate>
+        <div>
+            <p class="section-kicker"><span>03</span> Gather with us</p>
+            <h2 id="events-heading" class="section-title">
+                There’s always a seat<br />waiting for <em>you.</em>
+            </h2>
+        </div>
+        <a class="btn btn--outline" href="/events" data-magnetic>
+            <span>See full calendar</span>
+            <span class="btn__icon"><ArrowIcon /></span>
+        </a>
     </header>
+
     <div class="event-grid">
         {events.map((event, index) => (
-            <article class={`event-card event-card--${accents[index]}`}>
+            <article
+                class={`event-card event-card--${themes[index]}`}
+                data-animate
+                data-delay={index * 110}
+                data-tilt
+                data-spotlight
+            >
                 <div class="event-card__top">
-                    <p class="event-card__category">{event.category}</p>
-                    <time class="event-card__date" datetime={event.date}><strong>{formatEventDate(event.date, { day: "2-digit" })}</strong><span>{formatEventDate(event.date, { month: "short" })}</span></time>
+                    <span class="event-card__tag">{event.category}</span>
+                    <time class="event-card__date" datetime={event.date}>
+                        <strong>{formatEventDate(event.date, { day: "2-digit" })}</strong>
+                        <span>{formatEventDate(event.date, { month: "short" })}</span>
+                    </time>
                 </div>
+
                 <div class="event-card__body">
                     <h3>{event.title}</h3>
                     <p>{event.description}</p>
                 </div>
+
                 <div class="event-card__footer">
-                    <span>{formatEventDate(event.date, { weekday: "long" })} · {formatEventTime(event.startTime)}<small>{event.location}</small></span>
-                    <a class="event-card__arrow" href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`} aria-label={`View ${event.title} details`}><ArrowIcon /></a>
+                    <div class="event-card__meta">
+                        <strong>{formatEventDate(event.date, { weekday: "long" })} · {formatEventTime(event.startTime)}</strong>
+                        <span>{event.location}</span>
+                    </div>
+                    <a
+                        class="event-card__arrow"
+                        href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`}
+                        aria-label={`View ${event.title} details`}
+                        data-magnetic
+                    >
+                        <ArrowIcon />
+                    </a>
                 </div>
             </article>
+        ))}
+    </div>
+
+    <div class="rhythm-strip" data-animate aria-label="Weekly service rhythm">
+        {rhythm.map((item) => (
+            <div class={`rhythm-pill rhythm-pill--${item.tone}`}>
+                <span class="rhythm-pill__dot" aria-hidden="true"></span>
+                <div>
+                    <span class="rhythm-pill__day">{item.day}</span>
+                    <strong>{item.title}</strong>
+                </div>
+                <span class="rhythm-pill__time">{item.time}</span>
+            </div>
         ))}
     </div>
 </section>
