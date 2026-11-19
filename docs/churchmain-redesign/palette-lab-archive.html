@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Cornerstone Palette Lab — Design Evaluation</title>
+  <style>
+    :root {
+      --ink: #241331;
+      --paper: #fff8ec;
+      --primary: #ff5838;
+      --signal: #e3ff4f;
+      --secondary: #5567ff;
+      --soft: #f4b8d1;
+      --support: #aaf2ce;
+      --sun: #ffc83d;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #eee7dc;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: color .35s ease, background .35s ease;
+    }
+
+    button, a { font: inherit; }
+    button { cursor: pointer; }
+
+    .shell { width: min(100%, 92rem); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 4rem); }
+    .topline { height: .65rem; background: linear-gradient(90deg, var(--primary) 0 25%, var(--signal) 25% 50%, var(--secondary) 50% 75%, var(--support) 75%); }
+
+    header { padding: clamp(3rem, 8vw, 8rem) 0 3rem; }
+    .eyebrow { display: flex; align-items: center; gap: .65rem; margin: 0 0 1.4rem; font-size: .72rem; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: .65rem; height: .65rem; border-radius: 50%; background: var(--primary); }
+    h1 { max-width: 69rem; margin: 0; font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; letter-spacing: -.09em; line-height: .76; text-transform: uppercase; }
+    h1 em { display: block; color: var(--secondary); font-family: Georgia, serif; font-weight: 600; text-transform: none; }
+    .intro { display: grid; grid-template-columns: 1fr minmax(17rem, 29rem); align-items: end; gap: 3rem; margin-top: 2.7rem; }
+    .intro p { margin: 0; font-size: clamp(1rem, 1.4vw, 1.25rem); line-height: 1.6; }
+    .warning { padding: 1.1rem 1.25rem; color: var(--paper); background: var(--ink); box-shadow: .5rem .5rem 0 var(--primary); font-size: .78rem !important; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; transform: rotate(1deg); }
+
+    .palette-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: .85rem; margin: 3rem 0 5rem; }
+    .palette-button { position: relative; min-height: 9rem; padding: 1rem; overflow: hidden; color: var(--option-ink); border: 2px solid var(--ink); border-radius: .5rem; background: var(--option-paper); text-align: left; box-shadow: .35rem .35rem 0 var(--ink); transition: transform .25s ease, box-shadow .25s ease; }
+    .palette-button:hover { transform: translateY(-.35rem) rotate(-1deg); box-shadow: .6rem .6rem 0 var(--ink); }
+    .palette-button[aria-pressed="true"] { outline: .3rem solid var(--signal); outline-offset: .2rem; }
+    .palette-button strong { position: relative; z-index: 2; display: block; max-width: 9rem; font-size: 1.1rem; line-height: 1; }
+    .palette-button small { position: absolute; z-index: 2; right: .8rem; bottom: .7rem; font-weight: 850; letter-spacing: .12em; }
+    .mini-swatches { position: absolute; inset: auto 0 0; display: grid; height: 3.2rem; grid-template-columns: repeat(5, 1fr); }
+    .mini-swatches i { background: var(--c); }
+
+    .stage { position: relative; margin-bottom: 5rem; padding: clamp(1rem, 2vw, 2rem); overflow: hidden; border: 2px solid var(--ink); border-radius: .8rem; background: var(--paper); box-shadow: 1rem 1rem 0 var(--ink); }
+    .stage::before { content: "LIVE PALETTE PREVIEW"; position: absolute; z-index: 5; top: 1rem; right: -3.3rem; padding: .55rem 4rem; color: var(--paper); background: var(--primary); font-size: .58rem; font-weight: 900; letter-spacing: .14em; transform: rotate(40deg); }
+    .mock-hero { position: relative; min-height: 33rem; padding: clamp(1.4rem, 4vw, 4rem); overflow: hidden; color: var(--paper); background: var(--ink); isolation: isolate; }
+    .mock-hero::before { content: ""; position: absolute; z-index: -1; top: -6rem; right: -3rem; width: 29rem; height: 29rem; border: 5rem solid var(--secondary); border-radius: 50%; opacity: .5; }
+    .mock-hero::after { content: "PRAISE"; position: absolute; z-index: -1; right: -.08em; bottom: -.15em; color: transparent; font-size: clamp(7rem, 19vw, 18rem); font-weight: 900; letter-spacing: -.1em; -webkit-text-stroke: 1px color-mix(in srgb, var(--paper) 25%, transparent); }
+    .mock-kicker { margin: 0 0 4rem; color: var(--signal); font-size: .65rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    .mock-title { max-width: 50rem; margin: 0; font-size: clamp(4rem, 10vw, 9rem); font-weight: 900; letter-spacing: -.09em; line-height: .65; text-transform: uppercase; }
+    .mock-title em { display: block; margin-left: .28em; color: var(--sun); font-family: Georgia, serif; font-weight: 600; text-transform: none; }
+    .mock-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 3rem; }
+    .mock-actions a { display: inline-flex; min-height: 3.2rem; align-items: center; padding: .75rem 1.3rem; color: var(--paper); border-radius: 999px; background: var(--primary); font-size: .75rem; font-weight: 850; text-decoration: none; text-transform: uppercase; }
+    .mock-actions a:last-child { color: var(--ink); background: var(--support); }
+    .mock-blocks { position: absolute; top: 3rem; right: 3rem; display: grid; grid-template-columns: repeat(3, 3rem); transform: rotate(7deg); }
+    .mock-blocks i { width: 3rem; height: 3rem; background: var(--primary); border: 1px solid var(--paper); }
+    .mock-blocks i:nth-child(1) { grid-column: 2; background: var(--sun); }
+    .mock-blocks i:nth-child(2) { grid-column: 1; background: var(--secondary); }
+    .mock-blocks i:nth-child(3) { background: var(--signal); }
+    .mock-blocks i:nth-child(4) { background: var(--soft); }
+
+    .mock-cards { display: grid; grid-template-columns: .75fr 1.25fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .mock-card { display: flex; min-height: 15rem; flex-direction: column; padding: 1.2rem; color: var(--ink); border: 2px solid var(--ink); background: var(--soft); }
+    .mock-card:first-child { border-radius: .5rem 6rem .5rem .5rem; background: var(--signal); }
+    .mock-card:nth-child(2) { color: var(--paper); border-radius: 6rem .5rem 6rem .5rem; background: var(--secondary); }
+    .mock-card:last-child { border-radius: .5rem .5rem 6rem .5rem; background: var(--support); }
+    .mock-card small { font-size: .6rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .mock-card strong { margin-top: auto; font-size: clamp(2rem, 4vw, 4rem); letter-spacing: -.07em; line-height: .85; }
+
+    .details { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 6vw, 7rem); padding-bottom: 7rem; }
+    .details h2 { margin: 0 0 1rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.07em; line-height: .9; }
+    .details p { color: color-mix(in srgb, var(--ink) 72%, transparent); line-height: 1.7; }
+    .swatch-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+    .swatch { display: grid; min-height: 7rem; align-content: space-between; padding: .85rem; color: var(--swatch-text); border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent); background: var(--swatch); }
+    .swatch strong { font-size: .72rem; text-transform: uppercase; }
+    .swatch code { font-size: .72rem; font-weight: 850; }
+    .notes { display: grid; gap: .8rem; margin-top: 2rem; }
+    .note { padding: 1rem; border-left: .55rem solid var(--c); background: color-mix(in srgb, var(--paper) 82%, transparent); }
+    .note strong { display: block; margin-bottom: .3rem; font-size: .75rem; text-transform: uppercase; }
+
+    footer { padding: 2rem 0; color: var(--paper); background: var(--ink); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+    footer .shell { display: flex; justify-content: space-between; gap: 2rem; }
+
+    @media (max-width: 52rem) {
+      .intro, .details { grid-template-columns: 1fr; }
+      .palette-nav { grid-template-columns: 1fr 1fr; }
+      .mock-cards { grid-template-columns: 1fr; }
+      .mock-card { min-height: 12rem; }
+      .mock-blocks { top: 1rem; right: -1rem; opacity: .7; }
+      footer .shell { flex-direction: column; }
+    }
+
+    @media (max-width: 32rem) {
+      .palette-nav, .swatch-grid { grid-template-columns: 1fr; }
+      .palette-button { min-height: 7.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="shell">
+    <p class="eyebrow">RCCG Cornerstone Assembly · Evaluation artifact</p>
+    <h1>Palette <em>lab.</em></h1>
+    <div class="intro">
+      <p>Four intentionally different color worlds for the Church Main redesign experiment. Pick one below to recolor the live composition and compare mood, energy, hierarchy, and distinctiveness.</p>
+      <p class="warning">Exploration only · No palette is approved · Do not treat this artifact as brand guidance</p>
+    </div>
+  </header>
+
+  <main class="shell">
+    <nav class="palette-nav" aria-label="Choose a palette" id="palette-nav"></nav>
+
+    <section class="stage" aria-label="Live palette preview">
+      <div class="mock-hero">
+        <p class="mock-kicker">Sunday · 9:00 AM · Saskatoon</p>
+        <h2 class="mock-title">Faith <em>with a</em> pulse.</h2>
+        <div class="mock-actions"><a href="#">Plan your visit →</a><a href="#">Watch a message →</a></div>
+        <div class="mock-blocks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="mock-cards" aria-hidden="true">
+        <article class="mock-card"><small>Worship · 01</small><strong>Show up.</strong></article>
+        <article class="mock-card"><small>Community · 02</small><strong>Find your people.</strong></article>
+        <article class="mock-card"><small>Formation · 03</small><strong>Grow alive.</strong></article>
+      </div>
+    </section>
+
+    <section class="details">
+      <div>
+        <p class="eyebrow" id="palette-number">Direction 01</p>
+        <h2 id="palette-name">Electric Sanctuary</h2>
+        <p id="palette-description"></p>
+        <div class="notes" id="palette-notes"></div>
+      </div>
+      <div class="swatch-grid" id="swatches" aria-label="Palette colors"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell"><span>Church Main redesign evaluation</span><span>Created August 31, 2026 · PostPlan</span></div>
+  </footer>
+
+  <script>
+    const palettes = [
+      {
+        name: "Electric Sanctuary",
+        description: "The highest-energy direction and the palette currently applied to the second redesign pass. Aubergine gives it gravity; citron, tangerine, periwinkle, blush, and mint make the experience feel alive and unexpected.",
+        colors: { ink: "#241331", paper: "#FFF8EC", primary: "#FF5838", signal: "#E3FF4F", secondary: "#5567FF", soft: "#F4B8D1", support: "#AAF2CE", sun: "#FFC83D" },
+        notes: [
+          ["Energy", "Youthful, expressive, digitally native, and deliberately unlike a conventional church template."],
+          ["Risk", "The acid accents and multi-color system can become noisy if every section competes equally."],
+          ["Best use", "A strong candidate when distinctiveness and visible joy matter more than restraint."]
+        ]
+      },
+      {
+        name: "Prairie Revival",
+        description: "A Saskatoon-aware direction built from evergreen, wheat, clay, prairie blue, dusty rose, and sage. It is warmer and more grounded while still escaping default church navy and bright red.",
+        colors: { ink: "#162A29", paper: "#F7EDDC", primary: "#C94E32", signal: "#F0D44C", secondary: "#4D7EA8", soft: "#D8A7B1", support: "#A6D3B2", sun: "#E7B83E" },
+        notes: [
+          ["Energy", "Rooted, local, warm, and human with a strong connection to landscape and season."],
+          ["Risk", "Can drift toward lifestyle or hospitality branding without bold typography and movement."],
+          ["Best use", "A useful foundation if Cornerstone wants distinctiveness with a calmer emotional temperature."]
+        ]
+      },
+      {
+        name: "Midnight Jubilee",
+        description: "A high-contrast celebration palette: near-black, crimson, gold, ultramarine, rose, and seafoam. It feels musical, stage-lit, and grown-up without losing energy.",
+        colors: { ink: "#0A0A0C", paper: "#F5EFE7", primary: "#D92F4C", signal: "#FFCE47", secondary: "#3859E0", soft: "#E8B6C2", support: "#97D8C4", sun: "#FFCE47" },
+        notes: [
+          ["Energy", "Dramatic, confident, worship-led, and slightly fashion editorial."],
+          ["Risk", "Near-black surfaces can feel exclusive or nightlife-adjacent if imagery and copy lose warmth."],
+          ["Best use", "Powerful for media, worship, events, and high-impact campaign moments."]
+        ]
+      },
+      {
+        name: "Living Stone",
+        description: "The most organic direction: evergreen, limestone, terracotta, citron, sky, blush clay, and soft leaf green. It turns the cornerstone metaphor into material, landscape, and growth.",
+        colors: { ink: "#15382E", paper: "#E9E2D5", primary: "#D86743", signal: "#DCEB68", secondary: "#6AA8C7", soft: "#DDB5A9", support: "#A7CFB6", sun: "#E8C557" },
+        notes: [
+          ["Energy", "Tactile, restorative, intergenerational, and quietly distinctive."],
+          ["Risk", "It is the least electric option and may underplay the praise-and-power side of the church."],
+          ["Best use", "A strong route for welcome, care, community, and a long-lived institutional identity."]
+        ]
+      }
+    ];
+
+    const root = document.documentElement;
+    const nav = document.querySelector("#palette-nav");
+    const swatches = document.querySelector("#swatches");
+    const notes = document.querySelector("#palette-notes");
+    const labels = { ink: "Foundation", paper: "Paper", primary: "Primary", signal: "Signal", secondary: "Secondary", soft: "Soft field", support: "Support", sun: "Warm accent" };
+
+    const textFor = (key) => ["ink", "secondary", "primary"].includes(key) ? "#FFF8EC" : "#241331";
+
+    palettes.forEach((palette, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "palette-button";
+      button.setAttribute("aria-pressed", index === 0 ? "true" : "false");
+      button.style.setProperty("--option-ink", palette.colors.ink);
+      button.style.setProperty("--option-paper", palette.colors.paper);
+      button.innerHTML = `<strong>${palette.name}</strong><small>0${index + 1}</small><span class="mini-swatches">${["primary", "signal", "secondary", "soft", "support"].map(key => `<i style="--c:${palette.colors[key]}"></i>`).join("")}</span>`;
+      button.addEventListener("click", () => selectPalette(index));
+      nav.append(button);
+    });
+
+    function selectPalette(index) {
+      const palette = palettes[index];
+      Object.entries(palette.colors).forEach(([key, value]) => root.style.setProperty(`--${key}`, value));
+      nav.querySelectorAll("button").forEach((button, buttonIndex) => button.setAttribute("aria-pressed", buttonIndex === index ? "true" : "false"));
+      document.querySelector("#palette-number").textContent = `Direction 0${index + 1}`;
+      document.querySelector("#palette-name").textContent = palette.name;
+      document.querySelector("#palette-description").textContent = palette.description;
+      swatches.innerHTML = Object.entries(palette.colors).map(([key, value]) => `<div class="swatch" style="--swatch:${value};--swatch-text:${textFor(key)}"><strong>${labels[key]}</strong><code>${value}</code></div>`).join("");
+      notes.innerHTML = palette.notes.map(([title, copy], noteIndex) => `<div class="note" style="--c:${[palette.colors.primary, palette.colors.secondary, palette.colors.signal][noteIndex]}"><strong>${title}</strong>${copy}</div>`).join("");
+    }
+
+    selectPalette(0);
+  </script>
+</body>
+</html>

@@ -1,18 +1,25 @@
 @import "tailwindcss";
 
-html, body {
+/* ==========================================================================
+   1. Shared Inner-Page Utilities (Newsletters, Forms, Context Menus)
+   ========================================================================== */
+
+html,
+body {
     margin: 0;
     width: 100%;
 }
 
-/* The selected newsletter direction uses a publication-style display face.
-   System serifs keep it dependency-free and render immediately. */
-.newsletter-serif {
-    font-family: Georgia, "Times New Roman", serif;
+html {
+    overflow-x: clip;
+    scroll-behavior: auto;
+    scroll-padding-top: 5.5rem;
 }
 
-/* Newsletter bodies come from Markdown. Tailwind's reset removes the default
-   document rhythm, so editors get predictable headings, lists, quotes, and links here. */
+.newsletter-serif {
+    font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+}
+
 .newsletter-prose {
     color: rgb(51 65 85);
     font-size: 1.125rem;
@@ -25,16 +32,16 @@ html, body {
 
 .newsletter-prose h2 {
     margin-top: 3rem;
-    color: rgb(8 47 73);
-    font-family: Georgia, "Times New Roman", serif;
+    color: rgb(9 11 16);
+    font-family: "Bricolage Grotesque", ui-sans-serif, sans-serif;
     font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.15;
+    line-height: 1.12;
 }
 
 .newsletter-prose h3 {
     margin-top: 2.25rem;
-    color: rgb(8 47 73);
-    font-family: Georgia, "Times New Roman", serif;
+    color: rgb(9 11 16);
+    font-family: "Bricolage Grotesque", ui-sans-serif, sans-serif;
     font-size: 1.5rem;
     line-height: 1.25;
 }
@@ -55,13 +62,13 @@ html, body {
 .newsletter-prose blockquote {
     padding: 1.25rem 1.5rem;
     color: rgb(15 23 42);
-    background: rgb(240 249 255);
-    border-left: 0.25rem solid rgb(220 38 38);
+    background: rgb(248 250 252);
+    border-left: 0.25rem solid #ff9f1c;
     border-radius: 0 1rem 1rem 0;
 }
 
 .newsletter-prose a {
-    color: rgb(185 28 28);
+    color: #2563eb;
     text-decoration: underline;
     text-underline-offset: 0.2em;
 }
@@ -72,111 +79,57 @@ html, body {
     }
 }
 
-/* Safety net so an absolutely-positioned menu can never pan the page sideways.
-   `clip` rather than `hidden` so it does not trap the fixed drawer. */
-html {
-    overflow-x: clip;
-}
-
-/* No aspect ratio: joined to the announcement panel the slideshow takes the
-   row height, and stacked above it the logo and quote set the height. */
 .churchmain-slideshow {
-    --slideshow-control-bg: rgb(12 74 110 / 65%);
-    --slideshow-control-bg-hover: rgb(12 74 110 / 90%);
+    --slideshow-control-bg: rgb(9 11 16 / 65%);
+    --slideshow-control-bg-hover: rgb(9 11 16 / 90%);
 }
 
 .churchmain-quote {
-    --quote-bg: rgb(12 74 110 / 85%);
+    --quote-bg: rgb(9 11 16 / 85%);
     --quote-color: white;
     --quote-padding: 1rem 1.25rem;
 }
 
-@media (min-width: 768px) {
-    .churchmain-quote {
-        --quote-padding: 1.5rem 2rem;
-    }
-}
-
-/* Joined to the announcement panel the hero is height-constrained, so the quote
-   stops scaling with the viewport and holds a fixed size. */
-@media (min-width: 1024px) {
-    .churchmain-quote {
-        --quote-font-size: 1.125rem;
-        --quote-padding: 1rem 1.5rem;
-    }
-}
-
 @utility form-field {
-    @apply flex flex-col gap-1
+    @apply flex flex-col gap-1;
 }
 
 @utility form-label {
-    @apply text-sm font-semibold tracking-wide text-sky-900
+    @apply text-sm font-semibold tracking-wide text-slate-900;
 }
 
 @utility form-input {
-    @apply w-full rounded-md border-2 border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-sky-900 focus:outline-none user-invalid:border-red-600 user-valid:border-green-600
+    @apply w-full rounded-lg border-2 border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none user-invalid:border-red-600 user-valid:border-green-600;
 }
 
 @utility form-submit {
-    @apply w-full rounded-full bg-red-600 px-6 py-2.5 text-xl text-white hover:cursor-pointer hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600
+    @apply w-full rounded-full bg-slate-950 px-6 py-3 text-base font-bold text-white hover:cursor-pointer hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600;
 }
 
 @utility context-menu {
     @apply invisible absolute min-w-44 pt-2 opacity-0 space-y-1 rounded-lg bg-white p-2 shadow-lg ring-1 ring-black/10;
     transition-property: opacity, visibility;
     transition-duration: 150ms;
-    transition-delay: 0ms;
 }
 
 @utility context-menu-trigger {
-    @apply relative
+    @apply relative;
 }
 
-/* Hover is an enhancement for mice only. Touch devices have no hover, so the
-   click toggle in layout.astro is the mechanism that actually opens these. */
 @media (hover: hover) and (pointer: fine) {
     .context-menu-trigger:hover > .context-menu {
         @apply visible opacity-100;
-        transition-delay: 0ms;
-    }
-
-    .context-menu > .context-menu-trigger:hover > .context-menu {
-        transition-duration: 0ms;
-    }
-
-    .context-menu:has(> li:hover) > .context-menu-trigger:not(:hover) > .context-menu {
-        @apply invisible opacity-0;
-        transition-duration: 0ms;
-        transition-delay: 0ms;
     }
 }
 
 .context-menu-trigger[data-open] > .context-menu {
     @apply visible opacity-100;
-    transition-delay: 0ms;
 }
 
 @utility context-menu-item {
-    @apply block rounded-md px-3 py-2 hover:bg-slate-100 focus:bg-slate-100
+    @apply block rounded-md px-3 py-2 hover:bg-slate-100 focus:bg-slate-100;
 }
 
-.context-menu > .context-menu-trigger > .context-menu-item {
-    @apply flex items-center justify-between gap-4;
-}
-
-.context-menu > .context-menu-trigger > .context-menu-item::after {
-    content: "›";
-    @apply opacity-0 transition-opacity;
-}
-
-.context-menu > .context-menu-trigger:hover > .context-menu-item::after,
-.context-menu > .context-menu-trigger[data-open] > .context-menu-item::after {
-    @apply opacity-100;
-}
-
-/* Grows a small control's touch area without growing its layout box, so a
-   row of dots stays narrow enough for a 320px screen. */
 @utility tap-target {
     position: relative;
 }
@@ -187,20 +140,3119 @@ html {
     inset: -17px -6px;
 }
 
-/* Mobile drawer accordions. */
 @utility drawer-summary {
-    @apply flex cursor-pointer items-center justify-between rounded-md py-2.5 marker:content-none
+    @apply flex cursor-pointer items-center justify-between rounded-md py-2.5 marker:content-none;
 }
 
 .drawer-summary::-webkit-details-marker {
     display: none;
 }
 
-.drawer-summary::after {
-    content: "›";
-    @apply rotate-90 text-xl transition-transform;
+/* ==========================================================================
+   2. Living Light Design Tokens — Ground-Up Rebuild
+   ========================================================================== */
+
+:root {
+    --obsidian: #090b10;
+    --obsidian-card: #111520;
+    --obsidian-elevated: #171d2c;
+    --white: #ffffff;
+    --daylight: #f6f6f3;
+    --ink: #0c1018;
+    --ink-muted: #525b6b;
+    --amber: #ff9f1c;
+    --amber-glow: #ffb84d;
+    --cobalt: #2563eb;
+    --cobalt-bright: #3b82f6;
+    --crimson: #e63946;
+    --border-light: rgb(12 16 24 / 10%);
+    --border-dark: rgb(255 255 255 / 12%);
+    --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+    --font-serif: "Instrument Serif", Georgia, serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+    --gutter: clamp(1.25rem, 4.2vw, 4rem);
+    --scroll: 0;
 }
 
-.drawer-group[open] > .drawer-summary::after {
-    @apply -rotate-90;
+body.cs-body {
+    min-width: 20rem;
+    min-height: 100dvh;
+    color: var(--ink);
+    background: var(--white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body.nav-open {
+    overflow: hidden;
+}
+
+::selection {
+    color: var(--obsidian);
+    background: var(--amber-glow);
+}
+
+button {
+    cursor: pointer;
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid var(--cobalt-bright);
+    outline-offset: 4px;
+}
+
+.cs-hero :focus-visible,
+.cs-pastors :focus-visible,
+.cs-cinema :focus-visible,
+.cs-footer :focus-visible {
+    outline-color: var(--amber-glow);
+}
+
+.cs-main {
+    overflow-wrap: anywhere;
+}
+
+.cs-main:focus {
+    outline: none;
+}
+
+.cs-body--inner .cs-main {
+    padding-top: 5.5rem;
+}
+
+.cs-shell,
+.page-shell {
+    width: min(100%, 88rem);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.arrow-icon {
+    display: inline-block;
+    width: 1.05em;
+    height: 1.05em;
+    flex-shrink: 0;
+    vertical-align: -0.18em;
+    transition: transform 0.35s var(--ease-expo);
+}
+
+/* Top Scroll Progress */
+.cs-progress {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cobalt-bright), var(--amber), var(--crimson));
+    transform-origin: left center;
+    transform: scaleX(var(--scroll));
+    pointer-events: none;
+}
+
+.cs-skip {
+    position: fixed;
+    z-index: 120;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    color: var(--white);
+    background: var(--obsidian);
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-220%);
+}
+
+.cs-skip:focus {
+    transform: none;
+}
+
+/* ==========================================================================
+   3. Edge-to-Edge Adaptive Header
+   ========================================================================== */
+
+.cs-header {
+    position: fixed;
+    z-index: 70;
+    inset: 0 0 auto;
+    transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        backdrop-filter 0.35s ease;
+}
+
+.cs-header--overlay {
+    color: var(--white);
+    background: linear-gradient(180deg, rgb(9 11 16 / 72%) 0%, rgb(9 11 16 / 0%) 100%);
+    border-bottom: 1px solid transparent;
+}
+
+.cs-header--overlay.is-scrolled {
+    background: rgb(9 11 16 / 84%);
+    border-bottom-color: var(--border-dark);
+    backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 22%);
+}
+
+.cs-header--solid {
+    color: var(--ink);
+    background: rgb(255 255 255 / 92%);
+    border-bottom: 1px solid var(--border-light);
+    backdrop-filter: blur(18px);
+}
+
+.cs-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 5rem;
+}
+
+.cs-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: inherit;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.cs-brand__mark,
+.cs-brand__mark img {
+    width: 2.45rem;
+    height: 2.45rem;
+    object-fit: contain;
+    transition: transform 0.4s var(--ease-spring);
+}
+
+.cs-brand:hover .cs-brand__mark img {
+    transform: scale(1.08) rotate(-5deg);
+}
+
+.cs-brand__text {
+    display: grid;
+    gap: 0.1rem;
+    line-height: 1;
+}
+
+.cs-brand__text strong {
+    font-family: var(--font-display);
+    font-size: 1.32rem;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+
+.cs-brand__text small {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.72;
+}
+
+.cs-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-nav__links a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.95rem;
+    border-radius: 999px;
+    color: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    opacity: 0.86;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.cs-header--overlay .cs-nav__links a:hover,
+.cs-header--overlay .cs-nav__links a[aria-current="page"] {
+    opacity: 1;
+    background: rgb(255 255 255 / 12%);
+}
+
+.cs-header--solid .cs-nav__links a:hover,
+.cs-header--solid .cs-nav__links a[aria-current="page"] {
+    opacity: 1;
+    background: var(--daylight);
+}
+
+.cs-nav__right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.cs-motion-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.35rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    border-color: rgb(255 255 255 / 22%);
+    background: rgb(255 255 255 / 7%);
+    color: inherit;
+    font-size: 0.74rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cs-header--solid .cs-motion-btn {
+    border-color: var(--border-light);
+    background: var(--daylight);
+}
+
+.cs-motion-btn[hidden] {
+    display: none;
+}
+
+.cs-motion-btn__dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--amber);
+}
+
+body.motion-paused .cs-motion-btn__dot {
+    background: #94a3b8;
+}
+
+.cs-nav__give {
+    --mx-mag: 0px;
+    --my-mag: 0px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.6rem;
+    padding: 0.5rem 1.15rem;
+    border-radius: 999px;
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--amber-glow), var(--amber));
+    font-size: 0.86rem;
+    font-weight: 800;
+    text-decoration: none;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgb(255 159 28 / 32%);
+    transform: translate3d(var(--mx-mag), var(--my-mag), 0);
+    transition: transform 0.35s var(--ease-spring), box-shadow 0.25s ease;
+}
+
+.cs-nav__give:hover {
+    box-shadow: 0 12px 28px rgb(255 159 28 / 48%);
+}
+
+.cs-nav__give:hover .arrow-icon {
+    transform: translate(2px, -2px);
+}
+
+.cs-burger {
+    position: relative;
+    display: none;
+    width: 2.65rem;
+    height: 2.65rem;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 26%);
+    background: rgb(255 255 255 / 8%);
+    color: inherit;
+}
+
+.cs-header--solid .cs-burger {
+    border-color: var(--border-light);
+    background: var(--daylight);
+}
+
+.cs-burger[hidden] {
+    display: none;
+}
+
+.cs-burger span {
+    position: absolute;
+    width: 1.1rem;
+    height: 1.8px;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.cs-burger span:first-child {
+    transform: translateY(-3.5px);
+}
+
+.cs-burger span:last-child {
+    transform: translateY(3.5px);
+}
+
+.cs-noscript-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+}
+
+/* Mobile Slide Drawer */
+.cs-drawer {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(29rem, 100%);
+    max-width: none;
+    max-height: 100dvh;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--white);
+    background: var(--obsidian);
+    overflow-y: auto;
+}
+
+.cs-drawer::backdrop {
+    background: rgb(9 11 16 / 75%);
+    backdrop-filter: blur(8px);
+}
+
+.cs-drawer[open] {
+    animation: cs-drawer-in 0.4s var(--ease-expo) both;
+}
+
+.cs-drawer__wrap {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding: 1.5rem 1.75rem 2.25rem;
+}
+
+.cs-drawer__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.cs-drawer__top h2 {
+    margin: 0;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber-glow);
+}
+
+.cs-drawer__close {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--border-dark);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 7%);
+    color: var(--white);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.cs-drawer ul {
+    display: grid;
+    margin: 1.5rem 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-drawer li {
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.cs-drawer li a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0.95rem 0;
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease, padding-left 0.25s var(--ease-expo);
+}
+
+.cs-drawer li a:hover {
+    color: var(--amber-glow);
+    padding-left: 0.4rem;
+}
+
+.cs-drawer li small {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: rgb(255 255 255 / 45%);
+}
+
+.cs-drawer__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.75rem;
+}
+
+.cs-drawer__foot p {
+    margin: 0.25rem 0 0;
+    color: rgb(255 255 255 / 78%);
+    font-size: 0.9rem;
+}
+
+/* Sermon Cinema Lightbox Modal */
+.cs-sermon-modal {
+    width: min(58rem, calc(100% - 2rem));
+    max-width: none;
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--border-dark);
+    border-radius: 1.75rem;
+    color: var(--white);
+    background: var(--obsidian-card);
+    box-shadow: 0 36px 90px rgb(0 0 0 / 65%);
+}
+
+.cs-sermon-modal::backdrop {
+    background: rgb(5 7 12 / 84%);
+    backdrop-filter: blur(12px);
+}
+
+.cs-sermon-modal__box {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.5rem;
+}
+
+.cs-sermon-modal__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cs-sermon-modal__meta {
+    margin: 0 0 0.25rem;
+    color: var(--amber-glow);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.cs-sermon-modal__top h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.5vw, 1.9rem);
+    font-weight: 700;
+}
+
+.cs-sermon-modal__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 1.1rem;
+    background: #000;
+    overflow: hidden;
+}
+
+.cs-sermon-modal__frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.cs-sermon-modal__foot {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ==========================================================================
+   4. Shared Buttons, Badges & Typography Primitives
+   ========================================================================== */
+
+.cs-btn,
+.button {
+    --mx-mag: 0px;
+    --my-mag: 0px;
+    position: relative;
+    display: inline-flex;
+    min-height: 3.35rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 0.85rem 1.55rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.94rem;
+    font-weight: 700;
+    text-decoration: none;
+    overflow: hidden;
+    transform: translate3d(var(--mx-mag), var(--my-mag), 0);
+    transition:
+        transform 0.35s var(--ease-spring),
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.3s ease;
+}
+
+.cs-btn::before {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 22%, rgb(255 255 255 / 35%) 50%, transparent 78%);
+    content: "";
+    transform: translateX(-130%);
+    transition: transform 0.7s var(--ease-expo);
+    pointer-events: none;
+}
+
+.cs-btn:hover::before {
+    transform: translateX(130%);
+}
+
+.cs-btn__arrow {
+    display: inline-flex;
+    transition: transform 0.35s var(--ease-expo);
+}
+
+.cs-btn:hover .cs-btn__arrow,
+.button:hover .arrow-icon {
+    transform: translate(3px, -3px);
+}
+
+.cs-btn--amber {
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--amber-glow), var(--amber));
+    box-shadow: 0 14px 36px rgb(255 159 28 / 34%);
+}
+
+.cs-btn--amber:hover {
+    box-shadow: 0 18px 44px rgb(255 159 28 / 50%);
+}
+
+.cs-btn--glass {
+    color: var(--white);
+    border-color: rgb(255 255 255 / 24%);
+    background: rgb(255 255 255 / 9%);
+    backdrop-filter: blur(14px);
+}
+
+.cs-btn--glass:hover {
+    border-color: rgb(255 184 77 / 70%);
+    background: rgb(255 255 255 / 16%);
+}
+
+.cs-btn--dark,
+.button--ink {
+    color: var(--white);
+    background: var(--obsidian);
+    box-shadow: 0 14px 30px rgb(9 11 16 / 20%);
+}
+
+.cs-btn--dark:hover,
+.button--ink:hover {
+    background: var(--cobalt);
+}
+
+.button--outline {
+    color: var(--ink);
+    border-color: rgb(12 16 24 / 24%);
+    background: transparent;
+}
+
+.button--outline:hover {
+    color: var(--white);
+    background: var(--obsidian);
+}
+
+.cs-live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 1.05rem;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 999px;
+    background: rgb(9 11 16 / 54%);
+    backdrop-filter: blur(14px);
+    color: var(--white);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.cs-live-pill__dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 0 rgb(255 159 28 / 75%);
+    animation: cs-beacon 2s ease-out infinite;
+}
+
+.cs-kicker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 1.2rem;
+    padding: 0.42rem 0.9rem;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    background: var(--daylight);
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.cs-kicker-badge__dot {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 50%;
+    background: var(--cobalt);
+}
+
+.cs-kicker-badge--dark {
+    border-color: var(--border-dark);
+    background: rgb(255 255 255 / 7%);
+    color: var(--amber-glow);
+}
+
+.cs-kicker-badge--dark .cs-kicker-badge__dot {
+    background: var(--amber);
+}
+
+.cs-micro-tag {
+    display: block;
+    color: var(--cobalt);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.cs-micro-tag--light {
+    color: rgb(255 255 255 / 74%);
+}
+
+.cs-micro-tag--amber {
+    color: var(--amber-glow);
+}
+
+.cs-section-h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+}
+
+.cs-section-h2 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--cobalt);
+}
+
+.cs-section-h2--light {
+    color: var(--white);
+}
+
+.cs-section-h2--light em {
+    color: var(--amber-glow);
+}
+
+.cs-pill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.68rem 1.2rem;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.3s var(--ease-spring), background-color 0.2s ease;
+}
+
+.cs-pill-link:hover {
+    transform: translateY(-2px);
+}
+
+.cs-pill-link:hover .arrow-icon {
+    transform: translate(2px, -2px);
+}
+
+.cs-pill-link--white {
+    color: var(--obsidian);
+    background: var(--white);
+}
+
+.cs-pill-link--white:hover {
+    background: var(--amber-glow);
+}
+
+.cs-pill-link--amber {
+    color: var(--obsidian);
+    background: var(--amber-glow);
+}
+
+.cs-inline-arrow {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1.5px solid rgb(12 16 24 / 22%);
+    padding-bottom: 0.15rem;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.cs-inline-arrow:hover {
+    color: var(--cobalt);
+    border-bottom-color: var(--cobalt);
+}
+
+.cs-inline-arrow:hover .arrow-icon {
+    transform: translate(3px, -3px);
+}
+
+/* ==========================================================================
+   5. ACT I — Full-Bleed 100svh Cinematic Hero
+   ========================================================================== */
+
+.cs-hero {
+    position: relative;
+    display: flex;
+    min-height: 100svh;
+    color: var(--white);
+    background: var(--obsidian);
+    overflow: hidden;
+}
+
+.cs-hero__media {
+    position: absolute;
+    inset: -7% 0;
+    transform: translate3d(0, var(--py, 0px), 0);
+    will-change: transform;
+}
+
+.cs-hero__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 56% 36%;
+    filter: saturate(1.1) contrast(1.06) brightness(0.84);
+    animation: cs-ken-burns 24s ease-in-out infinite alternate;
+}
+
+.cs-hero__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.cs-hero__vignette {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 44%, rgb(9 11 16 / 34%) 0%, rgb(9 11 16 / 84%) 100%),
+        linear-gradient(180deg, rgb(9 11 16 / 62%) 0%, transparent 32%, transparent 62%, rgb(9 11 16 / 96%) 100%);
+    pointer-events: none;
+}
+
+.cs-hero__beam {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.cs-hero__beam--amber {
+    top: -12%;
+    left: 10%;
+    width: 38rem;
+    height: 38rem;
+    background: radial-gradient(circle, rgb(255 159 28 / 28%), transparent 68%);
+    animation: cs-beam-drift 15s ease-in-out infinite alternate;
+}
+
+.cs-hero__beam--blue {
+    right: -6%;
+    bottom: 6%;
+    width: 36rem;
+    height: 36rem;
+    background: radial-gradient(circle, rgb(37 99 235 / 32%), transparent 68%);
+    animation: cs-beam-drift 19s ease-in-out infinite alternate-reverse;
+}
+
+.cs-hero__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100svh;
+    padding-top: 6.75rem;
+    padding-bottom: clamp(1.75rem, 3.5vh, 2.75rem);
+}
+
+.cs-hero__top {
+    display: flex;
+    justify-content: center;
+}
+
+.cs-hero__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: clamp(2rem, 5vh, 4rem);
+}
+
+.cs-hero__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.3rem, 9.4vw, 8.8rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+    color: var(--white);
+    text-shadow: 0 18px 50px rgb(0 0 0 / 42%);
+    animation: cs-hero-rise 0.95s var(--ease-expo) both;
+}
+
+.cs-hero__line {
+    display: block;
+}
+
+.cs-hero__line--dynamic {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.22em;
+}
+
+.cs-word-slot {
+    position: relative;
+    display: inline-grid;
+    min-width: 4.9ch;
+    text-align: left;
+    vertical-align: bottom;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+}
+
+.cs-word-slot__item {
+    grid-area: 1 / 1;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--amber-glow);
+    opacity: 0;
+    transform: translateY(105%);
+    transition: transform 0.65s var(--ease-expo), opacity 0.45s ease;
+}
+
+.cs-word-slot__item.is-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.cs-word-slot__item.is-leaving {
+    opacity: 0;
+    transform: translateY(-105%);
+}
+
+.cs-hero__subtitle {
+    max-width: 39rem;
+    margin: 1.65rem auto 2.25rem;
+    color: rgb(255 255 255 / 88%);
+    font-size: clamp(1.04rem, 1.55vw, 1.26rem);
+    line-height: 1.65;
+    animation: cs-hero-rise 1.05s 0.12s var(--ease-expo) both;
+}
+
+.cs-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem 1.1rem;
+    animation: cs-hero-rise 1.1s 0.22s var(--ease-expo) both;
+}
+
+.cs-play-pulse {
+    display: inline-grid;
+    width: 1.85rem;
+    height: 1.85rem;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--obsidian);
+    background: var(--amber-glow);
+    box-shadow: 0 0 0 0 rgb(255 184 77 / 65%);
+    animation: cs-beacon 2.4s ease-out infinite;
+}
+
+.cs-play-pulse svg {
+    width: 0.72rem;
+    height: 0.72rem;
+    margin-left: 1px;
+}
+
+.cs-hero__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.cs-scroll-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgb(255 255 255 / 76%);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.cs-scroll-cue:hover {
+    color: var(--amber-glow);
+}
+
+.cs-scroll-cue__mouse {
+    position: relative;
+    display: inline-flex;
+    width: 1.35rem;
+    height: 2.15rem;
+    justify-content: center;
+    padding-top: 0.35rem;
+    border: 1.5px solid rgb(255 255 255 / 45%);
+    border-radius: 999px;
+}
+
+.cs-scroll-cue__mouse i {
+    width: 3px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--amber-glow);
+    animation: cs-wheel 1.8s ease-in-out infinite;
+}
+
+.cs-hero__glass-card {
+    --rx: 0deg;
+    --ry: 0deg;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.95rem 1.05rem 0.95rem 1.35rem;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 1.25rem;
+    background: rgb(17 21 32 / 72%);
+    backdrop-filter: blur(18px);
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform 0.35s var(--ease-expo);
+}
+
+.cs-hero__glass-meta {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.cs-hero__glass-meta strong {
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+.cs-hero__glass-meta > span:last-child {
+    color: rgb(255 255 255 / 70%);
+    font-size: 0.78rem;
+}
+
+.cs-hero__map-btn {
+    --mx-mag: 0px;
+    --my-mag: 0px;
+    display: grid;
+    width: 2.85rem;
+    height: 2.85rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--obsidian);
+    background: var(--white);
+    text-decoration: none;
+    transform: translate3d(var(--mx-mag), var(--my-mag), 0);
+    transition: transform 0.35s var(--ease-spring), background-color 0.2s ease;
+}
+
+.cs-hero__map-btn:hover {
+    background: var(--amber-glow);
+}
+
+/* ==========================================================================
+   6. ACT II — Daylight Manifesto + Living 6-Tile Interactive Bento
+   ========================================================================== */
+
+.cs-story {
+    padding-block: clamp(5.5rem, 10vw, 9rem);
+    background: var(--white);
+}
+
+.cs-manifesto {
+    max-width: 68rem;
+    margin-bottom: clamp(3.5rem, 6vw, 5.5rem);
+}
+
+.cs-manifesto__text {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.15rem, 4.4vw, 3.9rem);
+    font-weight: 700;
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+}
+
+.cs-scrub-word {
+    color: rgb(12 16 24 / 24%);
+    transition: color 0.45s ease;
+}
+
+.cs-scrub-word.is-lit,
+body.motion-paused .cs-scrub-word {
+    color: var(--ink);
+}
+
+/* 6-Tile Asymmetric Bento Grid */
+.cs-bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.cs-tile {
+    --rx: 0deg;
+    --ry: 0deg;
+    --sx: 50%;
+    --sy: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.85rem;
+    border-radius: 1.75rem;
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform 0.4s var(--ease-expo), box-shadow 0.4s ease;
+}
+
+.cs-tile::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(380px circle at var(--sx) var(--sy), rgb(59 130 246 / 14%), transparent 68%);
+    content: "";
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.cs-tile:hover {
+    box-shadow: 0 24px 56px rgb(12 16 24 / 10%);
+}
+
+.cs-tile:hover::before {
+    opacity: 1;
+}
+
+/* Tile 1: Atmosphere Photo */
+.cs-tile--atmosphere {
+    grid-column: span 7;
+    min-height: 26rem;
+    color: var(--white);
+    border-color: transparent;
+    background: var(--obsidian);
+}
+
+.cs-tile--atmosphere img,
+.cs-tile--prayer img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease-expo);
+}
+
+.cs-tile--atmosphere:hover img,
+.cs-tile--prayer:hover img {
+    transform: scale(1.06);
+}
+
+.cs-tile__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(9 11 16 / 18%) 0%, rgb(9 11 16 / 84%) 100%);
+    pointer-events: none;
+}
+
+.cs-tile__scrim--deep {
+    background: linear-gradient(180deg, rgb(9 11 16 / 38%) 0%, rgb(9 11 16 / 90%) 100%);
+}
+
+.cs-float-chips {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.cs-chip {
+    display: inline-flex;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid rgb(255 255 255 / 26%);
+    border-radius: 999px;
+    background: rgb(9 11 16 / 52%);
+    backdrop-filter: blur(12px);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--white);
+    animation: cs-chip-bob 4.6s var(--cd, 0s) ease-in-out infinite;
+}
+
+.cs-tile__content {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+}
+
+.cs-tile--atmosphere h3 {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+}
+
+.cs-tile--atmosphere h3 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--amber-glow);
+}
+
+/* Tile 2: Electric Royal Cobalt Live Clock */
+.cs-tile--countdown {
+    grid-column: span 5;
+    min-height: 26rem;
+    color: var(--white);
+    border-color: transparent;
+    background: linear-gradient(145deg, #1d4ed8 0%, #1e3a8a 55%, #0f172a 100%);
+}
+
+.cs-tile--countdown::before {
+    background: radial-gradient(380px circle at var(--sx) var(--sy), rgb(255 184 77 / 24%), transparent 68%);
+}
+
+.cs-tile__head {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.cs-pulse-beacon {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--amber-glow);
+    box-shadow: 0 0 0 0 rgb(255 184 77 / 75%);
+    animation: cs-beacon 2s ease-out infinite;
+}
+
+.cs-clock {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding: 1.25rem 1.1rem;
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 1.25rem;
+    background: rgb(9 11 16 / 28%);
+    backdrop-filter: blur(12px);
+}
+
+.cs-clock i {
+    font-style: normal;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--amber-glow);
+    opacity: 0.7;
+}
+
+.cs-clock__unit {
+    text-align: center;
+    flex: 1;
+}
+
+.cs-clock__unit strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.2vw, 2.95rem);
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.cs-clock__unit span {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 72%);
+}
+
+.cs-tile__foot {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+}
+
+.cs-tile__foot p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: rgb(255 255 255 / 86%);
+}
+
+/* Tile 3: Warm Sunburst Interactive First-Visit Tabs */
+.cs-tile--firstvisit {
+    grid-column: span 5;
+    min-height: 22rem;
+    background: linear-gradient(150deg, #fff5e0 0%, #fde6b4 100%);
+    border-color: rgb(255 159 28 / 28%);
+}
+
+.cs-tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.cs-tab-btn {
+    padding: 0.42rem 0.85rem;
+    border: 1px solid rgb(12 16 24 / 15%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 55%);
+    color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 700;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.cs-tab-btn:hover {
+    background: var(--white);
+}
+
+.cs-tab-btn.is-active {
+    color: var(--white);
+    border-color: var(--obsidian);
+    background: var(--obsidian);
+}
+
+.cs-tab-panels {
+    position: relative;
+    z-index: 2;
+    margin-block: 1.5rem auto;
+}
+
+.cs-tab-panel h3 {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+}
+
+.cs-tab-panel p {
+    margin: 0;
+    color: rgb(12 16 24 / 78%);
+    font-size: 0.96rem;
+    line-height: 1.66;
+}
+
+/* Tile 4: Prayer Heartbeat Card */
+.cs-tile--prayer {
+    grid-column: span 7;
+    min-height: 22rem;
+    color: var(--white);
+    border-color: transparent;
+    background: var(--obsidian);
+}
+
+.cs-tile--prayer img {
+    object-position: 50% 25%;
+}
+
+.cs-heartbeat {
+    position: relative;
+    z-index: 2;
+    width: 11rem;
+    height: 2.5rem;
+    color: var(--amber-glow);
+}
+
+.cs-heartbeat path {
+    stroke-dasharray: 290;
+    stroke-dashoffset: 290;
+    animation: cs-ekg 3.4s linear infinite;
+}
+
+.cs-tile--prayer h3 {
+    margin: 0.45rem 0 1.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.08;
+}
+
+/* Tile 5: Location Radar Card */
+.cs-tile--location {
+    grid-column: span 6;
+    background: var(--daylight);
+    gap: 0.75rem;
+}
+
+.cs-map-radar {
+    position: relative;
+    display: grid;
+    width: 3.6rem;
+    height: 3.6rem;
+    margin-bottom: 0.4rem;
+    place-items: center;
+}
+
+.cs-radar-ring {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid rgb(37 99 235 / 45%);
+    border-radius: 50%;
+    animation: cs-radar 2.8s ease-out infinite;
+}
+
+.cs-radar-ring--two {
+    animation-delay: 1.4s;
+}
+
+.cs-radar-pin {
+    position: relative;
+    display: grid;
+    width: 2.3rem;
+    height: 2.3rem;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--white);
+    background: var(--cobalt);
+    box-shadow: 0 8px 20px rgb(37 99 235 / 35%);
+}
+
+.cs-radar-pin svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.cs-tile--location h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.cs-tile--location p {
+    margin: 0 0 0.75rem;
+    color: var(--ink-muted);
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+/* Tile 6: Multi-Gen Stats */
+.cs-tile--stats {
+    grid-column: span 6;
+    background: var(--white);
+    gap: 1.25rem;
+}
+
+.cs-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.cs-stat {
+    padding: 1rem 0.75rem;
+    border-radius: 1.1rem;
+    background: var(--daylight);
+    text-align: center;
+}
+
+.cs-stat strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.3rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--cobalt);
+}
+
+.cs-stat span {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--ink-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cs-stats-note {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   7. ACT III — Meet Our Pastors Full-Width Studio Spread
+   ========================================================================== */
+
+.cs-pastors {
+    position: relative;
+    padding-block: clamp(5.5rem, 10vw, 9rem);
+    color: var(--white);
+    background: var(--obsidian);
+    overflow: hidden;
+}
+
+.cs-pastors__glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+}
+
+.cs-pastors__glow--left {
+    top: -6rem;
+    left: -8rem;
+    width: 30rem;
+    height: 30rem;
+    background: rgb(255 159 28 / 16%);
+}
+
+.cs-pastors__glow--right {
+    right: -8rem;
+    bottom: -6rem;
+    width: 32rem;
+    height: 32rem;
+    background: rgb(37 99 235 / 20%);
+}
+
+.cs-pastors__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3.75rem);
+}
+
+.cs-portrait {
+    --rx: 0deg;
+    --ry: 0deg;
+    margin: 0;
+    transform: translate3d(0, var(--py, 0px), 0);
+    will-change: transform;
+}
+
+.cs-portrait__stage {
+    position: relative;
+    aspect-ratio: 0.82;
+    border-radius: 1.75rem;
+    border: 1px solid var(--border-dark);
+    background: radial-gradient(circle at 50% 25%, #f5f2ec 0%, #ded8cd 65%, #c7c0b3 100%);
+    overflow: hidden;
+    box-shadow: 0 28px 64px rgb(0 0 0 / 48%);
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform 0.4s var(--ease-expo);
+}
+
+.cs-portrait__halo {
+    position: absolute;
+    inset: auto -10% -20%;
+    height: 55%;
+    background: radial-gradient(circle, rgb(255 159 28 / 28%), transparent 70%);
+    pointer-events: none;
+}
+
+.cs-portrait__halo--blue {
+    background: radial-gradient(circle, rgb(37 99 235 / 24%), transparent 70%);
+}
+
+.cs-portrait__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    transition: transform 0.7s var(--ease-expo);
+}
+
+.cs-portrait__img--cutout {
+    object-position: 50% 100%;
+    transform: translateY(6%) scale(1.12);
+    transform-origin: bottom center;
+}
+
+.cs-portrait:hover .cs-portrait__img {
+    transform: scale(1.06);
+}
+
+.cs-portrait:hover .cs-portrait__img--cutout {
+    transform: translateY(6%) scale(1.17);
+}
+
+.cs-portrait figcaption {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.15rem;
+}
+
+.cs-portrait figcaption strong {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.cs-pastors__center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cs-pastors__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 3.8vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+}
+
+.cs-pastors__title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--amber-glow);
+}
+
+.cs-pastors__lead {
+    margin: 1.5rem 0 1rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+    font-style: italic;
+    line-height: 1.48;
+    color: rgb(255 255 255 / 92%);
+}
+
+.cs-pastors__body {
+    max-width: 32rem;
+    margin: 0;
+    color: rgb(255 255 255 / 70%);
+    font-size: 0.96rem;
+    line-height: 1.7;
+}
+
+.cs-signature {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    margin: 1.75rem 0 2rem;
+    color: var(--amber-glow);
+}
+
+.cs-signature svg {
+    width: 12.5rem;
+    height: auto;
+}
+
+.cs-signature span {
+    color: rgb(255 255 255 / 72%);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+
+.cs-pastors__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.85rem;
+}
+
+/* ==========================================================================
+   8. ACT IV — Messages Cinema Stage & Series Filter
+   ========================================================================== */
+
+.cs-cinema {
+    padding-block: clamp(5rem, 9vw, 8.5rem);
+    color: var(--white);
+    background: linear-gradient(180deg, var(--obsidian) 0%, #0e1320 100%);
+    border-top: 1px solid var(--border-dark);
+}
+
+.cs-cinema__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    margin-bottom: 2.75rem;
+}
+
+.cs-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.cs-filter-pill {
+    padding: 0.55rem 1.05rem;
+    border: 1px solid var(--border-dark);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 5%);
+    color: rgb(255 255 255 / 80%);
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.cs-filter-pill:hover {
+    color: var(--white);
+    background: rgb(255 255 255 / 12%);
+}
+
+.cs-filter-pill.is-active {
+    color: var(--obsidian);
+    border-color: var(--amber-glow);
+    background: var(--amber-glow);
+}
+
+.cs-filter-row--light .cs-filter-pill {
+    border-color: var(--border-light);
+    background: var(--daylight);
+    color: var(--ink-muted);
+}
+
+.cs-filter-row--light .cs-filter-pill:hover {
+    color: var(--ink);
+}
+
+.cs-filter-row--light .cs-filter-pill.is-active {
+    color: var(--white);
+    border-color: var(--obsidian);
+    background: var(--obsidian);
+}
+
+.cs-sermon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.35rem;
+}
+
+.cs-sermon-card {
+    --sx: 50%;
+    --sy: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-dark);
+    border-radius: 1.5rem;
+    background: var(--obsidian-card);
+    overflow: hidden;
+    transition: transform 0.4s var(--ease-expo), border-color 0.3s ease, box-shadow 0.4s ease;
+}
+
+.cs-sermon-card[hidden] {
+    display: none;
+}
+
+.cs-sermon-card--featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+    align-items: stretch;
+}
+
+.cs-sermon-card::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(360px circle at var(--sx) var(--sy), rgb(255 184 77 / 14%), transparent 68%);
+    content: "";
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.cs-sermon-card:hover {
+    transform: translateY(-6px);
+    border-color: rgb(255 184 77 / 42%);
+    box-shadow: 0 26px 56px rgb(0 0 0 / 45%);
+}
+
+.cs-sermon-card:hover::before {
+    opacity: 1;
+}
+
+.cs-sermon-card__visual {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #1e3a8a, #090b10 70%, #7c2d12);
+    overflow: hidden;
+}
+
+.cs-sermon-card--featured .cs-sermon-card__visual {
+    aspect-ratio: auto;
+    min-height: 22rem;
+}
+
+.cs-sermon-card--featured .cs-sermon-card__body {
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    justify-content: center;
+}
+
+.cs-sermon-card--featured h3 {
+    font-size: clamp(1.85rem, 3vw, 2.5rem);
+}
+
+.cs-sermon-card--featured .cs-sermon-card__quote {
+    font-size: clamp(1.22rem, 1.8vw, 1.55rem);
+}
+
+.cs-sermon-card__visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-expo);
+}
+
+.cs-sermon-card:hover .cs-sermon-card__visual img {
+    transform: scale(1.06);
+}
+
+.cs-sermon-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(9 11 16 / 28%) 0%, rgb(9 11 16 / 72%) 100%);
+}
+
+.cs-sermon-card__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgb(9 11 16 / 68%);
+    border: 1px solid rgb(255 255 255 / 18%);
+    backdrop-filter: blur(8px);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber-glow);
+}
+
+.cs-sermon-card__dur {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.32rem 0.65rem;
+    border-radius: 0.5rem;
+    background: rgb(9 11 16 / 75%);
+    font-size: 0.74rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.cs-sermon-play {
+    --mx-mag: 0px;
+    --my-mag: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    width: 4.1rem;
+    height: 4.1rem;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--amber-glow), var(--amber));
+    box-shadow: 0 14px 36px rgb(0 0 0 / 48%);
+    transform: translate(-50%, -50%) translate3d(var(--mx-mag), var(--my-mag), 0);
+    transition: transform 0.35s var(--ease-spring);
+}
+
+.cs-sermon-play:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.cs-sermon-play svg {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-left: 2px;
+}
+
+.cs-sermon-play__ring {
+    position: absolute;
+    inset: -6px;
+    border: 1.5px solid rgb(255 184 77 / 55%);
+    border-radius: 50%;
+    animation: cs-radar 2.5s ease-out infinite;
+}
+
+.cs-sermon-card__body {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.45rem 1.55rem 1.55rem;
+}
+
+.cs-sermon-card__scripture {
+    margin: 0 0 0.45rem;
+    color: var(--amber-glow);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.cs-sermon-card h3 {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-display);
+    font-size: 1.48rem;
+    font-weight: 800;
+    line-height: 1.12;
+}
+
+.cs-sermon-card h3 a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+.cs-sermon-card h3 a:hover {
+    color: var(--amber-glow);
+}
+
+.cs-sermon-card__quote {
+    margin: 0 0 1.25rem;
+    color: rgb(255 255 255 / 72%);
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.45;
+}
+
+.cs-sermon-card__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-dark);
+    font-size: 0.8rem;
+    color: rgb(255 255 255 / 66%);
+}
+
+.cs-sermon-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--white);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cs-sermon-link:hover {
+    color: var(--amber-glow);
+}
+
+.cs-cinema__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.75rem;
+}
+
+/* ==========================================================================
+   9. ACT V — Expanding Flex-Accordion Ministries + Serving Teams Ribbon
+   ========================================================================== */
+
+.cs-ministries {
+    padding-top: clamp(5.5rem, 10vw, 9rem);
+    background: var(--white);
+}
+
+.cs-ministries__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.cs-ministries__sub {
+    max-width: 24rem;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.98rem;
+    line-height: 1.65;
+}
+
+.cs-accordion {
+    display: flex;
+    gap: 0.9rem;
+    min-height: 31rem;
+}
+
+.cs-acc-panel {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.75rem;
+    border-radius: 1.75rem;
+    color: var(--white);
+    background: var(--obsidian);
+    overflow: hidden;
+    cursor: pointer;
+    transition: flex-grow 0.65s var(--ease-expo), box-shadow 0.4s ease;
+}
+
+.cs-acc-panel.is-expanded {
+    flex-grow: 2.65;
+    box-shadow: 0 28px 60px rgb(9 11 16 / 22%);
+}
+
+.cs-acc-panel__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    transition: transform 0.8s var(--ease-expo);
+}
+
+.cs-acc-panel--cobalt .cs-acc-panel__bg {
+    object-position: 32% 28%;
+}
+
+.cs-acc-panel--crimson .cs-acc-panel__bg {
+    object-position: 82% 48%;
+}
+
+.cs-acc-panel .cs-pill-link {
+    white-space: nowrap;
+}
+
+.cs-acc-panel.is-expanded .cs-acc-panel__bg {
+    transform: scale(1.06);
+}
+
+.cs-acc-panel__wash {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.45s ease;
+}
+
+.cs-acc-panel--violet .cs-acc-panel__wash {
+    background: linear-gradient(180deg, rgb(76 29 149 / 34%) 0%, rgb(15 10 32 / 92%) 100%);
+}
+
+.cs-acc-panel--cobalt .cs-acc-panel__wash {
+    background: linear-gradient(180deg, rgb(30 64 175 / 38%) 0%, rgb(9 17 38 / 92%) 100%);
+}
+
+.cs-acc-panel--amber .cs-acc-panel__wash {
+    background: linear-gradient(180deg, rgb(180 83 9 / 32%) 0%, rgb(24 14 8 / 92%) 100%);
+}
+
+.cs-acc-panel--crimson .cs-acc-panel__wash {
+    background: linear-gradient(180deg, rgb(159 18 57 / 34%) 0%, rgb(22 10 16 / 92%) 100%);
+}
+
+.cs-acc-panel__top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.cs-acc-panel__num {
+    display: inline-grid;
+    width: 2.4rem;
+    height: 2.4rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 32%);
+    border-radius: 50%;
+    background: rgb(9 11 16 / 40%);
+    backdrop-filter: blur(8px);
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.cs-acc-panel__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber-glow);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.35s ease, transform 0.35s var(--ease-expo);
+}
+
+.cs-acc-panel.is-expanded .cs-acc-panel__eyebrow {
+    opacity: 1;
+    transform: none;
+}
+
+.cs-acc-panel__bottom {
+    position: relative;
+    z-index: 2;
+    max-width: 28rem;
+}
+
+.cs-acc-panel__bottom h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 2.5vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+}
+
+.cs-acc-panel__bottom p {
+    margin: 0.75rem 0 1.25rem;
+    color: rgb(255 255 255 / 86%);
+    font-size: 0.94rem;
+    line-height: 1.62;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.55s var(--ease-expo), opacity 0.35s ease, margin 0.4s ease;
+}
+
+.cs-acc-panel.is-expanded .cs-acc-panel__bottom p {
+    max-height: 10rem;
+    opacity: 1;
+}
+
+.cs-acc-panel:not(.is-expanded) .cs-acc-panel__bottom p {
+    margin-block: 0;
+}
+
+.cs-acc-panel:not(.is-expanded) .cs-pill-link {
+    margin-top: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.76rem;
+}
+
+/* Serving Teams Scrolling Ribbon */
+.cs-teams-band {
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-block: 2.5rem 3.5rem;
+    border-top: 1px solid var(--border-light);
+    background: var(--daylight);
+}
+
+.cs-teams-band__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cs-teams-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.cs-teams-marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 0.85rem;
+    animation: cs-marquee 30s linear infinite;
+}
+
+.cs-teams-marquee:hover .cs-teams-marquee__track {
+    animation-play-state: paused;
+}
+
+.cs-team-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.8rem 1.35rem;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s var(--ease-spring);
+}
+
+.cs-team-chip:hover {
+    color: var(--white);
+    background: var(--obsidian);
+    transform: translateY(-3px);
+}
+
+.cs-team-chip__spark {
+    color: var(--amber);
+}
+
+/* ==========================================================================
+   10. ACT VI — Interactive Gatherings Timeline + Digital Chronicle Dispatch
+   ========================================================================== */
+
+.cs-gatherings {
+    padding-block: clamp(5.5rem, 9vw, 8.5rem);
+    background: var(--white);
+}
+
+.cs-gatherings__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.85fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+}
+
+.cs-gatherings__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.cs-timeline {
+    display: grid;
+    border-top: 1px solid var(--border-light);
+}
+
+.cs-timeline-row {
+    --sx: 50%;
+    --sy: 50%;
+    position: relative;
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto 2.75rem;
+    align-items: center;
+    gap: 1.35rem;
+    padding: 1.35rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: background-color 0.25s ease, transform 0.3s var(--ease-expo);
+}
+
+.cs-timeline-row[hidden] {
+    display: none;
+}
+
+.cs-timeline-row::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(320px circle at var(--sx) var(--sy), rgb(37 99 235 / 8%), transparent 68%);
+    content: "";
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.cs-timeline-row:hover {
+    background: var(--daylight);
+    transform: translateX(6px);
+}
+
+.cs-timeline-row:hover::before {
+    opacity: 1;
+}
+
+.cs-timeline-date {
+    display: grid;
+    place-content: center;
+    height: 4.5rem;
+    border-radius: 1.1rem;
+    background: var(--daylight);
+    text-align: center;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.cs-timeline-row:hover .cs-timeline-date {
+    color: var(--white);
+    background: var(--obsidian);
+}
+
+.cs-timeline-date span {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+}
+
+.cs-timeline-row:hover .cs-timeline-date span {
+    color: var(--amber-glow);
+}
+
+.cs-timeline-date strong {
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1.05;
+}
+
+.cs-timeline-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.3rem;
+    color: var(--ink-muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.cs-timeline-tags i {
+    font-style: normal;
+    opacity: 0.4;
+}
+
+.cs-cat-dot {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 50%;
+    background: var(--amber);
+}
+
+.cs-cat-dot--program {
+    background: var(--cobalt);
+}
+
+.cs-timeline-info h3 {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.38rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.cs-timeline-info p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.cs-timeline-time {
+    text-align: right;
+}
+
+.cs-timeline-time strong {
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.cs-timeline-time span {
+    display: block;
+    color: var(--ink-muted);
+    font-size: 0.78rem;
+}
+
+.cs-timeline-go {
+    display: grid;
+    width: 2.6rem;
+    height: 2.6rem;
+    place-items: center;
+    border: 1px solid var(--border-light);
+    border-radius: 50%;
+    background: var(--white);
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.35s var(--ease-spring);
+}
+
+.cs-timeline-row:hover .cs-timeline-go {
+    color: var(--obsidian);
+    border-color: var(--amber);
+    background: var(--amber-glow);
+    transform: translate(3px, -3px);
+}
+
+.cs-gatherings__more {
+    margin-top: 2rem;
+}
+
+/* Chronicle Digital Dispatch Card */
+.cs-dispatch {
+    --rx: 0deg;
+    --ry: 0deg;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+    padding: clamp(2rem, 3.5vw, 2.75rem);
+    border-radius: 2rem;
+    color: var(--white);
+    background: linear-gradient(155deg, #171d2c 0%, #090b10 100%);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 28px 64px rgb(9 11 16 / 20%);
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform 0.4s var(--ease-expo);
+}
+
+.cs-dispatch__shine {
+    position: absolute;
+    top: -6rem;
+    right: -6rem;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(255 159 28 / 28%), transparent 70%);
+    filter: blur(36px);
+    pointer-events: none;
+}
+
+.cs-dispatch h3 {
+    position: relative;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.85rem, 2.8vw, 2.55rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+}
+
+.cs-dispatch h3 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--amber-glow);
+}
+
+.cs-dispatch > p {
+    position: relative;
+    margin: 0;
+    color: rgb(255 255 255 / 76%);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.cs-dispatch__preview {
+    position: relative;
+    padding: 1.35rem;
+    border: 1px solid rgb(255 255 255 / 14%);
+    border-radius: 1.25rem;
+    background: rgb(255 255 255 / 5%);
+}
+
+.cs-dispatch__edition {
+    display: block;
+    color: var(--amber-glow);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.cs-dispatch__preview strong {
+    display: block;
+    margin: 0.4rem 0 0.9rem;
+    font-family: var(--font-serif);
+    font-size: 1.55rem;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.cs-dispatch__bars {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.cs-dispatch__bars span {
+    display: block;
+    height: 2px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 16%);
+}
+
+.cs-dispatch__bars span:nth-child(2) {
+    width: 82%;
+}
+
+.cs-dispatch__bars span:nth-child(3) {
+    width: 55%;
+}
+
+.cs-dispatch__actions {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.cs-dispatch__actions .cs-btn {
+    width: 100%;
+}
+
+.cs-dispatch__archive {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    color: rgb(255 255 255 / 78%);
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.cs-dispatch__archive:hover {
+    color: var(--amber-glow);
+}
+
+/* ==========================================================================
+   11. ACT VII — Grand Light-Tunnel Finale & Swiss Footer
+   ========================================================================== */
+
+.cs-footer {
+    color: var(--white);
+    background: var(--obsidian);
+    overflow: hidden;
+}
+
+.cs-finale {
+    position: relative;
+    padding-block: clamp(5.5rem, 11vw, 9.5rem);
+    border-bottom: 1px solid var(--border-dark);
+    overflow: hidden;
+}
+
+.cs-finale__rings {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+}
+
+.cs-finale__rings span {
+    position: absolute;
+    width: 34rem;
+    height: 34rem;
+    border-radius: 50%;
+    border: 1px solid rgb(255 184 77 / 20%);
+    animation: cs-ring-pulse 7s ease-out infinite;
+}
+
+.cs-finale__rings span:nth-child(2) {
+    animation-delay: 2.3s;
+}
+
+.cs-finale__rings span:nth-child(3) {
+    animation-delay: 4.6s;
+}
+
+.cs-finale__inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cs-finale h2 {
+    margin: 1.4rem 0 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6.8vw, 5.8rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+}
+
+.cs-finale h2 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--amber-glow);
+}
+
+.cs-finale p {
+    max-width: 36rem;
+    margin: 0 0 2.25rem;
+    color: rgb(255 255 255 / 78%);
+    font-size: clamp(1rem, 1.4vw, 1.18rem);
+    line-height: 1.65;
+}
+
+.cs-finale__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
+}
+
+.cs-footer__cols {
+    display: grid;
+    grid-template-columns: 1.5fr 1.1fr 1fr 1fr;
+    gap: 2.5rem;
+    padding-block: clamp(3.5rem, 6vw, 4.75rem);
+}
+
+.cs-footer__mission {
+    max-width: 22rem;
+    margin: 1.15rem 0 1.25rem;
+    color: rgb(255 255 255 / 66%);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+.cs-footer__addr {
+    color: rgb(255 255 255 / 86%);
+    font-size: 0.9rem;
+    font-style: normal;
+    line-height: 1.6;
+}
+
+.cs-footer__label {
+    margin: 0 0 1.1rem;
+    color: var(--amber-glow);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.cs-footer__info {
+    margin: 0 0 0.5rem;
+    color: rgb(255 255 255 / 76%);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.cs-footer__cols > div:not(.cs-footer__brand) a {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.45rem;
+    padding-block: 0.38rem;
+    color: rgb(255 255 255 / 86%);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.25s var(--ease-expo);
+}
+
+.cs-footer__cols > div:not(.cs-footer__brand) a:hover {
+    color: var(--amber-glow);
+    transform: translateX(3px);
+}
+
+.cs-footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-block: 1.5rem 2.25rem;
+    border-top: 1px solid var(--border-dark);
+    color: rgb(255 255 255 / 54%);
+    font-size: 0.82rem;
+}
+
+.cs-footer__bottom p {
+    margin: 0;
+}
+
+/* ==========================================================================
+   12. Give Page Harmony (/give)
+   ========================================================================== */
+
+.give-page {
+    padding-block: clamp(3rem, 6vw, 5.5rem);
+}
+
+.give-page__intro {
+    max-width: 48rem;
+    margin-bottom: 3rem;
+}
+
+.section-kicker {
+    display: inline-block;
+    margin: 0 0 1rem;
+    color: var(--cobalt);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.detail-label {
+    display: block;
+    color: var(--cobalt);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.give-page h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+}
+
+.give-page__intro > p:last-child {
+    max-width: 36rem;
+    margin-top: 1.25rem;
+    color: var(--ink-muted);
+    font-size: 1.08rem;
+    line-height: 1.7;
+}
+
+.give-options {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 1.35rem;
+}
+
+.give-option {
+    padding: clamp(1.75rem, 3.5vw, 2.75rem);
+    border: 1px solid var(--border-light);
+    border-radius: 1.5rem;
+    background: var(--white);
+}
+
+.give-option--transfer {
+    background: linear-gradient(150deg, #fff5e0, #fde6b4);
+    border-color: rgb(255 159 28 / 30%);
+}
+
+.give-option h2 {
+    margin: 0.75rem 0 0.9rem;
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 800;
+}
+
+.give-option p {
+    color: var(--ink-muted);
+    line-height: 1.7;
+}
+
+.give-option__email {
+    display: block;
+    margin-block: 1.35rem;
+    color: var(--ink);
+    font-weight: 800;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    overflow-wrap: anywhere;
+    user-select: all;
+}
+
+.give-option__copy[hidden] {
+    display: none;
+}
+
+.give-option__status {
+    min-height: 1.5rem;
+    margin: 0.75rem 0 0;
+    color: var(--cobalt);
+    font-weight: 700;
+}
+
+.give-page__help {
+    margin: 2rem 0 0;
+    padding: 1.4rem 1.75rem;
+    border: 1px solid var(--border-light);
+    border-radius: 1.1rem;
+    background: var(--daylight);
+}
+
+.give-page__help a {
+    color: var(--cobalt);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   13. Keyframes & Motion Controls
+   ========================================================================== */
+
+@keyframes cs-hero-rise {
+    from {
+        opacity: 0;
+        transform: translateY(26px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes cs-ken-burns {
+    from {
+        transform: scale(1.02);
+    }
+    to {
+        transform: scale(1.11);
+    }
+}
+
+@keyframes cs-beam-drift {
+    from {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+        transform: translate3d(2.5rem, -2rem, 0) scale(1.15);
+    }
+}
+
+@keyframes cs-beacon {
+    0% {
+        box-shadow: 0 0 0 0 rgb(255 159 28 / 75%);
+    }
+    70% {
+        box-shadow: 0 0 0 0.6rem rgb(255 159 28 / 0%);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgb(255 159 28 / 0%);
+    }
+}
+
+@keyframes cs-wheel {
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(8px);
+    }
+}
+
+@keyframes cs-chip-bob {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes cs-ekg {
+    0% {
+        stroke-dashoffset: 290;
+        opacity: 0.35;
+    }
+    45% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+    }
+    100% {
+        stroke-dashoffset: -290;
+        opacity: 0.35;
+    }
+}
+
+@keyframes cs-radar {
+    0% {
+        opacity: 0.75;
+        transform: scale(0.75);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.55);
+    }
+}
+
+@keyframes cs-marquee {
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+@keyframes cs-ring-pulse {
+    0% {
+        opacity: 0.55;
+        transform: scale(0.55);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(2.1);
+    }
+}
+
+@keyframes cs-drawer-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: none;
+    }
+}
+
+body.motion-paused *,
+body.motion-paused *::before,
+body.motion-paused *::after {
+    animation: none !important;
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================================================
+   14. Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 66rem) {
+    .cs-nav__links,
+    .cs-motion-btn {
+        display: none;
+    }
+
+    .cs-burger:not([hidden]) {
+        display: grid;
+    }
+
+    .cs-tile--atmosphere,
+    .cs-tile--countdown,
+    .cs-tile--firstvisit,
+    .cs-tile--prayer,
+    .cs-tile--location,
+    .cs-tile--stats {
+        grid-column: span 12;
+    }
+
+    .cs-pastors__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cs-pastors__center {
+        grid-column: 1 / -1;
+        order: -1;
+    }
+
+    .cs-sermon-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cs-sermon-card--featured {
+        grid-column: 1 / -1;
+        display: flex;
+    }
+
+    .cs-sermon-card--featured .cs-sermon-card__visual {
+        aspect-ratio: 16 / 9;
+        min-height: 0;
+    }
+
+    .cs-accordion {
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .cs-acc-panel {
+        min-height: 14rem;
+    }
+
+    .cs-acc-panel.is-expanded {
+        min-height: 22rem;
+    }
+
+    .cs-gatherings__layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-footer__cols {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 48rem) {
+    .cs-nav {
+        height: 4.35rem;
+    }
+
+    .cs-brand__mark,
+    .cs-brand__mark img {
+        width: 2.1rem;
+        height: 2.1rem;
+    }
+
+    .cs-brand__text strong {
+        font-size: 1.15rem;
+    }
+
+    .cs-hero__title {
+        font-size: clamp(2.85rem, 13vw, 4.4rem);
+    }
+
+    .cs-word-slot {
+        min-width: 4.4ch;
+        text-align: center;
+    }
+
+    .cs-hero__bottom {
+        justify-content: center;
+    }
+
+    .cs-scroll-cue {
+        display: none;
+    }
+
+    .cs-hero__glass-card {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .cs-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cs-sermon-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-sermon-card--featured {
+        grid-column: span 1;
+    }
+
+    .cs-timeline-row {
+        grid-template-columns: 4rem minmax(0, 1fr);
+        gap: 0.9rem 1rem;
+    }
+
+    .cs-timeline-time {
+        grid-column: 2;
+        text-align: left;
+    }
+
+    .cs-timeline-go {
+        display: none;
+    }
+
+    .give-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 30rem) {
+    .cs-brand__mark {
+        display: none;
+    }
+
+    .cs-live-pill {
+        font-size: 0.66rem;
+        padding: 0.45rem 0.85rem;
+        text-align: center;
+    }
+
+    .cs-hero__actions,
+    .cs-finale__actions {
+        width: 100%;
+    }
+
+    .cs-hero__actions .cs-btn,
+    .cs-finale__actions .cs-btn {
+        width: 100%;
+    }
+
+    .cs-pastors__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-footer__cols {
+        grid-template-columns: 1fr;
+    }
 }

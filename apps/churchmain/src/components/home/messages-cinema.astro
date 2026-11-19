@@ -1,0 +1,101 @@
+---
+import { messages, series } from "../../data/messages";
+import ArrowIcon from "../arrow-icon.astro";
+
+const filterSeries = ["All", ...series];
+---
+
+<section class="cs-cinema" id="messages" aria-labelledby="cinema-heading">
+    <div class="cs-shell">
+        <header class="cs-cinema__header" data-animate>
+            <div>
+                <span class="cs-kicker-badge cs-kicker-badge--dark">
+                    <span class="cs-kicker-badge__dot" aria-hidden="true"></span>
+                    <span>Sunday Messages &amp; Teaching</span>
+                </span>
+                <h2 id="cinema-heading" class="cs-section-h2 cs-section-h2--light">
+                    Press play on <em>living truth.</em>
+                </h2>
+            </div>
+
+            <div class="cs-cinema__controls">
+                <div class="cs-filter-row" role="tablist" aria-label="Filter messages by series" data-series-filter>
+                    {filterSeries.map((name, idx) => (
+                        <button
+                            type="button"
+                            role="tab"
+                            class={`cs-filter-pill ${idx === 0 ? "is-active" : ""}`}
+                            aria-selected={idx === 0 ? "true" : "false"}
+                            data-series-btn={name}
+                        >
+                            {name}
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </header>
+
+        <div class="cs-sermon-grid" data-sermon-grid>
+            {messages.map((msg, idx) => (
+                <article
+                    class={`cs-sermon-card ${idx === 0 ? "cs-sermon-card--featured" : ""}`}
+                    data-series={msg.series}
+                    data-animate
+                    data-delay={(idx % 3) * 80}
+                    data-spotlight
+                >
+                    <div class="cs-sermon-card__visual">
+                        <img
+                            src={`https://i.ytimg.com/vi/${msg.youtubeId}/hqdefault.jpg`}
+                            alt=""
+                            loading="lazy"
+                            onerror="this.style.display='none'"
+                        />
+                        <div class="cs-sermon-card__overlay" aria-hidden="true"></div>
+                        <span class="cs-sermon-card__badge">{msg.series}</span>
+                        <span class="cs-sermon-card__dur">{msg.duration}</span>
+
+                        <button
+                            type="button"
+                            class="cs-sermon-play"
+                            data-open-sermon
+                            data-youtube-id={msg.youtubeId}
+                            data-sermon-title={msg.title}
+                            data-sermon-meta={`${msg.speaker} · ${msg.scripture} · ${msg.duration}`}
+                            data-sermon-href={`/messages/${msg.slug}`}
+                            aria-label={`Play ${msg.title}`}
+                            data-magnetic
+                        >
+                            <span class="cs-sermon-play__ring" aria-hidden="true"></span>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M8.5 5.2v13.6L19.5 12 8.5 5.2Z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="cs-sermon-card__body">
+                        <p class="cs-sermon-card__scripture">{msg.scripture} · {msg.date}</p>
+                        <h3>
+                            <a href={`/messages/${msg.slug}`}>{msg.title}</a>
+                        </h3>
+                        <p class="cs-sermon-card__quote">“{msg.quote}”</p>
+                        <div class="cs-sermon-card__foot">
+                            <span>{msg.speaker}</span>
+                            <a class="cs-sermon-link" href={`/messages/${msg.slug}`}>
+                                <span>Notes &amp; transcript</span>
+                                <ArrowIcon />
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            ))}
+        </div>
+
+        <div class="cs-cinema__footer" data-animate>
+            <a class="cs-btn cs-btn--glass" href="/messages" data-magnetic>
+                <span>Explore Full Message Library</span>
+                <span class="cs-btn__arrow"><ArrowIcon /></span>
+            </a>
+        </div>
+    </div>
+</section>

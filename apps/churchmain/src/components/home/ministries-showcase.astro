@@ -1,0 +1,124 @@
+---
+import { Image } from "astro:assets";
+import Prayer from "../../assets/community/prayer.jpg";
+import Fellowship from "../../assets/community/fellowship.jpg";
+import Gathering from "../../assets/community/cornerstone-gathering.jpg";
+import { departments } from "../../data/organizations";
+import ArrowIcon from "../arrow-icon.astro";
+
+const circles = [
+    {
+        slug: "women",
+        href: "/ministries/women",
+        eyebrow: "Cornerstone Excellent Women",
+        title: "Women",
+        description: "Deep sisterhood, fervent prayer, and our annual Woman Excel gathering empowering women to thrive in faith and purpose.",
+        image: Prayer,
+        alt: "Women joining hands in prayer at Cornerstone",
+        tone: "violet",
+    },
+    {
+        slug: "men",
+        href: "/ministries/men",
+        eyebrow: "Men of Purpose",
+        title: "Men",
+        description: "Authentic brotherhood, spiritual strength, and courageous leadership for men walking out their calling at home and work.",
+        image: Gathering,
+        alt: "Men and families smiling together at Cornerstone Assembly",
+        tone: "cobalt",
+    },
+    {
+        slug: "youths-teenagers",
+        href: "/ministries/youths-teenagers",
+        eyebrow: "Next Generation",
+        title: "Youth & Teens",
+        description: "Honest conversations, real friendships, creative energy, and bold faith for teenagers and young adults across Saskatoon.",
+        image: Fellowship,
+        alt: "Members smiling and laughing together around tables",
+        tone: "amber",
+    },
+    {
+        slug: "children",
+        href: "/ministries/children",
+        eyebrow: "Cornerstone Kids",
+        title: "Children",
+        description: "Joyful discovery, caring teachers, and foundational Bible stories crafted so children love coming to church every Sunday.",
+        image: Gathering,
+        alt: "Warm multi-generational congregation gathering at Cornerstone",
+        tone: "crimson",
+    },
+];
+---
+
+<section class="cs-ministries" id="ministries" aria-labelledby="ministries-heading">
+    <div class="cs-shell">
+        <header class="cs-ministries__header" data-animate>
+            <div>
+                <span class="cs-kicker-badge">
+                    <span class="cs-kicker-badge__dot" aria-hidden="true"></span>
+                    <span>Find Your Circle</span>
+                </span>
+                <h2 id="ministries-heading" class="cs-section-h2">
+                    A vibrant community for <em>every generation.</em>
+                </h2>
+            </div>
+            <p class="cs-ministries__sub">
+                Hover or tap any ministry below to explore where you and your family belong.
+            </p>
+        </header>
+
+        <div class="cs-accordion" data-ministry-accordion>
+            {circles.map((circle, idx) => (
+                <article
+                    class={`cs-acc-panel cs-acc-panel--${circle.tone} ${idx === 0 ? "is-expanded" : ""}`}
+                    data-acc-panel
+                    tabindex="0"
+                >
+                    <Image
+                        class="cs-acc-panel__bg"
+                        src={circle.image}
+                        alt={circle.alt}
+                        widths={[480, 900, 1280]}
+                        sizes="(min-width: 1024px) 45vw, 100vw"
+                    />
+                    <div class="cs-acc-panel__wash" aria-hidden="true"></div>
+
+                    <div class="cs-acc-panel__top">
+                        <span class="cs-acc-panel__num">{String(idx + 1).padStart(2, "0")}</span>
+                        <span class="cs-acc-panel__eyebrow">{circle.eyebrow}</span>
+                    </div>
+
+                    <div class="cs-acc-panel__bottom">
+                        <h3>{circle.title}</h3>
+                        <p>{circle.description}</p>
+                        <a class="cs-pill-link cs-pill-link--white" href={circle.href}>
+                            <span>Explore {circle.title}</span>
+                            <ArrowIcon />
+                        </a>
+                    </div>
+                </article>
+            ))}
+        </div>
+    </div>
+
+    <div class="cs-teams-band" aria-label="Serving departments at Cornerstone">
+        <div class="cs-shell cs-teams-band__head">
+            <span class="cs-micro-tag">Ready to Serve?</span>
+            <a class="cs-inline-arrow" href="/departments">
+                <span>View all 7 serving teams</span>
+                <ArrowIcon />
+            </a>
+        </div>
+
+        <div class="cs-teams-marquee">
+            <div class="cs-teams-marquee__track">
+                {[...departments, ...departments].map((dept) => (
+                    <a class="cs-team-chip" href={`/departments/${dept.slug}`}>
+                        <span class="cs-team-chip__spark" aria-hidden="true">✦</span>
+                        <span>{dept.name}</span>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>

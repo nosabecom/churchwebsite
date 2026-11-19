@@ -1,0 +1,100 @@
+---
+import { Image } from "astro:assets";
+import Gathering from "../../assets/community/cornerstone-gathering.jpg";
+import { messages } from "../../data/messages";
+import ArrowIcon from "../arrow-icon.astro";
+
+const latestMessage = messages[0];
+---
+
+<section class="cs-hero" aria-labelledby="hero-heading">
+    <div class="cs-hero__media" data-parallax="0.18">
+        <Image
+            src={Gathering}
+            alt="Joyful members of RCCG Cornerstone Assembly in Saskatoon smiling and greeting one another"
+            widths={[768, 1280, 1800]}
+            sizes="100vw"
+            loading="eager"
+            fetchpriority="high"
+        />
+    </div>
+    <canvas class="cs-hero__canvas" data-light-canvas aria-hidden="true"></canvas>
+    <div class="cs-hero__vignette" aria-hidden="true"></div>
+    <div class="cs-hero__beam cs-hero__beam--amber" aria-hidden="true"></div>
+    <div class="cs-hero__beam cs-hero__beam--blue" aria-hidden="true"></div>
+
+    <div class="cs-shell cs-hero__content">
+        <div class="cs-hero__top">
+            <span class="cs-live-pill">
+                <span class="cs-live-pill__dot" aria-hidden="true"></span>
+                <span>Sundays at 9:00 AM · 70–3904 Millar Ave, Saskatoon</span>
+            </span>
+        </div>
+
+        <div class="cs-hero__center">
+            <h1 id="hero-heading" class="cs-hero__title">
+                <span class="cs-hero__line">COME FIND</span>
+                <span class="cs-hero__line cs-hero__line--dynamic">
+                    <span>YOUR</span>
+                    <span class="cs-word-slot" aria-live="polite" data-word-cycler>
+                        <span class="cs-word-slot__item is-active">HOME.</span>
+                        <span class="cs-word-slot__item">FAMILY.</span>
+                        <span class="cs-word-slot__item">PURPOSE.</span>
+                        <span class="cs-word-slot__item">PEACE.</span>
+                    </span>
+                </span>
+            </h1>
+
+            <p class="cs-hero__subtitle">
+                A vibrant, Spirit-filled church family in Saskatoon where every generation encounters Jesus, builds authentic friendships, and steps boldly into purpose.
+            </p>
+
+            <div class="cs-hero__actions">
+                <a class="cs-btn cs-btn--amber" href="/new-to-church" data-magnetic>
+                    <span>Plan Your First Sunday</span>
+                    <span class="cs-btn__arrow"><ArrowIcon /></span>
+                </a>
+                <button
+                    type="button"
+                    class="cs-btn cs-btn--glass"
+                    data-open-sermon
+                    data-youtube-id={latestMessage.youtubeId}
+                    data-sermon-title={latestMessage.title}
+                    data-sermon-meta={`${latestMessage.speaker} · ${latestMessage.scripture} · ${latestMessage.duration}`}
+                    data-sermon-href={`/messages/${latestMessage.slug}`}
+                    data-magnetic
+                >
+                    <span class="cs-play-pulse" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 5.5v13l10.5-6.5-10.5-6.5Z" /></svg>
+                    </span>
+                    <span>Watch Latest Message</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="cs-hero__bottom">
+            <a class="cs-scroll-cue" href="#story" aria-label="Scroll to explore Cornerstone">
+                <span class="cs-scroll-cue__mouse" aria-hidden="true"><i></i></span>
+                <span>Scroll to experience Cornerstone</span>
+            </a>
+
+            <div class="cs-hero__glass-card" data-tilt>
+                <div class="cs-hero__glass-meta">
+                    <span class="cs-micro-tag">Next Gathering</span>
+                    <strong>Sunday Worship · 9:00 AM</strong>
+                    <span>Mid-week Wed 7PM · Power Night Last Fri 10PM</span>
+                </div>
+                <a
+                    class="cs-hero__map-btn"
+                    href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open Google Maps directions to Cornerstone Assembly"
+                    data-magnetic
+                >
+                    <ArrowIcon />
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

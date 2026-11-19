@@ -1,0 +1,89 @@
+---
+import { Image } from "astro:assets";
+import ReubenAdeleye from "../../assets/pastors/reuben-adeleye.png";
+import ToyinAdeleye from "../../assets/pastors/toyin-adeleye.jpg";
+import ArrowIcon from "../arrow-icon.astro";
+---
+
+<section class="cs-pastors" id="pastors" aria-labelledby="pastors-heading">
+    <div class="cs-pastors__glow cs-pastors__glow--left" aria-hidden="true"></div>
+    <div class="cs-pastors__glow cs-pastors__glow--right" aria-hidden="true"></div>
+
+    <div class="cs-shell cs-pastors__grid">
+        <figure class="cs-portrait cs-portrait--reuben" data-animate data-tilt data-parallax="-0.05">
+            <div class="cs-portrait__stage">
+                <div class="cs-portrait__halo" aria-hidden="true"></div>
+                <Image
+                    class="cs-portrait__img cs-portrait__img--cutout"
+                    src={ReubenAdeleye}
+                    alt="Lead Pastor Reuben Adeleye smiling warmly"
+                    widths={[360, 560, 760]}
+                    sizes="(min-width: 1024px) 28vw, 85vw"
+                />
+            </div>
+            <figcaption>
+                <span class="cs-micro-tag cs-micro-tag--amber">Lead Pastor</span>
+                <strong>Reuben Adeleye</strong>
+            </figcaption>
+        </figure>
+
+        <div class="cs-pastors__center" data-animate data-delay="90">
+            <span class="cs-kicker-badge cs-kicker-badge--dark">
+                <span class="cs-kicker-badge__dot" aria-hidden="true"></span>
+                <span>A Note From Our Pastors</span>
+            </span>
+
+            <h2 id="pastors-heading" class="cs-pastors__title">
+                You are already <em>loved</em> before you ever step inside.
+            </h2>
+
+            <p class="cs-pastors__lead">
+                “Whether you’re exploring faith for the very first time, returning after a long season away, or looking for a church family in Saskatoon where your gifts can flourish—we would be honored to meet you this Sunday.”
+            </p>
+
+            <p class="cs-pastors__body">
+                At RCCG Cornerstone Assembly, we are passionate about raising people of purpose, power, and praise—rooted in the word of God and overflowing with genuine hospitality.
+            </p>
+
+            <div class="cs-signature" aria-hidden="true">
+                <svg viewBox="0 0 260 44" fill="none" data-swoosh>
+                    <path
+                        d="M8 31C32 9 54 11 58 24c4 13 24 14 40-3 14-15 28-14 34 2 6 15 22 10 38-4 17-15 36-6 82-3"
+                        stroke="currentColor"
+                        stroke-width="2.4"
+                        stroke-linecap="round"
+                    />
+                </svg>
+                <span>Pastors Reuben &amp; Toyin Adeleye</span>
+            </div>
+
+            <div class="cs-pastors__actions">
+                <a class="cs-btn cs-btn--amber" href="/new-to-church" data-magnetic>
+                    <span>Meet Us This Sunday</span>
+                    <span class="cs-btn__arrow"><ArrowIcon /></span>
+                </a>
+                <a class="cs-btn cs-btn--glass" href="/contact" data-magnetic>
+                    <span>Say Hello</span>
+                    <span class="cs-btn__arrow"><ArrowIcon /></span>
+                </a>
+            </div>
+        </div>
+
+        <figure class="cs-portrait cs-portrait--toyin" data-animate data-delay="160" data-tilt data-parallax="0.06">
+            <div class="cs-portrait__stage cs-portrait__stage--photo">
+                <div class="cs-portrait__halo cs-portrait__halo--blue" aria-hidden="true"></div>
+                <Image
+                    class="cs-portrait__img"
+                    src={ToyinAdeleye}
+                    alt="Pastor Toyin Adeleye smiling warmly"
+                    widths={[360, 560, 760]}
+                    sizes="(min-width: 1024px) 28vw, 85vw"
+                />
+            </div>
+            <figcaption>
+                <span class="cs-micro-tag cs-micro-tag--amber">Pastor</span>
+                <strong>Toyin Adeleye</strong>
+            </figcaption>
+        </figure>
+    </div>
+</section>

@@ -1,0 +1,121 @@
+---
+import { churchEvents, formatEventDate, formatEventTime, type ChurchEvent } from "../../data/events";
+import { getLatestNewsletter, getNewsletterHref } from "../../data/newsletters";
+import ArrowIcon from "../arrow-icon.astro";
+
+// Present the next 5 upcoming gatherings spanning Sunday Service, Mid-week Service, and Power Night
+const upcoming: ChurchEvent[] = [];
+const nextPowerNight = churchEvents.find((e) => e.title === "Power Night");
+for (const item of churchEvents) {
+    if (upcoming.length < 4) {
+        upcoming.push(item);
+    }
+}
+if (nextPowerNight && !upcoming.some((e) => e.id === nextPowerNight.id)) {
+    upcoming.push(nextPowerNight);
+}
+upcoming.sort((a, b) => `${a.date}T${a.startTime}`.localeCompare(`${b.date}T${b.startTime}`));
+
+const latestNewsletter = await getLatestNewsletter();
+const latestNewsletterHref = getNewsletterHref(latestNewsletter);
+const issueDate = latestNewsletter
+    ? new Intl.DateTimeFormat("en-CA", { month: "long", year: "numeric" }).format(latestNewsletter.publishedAt)
+    : "Monthly Dispatch";
+---
+
+<section class="cs-gatherings" id="events" aria-labelledby="gatherings-heading">
+    <div class="cs-shell cs-gatherings__layout">
+        <div class="cs-gatherings__main">
+            <header class="cs-gatherings__head" data-animate>
+                <div>
+                    <span class="cs-kicker-badge">
+                        <span class="cs-kicker-badge__dot" aria-hidden="true"></span>
+                        <span>Upcoming Gatherings</span>
+                    </span>
+                    <h2 id="gatherings-heading" class="cs-section-h2">
+                        Come be part of <em>what’s next.</em>
+                    </h2>
+                </div>
+
+                <div class="cs-filter-row cs-filter-row--light" role="tablist" aria-label="Filter upcoming gatherings" data-event-filter>
+                    <button type="button" role="tab" class="cs-filter-pill is-active" aria-selected="true" data-event-cat="All">All</button>
+                    <button type="button" role="tab" class="cs-filter-pill" aria-selected="false" data-event-cat="Worship">Worship</button>
+                    <button type="button" role="tab" class="cs-filter-pill" aria-selected="false" data-event-cat="Program">Program</button>
+                </div>
+            </header>
+
+            <div class="cs-timeline" data-event-list>
+                {upcoming.map((event, idx) => (
+                    <a
+                        class="cs-timeline-row"
+                        href={`/events?view=month&month=${event.date.slice(0, 7)}&event=${event.id}#${event.id}`}
+                        data-cat={event.category}
+                        data-animate
+                        data-delay={idx * 70}
+                        data-spotlight
+                    >
+                        <div class="cs-timeline-date">
+                            <span>{formatEventDate(event.date, { month: "short" })}</span>
+                            <strong>{formatEventDate(event.date, { day: "2-digit" })}</strong>
+                        </div>
+
+                        <div class="cs-timeline-info">
+                            <div class="cs-timeline-tags">
+                                <span class={`cs-cat-dot cs-cat-dot--${event.category.toLowerCase()}`}></span>
+                                <span>{event.category}</span>
+                                <i>·</i>
+                                <span>{formatEventDate(event.date, { weekday: "long" })}</span>
+                            </div>
+                            <h3>{event.title}</h3>
+                            <p>{event.description}</p>
+                        </div>
+
+                        <div class="cs-timeline-time">
+                            <strong>{formatEventTime(event.startTime)}</strong>
+                            <span>{event.location}</span>
+                        </div>
+
+                        <span class="cs-timeline-go" aria-hidden="true">
+                            <ArrowIcon />
+                        </span>
+                    </a>
+                ))}
+            </div>
+
+            <div class="cs-gatherings__more" data-animate>
+                <a class="cs-btn cs-btn--dark" href="/events" data-magnetic>
+                    <span>Open Full Church Calendar</span>
+                    <span class="cs-btn__arrow"><ArrowIcon /></span>
+                </a>
+            </div>
+        </div>
+
+        <aside class="cs-dispatch" data-animate data-delay="120" data-tilt>
+            <div class="cs-dispatch__shine" aria-hidden="true"></div>
+            <span class="cs-micro-tag cs-micro-tag--amber">The Cornerstone Chronicle</span>
+            <h3>Stories of grace, <em>delivered monthly.</em></h3>
+            <p>
+                Catch up on testimonies, pastor reflections, family milestones, and what God is doing across our Saskatoon church family.
+            </p>
+
+            <div class="cs-dispatch__preview">
+                <span class="cs-dispatch__edition">{issueDate} · Edition</span>
+                <strong>Faith. Family. Everyday Life.</strong>
+                <div class="cs-dispatch__bars" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <div class="cs-dispatch__actions">
+                <a class="cs-btn cs-btn--amber" href={latestNewsletterHref} data-magnetic>
+                    <span>Read Latest Issue</span>
+                    <span class="cs-btn__arrow"><ArrowIcon /></span>
+                </a>
+                <a class="cs-dispatch__archive" href="/newsletters">
+                    <span>Browse all issues</span>
+                    <ArrowIcon />
+                </a>
+            </div>
+        </aside>
+    </div>
+</section>

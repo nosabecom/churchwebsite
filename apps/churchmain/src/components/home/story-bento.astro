@@ -1,0 +1,216 @@
+---
+import { Image } from "astro:assets";
+import Fellowship from "../../assets/community/fellowship.jpg";
+import Prayer from "../../assets/community/prayer.jpg";
+import ArrowIcon from "../arrow-icon.astro";
+
+const manifestoWords =
+    "We believe church should be the most welcoming room in Saskatoon — full of joyful praise, honest conversations, and real love that follows you into Monday.".split(" ");
+
+const firstVisitTabs = [
+    {
+        id: "wear",
+        label: "What to wear",
+        heading: "Come completely as you are.",
+        body: "Jeans, sneakers, traditional attire, or Sunday best—you’ll see it all at Cornerstone. We care about your heart, never a dress code.",
+    },
+    {
+        id: "kids",
+        label: "Kids & youth",
+        heading: "A Sunday your kids will love.",
+        body: "From little ones to teenagers, every generation has a safe, joyful, Bible-centered space built to help faith come alive.",
+    },
+    {
+        id: "arrive",
+        label: "Parking & arrival",
+        heading: "Zero guesswork at the door.",
+        body: "Free parking sits right outside 70–3904 Millar Avenue. Our welcome team greets you at the door and helps you get settled in.",
+    },
+];
+---
+
+<section class="cs-story" id="story" aria-labelledby="story-heading">
+    <div class="cs-shell">
+        <div class="cs-manifesto" data-scroll-words>
+            <span class="cs-kicker-badge">
+                <span class="cs-kicker-badge__dot" aria-hidden="true"></span>
+                <span>People of Purpose · Power · Praise</span>
+            </span>
+            <h2 id="story-heading" class="cs-manifesto__text">
+                {manifestoWords.map((word) => (
+                    <span class="cs-scrub-word">{word} </span>
+                ))}
+            </h2>
+        </div>
+
+        <div class="cs-bento" aria-label="Life at Cornerstone at a glance">
+            <!-- Tile 1: Living Atmosphere Photo -->
+            <article class="cs-tile cs-tile--atmosphere" data-animate data-tilt>
+                <Image
+                    src={Fellowship}
+                    alt="Cornerstone community members smiling and sharing fellowship around tables"
+                    widths={[540, 900, 1280]}
+                    sizes="(min-width: 1024px) 54vw, 100vw"
+                />
+                <div class="cs-tile__scrim" aria-hidden="true"></div>
+                <div class="cs-float-chips" aria-hidden="true">
+                    <span class="cs-chip" style="--cd: 0s">Warm Greeters</span>
+                    <span class="cs-chip" style="--cd: 0.7s">Vibrant Worship</span>
+                    <span class="cs-chip" style="--cd: 1.4s">Real Family</span>
+                </div>
+                <div class="cs-tile__content">
+                    <span class="cs-micro-tag cs-micro-tag--light">Sunday Atmosphere</span>
+                    <h3>Walk in as a guest.<br /><em>Leave feeling known.</em></h3>
+                </div>
+            </article>
+
+            <!-- Tile 2: Live Ticking Sunday Countdown -->
+            <article class="cs-tile cs-tile--countdown" data-animate data-delay="90" data-spotlight>
+                <div class="cs-tile__head">
+                    <span class="cs-micro-tag cs-micro-tag--light">Live Countdown · Saskatoon</span>
+                    <span class="cs-pulse-beacon" aria-hidden="true"></span>
+                </div>
+                <div class="cs-clock" data-live-clock aria-live="off">
+                    <div class="cs-clock__unit">
+                        <strong data-clock-days>03</strong>
+                        <span>Days</span>
+                    </div>
+                    <i aria-hidden="true">:</i>
+                    <div class="cs-clock__unit">
+                        <strong data-clock-hours>12</strong>
+                        <span>Hrs</span>
+                    </div>
+                    <i aria-hidden="true">:</i>
+                    <div class="cs-clock__unit">
+                        <strong data-clock-mins>45</strong>
+                        <span>Min</span>
+                    </div>
+                    <i aria-hidden="true">:</i>
+                    <div class="cs-clock__unit">
+                        <strong data-clock-secs>00</strong>
+                        <span>Sec</span>
+                    </div>
+                </div>
+                <div class="cs-tile__foot">
+                    <p>Until we gather this Sunday at <strong>9:00 AM</strong></p>
+                    <a class="cs-pill-link cs-pill-link--white" href="/new-to-church">
+                        <span>Save your seat</span>
+                        <ArrowIcon />
+                    </a>
+                </div>
+            </article>
+
+            <!-- Tile 3: Interactive First Visit Quick-Tabs -->
+            <article class="cs-tile cs-tile--firstvisit" data-animate data-delay="140" data-visit-tabs>
+                <div class="cs-tile__head">
+                    <span class="cs-micro-tag">First Time Here?</span>
+                    <div class="cs-tab-bar" role="tablist" aria-label="First visit quick answers">
+                        {firstVisitTabs.map((tab, idx) => (
+                            <button
+                                type="button"
+                                role="tab"
+                                class={`cs-tab-btn ${idx === 0 ? "is-active" : ""}`}
+                                aria-selected={idx === 0 ? "true" : "false"}
+                                data-visit-tab={tab.id}
+                            >
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div class="cs-tab-panels">
+                    {firstVisitTabs.map((tab, idx) => (
+                        <div
+                            class={`cs-tab-panel ${idx === 0 ? "is-active" : ""}`}
+                            role="tabpanel"
+                            data-visit-panel={tab.id}
+                            hidden={idx !== 0}
+                        >
+                            <h3>{tab.heading}</h3>
+                            <p>{tab.body}</p>
+                        </div>
+                    ))}
+                </div>
+                <a class="cs-inline-arrow" href="/new-to-church">
+                    <span>Full first-visit guide</span>
+                    <ArrowIcon />
+                </a>
+            </article>
+
+            <!-- Tile 4: Need Prayer Live Heartbeat Card -->
+            <article class="cs-tile cs-tile--prayer" data-animate data-delay="180" data-tilt>
+                <Image
+                    src={Prayer}
+                    alt="Women holding hands together in heartfelt prayer"
+                    widths={[480, 800]}
+                    sizes="(min-width: 1024px) 32vw, 100vw"
+                />
+                <div class="cs-tile__scrim cs-tile__scrim--deep" aria-hidden="true"></div>
+                <svg class="cs-heartbeat" viewBox="0 0 220 48" fill="none" aria-hidden="true">
+                    <path
+                        d="M0 24h56l12-16 14 34 15-26 10 8h113"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+                <div class="cs-tile__content">
+                    <span class="cs-micro-tag cs-micro-tag--light">Prayer &amp; Care</span>
+                    <h3>You never have to carry it alone.</h3>
+                    <a class="cs-pill-link cs-pill-link--amber" href="/contact">
+                        <span>Send a prayer request</span>
+                        <ArrowIcon />
+                    </a>
+                </div>
+            </article>
+
+            <!-- Tile 5: Saskatoon Location Radar Pin -->
+            <article class="cs-tile cs-tile--location" data-animate data-delay="220" data-spotlight>
+                <div class="cs-map-radar" aria-hidden="true">
+                    <span class="cs-radar-ring"></span>
+                    <span class="cs-radar-ring cs-radar-ring--two"></span>
+                    <span class="cs-radar-pin">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" /></svg>
+                    </span>
+                </div>
+                <span class="cs-micro-tag">Our Home in Saskatoon</span>
+                <h3>70–3904 Millar Avenue</h3>
+                <p>Saskatoon, SK S7P 0B1 · Easy access &amp; free on-site parking.</p>
+                <a
+                    class="cs-inline-arrow"
+                    href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <span>Open in Google Maps</span>
+                    <ArrowIcon />
+                </a>
+            </article>
+
+            <!-- Tile 6: Animated Multi-Generation Counters -->
+            <article class="cs-tile cs-tile--stats" data-animate data-delay="260" data-spotlight>
+                <span class="cs-micro-tag">One Vibrant Family</span>
+                <div class="cs-stats-grid">
+                    <div class="cs-stat">
+                        <strong data-count-to="3">3</strong>
+                        <span>Regular Gatherings</span>
+                    </div>
+                    <div class="cs-stat">
+                        <strong data-count-to="4">4</strong>
+                        <span>Ministry Circles</span>
+                    </div>
+                    <div class="cs-stat">
+                        <strong data-count-to="7">7</strong>
+                        <span>Serving Teams</span>
+                    </div>
+                    <div class="cs-stat">
+                        <strong data-count-to="1">1</strong>
+                        <span>Welcoming Home</span>
+                    </div>
+                </div>
+                <p class="cs-stats-note">Every voice matters. Every generation belongs.</p>
+            </article>
+        </div>
+    </div>
+</section>

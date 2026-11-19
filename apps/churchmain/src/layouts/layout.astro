@@ -1,428 +1,729 @@
 ---
-import '../styles/global.css'
-import { Image } from 'astro:assets'
-import Analytics from '@vercel/analytics/astro'
-import { getLatestNewsletter, getNewsletterHref } from '../data/newsletters'
-import Logo from '../assets/logo.png'
-import Wordmark from '../assets/cornerstone-logo-horizontal.png'
+import "../styles/global.css";
+import { Image } from "astro:assets";
+import Analytics from "@vercel/analytics/astro";
+import { getLatestNewsletter, getNewsletterHref } from "../data/newsletters";
+import Logo from "../assets/logo.png";
+import ArrowIcon from "../components/arrow-icon.astro";
 
 interface Props {
     title?: string;
     description?: string;
+    isHome?: boolean;
 }
 
 const {
-    title = "RCCG Cornerstone Assembly",
-    description = "RCCG Cornerstone Assembly in Saskatoon, Saskatchewan.",
+    title = "RCCG Cornerstone Assembly | Saskatoon",
+    description = "A vibrant, Spirit-filled church family in Saskatoon. Join RCCG Cornerstone Assembly Sundays at 9:00 AM.",
+    isHome = false,
 } = Astro.props;
 
 const year = new Date().getFullYear();
 const latestNewsletterHref = getNewsletterHref(await getLatestNewsletter());
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 
-const services = [
-    { title: "Sunday Service", day: "Every Sunday", time: "9:00 AM" },
-    { title: "Mid-week Service", day: "Every Wednesday", time: "7:00 PM" },
-    { title: "Power Night", day: "Last Friday of the month", time: "10:00 PM" },
-];
-
-// The "#" entries are pages that have not been built yet.
-const explore = [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "#" },
-    { label: "New to Church?", href: "/new-to-church" },
-    { label: "Events", href: "/events" },
-    { label: "Newsletters", href: "/newsletters" },
-    { label: "Sermons", href: "/messages" },
-    { label: "Contact Us", href: "/contact" },
-];
-
-const getInvolved = [
-    { label: "Join the team", href: "/#join" },
-    { label: "Send a prayer request", href: "/contact" },
+const navLinks = [
+    { label: "I’m New", href: "/new-to-church" },
+    { label: "Messages", href: "/messages" },
     { label: "Ministries", href: "/ministries" },
-    { label: "Departments", href: "/departments" },
-];
-
-// One source of truth for the nav, so the desktop bar and the mobile drawer
-// can never drift apart.
-const ministries = [
-    { label: "Men's", href: "/ministries/men" },
-    { label: "Women's", href: "/ministries/women" },
-    { label: "Children", href: "/ministries/children" },
-    { label: "Youths & Teenagers", href: "/ministries/youths-teenagers" },
-];
-
-const departments = [
-    { label: "Music", href: "/departments/music" },
-    { label: "Prayer", href: "/departments/prayer" },
-    { label: "Bible Study", href: "/departments/bible-study" },
-    { label: "Evangelism", href: "/departments/evangelism" },
-    { label: "Welfare", href: "/departments/welfare" },
-    { label: "Multimedia", href: "/departments/multimedia" },
-    { label: "Sanctuary Helpers", href: "/departments/sanctuary-helpers" },
-];
-
-const primaryLinks = [
-    { label: "New to Church?", href: "/new-to-church" },
     { label: "Events", href: "/events" },
-    { label: "Sermons", href: "/messages" },
-    { label: "Contact Us", href: "/contact" },
+    { label: "Contact", href: "/contact" },
+];
+
+const ministryLinks = [
+    { label: "Women", href: "/ministries/women" },
+    { label: "Men", href: "/ministries/men" },
+    { label: "Youth & Teenagers", href: "/ministries/youths-teenagers" },
+    { label: "Children", href: "/ministries/children" },
 ];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="generator" content={Astro.generator} />
-        <link rel="shortcut icon" href={Logo.src} type="image/png">
-		<title>{title}</title>
+        <meta name="theme-color" content="#090b10" />
+        <link rel="shortcut icon" href={Logo.src} type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <title>{title}</title>
         <meta name="description" content={description} />
-	</head>
-	<body class="bg-sky-900 min-h-dvh flex flex-col">
+    </head>
+    <body class={`cs-body ${isHome ? "cs-body--home" : "cs-body--inner"}`}>
         <Analytics />
+        <div class="cs-progress" aria-hidden="true"></div>
+        <a class="cs-skip" href="#main-content">Skip to content</a>
 
-        <!-- The bar shares `px-4` + `mx-auto max-w-400` with every page section,
-             so the header, body and footer all sit on one gutter. -->
-        <nav class="bg-white px-4 text-lg" aria-label="Main">
-            <div class="mx-auto flex max-w-400 items-center justify-between gap-4 py-2.5 xl:grid xl:grid-cols-[1fr_auto_1fr]">
-                <a class="shrink-0 xl:justify-self-start" href="/"><Image class="w-18 h-auto" src={Logo} alt="RCCG Cornerstone Assembly — home" /></a>
+        <header class={`cs-header ${isHome ? "cs-header--overlay" : "cs-header--solid"}`} data-site-header>
+            <nav class="cs-shell cs-nav" aria-label="Main navigation">
+                <a class="cs-brand" href="/" aria-label="RCCG Cornerstone Assembly home">
+                    <span class="cs-brand__mark">
+                        <Image src={Logo} alt="" widths={[72, 112]} />
+                    </span>
+                    <span class="cs-brand__text">
+                        <strong>Cornerstone</strong>
+                        <small>RCCG · Saskatoon</small>
+                    </span>
+                </a>
 
-                <ul class="hidden gap-5 xl:flex xl:items-center xl:justify-self-center">
-                    <li><a href="/">Home</a></li>
-                    <li class="context-menu-trigger">
-                        <button
-                            class="flex cursor-pointer items-center gap-1"
-                            type="button"
-                            aria-expanded="false"
-                            data-menu-trigger
-                        >
-                            Who We Are
-                            <span class="text-sm" aria-hidden="true">▾</span>
-                        </button>
-
-                        <ul class="context-menu left-0 top-full z-10">
-                            <li><a class="context-menu-item" href="#">About Us</a></li>
-                            <li><a class="context-menu-item" href="/newsletters">Newsletters</a></li>
-                            <li class="context-menu-trigger">
-                                <a class="context-menu-item w-full cursor-pointer text-left" href="/ministries">
-                                    Ministries
+                <ul class="cs-nav__links">
+                    {navLinks.map((link) => {
+                        const isCurrent = currentPath === link.href || currentPath.startsWith(`${link.href}/`);
+                        return (
+                            <li>
+                                <a href={link.href} aria-current={isCurrent ? "page" : undefined}>
+                                    {link.label}
                                 </a>
-
-                                <ul class="context-menu left-full -top-2 z-20">
-                                    {ministries.map((item) => (
-                                        <li><a class="context-menu-item whitespace-nowrap" href={item.href}>{item.label}</a></li>
-                                    ))}
-                                </ul>
                             </li>
-                            <li class="context-menu-trigger">
-                                <a class="context-menu-item w-full cursor-pointer text-left" href="/departments">
-                                    Departments
-                                </a>
-
-                                <ul class="context-menu left-full -top-2 z-20 grid w-max grid-cols-2 gap-1 space-y-0">
-                                    {departments.map((item) => (
-                                        <li><a class="context-menu-item whitespace-nowrap" href={item.href}>{item.label}</a></li>
-                                    ))}
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    {primaryLinks.map((link) => (
-                        <li>
-                            <a
-                                class:list={{ "font-semibold text-sky-900": currentPath === link.href }}
-                                href={link.href}
-                                aria-current={currentPath === link.href ? "page" : undefined}
-                            >{link.label}</a>
-                        </li>
-                    ))}
+                        );
+                    })}
                 </ul>
 
-                <div class="flex shrink-0 items-center gap-2 xl:justify-self-end">
+                <div class="cs-nav__right">
+                    <button
+                        type="button"
+                        class="cs-motion-btn"
+                        aria-pressed="false"
+                        title="Pause or play animations"
+                        data-motion-toggle
+                        hidden
+                    >
+                        <span class="cs-motion-btn__dot" aria-hidden="true"></span>
+                        <span data-motion-label>Motion on</span>
+                    </button>
+
                     <a
-                        class="hidden items-center justify-center rounded-lg bg-sky-900 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-sky-950 xl:inline-flex"
-                        href={latestNewsletterHref}
-                    >View latest newsletter</a>
-                    <a
-                        class="hidden items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-lg leading-normal font-semibold text-white hover:bg-red-700 xl:inline-flex"
-                        href="#"
-                    >Give</a>
+                        class="cs-nav__give"
+                        href="/give"
+                        aria-current={currentPath === "/give" ? "page" : undefined}
+                        data-magnetic
+                    >
+                        <span>Give</span>
+                        <ArrowIcon />
+                    </a>
 
                     <button
-                        class="grid size-11 cursor-pointer place-items-center rounded-lg text-sky-900 hover:bg-slate-100 xl:hidden"
+                        class="cs-burger"
                         type="button"
                         aria-label="Open menu"
+                        aria-haspopup="dialog"
                         aria-expanded="false"
                         aria-controls="mobile-nav"
                         data-nav-open
+                        hidden
                     >
-                        <svg class="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                            <path d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                        <span></span><span></span>
                     </button>
                 </div>
-            </div>
-        </nav>
+            </nav>
 
-        <!-- Off-canvas drawer, mirroring the pattern already proven on the
-             Woman Excel site. Fixed and translated off-screen, so it never
-             contributes to page width while closed. -->
-        <div class="group xl:hidden" id="mobile-nav" data-nav>
-            <div
-                class="fixed inset-0 z-30 bg-sky-950/70 opacity-0 pointer-events-none transition-opacity duration-300 group-data-open:opacity-100 group-data-open:pointer-events-auto"
-                data-nav-backdrop
-            ></div>
+            <noscript>
+                <nav class="cs-shell cs-noscript-nav" aria-label="Navigation">
+                    {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+                </nav>
+            </noscript>
+        </header>
 
-            <div class="fixed top-0 right-0 z-40 flex h-dvh w-80 max-w-[85vw] translate-x-full flex-col overflow-y-auto bg-white p-6 transition-transform duration-300 ease-in-out group-data-open:translate-x-0">
-                <button
-                    class="grid size-11 shrink-0 cursor-pointer place-items-center self-end rounded-lg text-sky-900 hover:bg-slate-100"
-                    type="button"
-                    aria-label="Close menu"
-                    data-nav-close
-                >
-                    <svg class="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                        <path d="M6 6l12 12M18 6L6 18" />
-                    </svg>
-                </button>
+        <dialog class="cs-drawer" id="mobile-nav" aria-labelledby="mobile-nav-heading">
+            <div class="cs-drawer__wrap">
+                <div class="cs-drawer__top">
+                    <h2 id="mobile-nav-heading">RCCG Cornerstone Assembly</h2>
+                    <button type="button" class="cs-drawer__close" aria-label="Close menu" data-nav-close>×</button>
+                </div>
 
-                <ul class="mt-4 list-none space-y-1 p-0 text-lg text-sky-900">
-                    <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/">Home</a></li>
+                <nav aria-label="Mobile navigation">
+                    <ul>
+                        <li><a href="/"><span>Home</span><small>01</small></a></li>
+                        {navLinks.map((link, idx) => (
+                            <li>
+                                <a href={link.href}>
+                                    <span>{link.label}</span>
+                                    <small>{String(idx + 2).padStart(2, "0")}</small>
+                                </a>
+                            </li>
+                        ))}
+                        <li><a href="/give"><span>Give</span><small>07</small></a></li>
+                    </ul>
+                </nav>
 
-                    <li>
-                        <details class="drawer-group">
-                            <summary class="drawer-summary">Who We Are</summary>
-
-                            <ul class="list-none space-y-1 p-0 pl-3">
-                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="#">About Us</a></li>
-                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/newsletters">Newsletters</a></li>
-
-                                <li>
-                                    <details class="drawer-group">
-                                        <summary class="drawer-summary">Ministries</summary>
-                                        <ul class="list-none space-y-1 p-0 pl-3">
-                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/ministries">All Ministries</a></li>
-                                            {ministries.map((item) => (
-                                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
-                                            ))}
-                                        </ul>
-                                    </details>
-                                </li>
-
-                                <li>
-                                    <details class="drawer-group">
-                                        <summary class="drawer-summary">Departments</summary>
-                                        <ul class="list-none space-y-1 p-0 pl-3">
-                                            <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href="/departments">All Departments</a></li>
-                                            {departments.map((item) => (
-                                                <li><a class="block rounded-md py-2.5 hover:bg-slate-100" href={item.href}>{item.label}</a></li>
-                                            ))}
-                                        </ul>
-                                    </details>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>
-
-                    {primaryLinks.map((link) => (
-                        <li>
-                            <a
-                                class:list={[
-                                    "block rounded-md py-2.5 hover:bg-slate-100",
-                                    { "font-semibold text-sky-900": currentPath === link.href },
-                                ]}
-                                href={link.href}
-                                aria-current={currentPath === link.href ? "page" : undefined}
-                            >{link.label}</a>
-                        </li>
-                    ))}
-                </ul>
-
-                <div class="mt-6 grid gap-3">
-                    <a
-                        class="shrink-0 rounded-lg bg-sky-900 px-4 py-3 text-center text-base font-semibold text-white hover:bg-sky-950"
-                        href={latestNewsletterHref}
-                    >View latest newsletter</a>
-                    <a
-                        class="shrink-0 rounded-lg bg-red-600 px-4 py-3 text-center text-lg text-white hover:bg-red-700"
-                        href="#"
-                    >Give</a>
+                <div class="cs-drawer__foot">
+                    <div>
+                        <span class="cs-micro-tag cs-micro-tag--amber">Sundays at 9:00 AM</span>
+                        <p>70–3904 Millar Avenue · Saskatoon</p>
+                    </div>
+                    <a class="cs-btn cs-btn--amber" href="/new-to-church">
+                        <span>Plan Your Visit</span>
+                        <span class="cs-btn__arrow"><ArrowIcon /></span>
+                    </a>
                 </div>
             </div>
-        </div>
+        </dialog>
 
-        <main class="flex-1">
-            <slot/>
+        <dialog class="cs-sermon-modal" id="sermon-modal" aria-labelledby="sermon-modal-title">
+            <div class="cs-sermon-modal__box">
+                <div class="cs-sermon-modal__top">
+                    <div>
+                        <p class="cs-sermon-modal__meta" data-modal-meta></p>
+                        <h2 id="sermon-modal-title" data-modal-title>Sunday Message</h2>
+                    </div>
+                    <button type="button" class="cs-drawer__close" aria-label="Close video player" data-modal-close>×</button>
+                </div>
+                <div class="cs-sermon-modal__frame">
+                    <iframe
+                        data-modal-iframe
+                        title="Cornerstone Assembly Sunday Message"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+                <div class="cs-sermon-modal__foot">
+                    <a class="cs-btn cs-btn--amber" href="/messages" data-modal-link>
+                        <span>Read Full Transcript &amp; Notes</span>
+                        <span class="cs-btn__arrow"><ArrowIcon /></span>
+                    </a>
+                </div>
+            </div>
+        </dialog>
+
+        <main class="cs-main" id="main-content" tabindex="-1">
+            <slot />
         </main>
 
-        <footer class="bg-black px-4 text-white">
-            <div class="mx-auto max-w-400">
-                <div class="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
-                    <div>
-                        <Image
-                            class="h-auto w-full max-w-64"
-                            src={Wordmark}
-                            alt="RCCG Cornerstone Assembly"
-                            widths={[256, 512]}
-                            sizes="16rem"
-                        />
-
-                        <address class="mt-5 text-base leading-relaxed text-slate-300 not-italic">
-                            70-3904 Millar Avenue<br />
-                            Saskatoon, SK S7P 0B1
-                        </address>
-
-                        <a
-                            class="mt-3 inline-block py-2 text-base text-slate-300 underline-offset-4 hover:text-white hover:underline"
-                            href="https://www.google.com/maps/search/?api=1&query=70-3904+Millar+Avenue+Saskatoon+SK+S7P+0B1"
-                            target="_blank"
-                            rel="noreferrer"
-                        >Find us on the map</a>
-                    </div>
-
-                    <div>
-                        <h2 class="text-sm font-extrabold tracking-[0.16em] uppercase">Service Times</h2>
-
-                        <ul class="mt-5 list-none space-y-4 p-0 text-base text-slate-300">
-                            {services.map((service) => (
-                                <li>
-                                    <span class="block font-semibold text-white">{service.title}</span>
-                                    {service.day}
-                                    <span class="mx-1.5 text-slate-500" aria-hidden="true">•</span>
-                                    {service.time}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h2 class="text-sm font-extrabold tracking-[0.16em] uppercase">Explore</h2>
-
-                        <ul class="mt-5 list-none space-y-1 p-0 text-base text-slate-300">
-                            {explore.map((link) => (
-                                <li>
-                                    <a
-                                        class="block py-2 underline-offset-4 hover:text-white hover:underline"
-                                        href={link.href}
-                                        aria-current={currentPath === link.href ? "page" : undefined}
-                                    >
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h2 class="text-sm font-extrabold tracking-[0.16em] uppercase">Get Involved</h2>
-
-                        <ul class="mt-5 list-none space-y-1 p-0 text-base text-slate-300">
-                            {getInvolved.map((link) => (
-                                <li>
-                                    <a class="block py-2 underline-offset-4 hover:text-white hover:underline" href={link.href}>
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <a
-                            class="mt-6 inline-block rounded-lg bg-sky-900 px-4 py-2 font-semibold text-white ring-1 ring-white/25 hover:bg-sky-800"
-                            href={latestNewsletterHref}
-                        >View latest newsletter</a>
-
-                        <a
-                            class="mt-3 block w-fit rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
-                            href="#"
-                        >Give</a>
+        <footer class="cs-footer">
+            <section class="cs-finale" aria-labelledby="finale-heading">
+                <div class="cs-finale__rings" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="cs-shell cs-finale__inner" data-animate>
+                    <span class="cs-live-pill">
+                        <span class="cs-live-pill__dot" aria-hidden="true"></span>
+                        <span>This Sunday · 9:00 AM · Saskatoon</span>
+                    </span>
+                    <h2 id="finale-heading">
+                        Your seat is already <em>waiting.</em>
+                    </h2>
+                    <p>
+                        Bring your questions, your hopes, your family, and your whole self. We would love to welcome you home at Cornerstone.
+                    </p>
+                    <div class="cs-finale__actions">
+                        <a class="cs-btn cs-btn--amber" href="/new-to-church" data-magnetic>
+                            <span>Plan Your First Sunday</span>
+                            <span class="cs-btn__arrow"><ArrowIcon /></span>
+                        </a>
+                        <a class="cs-btn cs-btn--glass" href="/contact" data-magnetic>
+                            <span>Request Prayer</span>
+                            <span class="cs-btn__arrow"><ArrowIcon /></span>
+                        </a>
+                        <a class="cs-btn cs-btn--glass" href="/give" data-magnetic>
+                            <span>Give Online</span>
+                            <span class="cs-btn__arrow"><ArrowIcon /></span>
+                        </a>
                     </div>
                 </div>
+            </section>
 
-                <div class="flex flex-wrap items-center justify-between gap-4 border-t border-white/15 py-6">
-                    <div>
-                        <p>© {year} RCCG Cornerstone Assembly</p>
-                    </div>
-
-                    <div class="flex gap-1">
-                        <a class="grid size-11 place-items-center rounded-lg hover:bg-white/10" href="mailto:connect@rccgcornerstoneassembly.com" aria-label="Email connect@rccgcornerstoneassembly.com"><svg class="fill-white w-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <title>Email</title>
-                            <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/>
-                        </svg></a>
-
-                        <a class="grid size-11 place-items-center rounded-lg hover:bg-white/10" href="https://www.instagram.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg class="fill-white w-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <title>Instagram</title>
-                            <path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/>
-                        </svg></a>
-
-                        <a class="grid size-11 place-items-center rounded-lg hover:bg-white/10" href="https://www.facebook.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer" aria-label="Facebook"><svg class="fill-white w-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <title>Facebook</title>
-                            <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/>
-                        </svg></a>
-                    </div>
+            <div class="cs-shell cs-footer__cols">
+                <div class="cs-footer__brand">
+                    <a class="cs-brand" href="/">
+                        <span class="cs-brand__mark">
+                            <Image src={Logo} alt="" widths={[72, 112]} />
+                        </span>
+                        <span class="cs-brand__text">
+                            <strong>Cornerstone</strong>
+                            <small>RCCG · Saskatoon</small>
+                        </span>
+                    </a>
+                    <p class="cs-footer__mission">
+                        A parish of The Redeemed Christian Church of God in Saskatoon — raising people of purpose, power, and praise.
+                    </p>
+                    <address class="cs-footer__addr">
+                        70–3904 Millar Avenue<br />Saskatoon, SK S7P 0B1
+                    </address>
                 </div>
+
+                <div>
+                    <p class="cs-footer__label">Gatherings</p>
+                    <p class="cs-footer__info">Sunday Worship · 9:00 AM</p>
+                    <p class="cs-footer__info">Wednesday Word · 7:00 PM</p>
+                    <p class="cs-footer__info">Power Night · Last Friday, 10:00 PM</p>
+                    <a href="/events">Full calendar <ArrowIcon /></a>
+                </div>
+
+                <div>
+                    <p class="cs-footer__label">Ministries</p>
+                    {ministryLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+                    <a href="/departments">Serve on a team <ArrowIcon /></a>
+                </div>
+
+                <div>
+                    <p class="cs-footer__label">Connect</p>
+                    <a href="/messages">Sunday messages <ArrowIcon /></a>
+                    <a href={latestNewsletterHref}>Latest newsletter <ArrowIcon /></a>
+                    <a href="/contact">Contact &amp; prayer <ArrowIcon /></a>
+                    <a href="https://www.instagram.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer">Instagram <ArrowIcon /></a>
+                    <a href="https://www.facebook.com/rccg.cornerstonesk/" target="_blank" rel="noreferrer">Facebook <ArrowIcon /></a>
+                </div>
+            </div>
+
+            <div class="cs-shell cs-footer__bottom">
+                <p>© {year} RCCG Cornerstone Assembly · Saskatoon, SK</p>
+                <p>People of purpose, power &amp; praise.</p>
             </div>
         </footer>
 
         <script>
-            // Off-canvas drawer.
-            const drawer = document.querySelector<HTMLElement>("[data-nav]");
-            const openBtn = document.querySelector<HTMLElement>("[data-nav-open]");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+            const motionBtn = document.querySelector<HTMLButtonElement>("[data-motion-toggle]");
+            const motionLabel = motionBtn?.querySelector<HTMLElement>("[data-motion-label]");
+            let motionPaused = false;
+            const isPaused = () => motionPaused || reducedMotion.matches;
 
-            if (drawer && openBtn) {
-                const setOpen = (open: boolean) => {
-                    drawer.toggleAttribute("data-open", open);
-                    openBtn.setAttribute("aria-expanded", String(open));
-                    document.body.classList.toggle("overflow-hidden", open);
+            const syncMotion = () => {
+                const disabled = isPaused();
+                document.body.classList.toggle("motion-paused", disabled);
+                if (motionBtn) {
+                    motionBtn.hidden = reducedMotion.matches;
+                    motionBtn.setAttribute("aria-pressed", String(motionPaused));
+                }
+                if (motionLabel) {
+                    motionLabel.textContent = motionPaused ? "Motion off" : "Motion on";
+                }
+                if (disabled) {
+                    document.getAnimations().forEach((a) => a.cancel());
+                    document.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => el.style.removeProperty("--py"));
+                }
+            };
+
+            motionBtn?.addEventListener("click", () => {
+                motionPaused = !motionPaused;
+                syncMotion();
+            });
+            reducedMotion.addEventListener("change", syncMotion);
+            syncMotion();
+
+            // 1. Hero Canvas Golden Bokeh Light-Field
+            const canvas = document.querySelector<HTMLCanvasElement>("[data-light-canvas]");
+            if (canvas) {
+                const ctx = canvas.getContext("2d");
+                let w = 0;
+                let h = 0;
+                let inView = true;
+
+                const resize = () => {
+                    const rect = canvas.getBoundingClientRect();
+                    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    w = rect.width;
+                    h = rect.height;
+                    canvas.width = Math.max(1, Math.floor(w * dpr));
+                    canvas.height = Math.max(1, Math.floor(h * dpr));
+                    ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
                 };
 
-                openBtn.addEventListener("click", () => setOpen(true));
-                drawer.querySelectorAll("[data-nav-close], [data-nav-backdrop], a").forEach((el) => {
-                    el.addEventListener("click", () => setOpen(false));
-                });
-                document.addEventListener("keydown", (event) => {
-                    if (event.key === "Escape") setOpen(false);
-                });
+                const orbs = Array.from({ length: 28 }, (_, i) => ({
+                    x: Math.random(),
+                    y: Math.random(),
+                    r: 1.5 + (i % 5) * 1.4,
+                    vy: 0.00018 + (i % 4) * 0.00009,
+                    vx: ((i % 3) - 1) * 0.00007,
+                    hue: i % 4 === 0 ? "59, 130, 246" : "255, 184, 77",
+                    alpha: 0.22 + (i % 5) * 0.1,
+                }));
 
-                // The drawer is display:none from xl up; drop the open state too so
-                // the scroll lock cannot outlive the panel.
-                window.matchMedia("(min-width: 80rem)").addEventListener("change", (event) => {
-                    if (event.matches) setOpen(false);
+                if ("IntersectionObserver" in window) {
+                    new IntersectionObserver((entries) => {
+                        inView = entries[0]?.isIntersecting ?? true;
+                    }).observe(canvas);
+                }
+
+                resize();
+                window.addEventListener("resize", resize, { passive: true });
+
+                const tick = () => {
+                    if (ctx && inView && !isPaused()) {
+                        ctx.clearRect(0, 0, w, h);
+                        for (const o of orbs) {
+                            o.y -= o.vy;
+                            o.x += o.vx;
+                            if (o.y < -0.05) {
+                                o.y = 1.05;
+                                o.x = Math.random();
+                            }
+                            if (o.x < -0.05) o.x = 1.05;
+                            if (o.x > 1.05) o.x = -0.05;
+                            const px = o.x * w;
+                            const py = o.y * h;
+                            const grad = ctx.createRadialGradient(px, py, 0, px, py, o.r * 4.5);
+                            grad.addColorStop(0, `rgba(${o.hue}, ${o.alpha})`);
+                            grad.addColorStop(1, `rgba(${o.hue}, 0)`);
+                            ctx.fillStyle = grad;
+                            ctx.beginPath();
+                            ctx.arc(px, py, o.r * 4.5, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            }
+
+            // 2. Hero Kinetic Vertical Word Cycler
+            const cycler = document.querySelector<HTMLElement>("[data-word-cycler]");
+            if (cycler) {
+                const items = [...cycler.querySelectorAll<HTMLElement>(".cs-word-slot__item")];
+                let current = 0;
+                if (items.length > 1) {
+                    window.setInterval(() => {
+                        if (isPaused()) return;
+                        const prev = items[current];
+                        current = (current + 1) % items.length;
+                        const next = items[current];
+                        prev.classList.remove("is-active");
+                        prev.classList.add("is-leaving");
+                        next.classList.remove("is-leaving");
+                        next.classList.add("is-active");
+                        window.setTimeout(() => prev.classList.remove("is-leaving"), 650);
+                    }, 2800);
+                }
+            }
+
+            // 3. Live Second-by-Second Countdown to Sunday 9:00 AM (Saskatoon / America/Regina CST = UTC-6 year-round)
+            const clockRoot = document.querySelector<HTMLElement>("[data-live-clock]");
+            if (clockRoot) {
+                const daysEl = clockRoot.querySelector<HTMLElement>("[data-clock-days]");
+                const hoursEl = clockRoot.querySelector<HTMLElement>("[data-clock-hours]");
+                const minsEl = clockRoot.querySelector<HTMLElement>("[data-clock-mins]");
+                const secsEl = clockRoot.querySelector<HTMLElement>("[data-clock-secs]");
+
+                const updateClock = () => {
+                    const nowUtc = Date.now();
+                    // Saskatchewan observes CST (UTC-6) year-round
+                    const cstMs = nowUtc - 6 * 3600 * 1000;
+                    const cst = new Date(cstMs);
+                    const day = cst.getUTCDay();
+                    let daysToSun = (7 - day) % 7;
+                    if (day === 0 && (cst.getUTCHours() > 9 || (cst.getUTCHours() === 9 && cst.getUTCMinutes() > 0))) {
+                        daysToSun = 7;
+                    }
+                    const targetCst = Date.UTC(
+                        cst.getUTCFullYear(),
+                        cst.getUTCMonth(),
+                        cst.getUTCDate() + daysToSun,
+                        9,
+                        0,
+                        0,
+                    );
+                    const diff = Math.max(0, Math.floor((targetCst - cstMs) / 1000));
+                    const d = Math.floor(diff / 86400);
+                    const h = Math.floor((diff % 86400) / 3600);
+                    const m = Math.floor((diff % 3600) / 60);
+                    const s = diff % 60;
+                    if (daysEl) daysEl.textContent = String(d).padStart(2, "0");
+                    if (hoursEl) hoursEl.textContent = String(h).padStart(2, "0");
+                    if (minsEl) minsEl.textContent = String(m).padStart(2, "0");
+                    if (secsEl) secsEl.textContent = String(s).padStart(2, "0");
+                };
+                updateClock();
+                window.setInterval(updateClock, 1000);
+            }
+
+            // 4. Scroll Progress + Header Morph + Parallax + Scroll-Scrubbed Manifesto Words
+            const header = document.querySelector<HTMLElement>("[data-site-header]");
+            const parallaxEls = [...document.querySelectorAll<HTMLElement>("[data-parallax]")];
+            const manifestoBox = document.querySelector<HTMLElement>("[data-scroll-words]");
+            const scrubWords = manifestoBox ? [...manifestoBox.querySelectorAll<HTMLElement>(".cs-scrub-word")] : [];
+            let rafId = 0;
+
+            const onScrollFrame = () => {
+                rafId = 0;
+                const y = window.scrollY;
+                const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+                document.documentElement.style.setProperty("--scroll", String(Math.min(1, y / max)));
+                header?.classList.toggle("is-scrolled", y > 40);
+
+                const vh = window.innerHeight;
+                if (!isPaused()) {
+                    for (const el of parallaxEls) {
+                        const speed = Number(el.dataset.parallax ?? 0);
+                        const rect = el.getBoundingClientRect();
+                        if (rect.bottom < -120 || rect.top > vh + 120) continue;
+                        const pct = (rect.top + rect.height * 0.5 - vh * 0.5) / vh;
+                        const px = Math.max(-50, Math.min(50, pct * speed * 145));
+                        el.style.setProperty("--py", `${px.toFixed(1)}px`);
+                    }
+                }
+
+                if (manifestoBox && scrubWords.length > 0) {
+                    const rect = manifestoBox.getBoundingClientRect();
+                    const progress = isPaused()
+                        ? 1
+                        : Math.max(0.22, Math.min(1, (vh * 0.9 - rect.top) / (vh * 0.6)));
+                    const litCount = Math.ceil(progress * scrubWords.length);
+                    scrubWords.forEach((word, i) => {
+                        if (i < litCount) word.classList.add("is-lit");
+                    });
+                }
+            };
+
+            const scheduleScroll = () => {
+                if (!rafId) rafId = requestAnimationFrame(onScrollFrame);
+            };
+            window.addEventListener("scroll", scheduleScroll, { passive: true });
+            window.addEventListener("resize", scheduleScroll, { passive: true });
+            onScrollFrame();
+
+            // 5. Choreographed WAAPI Scroll Entrances + Stat Counters + SVG Signature Draw
+            if ("IntersectionObserver" in window) {
+                const animObserver = new IntersectionObserver(
+                    (entries) => {
+                        for (const entry of entries) {
+                            if (!entry.isIntersecting) continue;
+                            const el = entry.target as HTMLElement;
+                            if (!isPaused() && typeof el.animate === "function") {
+                                const delay = Number(el.dataset.delay ?? 0);
+                                el.animate(
+                                    [
+                                        { opacity: 0.2, transform: "translate3d(0, 32px, 0) scale(0.98)" },
+                                        { opacity: 1, transform: "translate3d(0, 0, 0) scale(1)" },
+                                    ],
+                                    { duration: 820, delay, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" },
+                                );
+                            }
+                            animObserver.unobserve(el);
+                        }
+                    },
+                    { threshold: 0.06 },
+                );
+                document.querySelectorAll<HTMLElement>("[data-animate]").forEach((el) => animObserver.observe(el));
+
+                const countObserver = new IntersectionObserver(
+                    (entries) => {
+                        for (const entry of entries) {
+                            if (!entry.isIntersecting) continue;
+                            const el = entry.target as HTMLElement;
+                            const target = Number(el.dataset.countTo ?? 0);
+                            if (!isPaused() && target > 0) {
+                                const start = performance.now();
+                                const step = (now: number) => {
+                                    const t = Math.min(1, (now - start) / 900);
+                                    const eased = 1 - Math.pow(1 - t, 3);
+                                    el.textContent = String(Math.max(1, Math.round(eased * target)));
+                                    if (t < 1) requestAnimationFrame(step);
+                                };
+                                requestAnimationFrame(step);
+                            }
+                            countObserver.unobserve(el);
+                        }
+                    },
+                    { threshold: 0.3 },
+                );
+                document.querySelectorAll<HTMLElement>("[data-count-to]").forEach((el) => countObserver.observe(el));
+
+                const swooshObserver = new IntersectionObserver(
+                    (entries) => {
+                        for (const entry of entries) {
+                            if (!entry.isIntersecting) continue;
+                            const path = entry.target.querySelector<SVGPathElement>("path");
+                            if (path && !isPaused() && typeof path.animate === "function") {
+                                const len = path.getTotalLength();
+                                path.style.strokeDasharray = `${len}`;
+                                path.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], {
+                                    duration: 1400,
+                                    easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+                                    fill: "backwards",
+                                });
+                            }
+                            swooshObserver.unobserve(entry.target);
+                        }
+                    },
+                    { threshold: 0.25 },
+                );
+                document.querySelectorAll<SVGElement>("[data-swoosh]").forEach((svg) => swooshObserver.observe(svg));
+            }
+
+            // 6. Interactive First Visit Quick-Tabs
+            const visitTabsRoot = document.querySelector<HTMLElement>("[data-visit-tabs]");
+            if (visitTabsRoot) {
+                const btns = [...visitTabsRoot.querySelectorAll<HTMLButtonElement>("[data-visit-tab]")];
+                const panels = [...visitTabsRoot.querySelectorAll<HTMLElement>("[data-visit-panel]")];
+                btns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const id = btn.dataset.visitTab;
+                        btns.forEach((b) => {
+                            const active = b === btn;
+                            b.classList.toggle("is-active", active);
+                            b.setAttribute("aria-selected", String(active));
+                        });
+                        panels.forEach((p) => {
+                            const show = p.dataset.visitPanel === id;
+                            p.hidden = !show;
+                            p.classList.toggle("is-active", show);
+                        });
+                    });
                 });
             }
 
-            // Desktop dropdowns. Hover alone is unreachable on a touchscreen, so the
-            // triggers are buttons that toggle on click; :hover stays as an
-            // enhancement for fine pointers only (see global.css).
-            const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-menu-trigger]"));
-
-            const closeMenus = (except?: Element) => {
-                triggers.forEach((trigger) => {
-                    const parent = trigger.parentElement;
-                    if (!parent || parent === except || parent.contains(except ?? null)) return;
-                    parent.removeAttribute("data-open");
-                    trigger.setAttribute("aria-expanded", "false");
+            // 7. Interactive Sermon Series Filter
+            const seriesFilter = document.querySelector<HTMLElement>("[data-series-filter]");
+            const sermonGrid = document.querySelector<HTMLElement>("[data-sermon-grid]");
+            if (seriesFilter && sermonGrid) {
+                const btns = [...seriesFilter.querySelectorAll<HTMLButtonElement>("[data-series-btn]")];
+                const cards = [...sermonGrid.querySelectorAll<HTMLElement>(".cs-sermon-card")];
+                btns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const seriesName = btn.dataset.seriesBtn ?? "All";
+                        btns.forEach((b) => {
+                            const active = b === btn;
+                            b.classList.toggle("is-active", active);
+                            b.setAttribute("aria-selected", String(active));
+                        });
+                        cards.forEach((card) => {
+                            const match = seriesName === "All" || card.dataset.series === seriesName;
+                            card.hidden = !match;
+                        });
+                    });
                 });
-            };
+            }
 
-            triggers.forEach((trigger) => {
-                trigger.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    const parent = trigger.parentElement;
-                    if (!parent) return;
-                    const open = !parent.hasAttribute("data-open");
-                    closeMenus(open ? parent : undefined);
-                    parent.toggleAttribute("data-open", open);
-                    trigger.setAttribute("aria-expanded", String(open));
+            // 8. Expanding Ministry Flex-Accordion
+            const accordion = document.querySelector<HTMLElement>("[data-ministry-accordion]");
+            if (accordion) {
+                const panels = [...accordion.querySelectorAll<HTMLElement>("[data-acc-panel]")];
+                const activate = (target: HTMLElement) => {
+                    panels.forEach((p) => p.classList.toggle("is-expanded", p === target));
+                };
+                panels.forEach((panel) => {
+                    panel.addEventListener("mouseenter", () => activate(panel));
+                    panel.addEventListener("focus", () => activate(panel));
+                    panel.addEventListener("click", () => activate(panel));
                 });
-            });
+            }
 
-            document.addEventListener("click", () => closeMenus());
-            document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape") closeMenus();
-            });
+            // 9. Interactive Event Category Filter
+            const eventFilter = document.querySelector<HTMLElement>("[data-event-filter]");
+            const eventList = document.querySelector<HTMLElement>("[data-event-list]");
+            if (eventFilter && eventList) {
+                const btns = [...eventFilter.querySelectorAll<HTMLButtonElement>("[data-event-cat]")];
+                const rows = [...eventList.querySelectorAll<HTMLElement>(".cs-timeline-row")];
+                btns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const cat = btn.dataset.eventCat ?? "All";
+                        btns.forEach((b) => {
+                            const active = b === btn;
+                            b.classList.toggle("is-active", active);
+                            b.setAttribute("aria-selected", String(active));
+                        });
+                        rows.forEach((row) => {
+                            row.hidden = !(cat === "All" || row.dataset.cat === cat);
+                        });
+                    });
+                });
+            }
+
+            // 10. In-Page Sermon Cinema Lightbox Modal
+            const sermonModal = document.querySelector<HTMLDialogElement>("#sermon-modal");
+            const modalIframe = sermonModal?.querySelector<HTMLIFrameElement>("[data-modal-iframe]");
+            const modalTitle = sermonModal?.querySelector<HTMLElement>("[data-modal-title]");
+            const modalMeta = sermonModal?.querySelector<HTMLElement>("[data-modal-meta]");
+            const modalLink = sermonModal?.querySelector<HTMLAnchorElement>("[data-modal-link]");
+
+            if (sermonModal && modalIframe) {
+                document.querySelectorAll<HTMLButtonElement>("[data-open-sermon]").forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const yt = btn.dataset.youtubeId;
+                        if (!yt) return;
+                        if (modalTitle) modalTitle.textContent = btn.dataset.sermonTitle ?? "Sunday Message";
+                        if (modalMeta) modalMeta.textContent = btn.dataset.sermonMeta ?? "";
+                        if (modalLink && btn.dataset.sermonHref) modalLink.href = btn.dataset.sermonHref;
+                        modalIframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(yt)}?autoplay=1&rel=0`;
+                        sermonModal.showModal();
+                    });
+                });
+                const closeModal = () => {
+                    modalIframe.src = "";
+                    sermonModal.close();
+                };
+                sermonModal.querySelector("[data-modal-close]")?.addEventListener("click", closeModal);
+                sermonModal.addEventListener("close", () => {
+                    modalIframe.src = "";
+                });
+                sermonModal.addEventListener("click", (e) => {
+                    if (e.target === sermonModal) closeModal();
+                });
+            }
+
+            // 11. Magnetic Buttons, 3D Tilt & Cursor Spotlights
+            if (finePointer.matches) {
+                document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
+                    el.addEventListener("mousemove", (e) => {
+                        if (isPaused()) return;
+                        const r = el.getBoundingClientRect();
+                        const dx = ((e.clientX - (r.left + r.width / 2)) / (r.width / 2)) * 6;
+                        const dy = ((e.clientY - (r.top + r.height / 2)) / (r.height / 2)) * 5;
+                        el.style.setProperty("--mx-mag", `${dx.toFixed(1)}px`);
+                        el.style.setProperty("--my-mag", `${dy.toFixed(1)}px`);
+                    });
+                    el.addEventListener("mouseleave", () => {
+                        el.style.setProperty("--mx-mag", "0px");
+                        el.style.setProperty("--my-mag", "0px");
+                    });
+                });
+
+                document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((el) => {
+                    el.addEventListener("mousemove", (e) => {
+                        if (isPaused()) return;
+                        const r = el.getBoundingClientRect();
+                        const px = (e.clientX - r.left) / r.width;
+                        const py = (e.clientY - r.top) / r.height;
+                        el.style.setProperty("--rx", `${((0.5 - py) * 6).toFixed(2)}deg`);
+                        el.style.setProperty("--ry", `${((px - 0.5) * 7).toFixed(2)}deg`);
+                    });
+                    el.addEventListener("mouseleave", () => {
+                        el.style.setProperty("--rx", "0deg");
+                        el.style.setProperty("--ry", "0deg");
+                    });
+                });
+
+                document.querySelectorAll<HTMLElement>("[data-spotlight]").forEach((el) => {
+                    el.addEventListener("mousemove", (e) => {
+                        if (isPaused()) return;
+                        const r = el.getBoundingClientRect();
+                        el.style.setProperty("--sx", `${(e.clientX - r.left).toFixed(1)}px`);
+                        el.style.setProperty("--sy", `${(e.clientY - r.top).toFixed(1)}px`);
+                    });
+                });
+            }
+
+            // 12. Accessible Mobile Drawer
+            const drawer = document.querySelector<HTMLDialogElement>("#mobile-nav");
+            const openBtn = document.querySelector<HTMLButtonElement>("[data-nav-open]");
+            if (drawer && openBtn) {
+                openBtn.hidden = false;
+                openBtn.addEventListener("click", () => {
+                    drawer.showModal();
+                    openBtn.setAttribute("aria-expanded", "true");
+                    document.body.classList.add("nav-open");
+                });
+                drawer.querySelector("[data-nav-close]")?.addEventListener("click", () => drawer.close());
+                drawer.addEventListener("click", (e) => {
+                    if (e.target === drawer) drawer.close();
+                });
+                drawer.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => drawer.close()));
+                drawer.addEventListener("close", () => {
+                    openBtn.setAttribute("aria-expanded", "false");
+                    document.body.classList.remove("nav-open");
+                    openBtn.focus();
+                });
+                window.matchMedia("(min-width: 66rem)").addEventListener("change", (ev) => {
+                    if (ev.matches && drawer.open) drawer.close();
+                });
+            }
         </script>
-	</body>
+    </body>
 </html>
